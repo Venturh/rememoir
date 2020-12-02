@@ -97,6 +97,14 @@ class UserResolver {
   logout(@Ctx() { payload }: MyContext) {
     return `Bye ${payload?.userId}`
   }
+
+  @Query(() => User)
+  @UseMiddleware(isAuth)
+  async me(@Ctx() { payload, em }: MyContext) {
+    const user = await em.findOne(User, { id: payload?.userId })
+
+    return user
+  }
 }
 
 export default UserResolver

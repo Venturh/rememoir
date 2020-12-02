@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <h1>Landing Page</h1>
-    <NuxtLink to="/login">Login</NuxtLink>
-    <NuxtLink to="/entries">Entries</NuxtLink>
+  <div
+    class="flex items-center justify-center min-h-screen mx-auto text-center"
+  >
+    Logged in
   </div>
 </template>
 
@@ -10,6 +10,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  middleware: ['authenticated'],
   setup() {},
 })
 </script>

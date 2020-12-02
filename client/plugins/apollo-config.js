@@ -1,7 +1,6 @@
 import { onError } from '@apollo/client/link/error'
 
 export default function (context) {
-  console.log('🚀 ~ file: apollo-config.js ~ line 4 ~ context', context)
   const httpEndpoint = 'http://localhost:4000/graphql'
 
   const httpLinkOptions = {

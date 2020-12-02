@@ -15,6 +15,7 @@
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/composition-api": "^0.16.4",
+    "@tailwindcss/ui": "^0.7.2",
     "@vue/apollo-composable": "4.0.0-alpha.10",
     "apollo-link-token-refresh": "^0.3.2",
     "core-js": "^3.6.5",

@@ -1,5 +1,3 @@
-const colors = require('tailwindcss/colors')
-
 module.exports = {
   darkMode: 'media',
   future: {
@@ -9,11 +7,10 @@ module.exports = {
   purge: [],
   theme: {
     colors: {
-      // Build your palette here
-      gray: colors.trueGray,
-      red: colors.red,
-      blue: colors.lightBlue,
-      yellow: colors.amber,
+      bg_dark: '#202A41',
+      text_dark: '#EDF2F7',
+      primary_dark: '#9AE6B4',
+      accent_dark: '#1B2439',
     },
     extend: {},
   },

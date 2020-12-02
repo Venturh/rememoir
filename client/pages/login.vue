@@ -1,10 +1,10 @@
 <template>
   <div
-    class="min-h-screen flex justify-center items-center text-center mx-auto"
+    class="flex items-center justify-center min-h-screen mx-auto text-center"
   >
     <h1>Login</h1>
-    <form @submit.prevent="login()">
-      <input v-model="email" />
+    <form class="" @submit.prevent="login()">
+      <input v-model="email" class="block w-full form-input" />
       <input v-model="password" />
       <button type="submit">Submit</button>
     </form>
@@ -14,10 +14,13 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { useMutation } from '@vue/apollo-composable'
+import { setAccessToken } from '@/utils/accessToken'
 import authenticateUser from '../graphql/authenticateUser.gql'
 
 export default defineComponent({
-  setup() {
+  setup(props, { root }) {
+    const router = root.$router
+
     const email = ref('b@b.de')
     const password = ref('b')
     const { mutate: sendLogin } = useMutation(authenticateUser, () => ({
@@ -26,7 +29,11 @@ export default defineComponent({
 
     async function login() {
       const { data } = await sendLogin()
-      console.log('🚀 ~ file: login.vue ~ line 43 ~ login ~ response', data)
+
+      if (data) {
+        setAccessToken(data.login.accessToken)
+        router.push('/')
+      }
     }
 
     return {
