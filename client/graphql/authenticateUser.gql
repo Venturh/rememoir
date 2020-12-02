@@ -1,0 +1,13 @@
+mutation authenticateUser($email: String!, $password: String!) {
+  login(options: { email: $email, password: $password }) {
+    user {
+      email
+      id
+    }
+    accessToken
+    errors {
+      field
+      message
+    }
+  }
+}

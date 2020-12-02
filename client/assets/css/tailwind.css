@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  @variants dark {
+    .filter-invert {
+      filter: invert(1);
+    }
+    .filter-none {
+      filter: invert(0);
+    }
+  }
+}
+
+@layer base {
+  h1 {
+    @apply text-2xl font-semibold;
+  }
+  h2 {
+    @apply text-2xl font-semibold;
+  }
+}
