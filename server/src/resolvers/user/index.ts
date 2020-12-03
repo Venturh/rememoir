@@ -18,6 +18,7 @@ import {
 } from '../../utils/auth'
 import { MyContext } from '../../types'
 import { UserResponse, LoginInput, LoginResponse } from './types'
+import { sendEmailVerification } from '../../utils/mail'
 
 @Resolver()
 class UserResolver {
@@ -31,9 +32,11 @@ class UserResolver {
         errors: [{ field: 'email', message: 'ERROR_EMAIL_INVALID' }],
       }
     }
+    const emailCode = Math.floor(Math.random() * 899999 + 100000).toString()
     const user = em.create(User, {
       email: options.email,
       password: await argon2.hash(options.password),
+      verification: { email: options.email, code: emailCode },
     })
 
     try {
@@ -45,6 +48,8 @@ class UserResolver {
         return { errors: [{ field: 'email', message: err.code }] }
       }
     }
+
+    await sendEmailVerification(options.email, emailCode)
 
     return { user }
   }
@@ -104,6 +109,34 @@ class UserResolver {
     const user = await em.findOne(User, { id: payload?.userId })
 
     return user
+  }
+
+  @Mutation(() => LoginResponse)
+  async verifyEmailCode(
+    @Arg('email') email: string,
+    @Arg('code') code: string,
+    @Ctx() { em }: MyContext
+  ): Promise<LoginResponse> {
+    const user = await em.findOne(User, { email: email })
+
+    if (!user) {
+      return {
+        errors: [{ field: 'email', message: 'ERROR_EMAIL_NOT_FOUND' }],
+      }
+    }
+
+    if (user.verification.code === code) {
+      user.verified = true
+      await em.flush()
+    } else {
+      return {
+        errors: [
+          { field: 'code', message: 'ERROR_EMAIL_VERIFICATION_INVALID' },
+        ],
+      }
+    }
+
+    return { user, accessToken: createAccessToken(user) }
   }
 }
 

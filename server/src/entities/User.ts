@@ -2,6 +2,7 @@ import { Field, ObjectType } from 'type-graphql'
 import { Entity, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from './BaseEntity'
+import { Verification } from '../types'
 
 @ObjectType()
 @Entity()
@@ -13,6 +14,13 @@ export class User extends BaseEntity {
 
   @Property()
   password!: string
+
+  @Field(() => Boolean)
+  @Property()
+  verified = false
+
+  @Property({ type: 'Verification' })
+  verification: Verification
 
   @Property()
   tokenVersion = 0

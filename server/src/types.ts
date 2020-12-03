@@ -9,3 +9,8 @@ export type MyContext = {
   res: Response
   payload?: { userId: string }
 }
+
+export type Verification = {
+  email: string
+  code: string
+}
