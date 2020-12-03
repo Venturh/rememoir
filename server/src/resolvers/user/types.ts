@@ -1,5 +1,10 @@
 import { User } from '../../entities/User'
-import { InputType, Field, ObjectType } from 'type-graphql'
+import { InputType, Field, ObjectType, registerEnumType } from 'type-graphql'
+import { ErrorMessage } from '../../types'
+
+registerEnumType(ErrorMessage, {
+  name: 'ErrorMessage',
+})
 
 @InputType()
 export class LoginInput {
@@ -38,6 +43,6 @@ export class FieldError {
   @Field()
   field: string
 
-  @Field()
-  message: string
+  @Field(() => ErrorMessage)
+  message: ErrorMessage
 }

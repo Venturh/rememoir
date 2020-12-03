@@ -16,7 +16,7 @@ import {
   isAuth,
   validateEmail,
 } from '../../utils/auth'
-import { MyContext } from '../../types'
+import { ErrorMessage, MyContext } from '../../types'
 import { UserResponse, LoginInput, LoginResponse } from './types'
 import { sendEmailVerification } from '../../utils/mail'
 
@@ -27,9 +27,11 @@ class UserResolver {
     @Arg('options') options: LoginInput,
     @Ctx() { em }: MyContext
   ): Promise<UserResponse> {
+    console.log('validate', validateEmail(options.email))
+
     if (!validateEmail(options.email)) {
       return {
-        errors: [{ field: 'email', message: 'ERROR_EMAIL_INVALID' }],
+        errors: [{ field: 'email', message: ErrorMessage.EMAIL_INVALID }],
       }
     }
     const emailCode = Math.floor(Math.random() * 899999 + 100000).toString()
@@ -43,7 +45,9 @@ class UserResolver {
       await em.persistAndFlush(user)
     } catch (err) {
       if (err.code === 11000) {
-        return { errors: [{ field: 'email', message: 'ERROR_EMAIL_EXISTS' }] }
+        return {
+          errors: [{ field: 'email', message: ErrorMessage.EMAIL_EXISTS }],
+        }
       } else {
         return { errors: [{ field: 'email', message: err.code }] }
       }
@@ -65,18 +69,24 @@ class UserResolver {
 
     if (!user) {
       return {
-        errors: [{ field: 'email', message: 'ERROR_EMAIL_NOT_FOUND' }],
+        errors: [{ field: 'email', message: ErrorMessage.EMAIL_NOT_FOUND }],
       }
     }
 
     const valid = await argon2.verify(user.password, options.password)
     if (!valid) {
       return {
-        errors: [{ field: 'password', message: 'ERROR_INVALID_PASSWORD' }],
+        errors: [{ field: 'password', message: ErrorMessage.PASSWORD_INVALID }],
       }
     }
 
     sendRefreshToken(res, createRefreshToken(user))
+    if (user.verified === false)
+      return {
+        errors: [
+          { field: 'verified', message: ErrorMessage.USER_NOT_VERIIFIED },
+        ],
+      }
 
     return { user, accessToken: createAccessToken(user) }
   }
@@ -121,7 +131,7 @@ class UserResolver {
 
     if (!user) {
       return {
-        errors: [{ field: 'email', message: 'ERROR_EMAIL_NOT_FOUND' }],
+        errors: [{ field: 'email', message: ErrorMessage.EMAIL_NOT_FOUND }],
       }
     }
 
@@ -130,9 +140,7 @@ class UserResolver {
       await em.flush()
     } else {
       return {
-        errors: [
-          { field: 'code', message: 'ERROR_EMAIL_VERIFICATION_INVALID' },
-        ],
+        errors: [{ field: 'code', message: ErrorMessage.VERIFICATION_INVALID }],
       }
     }
 

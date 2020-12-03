@@ -5,8 +5,11 @@ import { MiddlewareFn } from 'type-graphql/dist/interfaces/Middleware'
 import { MyContext } from '../types'
 
 export const validateEmail = (email: string) => {
-  const emailValidation = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-  return email.match(emailValidation)
+  const valid = email.match(
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  )
+  if (valid) return true
+  else return false
 }
 
 export const createAccessToken = (user: User) => {

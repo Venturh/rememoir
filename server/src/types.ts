@@ -14,3 +14,12 @@ export type Verification = {
   email: string
   code: string
 }
+
+export enum ErrorMessage {
+  EMAIL_INVALID,
+  EMAIL_EXISTS,
+  EMAIL_NOT_FOUND,
+  PASSWORD_INVALID,
+  USER_NOT_VERIIFIED,
+  VERIFICATION_INVALID,
+}
