@@ -6,6 +6,15 @@ registerEnumType(ErrorMessage, {
   name: 'ErrorMessage',
 })
 
+@ObjectType()
+export class FieldError {
+  @Field()
+  field: string
+
+  @Field(() => ErrorMessage)
+  message: ErrorMessage
+}
+
 @InputType()
 export class LoginInput {
   @Field()
@@ -17,15 +26,12 @@ export class LoginInput {
 
 @ObjectType()
 export class BasicResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => FieldError, { nullable: true })
+  errors?: FieldError
 }
 
 @ObjectType()
-export class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
-
+export class UserResponse extends BasicResponse {
   @Field(() => User, { nullable: true })
   user?: User
 }
@@ -36,13 +42,4 @@ export class LoginResponse extends BasicResponse {
   accessToken?: string
   @Field(() => User, { nullable: true })
   user?: User
-}
-
-@ObjectType()
-export class FieldError {
-  @Field()
-  field: string
-
-  @Field(() => ErrorMessage)
-  message: ErrorMessage
 }

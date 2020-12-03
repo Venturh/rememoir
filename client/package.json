@@ -19,6 +19,7 @@
     "@vue/apollo-composable": "4.0.0-alpha.10",
     "apollo-link-token-refresh": "^0.3.2",
     "core-js": "^3.6.5",
+    "crypto-js": "^4.0.0",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
     "nuxt": "^2.14.6",
