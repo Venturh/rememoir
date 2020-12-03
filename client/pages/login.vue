@@ -13,9 +13,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { useMutation } from '@vue/apollo-composable'
 import { setAccessToken } from '@/utils/accessToken'
-import authenticateUser from '../graphql/authenticateUser.gql'
+import { useAuthenticateUserMutation } from '../generated/graphql'
 
 export default defineComponent({
   setup(props, { root }) {
@@ -23,15 +22,17 @@ export default defineComponent({
 
     const email = ref('b@b.de')
     const password = ref('b')
-    const { mutate: sendLogin } = useMutation(authenticateUser, () => ({
+    const { mutate: sendLogin } = useAuthenticateUserMutation(() => ({
       variables: { email: email.value, password: password.value },
     }))
 
     async function login() {
       const { data } = await sendLogin()
-
-      if (data) {
-        setAccessToken(data.login.accessToken)
+      const { errors, accessToken } = data!.login
+      if (errors) {
+        console.log('error', errors.message)
+      } else {
+        setAccessToken(accessToken!)
         router.push('/')
       }
     }

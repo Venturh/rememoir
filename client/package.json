@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt-ts",
+    "gen": "graphql-codegen --config config.yml",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
@@ -26,6 +27,11 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.19.4",
+    "@graphql-codegen/typescript": "^1.19.0",
+    "@graphql-codegen/typescript-graphql-files-modules": "^1.18.1",
+    "@graphql-codegen/typescript-operations": "^1.17.12",
+    "@graphql-codegen/typescript-vue-apollo": "^2.3.1",
     "@nuxt/types": "^2.14.6",
     "@nuxt/typescript-build": "^2.0.3",
     "@nuxtjs/eslint-config": "^3.1.0",

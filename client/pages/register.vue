@@ -14,8 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { useMutation } from '@vue/apollo-composable'
-import registerUser from '../graphql/registerUser.gql'
+import { useRegisterUserMutation } from '../generated/graphql'
 
 export default defineComponent({
   setup(props, { root }) {
@@ -23,7 +22,7 @@ export default defineComponent({
     const error = ref('')
     const email = ref('b@b.de')
     const password = ref('b')
-    const { mutate: sendRegistration } = useMutation(registerUser, () => ({
+    const { mutate: sendRegistration } = useRegisterUserMutation(() => ({
       variables: { email: email.value, password: password.value },
     }))
 
@@ -31,10 +30,6 @@ export default defineComponent({
       const { data } = await sendRegistration()
 
       if (data) {
-        console.log(
-          '🚀 ~ file: register.vue ~ line 34 ~ register ~ data',
-          data.register.errors
-        )
         const { errors } = data.register
         if (errors) {
           error.value = errors.message
