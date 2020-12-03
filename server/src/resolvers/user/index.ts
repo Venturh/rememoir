@@ -24,21 +24,23 @@ import { sendEmailVerification } from '../../utils/mail'
 class UserResolver {
   @Mutation(() => UserResponse)
   async register(
-    @Arg('options') options: LoginInput,
+    @Arg('input') { email, password }: LoginInput,
+    @Arg('secret') secret: string,
     @Ctx() { em }: MyContext
   ): Promise<UserResponse> {
-    console.log('validate', validateEmail(options.email))
+    console.log('validate', validateEmail(email))
 
-    if (!validateEmail(options.email)) {
+    if (!validateEmail(email)) {
       return {
         errors: { field: 'email', message: ErrorMessage.EMAIL_INVALID },
       }
     }
     const emailCode = Math.floor(Math.random() * 899999 + 100000).toString()
     const user = em.create(User, {
-      email: options.email,
-      password: await argon2.hash(options.password),
-      verification: { email: options.email, code: emailCode },
+      email: email,
+      password: await argon2.hash(password),
+      verification: { email, code: emailCode },
+      secret,
     })
 
     try {
@@ -53,18 +55,18 @@ class UserResolver {
       }
     }
 
-    await sendEmailVerification(options.email, emailCode)
+    await sendEmailVerification(email, emailCode)
 
     return { user }
   }
 
   @Mutation(() => LoginResponse)
   async login(
-    @Arg('options') options: LoginInput,
+    @Arg('input') { email, password }: LoginInput,
     @Ctx() { em, res }: MyContext
   ): Promise<LoginResponse> {
     const user = await em.findOne(User, {
-      email: options.email,
+      email: email,
     })
 
     if (!user) {
@@ -73,7 +75,7 @@ class UserResolver {
       }
     }
 
-    const valid = await argon2.verify(user.password, options.password)
+    const valid = await argon2.verify(user.password, password)
     if (!valid) {
       return {
         errors: { field: 'password', message: ErrorMessage.PASSWORD_INVALID },
@@ -121,15 +123,15 @@ class UserResolver {
 
   @Mutation(() => LoginResponse)
   async verifyEmailCode(
-    @Arg('email') email: string,
+    @Arg('id') id: string,
     @Arg('code') code: string,
     @Ctx() { em }: MyContext
   ): Promise<LoginResponse> {
-    const user = await em.findOne(User, { email: email })
+    const user = await em.findOne(User, { id: id })
 
     if (!user) {
       return {
-        errors: { field: 'email', message: ErrorMessage.EMAIL_NOT_FOUND },
+        errors: { field: 'id', message: ErrorMessage.EMAIL_NOT_FOUND },
       }
     }
 

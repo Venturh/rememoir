@@ -30,6 +30,8 @@ export type User = {
   createdAt: Scalars['String'];
   deleted: Scalars['Boolean'];
   email: Scalars['String'];
+  password: Scalars['String'];
+  secret: Scalars['String'];
   verified: Scalars['Boolean'];
 };
 
@@ -43,12 +45,13 @@ export type Mutation = {
 
 
 export type MutationRegisterArgs = {
-  options: LoginInput;
+  secret: Scalars['String'];
+  input: LoginInput;
 };
 
 
 export type MutationLoginArgs = {
-  options: LoginInput;
+  input: LoginInput;
 };
 
 
@@ -59,7 +62,7 @@ export type MutationRevokeRefreshTokenArgs = {
 
 export type MutationVerifyEmailCodeArgs = {
   code: Scalars['String'];
-  email: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -108,7 +111,7 @@ export type AuthenticateUserMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'email' | 'id'>
+      & Pick<User, 'email' | 'verified' | 'id'>
     )>, errors?: Maybe<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -119,6 +122,7 @@ export type AuthenticateUserMutation = (
 export type RegisterUserMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
+  secret: Scalars['String'];
 }>;
 
 
@@ -136,12 +140,34 @@ export type RegisterUserMutation = (
   ) }
 );
 
+export type VerifyAccountByEmailMutationVariables = Exact<{
+  id: Scalars['String'];
+  code: Scalars['String'];
+}>;
+
+
+export type VerifyAccountByEmailMutation = (
+  { __typename?: 'Mutation' }
+  & { verifyEmailCode: (
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'accessToken'>
+    & { errors?: Maybe<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'message' | 'field'>
+    )>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'email' | 'id' | 'verified'>
+    )> }
+  ) }
+);
+
 
 export const AuthenticateUserDocument = gql`
     mutation authenticateUser($email: String!, $password: String!) {
-  login(options: {email: $email, password: $password}) {
+  login(input: {email: $email, password: $password}) {
     user {
       email
+      verified
       id
     }
     accessToken
@@ -176,8 +202,8 @@ export function useAuthenticateUserMutation(options: VueApolloComposable.UseMuta
 }
 export type AuthenticateUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AuthenticateUserMutation, AuthenticateUserMutationVariables>;
 export const RegisterUserDocument = gql`
-    mutation registerUser($email: String!, $password: String!) {
-  register(options: {email: $email, password: $password}) {
+    mutation registerUser($email: String!, $password: String!, $secret: String!) {
+  register(input: {email: $email, password: $password}, secret: $secret) {
     user {
       email
       id
@@ -205,6 +231,7 @@ export const RegisterUserDocument = gql`
  *   variables: {
  *     email: // value for 'email'
  *     password: // value for 'password'
+ *     secret: // value for 'secret'
  *   },
  * });
  */
@@ -212,3 +239,42 @@ export function useRegisterUserMutation(options: VueApolloComposable.UseMutation
   return VueApolloComposable.useMutation<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument, options);
 }
 export type RegisterUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<RegisterUserMutation, RegisterUserMutationVariables>;
+export const VerifyAccountByEmailDocument = gql`
+    mutation verifyAccountByEmail($id: String!, $code: String!) {
+  verifyEmailCode(id: $id, code: $code) {
+    errors {
+      message
+      field
+    }
+    accessToken
+    user {
+      email
+      id
+      verified
+    }
+  }
+}
+    `;
+
+/**
+ * __useVerifyAccountByEmailMutation__
+ *
+ * To run a mutation, you first call `useVerifyAccountByEmailMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyAccountByEmailMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useVerifyAccountByEmailMutation({
+ *   variables: {
+ *     id: // value for 'id'
+ *     code: // value for 'code'
+ *   },
+ * });
+ */
+export function useVerifyAccountByEmailMutation(options: VueApolloComposable.UseMutationOptions<VerifyAccountByEmailMutation, VerifyAccountByEmailMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<VerifyAccountByEmailMutation, VerifyAccountByEmailMutationVariables>>) {
+  return VueApolloComposable.useMutation<VerifyAccountByEmailMutation, VerifyAccountByEmailMutationVariables>(VerifyAccountByEmailDocument, options);
+}
+export type VerifyAccountByEmailMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VerifyAccountByEmailMutation, VerifyAccountByEmailMutationVariables>;

@@ -31,6 +31,9 @@ export default defineComponent({
       const { errors, accessToken } = data!.login
       if (errors) {
         console.log('error', errors.message)
+        if (errors.message === 'USER_NOT_VERIIFIED') {
+          router.push('/accountVerification')
+        }
       } else {
         setAccessToken(accessToken!)
         router.push('/')

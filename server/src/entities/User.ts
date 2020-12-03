@@ -12,8 +12,13 @@ export class User extends BaseEntity {
   @Property()
   email!: string
 
+  @Field()
   @Property()
   password!: string
+
+  @Field()
+  @Property()
+  secret!: string
 
   @Field(() => Boolean)
   @Property()

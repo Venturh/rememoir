@@ -15,6 +15,7 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { useRegisterUserMutation } from '../generated/graphql'
+import { generateSecretKey, hash } from '~/utils/crypto'
 
 export default defineComponent({
   setup(props, { root }) {
@@ -22,20 +23,25 @@ export default defineComponent({
     const error = ref('')
     const email = ref('b@b.de')
     const password = ref('b')
+
     const { mutate: sendRegistration } = useRegisterUserMutation(() => ({
-      variables: { email: email.value, password: password.value },
+      variables: {
+        email: email.value,
+        password: password.value,
+        secret: hash(generateSecretKey()),
+      },
     }))
 
     async function register() {
       const { data } = await sendRegistration()
 
       if (data) {
-        const { errors } = data.register
+        const { errors, user } = data.register
         if (errors) {
           error.value = errors.message
           return
         }
-        router.push('/')
+        router.push(`/accountVerification/?id=${user?.id}`)
       }
     }
 

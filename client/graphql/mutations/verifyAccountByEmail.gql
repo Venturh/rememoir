@@ -1,0 +1,14 @@
+mutation verifyAccountByEmail($id: String!, $code: String!) {
+  verifyEmailCode(id: $id, code: $code) {
+    errors {
+      message
+      field
+    }
+    accessToken
+    user {
+      email
+      id
+      verified
+    }
+  }
+}
