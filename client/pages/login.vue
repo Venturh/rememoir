@@ -17,6 +17,7 @@ import { setAccessToken } from '@/utils/accessToken'
 import { useAuthenticateUserMutation } from '../generated/graphql'
 
 export default defineComponent({
+  layout: 'landing',
   setup(props, { root }) {
     const router = root.$router
 
@@ -28,11 +29,11 @@ export default defineComponent({
 
     async function login() {
       const { data } = await sendLogin()
-      const { errors, accessToken } = data!.login
+      const { errors, accessToken, user } = data!.login
       if (errors) {
         console.log('error', errors.message)
         if (errors.message === 'USER_NOT_VERIIFIED') {
-          router.push('/accountVerification')
+          router.push(`/accountVerification/?id=${user?.id}`)
         }
       } else {
         setAccessToken(accessToken!)

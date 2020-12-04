@@ -28,8 +28,6 @@ class UserResolver {
     @Arg('secret') secret: string,
     @Ctx() { em }: MyContext
   ): Promise<UserResponse> {
-    console.log('validate', validateEmail(email))
-
     if (!validateEmail(email)) {
       return {
         errors: { field: 'email', message: ErrorMessage.EMAIL_INVALID },
@@ -86,6 +84,7 @@ class UserResolver {
     if (user.verified === false)
       return {
         errors: { field: 'verified', message: ErrorMessage.USER_NOT_VERIIFIED },
+        user,
       }
 
     return { user, accessToken: createAccessToken(user) }

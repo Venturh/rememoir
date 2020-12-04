@@ -1,15 +1,20 @@
 <template>
-  <div
-    class="flex items-center justify-center min-h-screen mx-auto text-center"
-  >
-    <h1>Register</h1>
-    <form class="" @submit.prevent="register()">
-      <p v-if="error">{{ error }}</p>
-      <input v-model="email" class="block w-full form-input" />
-      <input v-model="password" />
-      <button type="submit">Register</button>
-    </form>
-  </div>
+  <main class="flex items-center justify-center min-h-screen mx-auto">
+    <div class="flex items-center space-x-8">
+      <div class="w-2/6 space-y-2 font-semibold">
+        <h1 class="text-5xl text-primary">Sign up</h1>
+        <h2 class="text-3xl text-secondary">
+          {{ test }}
+        </h2>
+      </div>
+      <form class="" @submit.prevent="register()">
+        <p v-if="error">{{ error }}</p>
+        <input v-model="email" class="block w-full form-input" />
+        <input v-model="password" />
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
@@ -18,11 +23,13 @@ import { useRegisterUserMutation } from '../generated/graphql'
 import { generateSecretKey, hash } from '~/utils/crypto'
 
 export default defineComponent({
+  layout: 'landing',
   setup(props, { root }) {
     const router = root.$router
     const error = ref('')
     const email = ref('b@b.de')
     const password = ref('b')
+    const test = ref('Get started\nfor free')
 
     const { mutate: sendRegistration } = useRegisterUserMutation(() => ({
       variables: {
@@ -50,6 +57,7 @@ export default defineComponent({
       email,
       password,
       error,
+      test,
     }
   },
 })

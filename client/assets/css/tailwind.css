@@ -1,23 +1,29 @@
+:root {
+  @apply light;
+}
+
+.dark {
+  --brand: #9ae6b4;
+  --primary: #81e6d9;
+  --bg: #202a41;
+  --bg-secondary: #1b2439;
+  --text-primary: #edf2f7;
+  --text-secondary: #cbd5e0;
+  --error: #fc8181;
+  --success: #9ae6b4;
+}
+
+.light {
+  --brand: #97e1b0;
+  --primary: #81e6d9;
+  --bg: #ffffff;
+  --bg-accent: #f7fafc;
+  --text-primary: #000000;
+  --text-secondary: #4a5568;
+  --error: #f56565;
+  --success: #97e1b0;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer utilities {
-  @variants dark {
-    .filter-invert {
-      filter: invert(1);
-    }
-    .filter-none {
-      filter: invert(0);
-    }
-  }
-}
-
-@layer base {
-  h1 {
-    @apply text-2xl font-semibold;
-  }
-  h2 {
-    @apply text-2xl font-semibold;
-  }
-}
