@@ -1,8 +1,5 @@
 <template>
-  <NuxtLink
-    class="p-2 font-medium rounded-md hover:text-brand hover:bg-secondary"
-    :to="to"
-  >
+  <NuxtLink class="p-2 font-medium rounded-lg hover:text-brand" :to="to">
     <slot
   /></NuxtLink>
 </template>

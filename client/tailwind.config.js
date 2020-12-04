@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 module.exports = {
   darkMode: 'class',
   future: {
@@ -9,9 +10,16 @@ module.exports = {
   theme: {
     colors: {
       brand: 'var(--brand)',
+      brandContrast: 'var(--brandContrast)',
       error: 'var(--error)',
       success: 'var(--success)',
+      gray: colors.coolGray,
+      primaryText: 'var(--text-primary)',
+      secondaryText: 'var(--text-secondary)',
+      primaryBg: 'var(--bg)',
+      secondaryBg: 'var(--bg-secondary)',
     },
+
     extend: {
       sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       backgroundColor: {
@@ -25,5 +33,5 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }

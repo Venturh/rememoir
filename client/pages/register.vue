@@ -1,18 +1,20 @@
 <template>
-  <main class="flex items-center justify-center min-h-screen mx-auto">
-    <div class="flex items-center space-x-8">
-      <div class="w-2/6 space-y-2 font-semibold">
-        <h1 class="text-5xl text-primary">Sign up</h1>
-        <h2 class="text-3xl text-secondary">
-          {{ test }}
-        </h2>
+  <main class="flex flex-col items-center mt-36">
+    <div class="flex flex-col space-y-4">
+      <div class="space-y-2 font-semibold">
+        <h1 class="text-6xl text-primary">Sign up.</h1>
+        <h2 class="text-3xl text-secondary">Get started for free</h2>
       </div>
-      <form class="" @submit.prevent="register()">
-        <p v-if="error">{{ error }}</p>
-        <input v-model="email" class="block w-full form-input" />
-        <input v-model="password" />
-        <button type="submit">Register</button>
-      </form>
+      <AuthForm :error="error" action-name="Register" @submit="register()">
+        <FormInput
+          v-model="email"
+          type="email"
+          placeholder="your@mail.com"
+          class="block w-full form-input"
+          >Email</FormInput
+        >
+        <FormInput v-model="password" type="password">Password</FormInput>
+      </AuthForm>
     </div>
   </main>
 </template>
@@ -24,12 +26,12 @@ import { generateSecretKey, hash } from '~/utils/crypto'
 
 export default defineComponent({
   layout: 'landing',
+  middleware: ['notAuthenticated'],
   setup(props, { root }) {
     const router = root.$router
     const error = ref('')
-    const email = ref('b@b.de')
-    const password = ref('b')
-    const test = ref('Get started\nfor free')
+    const email = ref('')
+    const password = ref('')
 
     const { mutate: sendRegistration } = useRegisterUserMutation(() => ({
       variables: {
@@ -57,7 +59,6 @@ export default defineComponent({
       email,
       password,
       error,
-      test,
     }
   },
 })

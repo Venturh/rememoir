@@ -4,7 +4,7 @@
 
 .dark {
   --brand: #9ae6b4;
-  --primary: #81e6d9;
+  --brandContrast: #1b2439;
   --bg: #202a41;
   --bg-secondary: #1b2439;
   --text-primary: #edf2f7;
@@ -14,8 +14,8 @@
 }
 
 .light {
-  --brand: #97e1b0;
-  --primary: #81e6d9;
+  --brand: #81e6d9;
+  --brandContrast: #1b2439;
   --bg: #ffffff;
   --bg-accent: #f7fafc;
   --text-primary: #000000;

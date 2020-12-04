@@ -1,14 +1,22 @@
 <template>
-  <div
-    class="flex items-center justify-center min-h-screen mx-auto text-center"
-  >
-    <h1>Login</h1>
-    <form class="" @submit.prevent="login()">
-      <input v-model="email" class="block w-full form-input" />
-      <input v-model="password" />
-      <button type="submit">Submit</button>
-    </form>
-  </div>
+  <main class="flex flex-col items-center mt-36">
+    <div class="flex flex-col space-y-4">
+      <div class="space-y-2 font-semibold">
+        <h1 class="text-6xl text-primary">Sign in.</h1>
+        <h2 class="text-3xl text-secondary">Welcome back</h2>
+      </div>
+      <AuthForm :error="error" type="login" @submit="login()">
+        <FormInput
+          v-model="email"
+          type="email"
+          placeholder="your@mail.com"
+          class="block w-full form-input"
+          >Email</FormInput
+        >
+        <FormInput v-model="password" type="password">Password</FormInput>
+      </AuthForm>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
@@ -18,11 +26,13 @@ import { useAuthenticateUserMutation } from '../generated/graphql'
 
 export default defineComponent({
   layout: 'landing',
+  middleware: ['notAuthenticated'],
   setup(props, { root }) {
     const router = root.$router
 
-    const email = ref('b@b.de')
-    const password = ref('b')
+    const email = ref('')
+    const password = ref('')
+    const error = ref('')
     const { mutate: sendLogin } = useAuthenticateUserMutation(() => ({
       variables: { email: email.value, password: password.value },
     }))
@@ -31,13 +41,13 @@ export default defineComponent({
       const { data } = await sendLogin()
       const { errors, accessToken, user } = data!.login
       if (errors) {
-        console.log('error', errors.message)
+        error.value = errors.message
         if (errors.message === 'USER_NOT_VERIIFIED') {
           router.push(`/accountVerification/?id=${user?.id}`)
         }
       } else {
         setAccessToken(accessToken!)
-        router.push('/')
+        router.push('/entries')
       }
     }
 
@@ -46,6 +56,7 @@ export default defineComponent({
       sendLogin,
       email,
       password,
+      error,
     }
   },
 })

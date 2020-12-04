@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex items-center justify-between px-8 py-4">
+  <nav class="flex items-center justify-between px-8 py-4 bg-secondary">
     <nuxt-link to="/" class="flex items-center space-x-2">
       <img
         class="w-auto h-8 sm:h-10"
@@ -15,7 +15,7 @@
       <span class="p-2"> | </span>
       <Links to="/login"> Log in </Links>
       <Links to="/register">Sign up</Links>
-      <button class="hidden" @click="toggleTheme">Toggle Theme</button>
+      <button class="" @click="toggleTheme">Toggle Theme</button>
     </div>
   </nav>
 </template>
