@@ -30,8 +30,6 @@ export type User = {
   createdAt: Scalars['String'];
   deleted: Scalars['Boolean'];
   email: Scalars['String'];
-  password: Scalars['String'];
-  secret: Scalars['String'];
   verified: Scalars['Boolean'];
 };
 
@@ -161,6 +159,17 @@ export type VerifyAccountByEmailMutation = (
   ) }
 );
 
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me: (
+    { __typename?: 'User' }
+    & Pick<User, 'email' | 'id'>
+  ) }
+);
+
 
 export const AuthenticateUserDocument = gql`
     mutation authenticateUser($email: String!, $password: String!) {
@@ -278,3 +287,28 @@ export function useVerifyAccountByEmailMutation(options: VueApolloComposable.Use
   return VueApolloComposable.useMutation<VerifyAccountByEmailMutation, VerifyAccountByEmailMutationVariables>(VerifyAccountByEmailDocument, options);
 }
 export type VerifyAccountByEmailMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VerifyAccountByEmailMutation, VerifyAccountByEmailMutationVariables>;
+export const MeDocument = gql`
+    query me {
+  me {
+    email
+    id
+  }
+}
+    `;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a Vue component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useMeQuery();
+ */
+export function useMeQuery(options: VueApolloComposable.UseQueryOptions<MeQuery, MeQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<MeQuery, MeQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<MeQuery, MeQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<MeQuery, MeQueryVariables>(MeDocument, {}, options);
+}
+export type MeQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<MeQuery, MeQueryVariables>;

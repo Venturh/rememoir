@@ -1,13 +1,16 @@
 import { onError } from '@apollo/client/link/error'
+import { getAccessToken } from '../utils/accessToken'
 
 export default function (context) {
   const httpEndpoint = 'http://localhost:4000/graphql'
-
   const httpLinkOptions = {
     credentials: 'include',
+    httpLinkOptions: {
+      credentials: 'include',
+    },
   }
 
-  // ToDO: Acces Token refresh
+  // TODO: Acces Token refresh
   // https://github.com/nuxt-community/apollo-module/issues/315
   // https://github.com/newsiberian/apollo-link-token-refresh
 
@@ -21,5 +24,8 @@ export default function (context) {
     httpLinkOptions,
     link,
     httpEndpoint,
+    getAuth: () => {
+      return `bearer ${getAccessToken()}`
+    },
   }
 }

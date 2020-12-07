@@ -30,6 +30,9 @@ module.exports = {
         primary: 'var(--text-primary)',
         secondary: 'var(--text-secondary)',
       },
+      maxWidth: {
+        xsm: '21rem',
+      },
     },
   },
   variants: {},

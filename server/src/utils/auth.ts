@@ -30,6 +30,7 @@ export const createRefreshToken = (user: User) => {
 
 export const isAuth: MiddlewareFn<MyContext> = ({ context }, next) => {
   const authorization = context.req.headers['authorization']
+  console.log('🚀 ~ file: auth.ts ~ line 33 ~ authorization', authorization)
   if (!authorization) throw new Error('ERROR_NO_AUTH')
 
   try {

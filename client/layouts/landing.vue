@@ -1,8 +1,10 @@
 <template>
   <html>
-    <div class="min-h-screen bg-primary text-primary">
-      <navigation-header />
-      <Nuxt />
+    <div class="bg-primary text-primary">
+      <div class="min-h-screen mx-auto max-w-xsm md:max-w-5xl">
+        <navigation-header />
+        <Nuxt />
+      </div>
     </div>
   </html>
 </template>

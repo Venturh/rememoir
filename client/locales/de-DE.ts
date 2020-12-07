@@ -1,0 +1,18 @@
+export default {
+  signIn: 'Anmelden',
+  signUp: 'Registrieren',
+  about: 'Über',
+  pricing: 'Preis',
+  password: 'Passwort',
+  confirm: 'Bestätigen',
+  submit: 'Senden',
+  checkInbox: 'Bitte schau in dein Postfach',
+  yourKey: 'Dein Secretkey',
+  verificationCode: 'Bestätigungs Code',
+  login: 'Login',
+  loginSubheader: 'Wilkommen zurück',
+  loginSub: 'Noch nicht registriert?',
+  register: 'Registrieren',
+  registerSubheader: 'Starte kostenlos',
+  registerSub: 'Bereits registriert?',
+}

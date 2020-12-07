@@ -2,18 +2,16 @@
   <main class="flex flex-col items-center mt-36">
     <div class="flex flex-col space-y-4">
       <div class="space-y-2 font-semibold">
-        <h1 class="text-6xl text-primary">Sign up.</h1>
-        <h2 class="text-3xl text-secondary">Get started for free</h2>
+        <h1 class="text-6xl text-primary">{{ $t('signUp') }}.</h1>
+        <h2 class="text-3xl text-secondary">{{ $t('registerSubheader') }}</h2>
       </div>
       <AuthForm :error="error" action-name="Register" @submit="register()">
-        <FormInput
-          v-model="email"
-          type="email"
-          placeholder="your@mail.com"
-          class="block w-full form-input"
+        <FormInput v-model="email" type="email" class="block w-full form-input"
           >Email</FormInput
         >
-        <FormInput v-model="password" type="password">Password</FormInput>
+        <FormInput v-model="password" type="password">{{
+          $t('password')
+        }}</FormInput>
       </AuthForm>
     </div>
   </main>
@@ -50,7 +48,14 @@ export default defineComponent({
           error.value = errors.message
           return
         }
-        router.push(`/accountVerification/?id=${user?.id}`)
+        // TODO: nuxt-i18n fix when migrate to composition api
+        router.push(
+          root.localeRoute({
+            name: 'accountVerification',
+            params: { id: user?.id },
+          })
+        )
+        // router.push(`/accountVerification/?id=${user?.id}`)
       }
     }
 

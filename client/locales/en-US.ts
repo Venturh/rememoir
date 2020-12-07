@@ -1,0 +1,18 @@
+export default {
+  signIn: 'Sign in',
+  signUp: 'Sign Up',
+  about: 'About',
+  pricing: 'Pricing',
+  password: 'Passwort',
+  confirm: 'Confirm',
+  submit: 'Submit',
+  checkInbox: 'Please check your inbox',
+  yourKey: 'Your secretkey',
+  verificationCode: 'Verification Code',
+  login: 'Login',
+  loginSubheader: 'Welcome Back',
+  loginSub: 'Need an account?',
+  register: 'Register',
+  registerSubheader: 'Get started for free',
+  registerSub: 'Already signed up?',
+}

@@ -2,18 +2,16 @@
   <main class="flex flex-col items-center mt-36">
     <div class="flex flex-col space-y-4">
       <div class="space-y-2 font-semibold">
-        <h1 class="text-6xl text-primary">Sign in.</h1>
-        <h2 class="text-3xl text-secondary">Welcome back</h2>
+        <h1 class="text-6xl text-primary">{{ $t('signIn') }}.</h1>
+        <h2 class="text-3xl text-secondary">{{ $t('loginSubheader') }}</h2>
       </div>
       <AuthForm :error="error" type="login" @submit="login()">
-        <FormInput
-          v-model="email"
-          type="email"
-          placeholder="your@mail.com"
-          class="block w-full form-input"
-          >Email</FormInput
-        >
-        <FormInput v-model="password" type="password">Password</FormInput>
+        <FormInput v-model="email" type="email" class="block w-full form-input">
+          Email
+        </FormInput>
+        <FormInput v-model="password" type="password">
+          {{ $t('password') }}
+        </FormInput>
       </AuthForm>
     </div>
   </main>
@@ -27,6 +25,7 @@ import { useAuthenticateUserMutation } from '../generated/graphql'
 export default defineComponent({
   layout: 'landing',
   middleware: ['notAuthenticated'],
+
   setup(props, { root }) {
     const router = root.$router
 
@@ -47,7 +46,8 @@ export default defineComponent({
         }
       } else {
         setAccessToken(accessToken!)
-        router.push('/entries')
+        // TODO: nuxt-i18n fix when migrate to composition api
+        router.push(root.localePath('entries'))
       }
     }
 

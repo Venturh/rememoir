@@ -6,14 +6,14 @@
       <slot />
       <div class="flex items-center justify-between">
         <p v-if="type === 'login'" class="font-medium">
-          Need an account?<Links to="/register">Sign Up</Links>
+          {{ $t('loginSub') }}<Links to="/register">{{ $t('signUp') }}</Links>
         </p>
         <p v-if="type === 'register'" class="font-medium">
-          Already signed up?<Links to="/login">Sign in</Links>
+          {{ $t('registerSub') }}<Links to="/login">{{ $t('signIn') }}</Links>
         </p>
-        <Button type="submit">{{
-          type === 'register' ? 'Register' : 'Login'
-        }}</Button>
+        <Button type="submit">
+          {{ type === 'register' ? $t('register') : $t('login') }}
+        </Button>
       </div>
     </div>
   </form>

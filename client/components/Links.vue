@@ -1,7 +1,10 @@
 <template>
-  <NuxtLink class="p-2 font-medium rounded-lg hover:text-brand" :to="to">
-    <slot
-  /></NuxtLink>
+  <NuxtLink
+    class="p-2 font-medium rounded-lg hover:text-brand"
+    :to="localePath(to)"
+  >
+    <slot />
+  </NuxtLink>
 </template>
 
 <script lang="ts">
