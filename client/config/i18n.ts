@@ -1,7 +1,13 @@
 import de from '../locales/de-DE'
 import en from '../locales/en-US'
 
-export default {
+type I18n = {
+  locales: { code: string; iso: string; name: string }[]
+  defaultLocale: string
+  vueI18n: { fallbackLocale: 'en'; messages: any }
+}
+
+const i18n: I18n = {
   locales: [
     {
       code: 'en',
@@ -36,3 +42,5 @@ export default {
     messages: { en, de },
   },
 }
+
+export default i18n
