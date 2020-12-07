@@ -12,11 +12,14 @@
       <span class="hidden md:block"> Brandname</span>
     </nuxt-link>
     <div class="flex items-center md:space-x-4">
-      <Links to="about"> {{ $t('about') }}</Links>
-      <Links to="pricing"> {{ $t('pricing') }}</Links>
+      <Links to="/about"> {{ $t('about') }}</Links>
+      <Links to="/pricing"> {{ $t('pricing') }}</Links>
       <span class="p-2"> | </span>
-      <Links to="login">{{ $t('signIn') }} </Links>
-      <Links class="hidden md:block" to="register">{{ $t('signUp') }}</Links>
+      <Links to="/auth/login">{{ $t('signIn') }} </Links>
+      <Links class="hidden md:block" to="/auth/register">
+        {{ $t('signUp') }}
+      </Links>
+      <ThemeToggle />
       <LocaleSwitcher />
       <!-- <button class="hidden md:block" @click="toggleTheme">Toggle Theme</button> -->
     </div>

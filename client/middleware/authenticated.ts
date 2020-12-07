@@ -7,6 +7,6 @@ export default async function ({ redirect, app }) {
   hasToken = getAccessToken()
 
   if (!hasToken) {
-    return redirect(app.localePath('login'))
+    return redirect(app.localePath('/auth/login'))
   }
 }

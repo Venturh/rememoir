@@ -1,13 +1,9 @@
 <template>
-  <main class="flex flex-col items-center mt-36">
+  <main class="flex flex-col items-center">
     <div class="flex flex-col space-y-10">
       <div class="space-y-2 font-semibold">
         <h1 class="text-6xl text-primary">{{ $t('confirm') }}</h1>
         <h2 class="text-3xl text-secondary">{{ $t('checkInbox') }}</h2>
-      </div>
-      <div>
-        <p class="text-3xl">{{ $t('yourKey') }}</p>
-        <p class="text-2xl">{{ secretKey }}</p>
       </div>
       <form class="space-y-6 w-80" @submit.prevent="verificate">
         <FormInput v-model="verificationCode" type="text">{{
@@ -21,24 +17,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import { setAccessToken } from '@/utils/accessToken'
 import { useVerifyAccountByEmailMutation } from '@/generated/graphql'
-import { getSectretKey } from '@/utils/crypto'
 
 export default defineComponent({
-  layout: 'landing',
-  setup(props, { root }) {
-    const router = root.$router
+  layout: 'auth',
+  setup() {
+    const { app, query } = useContext()
+    const { router, localePath } = app
 
-    const id: string = root.$route.query.id as string
+    const { id } = query.value
+
+    if (!id) return
 
     const verificationCode = ref('')
     const error = ref('')
-    const secretKey = getSectretKey()
     const { mutate: sendVerification } = useVerifyAccountByEmailMutation(
       () => ({
-        variables: { id, code: verificationCode.value },
+        variables: { id: id as string, code: verificationCode.value },
       })
     )
 
@@ -49,7 +46,7 @@ export default defineComponent({
         error.value = errors.message
       } else {
         setAccessToken(accessToken!)
-        router.push('/entries')
+        router!.push(localePath('/entries'))
       }
     }
 
@@ -58,7 +55,6 @@ export default defineComponent({
       sendVerification,
       verificationCode,
       error,
-      secretKey,
     }
   },
 })

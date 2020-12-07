@@ -8,6 +8,9 @@ export default {
   submit: 'Senden',
   checkInbox: 'Bitte schau in dein Postfach',
   yourKey: 'Dein Secretkey',
+  yourKeySub: 'Sichere ihn ab',
+  yourKeyDescription:
+    'Das ist dein Sicherungsschlüssel. Bitte speichere ihn dir ab, ansonsten verlierst du Zugriff',
   verificationCode: 'Bestätigungs Code',
   login: 'Login',
   loginSubheader: 'Wilkommen zurück',

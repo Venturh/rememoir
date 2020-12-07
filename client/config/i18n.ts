@@ -5,6 +5,8 @@ type I18n = {
   locales: { code: string; iso: string; name: string }[]
   defaultLocale: string
   vueI18n: { fallbackLocale: 'en'; messages: any }
+  parsePages: boolean
+  pages: {}
 }
 
 const i18n: I18n = {
@@ -20,6 +22,14 @@ const i18n: I18n = {
       name: 'Deutsch',
     },
   ],
+  parsePages: false,
+  pages: {
+    auth: {
+      en: '/auth',
+      de: '/auth',
+    },
+  },
+
   defaultLocale: 'en',
   // routes: {
   //   about: {

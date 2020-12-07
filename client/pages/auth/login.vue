@@ -1,5 +1,5 @@
-<template>
-  <main class="flex flex-col items-center mt-36">
+<template v-slot:auth>
+  <main>
     <div class="flex flex-col space-y-4">
       <div class="space-y-2 font-semibold">
         <h1 class="text-6xl text-primary">{{ $t('signIn') }}.</h1>
@@ -20,10 +20,10 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { setAccessToken } from '@/utils/accessToken'
-import { useAuthenticateUserMutation } from '../generated/graphql'
+import { useAuthenticateUserMutation } from '@/generated/graphql'
 
 export default defineComponent({
-  layout: 'landing',
+  layout: 'auth',
   middleware: ['notAuthenticated'],
 
   setup(props, { root }) {

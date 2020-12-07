@@ -1,18 +1,24 @@
 <template>
-  <NuxtLink class="p-2 font-medium rounded-lg hover:text-brand" :to="to">
-    <slot
-  /></NuxtLink>
+  <div class="cursor-pointer" @click="toggleTheme">
+    <SunIcon v-if="theme === 'dark'" />
+    <MoonIcon v-else />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { SunIcon, MoonIcon } from 'vue-feather-icons'
+import useTheme from '~/hooks/useTheme'
 
 export default defineComponent({
-  props: {
-    to: {
-      type: String,
-      default: '/',
-    },
+  components: {
+    SunIcon,
+    MoonIcon,
+  },
+  setup() {
+    const { theme, toggleTheme } = useTheme()
+
+    return { theme, toggleTheme }
   },
 })
 </script>

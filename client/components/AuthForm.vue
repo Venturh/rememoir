@@ -1,6 +1,6 @@
 //Todo: Switch auf Vee Validate wenn supported
 <template>
-  <form class="space-y-6 w- md:w-96" @submit.prevent="$emit('submit')">
+  <form class="space-y-6" @submit.prevent="$emit('submit')">
     <Error v-if="error" :message="error">{{ error }}</Error>
     <div class="space-y-2">
       <slot />

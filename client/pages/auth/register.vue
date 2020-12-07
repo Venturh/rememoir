@@ -1,5 +1,5 @@
 <template>
-  <main class="flex flex-col items-center mt-36">
+  <main>
     <div class="flex flex-col space-y-4">
       <div class="space-y-2 font-semibold">
         <h1 class="text-6xl text-primary">{{ $t('signUp') }}.</h1>
@@ -18,18 +18,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { useRegisterUserMutation } from '../generated/graphql'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
+import { useRegisterUserMutation } from '@/generated/graphql'
 import { generateSecretKey, hash } from '~/utils/crypto'
 
 export default defineComponent({
-  layout: 'landing',
+  layout: 'auth',
   middleware: ['notAuthenticated'],
-  setup(props, { root }) {
-    const router = root.$router
+  setup() {
     const error = ref('')
     const email = ref('')
     const password = ref('')
+    const { app } = useContext()
+    const { router, localePath } = app
 
     const { mutate: sendRegistration } = useRegisterUserMutation(() => ({
       variables: {
@@ -49,13 +50,7 @@ export default defineComponent({
           return
         }
         // TODO: nuxt-i18n fix when migrate to composition api
-        router.push(
-          root.localeRoute({
-            name: 'accountVerification',
-            params: { id: user?.id },
-          })
-        )
-        // router.push(`/accountVerification/?id=${user?.id}`)
+        router!.push(localePath(`/auth/code?id=${user?.id}`))
       }
     }
 

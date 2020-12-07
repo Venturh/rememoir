@@ -6,6 +6,6 @@ export default async function ({ redirect, app }) {
   hasToken = getAccessToken()
 
   if (hasToken) {
-    return redirect(app.localePath('entries'))
+    return redirect(app.localePath('/entries'))
   }
 }
