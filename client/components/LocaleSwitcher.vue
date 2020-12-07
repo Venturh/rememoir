@@ -1,13 +1,10 @@
 <template>
   <div class="relative">
-    <div
-      class="flex items-center space-x-1 cursor-pointer"
-      @click="open = !open"
-    >
+    <div ref="el" class="cursor-pointer" @click="open = !open">
       <GlobeIcon size="1.25x" />
-      <span>{{ currentLocale.toUpperCase() }}</span>
     </div>
     <div
+      ref="dropDown"
       :class="
         !open
           ? 'hidden'
@@ -18,6 +15,7 @@
         v-for="locale in locales"
         :key="locale.code"
         class="flex items-center px-4 space-x-1 rounded-md cursor-pointer text-primary hover:text-brand"
+        @click="open = false"
       >
         <GlobeIcon size="1x" />
         <nuxt-link :to="switchLocalePath(locale.code)">
@@ -28,8 +26,13 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+<script lang="ts">
+import {
+  defineComponent,
+  ref,
+  watch,
+  onUnmounted,
+} from '@nuxtjs/composition-api'
 import i18n from '@/config/i18n'
 import { GlobeIcon } from 'vue-feather-icons'
 
@@ -42,9 +45,34 @@ export default defineComponent({
     const currentLocale = root._i18n.getLocaleCookie()
 
     const open = ref(false)
+    const el = ref<HTMLDivElement>()
+    const dropDown = ref<HTMLDivElement>()
     const { locales } = i18n
 
-    return { currentLocale, open, locales }
+    function handleClickOutside({ target }: MouseEvent) {
+      if (el.value?.contains(target) || dropDown.value?.contains(target)) return
+      open.value = false
+    }
+
+    watch(
+      () => open.value,
+      () => {
+        if (open) {
+          document.addEventListener('mousedown', handleClickOutside)
+        } else {
+          document.removeEventListener('mousedown', handleClickOutside)
+        }
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside)
+        }
+      }
+    )
+
+    onUnmounted(() => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    })
+
+    return { currentLocale, open, locales, el, dropDown }
   },
 })
 </script>
