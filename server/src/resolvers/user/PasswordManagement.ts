@@ -132,6 +132,7 @@ export class PasswordManagement {
         }
 
       user.password = await argon2.hash(newPassword)
+      user.tokenVersion += 1
       await em.persistAndFlush(user)
       return { message: 'Success' }
     } catch (err) {
