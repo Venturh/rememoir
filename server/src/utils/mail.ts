@@ -18,3 +18,12 @@ export const sendEmailVerification = async (email: string, code: string) => {
     html: `<div><h1>Your verification code is: ${code} </h1></div>`,
   })
 }
+
+export const sendPasswordReset = async (email: string, link: string) => {
+  await emailService.sendMail({
+    from: process.env.EMAIL_PROVIDER_USERNAME,
+    to: email,
+    subject: 'Verify Email',
+    html: `<div><a href="${link}">Reset Password</a></div>`,
+  })
+}

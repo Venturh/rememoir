@@ -1,9 +1,9 @@
 <template>
   <main>
     <div class="flex flex-col space-y-4">
-      <div class="space-y-2 font-semibold">
-        <h1 class="text-6xl text-primary">{{ $t('signUp') }}.</h1>
-        <h2 class="text-3xl text-secondary">{{ $t('registerSubheader') }}</h2>
+      <div class="space-y-2">
+        <h1>{{ $t('register') }}.</h1>
+        <h2>{{ $t('registerSubheader') }}</h2>
       </div>
       <AuthForm :error="error" action-name="Register" @submit="register()">
         <FormInput v-model="email" type="email" class="block w-full form-input"

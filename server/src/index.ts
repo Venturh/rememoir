@@ -70,7 +70,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [__dirname + '/resolvers/**/*.ts'],
     }),
     context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
   })

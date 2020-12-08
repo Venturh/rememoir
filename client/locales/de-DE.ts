@@ -15,7 +15,11 @@ export default {
   login: 'Login',
   loginSubheader: 'Wilkommen zurück',
   loginSub: 'Noch nicht registriert?',
-  register: 'Registrieren',
+  register: 'Konto erstellen',
   registerSubheader: 'Starte kostenlos',
   registerSub: 'Bereits registriert?',
+  forgottenPassword: 'Passwort vergessen?',
+  resetPasswordButton: 'Sende Reset Link',
+  resetPasswordSub: 'Passwort zurücksetzten',
+  resetPasswordSubheader: 'Gib deine Email an',
 }

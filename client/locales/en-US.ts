@@ -1,9 +1,9 @@
 export default {
   signIn: 'Sign in',
-  signUp: 'Sign Up',
+  signUp: 'Sign up',
   about: 'About',
   pricing: 'Pricing',
-  password: 'Passwort',
+  password: 'Password',
   confirm: 'Confirm',
   submit: 'Submit',
   checkInbox: 'Please check your inbox',
@@ -18,4 +18,8 @@ export default {
   register: 'Register',
   registerSubheader: 'Get started for free',
   registerSub: 'Already signed up?',
+  forgottenPassword: 'Forgot Password?',
+  resetPasswordButton: 'Send reset link',
+  resetPasswordSub: 'Reset Password',
+  resetPasswordSubheader: 'Enter your mail to reset',
 }

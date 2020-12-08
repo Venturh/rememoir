@@ -1,9 +1,9 @@
 <template v-slot:auth>
   <main>
     <div class="flex flex-col space-y-4">
-      <div class="space-y-2 font-semibold">
-        <h1 class="text-6xl text-primary">{{ $t('signIn') }}.</h1>
-        <h2 class="text-3xl text-secondary">{{ $t('loginSubheader') }}</h2>
+      <div class="space-y-2">
+        <h1>{{ $t('login') }}.</h1>
+        <h2>{{ $t('loginSubheader') }}</h2>
       </div>
       <AuthForm :error="error" type="login" @submit="login()">
         <FormInput v-model="email" type="email" class="block w-full form-input">
@@ -12,6 +12,7 @@
         <FormInput v-model="password" type="password">
           {{ $t('password') }}
         </FormInput>
+        <Links to="/auth/resetPassword">{{ $t('forgottenPassword') }} </Links>
       </AuthForm>
     </div>
   </main>

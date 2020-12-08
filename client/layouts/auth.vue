@@ -14,3 +14,13 @@ export default {
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+* >>> h1 {
+  @apply text-5xl font-semibold;
+}
+
+* >>> h2 {
+  @apply text-2xl text-secondary;
+}
+</style>

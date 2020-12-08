@@ -1,9 +1,9 @@
 <template>
   <main class="flex flex-col items-center">
     <div class="flex flex-col space-y-10">
-      <div class="space-y-2 font-semibold">
-        <h1 class="text-6xl text-primary">{{ $t('confirm') }}</h1>
-        <h2 class="text-3xl text-secondary">{{ $t('checkInbox') }}</h2>
+      <div class="space-y-2">
+        <h1>{{ $t('confirm') }}</h1>
+        <h2>{{ $t('checkInbox') }}</h2>
       </div>
       <form class="space-y-6 w-80" @submit.prevent="verificate">
         <FormInput v-model="verificationCode" type="text">{{

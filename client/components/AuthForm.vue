@@ -2,6 +2,7 @@
 <template>
   <form class="space-y-6" @submit.prevent="$emit('submit')">
     <Error v-if="error" :message="error">{{ error }}</Error>
+
     <div class="space-y-2">
       <slot />
       <div class="flex items-center justify-between">
@@ -12,7 +13,7 @@
           {{ $t('registerSub') }}<Links to="/login">{{ $t('signIn') }}</Links>
         </p>
         <Button type="submit">
-          {{ type === 'register' ? $t('register') : $t('login') }}
+          {{ $t(type) }}
         </Button>
       </div>
     </div>

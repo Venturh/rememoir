@@ -1,5 +1,5 @@
 <template>
-  <div>Landing</div>
+  <h1>Landing</h1>
 </template>
 
 <script lang="ts">

@@ -7,6 +7,7 @@ type I18n = {
   vueI18n: { fallbackLocale: 'en'; messages: any }
   parsePages: boolean
   pages: {}
+  detectBrowserLanguage: {}
 }
 
 const i18n: I18n = {
@@ -28,6 +29,11 @@ const i18n: I18n = {
       en: '/auth',
       de: '/auth',
     },
+  },
+  detectBrowserLanguage: {
+    useCookie: true,
+    cookieKey: 'lang',
+    onlyOnRoot: true, // recommended
   },
 
   defaultLocale: 'en',

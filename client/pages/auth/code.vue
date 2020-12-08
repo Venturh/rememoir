@@ -1,9 +1,9 @@
 <template>
   <main>
     <div class="flex flex-col space-y-5">
-      <div class="space-y-2 font-semibold">
-        <h1 class="text-6xl text-primary">{{ $t('yourKey') }}</h1>
-        <h2 class="text-3xl text-secondary">{{ $t('yourKeySub') }}</h2>
+      <div class="space-y-2">
+        <h1>{{ $t('yourKey') }}</h1>
+        <h2>{{ $t('yourKeySub') }}</h2>
       </div>
       <div class="p-4 space-y-4 rounded-lg bg-secondary">
         <p class="text-lg font-semibold">{{ $t('yourKeyDescription') }}</p>
