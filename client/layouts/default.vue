@@ -1,6 +1,7 @@
 <template>
   <html>
-    <div class="min-h-screen bg-primary text-primary">
+    <div class="flex min-h-screen bg-primary text-primary">
+      <Sidebar class="" />
       <Nuxt />
     </div>
   </html>

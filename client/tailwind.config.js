@@ -31,7 +31,13 @@ module.exports = {
         secondary: 'var(--text-secondary)',
       },
       maxWidth: {
+        xxs: '18rem',
         xsm: '21rem',
+      },
+      transitionProperty: {
+        height: 'height',
+        width: 'witdh',
+        top: 'top',
       },
     },
   },

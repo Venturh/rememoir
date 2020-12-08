@@ -93,6 +93,7 @@ export type Mutation = {
   requestResetPassword: ValidResponse;
   verifyPasswordReset: ValidResponse;
   resetPasswort: ValidResponse;
+  changePassword: ValidResponse;
   register: UserResponse;
   verifyEmailCode: LoginResponse;
 };
@@ -121,6 +122,13 @@ export type MutationVerifyPasswordResetArgs = {
 export type MutationResetPasswortArgs = {
   password: Scalars['String'];
   token: Scalars['String'];
+};
+
+
+export type MutationChangePasswordArgs = {
+  newPassword: Scalars['String'];
+  oldPassword: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
