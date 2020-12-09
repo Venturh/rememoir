@@ -20,6 +20,11 @@ export default {
   registerSub: 'Bereits registriert?',
   forgottenPassword: 'Passwort vergessen?',
   resetPasswordButton: 'Sende Reset Link',
-  resetPasswordSub: 'Passwort zurücksetzten',
+  resetPasswordSub: 'Passwort zurücksetzen',
   resetPasswordSubheader: 'Gib deine Email an',
+
+  entries: 'Einträge',
+  lists: 'Listen',
+  pinned: 'Angepinnt',
+  archive: 'Archiv',
 }

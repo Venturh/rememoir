@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex items-center justify-center min-h-screen mx-auto text-center"
-  >
+  <div class="">
     <p v-if="!loading">Welcome back {{ me.email }}</p>
   </div>
 </template>

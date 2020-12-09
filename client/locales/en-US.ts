@@ -22,4 +22,9 @@ export default {
   resetPasswordButton: 'Send reset link',
   resetPasswordSub: 'Reset Password',
   resetPasswordSubheader: 'Enter your mail to reset',
+
+  entries: 'Entries',
+  lists: 'Lists',
+  pinned: 'Pinned',
+  archive: 'Archive',
 }

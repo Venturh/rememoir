@@ -36,7 +36,7 @@ module.exports = {
       },
       transitionProperty: {
         height: 'height',
-        width: 'witdh',
+        width: 'width',
         top: 'top',
       },
     },
