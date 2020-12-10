@@ -4,6 +4,7 @@ export default {
   about: 'About',
   pricing: 'Pricing',
   password: 'Password',
+  username: 'Username',
   confirm: 'Confirm',
   submit: 'Submit',
   checkInbox: 'Please check your inbox',

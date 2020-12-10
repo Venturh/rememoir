@@ -9,9 +9,12 @@
         <FormInput v-model="email" type="email" class="block w-full form-input"
           >Email</FormInput
         >
-        <FormInput v-model="password" type="password">{{
-          $t('password')
-        }}</FormInput>
+        <FormInput v-model="username" type="text">
+          {{ $t('username') }}
+        </FormInput>
+        <FormInput v-model="password" type="password">
+          {{ $t('password') }}
+        </FormInput>
       </AuthForm>
     </div>
   </main>
@@ -19,7 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
-import { useRegisterUserMutation } from '@/generated/graphql'
+import { useRegisterMutation } from '@/generated/graphql'
 import { generateSecretKey, hash } from '@/utils/crypto'
 
 export default defineComponent({
@@ -29,12 +32,14 @@ export default defineComponent({
     const error = ref('')
     const email = ref('')
     const password = ref('')
+    const username = ref('')
     const { app } = useContext()
     const { router, localePath } = app
 
-    const { mutate: sendRegistration } = useRegisterUserMutation(() => ({
+    const { mutate: sendRegistration } = useRegisterMutation(() => ({
       variables: {
         email: email.value,
+        username: username.value,
         password: password.value,
         secret: hash(generateSecretKey()),
       },
@@ -58,6 +63,7 @@ export default defineComponent({
       register,
       email,
       password,
+      username,
       error,
     }
   },

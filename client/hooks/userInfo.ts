@@ -1,7 +1,7 @@
 type UserInfo = {
   email: string
   uid: string
-  name: string
+  username: string
 }
 
 export default function useUserUnfo() {

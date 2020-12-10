@@ -25,7 +25,6 @@ export class LoginResolver {
         errors: { field: 'email', message: ErrorMessage.EMAIL_NOT_FOUND },
       }
     }
-
     const valid = await argon2.verify(user.password, password)
     if (!valid) {
       return {

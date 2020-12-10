@@ -32,6 +32,7 @@ export type User = {
   createdAt: Scalars['String'];
   deleted: Scalars['Boolean'];
   email: Scalars['String'];
+  username: Scalars['String'];
   verified: Scalars['Boolean'];
 };
 
@@ -134,7 +135,9 @@ export type MutationChangePasswordArgs = {
 
 export type MutationRegisterArgs = {
   secret: Scalars['String'];
-  input: LoginInput;
+  username: Scalars['String'];
+  password: Scalars['String'];
+  email: Scalars['String'];
 };
 
 
@@ -143,20 +146,20 @@ export type MutationVerifyEmailCodeArgs = {
   id: Scalars['String'];
 };
 
-export type AuthenticateUserMutationVariables = Exact<{
+export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
 }>;
 
 
-export type AuthenticateUserMutation = (
+export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
     { __typename?: 'LoginResponse' }
     & Pick<LoginResponse, 'accessToken'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'email' | 'verified' | 'id'>
+      & Pick<User, 'email' | 'username' | 'verified' | 'id'>
     )>, errors?: Maybe<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -172,14 +175,15 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
-export type RegisterUserMutationVariables = Exact<{
+export type RegisterMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
+  username: Scalars['String'];
   secret: Scalars['String'];
 }>;
 
 
-export type RegisterUserMutation = (
+export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
     { __typename?: 'UserResponse' }
@@ -278,11 +282,12 @@ export type MeQuery = (
 );
 
 
-export const AuthenticateUserDocument = gql`
-    mutation authenticateUser($email: String!, $password: String!) {
+export const LoginDocument = gql`
+    mutation login($email: String!, $password: String!) {
   login(input: {email: $email, password: $password}) {
     user {
       email
+      username
       verified
       id
     }
@@ -296,27 +301,27 @@ export const AuthenticateUserDocument = gql`
     `;
 
 /**
- * __useAuthenticateUserMutation__
+ * __useLoginMutation__
  *
- * To run a mutation, you first call `useAuthenticateUserMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useAuthenticateUserMutation` returns an object that includes:
+ * To run a mutation, you first call `useLoginMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns an object that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
  *
  * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
  *
  * @example
- * const { mutate, loading, error, onDone } = useAuthenticateUserMutation({
+ * const { mutate, loading, error, onDone } = useLoginMutation({
  *   variables: {
  *     email: // value for 'email'
  *     password: // value for 'password'
  *   },
  * });
  */
-export function useAuthenticateUserMutation(options: VueApolloComposable.UseMutationOptions<AuthenticateUserMutation, AuthenticateUserMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AuthenticateUserMutation, AuthenticateUserMutationVariables>>) {
-  return VueApolloComposable.useMutation<AuthenticateUserMutation, AuthenticateUserMutationVariables>(AuthenticateUserDocument, options);
+export function useLoginMutation(options: VueApolloComposable.UseMutationOptions<LoginMutation, LoginMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<LoginMutation, LoginMutationVariables>>) {
+  return VueApolloComposable.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
 }
-export type AuthenticateUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AuthenticateUserMutation, AuthenticateUserMutationVariables>;
+export type LoginMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = gql`
     mutation logout {
   logout
@@ -340,9 +345,14 @@ export function useLogoutMutation(options: VueApolloComposable.UseMutationOption
   return VueApolloComposable.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
 }
 export type LogoutMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LogoutMutation, LogoutMutationVariables>;
-export const RegisterUserDocument = gql`
-    mutation registerUser($email: String!, $password: String!, $secret: String!) {
-  register(input: {email: $email, password: $password}, secret: $secret) {
+export const RegisterDocument = gql`
+    mutation register($email: String!, $password: String!, $username: String!, $secret: String!) {
+  register(
+    email: $email
+    password: $password
+    username: $username
+    secret: $secret
+  ) {
     user {
       email
       id
@@ -356,28 +366,29 @@ export const RegisterUserDocument = gql`
     `;
 
 /**
- * __useRegisterUserMutation__
+ * __useRegisterMutation__
  *
- * To run a mutation, you first call `useRegisterUserMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useRegisterUserMutation` returns an object that includes:
+ * To run a mutation, you first call `useRegisterMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns an object that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
  *
  * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
  *
  * @example
- * const { mutate, loading, error, onDone } = useRegisterUserMutation({
+ * const { mutate, loading, error, onDone } = useRegisterMutation({
  *   variables: {
  *     email: // value for 'email'
  *     password: // value for 'password'
+ *     username: // value for 'username'
  *     secret: // value for 'secret'
  *   },
  * });
  */
-export function useRegisterUserMutation(options: VueApolloComposable.UseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>>) {
-  return VueApolloComposable.useMutation<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument, options);
+export function useRegisterMutation(options: VueApolloComposable.UseMutationOptions<RegisterMutation, RegisterMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<RegisterMutation, RegisterMutationVariables>>) {
+  return VueApolloComposable.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
 }
-export type RegisterUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<RegisterUserMutation, RegisterUserMutationVariables>;
+export type RegisterMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<RegisterMutation, RegisterMutationVariables>;
 export const RequestResetPasswordDocument = gql`
     mutation requestResetPassword($email: String!) {
   requestResetPassword(email: $email) {

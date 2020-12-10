@@ -4,6 +4,7 @@ export default {
   about: 'Über',
   pricing: 'Preis',
   password: 'Passwort',
+  username: 'Username',
   confirm: 'Bestätigen',
   submit: 'Senden',
   checkInbox: 'Bitte schau in dein Postfach',

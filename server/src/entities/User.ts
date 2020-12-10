@@ -2,7 +2,7 @@ import { Field, ObjectType } from 'type-graphql'
 import { Entity, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from './BaseEntity'
-import { Verification } from '../types'
+import { BilligDetails, Verification } from '../types'
 
 @ObjectType()
 @Entity()
@@ -11,6 +11,13 @@ export class User extends BaseEntity {
   @Field()
   @Property()
   email!: string
+
+  @Field()
+  @Property()
+  username!: string
+
+  @Property({ type: 'BilligDetails' })
+  billingDetails: BilligDetails
 
   @Property()
   password!: string

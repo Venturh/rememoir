@@ -15,6 +15,14 @@ export type Verification = {
   code: string
 }
 
+export type BilligDetails = {
+  firstName: string
+  lastName: string
+  creditNr: number
+  expiration: string
+  cvc: number
+}
+
 export enum ErrorMessage {
   EMAIL_INVALID,
   EMAIL_EXISTS,

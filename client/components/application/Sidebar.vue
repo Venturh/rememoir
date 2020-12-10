@@ -24,7 +24,7 @@
           "
         >
           <div class="w-2/3 space-y-2" :class="expanded ? 'block' : 'hidden'">
-            <div class="">{{ userInfo.name }}</div>
+            <div class="">{{ userInfo.username }}</div>
             <span class="text-sm">{{ userInfo.email }}</span>
           </div>
           <div

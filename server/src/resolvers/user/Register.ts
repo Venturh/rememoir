@@ -10,7 +10,9 @@ import { UserResponse, LoginInput } from './types'
 export class UserResolver {
   @Mutation(() => UserResponse)
   async register(
-    @Arg('input') { email, password }: LoginInput,
+    @Arg('email') email: string,
+    @Arg('password') password: string,
+    @Arg('username') username: string,
     @Arg('secret') secret: string,
     @Ctx() { em }: MyContext
   ): Promise<UserResponse> {
@@ -21,10 +23,12 @@ export class UserResolver {
     }
     const emailCode = Math.floor(Math.random() * 899999 + 100000).toString()
     const user = em.create(User, {
-      email: email,
+      email,
       password: await argon2.hash(password),
-      verification: { email, code: emailCode },
+      username,
       secret,
+      verification: { email, code: emailCode },
+      billingDetails: {},
     })
 
     try {
