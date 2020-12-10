@@ -21,6 +21,7 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { setAccessToken } from '@/utils/auth'
+import { useUserInfo } from '@/hooks'
 import { useAuthenticateUserMutation } from '@/generated/graphql'
 
 export default defineComponent({
@@ -33,6 +34,7 @@ export default defineComponent({
     const email = ref('')
     const password = ref('')
     const error = ref('')
+    const { userInfo, setUserInfo } = useUserInfo()
     const { mutate: sendLogin } = useAuthenticateUserMutation(() => ({
       variables: { email: email.value, password: password.value },
     }))
@@ -46,6 +48,7 @@ export default defineComponent({
           router.push(`/accountVerification/?id=${user?.id}`)
         }
       } else {
+        setUserInfo({ email: user!.email, uid: user!.id, name: 'Test' })
         setAccessToken(accessToken!)
         // TODO: nuxt-i18n fix when migrate to composition api
         router.push(root.localePath('entries'))

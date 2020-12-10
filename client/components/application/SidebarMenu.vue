@@ -1,53 +1,26 @@
 <template>
-  <div
-    class="flex flex-col justify-between h-screen p-4"
-    :class="expanded ? 'w-40 md:w-64 ' : 'w-28 md:w-32'"
-  >
-    <div class="space-y-12">
-      <div class="flex items-center justify-center flex-shrink-0 px-4">
-        <img
-          class="w-auto h-16"
-          src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-          alt="logo"
-        />
-      </div>
-      <nav ref="itemsRef" class="relative space-y-8">
-        <div v-for="item in items" :key="item.name">
-          <SidebarLink
-            :item="item"
-            :expanded="expanded"
-            :active="selected === item.index"
-            @click="setSelected(item.index)"
-          />
-        </div>
-      </nav>
-      <span
-        class="absolute z-0 duration-100 ease-in transition-top rounded-xl bg-primary"
-        :style="activeStyle"
+  <div class="space-y-12">
+    <div class="flex items-center justify-center flex-shrink-0 h-16">
+      <img
+        class="w-auto h-16 md:h-16"
+        src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+        alt="logo"
       />
     </div>
-
-    <div class="flex flex-col items-center justify-center w-full space-y-8">
-      <span @click="expanded = !expanded">
-        <ChevronsLeftIcon v-if="expanded" />
-        <ChevronsRightIcon v-if="!expanded" />
-      </span>
-      <ThemeToggle />
-      <div
-        class="flex items-center justify-center p-2 space-x-2 rounded-lg bg-primary"
-      >
-        <div class="w-2/3 space-y-2">
-          <span>Max Werpers</span>
-          <span class="text-sm"> mw@clickbar.de</span>
-        </div>
-        <div class="flex space-x-2">
-          <IconOnlyButton @click="logOut">
-            <LogOutIcon size="1.25x" />
-          </IconOnlyButton>
-          <SettingsIcon size="1.25x" />
-        </div>
+    <nav ref="itemsRef" class="relative space-y-8">
+      <div v-for="item in items" :key="item.name">
+        <SidebarLink
+          :item="item"
+          :expanded="expanded"
+          :active="selected === item.index"
+          @click="setSelected(item.index)"
+        />
       </div>
-    </div>
+    </nav>
+    <span
+      class="absolute z-0 duration-100 ease-in transition-top rounded-xl bg-primary"
+      :style="activeStyle"
+    />
   </div>
 </template>
 
@@ -57,10 +30,6 @@ import {
   ListIcon,
   HeartIcon,
   ArchiveIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
-  SettingsIcon,
-  LogOutIcon,
 } from 'vue-feather-icons'
 import { useBreakpointTailwindCSS } from 'vue-composable'
 import {
@@ -69,13 +38,16 @@ import {
   ref,
   useContext,
   watch,
+  watchEffect,
 } from '@nuxtjs/composition-api'
-import { useLogoutMutation } from '@/generated/graphql'
-import { setAccessToken } from '@/utils/auth'
 
 export default defineComponent({
   props: {
     toggled: {
+      type: Boolean,
+      default: false,
+    },
+    expanded: {
       type: Boolean,
       default: false,
     },
@@ -85,10 +57,6 @@ export default defineComponent({
     ListIcon,
     HeartIcon,
     ArchiveIcon,
-    ChevronsLeftIcon,
-    ChevronsRightIcon,
-    SettingsIcon,
-    LogOutIcon,
   },
   setup(props) {
     const items = [
@@ -98,19 +66,16 @@ export default defineComponent({
       { index: 3, icon: ArchiveIcon, name: 'archive' },
     ]
     const { current } = useBreakpointTailwindCSS()
-    const { route, app } = useContext()
-    const { mutate: logout } = useLogoutMutation()
+    const { route } = useContext()
+
     const itemsRef = ref<HTMLDivElement>()
     const selected = ref()
     const activeStyle = ref({ height: '0', top: '0', width: '0' })
-    const expanded = ref(true)
 
     function setSelected(index: number, layoutChange: boolean) {
       if (index === selected.value && !layoutChange) return
-
       selected.value = index
       const node = itemsRef.value?.children[selected.value]! as HTMLDivElement
-
       activeStyle.value = {
         height: node.offsetHeight + node.offsetHeight / 1.5 + 'px',
         width: node.offsetWidth + 'px',
@@ -118,22 +83,26 @@ export default defineComponent({
       }
     }
 
-    async function logOut() {
-      await logout()
-      setAccessToken('')
-      app.router!.push('/')
-    }
-
     onMounted(() => {
       const routeName = route.value.name?.split('___')[0]
       setSelected(items.find((item) => item.name === routeName)!.index, false)
     })
 
-    watch([current, expanded], () => {
+    // TODO: Watching multiple props at once
+    watch([current], () => {
       setTimeout(() => {
         setSelected(selected.value, true)
       }, 0)
     })
+
+    watch(
+      () => props.expanded,
+      () => {
+        setTimeout(() => {
+          setSelected(selected.value, true)
+        }, 0)
+      }
+    )
 
     watch(
       () => props.toggled,
@@ -151,8 +120,6 @@ export default defineComponent({
       selected,
       setSelected,
       current,
-      expanded,
-      logOut,
     }
   },
 })

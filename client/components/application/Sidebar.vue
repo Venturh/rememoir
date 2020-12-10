@@ -1,32 +1,80 @@
 <template>
-  <div class="absolute flex justify-center md:static bg-secondary">
+  <div class="absolute flex justify-center h-screen md:static bg-secondary">
     <transition name="slide-fade">
       <div
-        v-if="
-          toggled || current === 'md' || current === 'lg' || current === 'xl'
-        "
-        class="md:block"
+        v-if="toggled || !isMobile"
+        class="relative flex flex-col justify-between p-4"
+        :class="expanded ? 'w-64 ' : 'w-32'"
       >
-        <SidebarMenu :toggled="toggled" />
+        <IconOnlyButton
+          class="absolute right-1 top-10"
+          @click="expanded = !expanded"
+        >
+          <ChevronLeftIcon v-if="expanded" />
+          <ChevronRightIcon v-if="!expanded" />
+        </IconOnlyButton>
+        <SidebarMenu :toggled="toggled" :expanded="expanded" />
+
+        <div
+          class="flex w-full p-2 space-x-2 rounded-lg"
+          :class="
+            expanded
+              ? 'flex-row items-center  bg-primary'
+              : 'flex-col space-y-2 bg-secondary'
+          "
+        >
+          <div class="w-2/3 space-y-2" :class="expanded ? 'block' : 'hidden'">
+            <div class="">{{ userInfo.name }}</div>
+            <span class="text-sm">{{ userInfo.email }}</span>
+          </div>
+          <div
+            class="flex"
+            :class="
+              expanded
+                ? 'space-x-2 '
+                : 'flex-col space-x-0 justify-center space-y-6'
+            "
+          >
+            <IconOnlyButton @click="logOut">
+              <LogOutIcon size="1.25x" />
+            </IconOnlyButton>
+            <IconOnlyButton @click="logOut">
+              <SettingsIcon size="1.25x" />
+            </IconOnlyButton>
+          </div>
+        </div>
       </div>
     </transition>
-    <div class="absolute right-0 md:hidden">
-      <IconOnlyButton
-        class="p-2"
-        :class="{ hidden: !toggled }"
-        @click="$emit('sidebartoggle')"
-      >
-        <XIcon />
-      </IconOnlyButton>
-    </div>
+
+    <IconOnlyButton
+      class="absolute right-1 md:hidden"
+      :class="{ hidden: !toggled }"
+      @click="$emit('sidebartoggle')"
+    >
+      <XIcon />
+    </IconOnlyButton>
   </div>
 </template>
 
-<script>
-import { defineComponent } from '@nuxtjs/composition-api'
+<script lang="ts">
+import {
+  computed,
+  defineComponent,
+  ref,
+  useContext,
+} from '@nuxtjs/composition-api'
 import { useBreakpointTailwindCSS } from 'vue-composable'
 
-import { XIcon } from 'vue-feather-icons'
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  SettingsIcon,
+  LogOutIcon,
+  XIcon,
+} from 'vue-feather-icons'
+import { useUserInfo } from '@/hooks'
+import { useLogoutMutation } from '@/generated/graphql'
+import { setAccessToken } from '@/utils/auth'
 
 export default defineComponent({
   props: {
@@ -37,11 +85,31 @@ export default defineComponent({
   },
   components: {
     XIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    SettingsIcon,
+    LogOutIcon,
   },
 
   setup() {
     const { current } = useBreakpointTailwindCSS()
-    return { current }
+    const { app } = useContext()
+    const { userInfo } = useUserInfo()
+    const { mutate: logout } = useLogoutMutation()
+    const expanded = ref(true)
+
+    const isMobile = computed(() => {
+      if (['md', 'lg', 'xl'].includes(current.value as string)) return false
+      return true
+    })
+
+    async function logOut() {
+      await logout()
+      setAccessToken('')
+      app.router!.push('/')
+    }
+
+    return { current, expanded, userInfo, logOut, isMobile }
   },
 })
 </script>
