@@ -41,7 +41,9 @@
           <span class="text-sm"> mw@clickbar.de</span>
         </div>
         <div class="flex space-x-2">
-          <LogOutIcon size="1.25x" />
+          <IconOnlyButton @click="logOut">
+            <LogOutIcon size="1.25x" />
+          </IconOnlyButton>
           <SettingsIcon size="1.25x" />
         </div>
       </div>
@@ -68,6 +70,8 @@ import {
   useContext,
   watch,
 } from '@nuxtjs/composition-api'
+import { useLogoutMutation } from '@/generated/graphql'
+import { setAccessToken } from '@/utils/auth'
 
 export default defineComponent({
   props: {
@@ -94,7 +98,8 @@ export default defineComponent({
       { index: 3, icon: ArchiveIcon, name: 'archive' },
     ]
     const { current } = useBreakpointTailwindCSS()
-    const { route } = useContext()
+    const { route, app } = useContext()
+    const { mutate: logout } = useLogoutMutation()
     const itemsRef = ref<HTMLDivElement>()
     const selected = ref()
     const activeStyle = ref({ height: '0', top: '0', width: '0' })
@@ -111,6 +116,12 @@ export default defineComponent({
         width: node.offsetWidth + 'px',
         top: node.offsetTop + node.offsetHeight * 3 + 'px',
       }
+    }
+
+    async function logOut() {
+      await logout()
+      setAccessToken('')
+      app.router!.push('/')
     }
 
     onMounted(() => {
@@ -141,6 +152,7 @@ export default defineComponent({
       setSelected,
       current,
       expanded,
+      logOut,
     }
   },
 })

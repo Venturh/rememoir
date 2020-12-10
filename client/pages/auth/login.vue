@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { setAccessToken } from '@/utils/accessToken'
+import { setAccessToken } from '@/utils/auth'
 import { useAuthenticateUserMutation } from '@/generated/graphql'
 
 export default defineComponent({

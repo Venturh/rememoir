@@ -1,5 +1,5 @@
 import { onError } from '@apollo/client/link/error'
-import { getAccessToken } from '../utils/accessToken'
+import { getAccessToken } from '../utils/auth'
 
 export default function (context) {
   const httpEndpoint = 'http://localhost:4000/graphql'

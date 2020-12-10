@@ -4,11 +4,11 @@ export const setAccessToken = (s: string) => {
   accessToken = s
 }
 
-export const getAccessToken = () => {
+export function getAccessToken() {
   return accessToken
 }
 
-export const requestAccessToken = async () => {
+export async function requestAccessToken() {
   const response = await fetch('http://localhost:4000/refresh_token', {
     method: 'POST',
     credentials: 'include',

@@ -1,4 +1,4 @@
-import { getAccessToken, requestAccessToken } from '../utils/accessToken'
+import { getAccessToken, requestAccessToken } from '../utils/auth'
 
 export default async function ({ redirect, app }) {
   let hasToken = getAccessToken()

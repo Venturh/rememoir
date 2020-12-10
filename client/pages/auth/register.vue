@@ -20,7 +20,7 @@
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import { useRegisterUserMutation } from '@/generated/graphql'
-import { generateSecretKey, hash } from '~/utils/crypto'
+import { generateSecretKey, hash } from '@/utils/crypto'
 
 export default defineComponent({
   layout: 'auth',

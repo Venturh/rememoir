@@ -82,13 +82,13 @@ export type LoginInput = {
 export type Query = {
   __typename?: 'Query';
   users: Array<User>;
-  logout: Scalars['String'];
   me: User;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   revokeRefreshToken: Scalars['Boolean'];
+  logout: Scalars['Boolean'];
   login: LoginResponse;
   requestResetPassword: ValidResponse;
   verifyPasswordReset: ValidResponse;
@@ -162,6 +162,14 @@ export type AuthenticateUserMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )> }
   ) }
+);
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'logout'>
 );
 
 export type RegisterUserMutationVariables = Exact<{
@@ -309,6 +317,29 @@ export function useAuthenticateUserMutation(options: VueApolloComposable.UseMuta
   return VueApolloComposable.useMutation<AuthenticateUserMutation, AuthenticateUserMutationVariables>(AuthenticateUserDocument, options);
 }
 export type AuthenticateUserMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AuthenticateUserMutation, AuthenticateUserMutationVariables>;
+export const LogoutDocument = gql`
+    mutation logout {
+  logout
+}
+    `;
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useLogoutMutation();
+ */
+export function useLogoutMutation(options: VueApolloComposable.UseMutationOptions<LogoutMutation, LogoutMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<LogoutMutation, LogoutMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+}
+export type LogoutMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LogoutMutation, LogoutMutationVariables>;
 export const RegisterUserDocument = gql`
     mutation registerUser($email: String!, $password: String!, $secret: String!) {
   register(input: {email: $email, password: $password}, secret: $secret) {

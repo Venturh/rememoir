@@ -8,7 +8,7 @@ import {
 } from 'type-graphql'
 
 import { User } from '../../entities'
-import { isAuth } from '../../utils/auth'
+import { isAuth, sendRefreshToken } from '../../utils/auth'
 import { MyContext } from '../../types'
 
 @Resolver()
@@ -29,18 +29,19 @@ class UserResolver {
     return true
   }
 
-  @Query(() => String)
-  @UseMiddleware(isAuth)
-  logout(@Ctx() { payload }: MyContext) {
-    return `Bye ${payload?.userId}`
-  }
-
   @Query(() => User)
   @UseMiddleware(isAuth)
   async me(@Ctx() { payload, em }: MyContext) {
     const user = await em.findOne(User, { id: payload?.userId })
 
     return user
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async logout(@Ctx() { res }: MyContext) {
+    sendRefreshToken(res, '')
+    return true
   }
 }
 

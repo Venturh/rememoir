@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
-import { setAccessToken } from '@/utils/accessToken'
+import { setAccessToken } from '@/utils/auth'
 import { useVerifyAccountByEmailMutation } from '@/generated/graphql'
 
 export default defineComponent({
