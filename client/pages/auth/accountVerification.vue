@@ -20,12 +20,14 @@
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import { setAccessToken } from '@/utils/auth'
 import { useVerifyAccountByEmailMutation } from '@/generated/graphql'
+import { useUserInfo } from '@/hooks'
 
 export default defineComponent({
   layout: 'auth',
   setup() {
     const { app, query } = useContext()
     const { router, localePath } = app
+    const { setUserInfo } = useUserInfo()
 
     const { id } = query.value
 
@@ -41,10 +43,15 @@ export default defineComponent({
 
     async function verificate() {
       const { data } = await sendVerification()
-      const { errors, accessToken } = data!.verifyEmailCode
+      const { errors, accessToken, user } = data!.verifyEmailCode
       if (errors) {
         error.value = errors.message
       } else {
+        setUserInfo({
+          email: user!.email,
+          uid: user!.id,
+          username: user!.username,
+        })
         setAccessToken(accessToken!)
         router!.push(localePath('/entries'))
       }

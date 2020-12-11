@@ -248,7 +248,7 @@ export type VerifyAccountByEmailMutation = (
       & Pick<FieldError, 'message' | 'field'>
     )>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'email' | 'id' | 'verified'>
+      & Pick<User, 'email' | 'id' | 'username' | 'verified'>
     )> }
   ) }
 );
@@ -467,6 +467,7 @@ export const VerifyAccountByEmailDocument = gql`
     user {
       email
       id
+      username
       verified
     }
   }

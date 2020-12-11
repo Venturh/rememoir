@@ -20,6 +20,7 @@ export default defineComponent({
   setup() {
     const { theme } = useTheme()
     const toggle = ref(false)
+
     return { toggle, theme }
   },
 })
