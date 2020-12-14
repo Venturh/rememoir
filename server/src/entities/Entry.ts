@@ -23,4 +23,19 @@ export default class Entry extends BaseEntity {
   @Field(() => User)
   @ManyToOne()
   user!: User
+
+  constructor(
+    text: string,
+    url: string,
+    type: string,
+    categories: [string],
+    user: User
+  ) {
+    super()
+    this.text = text
+    this.url = url
+    this.type = type
+    this.categories = categories
+    this.user = user
+  }
 }
