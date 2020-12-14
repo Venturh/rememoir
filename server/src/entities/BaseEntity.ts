@@ -3,7 +3,7 @@ import { ObjectId } from '@mikro-orm/mongodb'
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
-export abstract class BaseEntity {
+export default abstract class BaseEntity {
   @Field(() => String)
   @PrimaryKey()
   _id!: ObjectId

@@ -1,13 +1,19 @@
 import { Field, ObjectType } from 'type-graphql'
-import { Entity, Property, Unique } from '@mikro-orm/core'
+import {
+  Collection,
+  Entity,
+  OneToMany,
+  Property,
+  Unique,
+} from '@mikro-orm/core'
 
-import { BaseEntity } from './BaseEntity'
+import { BaseEntity, Entry } from '.'
 import { BilligDetails, Verification } from '../types'
 
 @ObjectType()
 @Entity()
 @Unique({ properties: ['email'] })
-export class User extends BaseEntity {
+export default class User extends BaseEntity {
   @Field()
   @Property()
   email!: string
@@ -34,4 +40,8 @@ export class User extends BaseEntity {
 
   @Property()
   tokenVersion = 0
+
+  @Field(() => User)
+  @OneToMany(() => Entry, (entry) => entry.user)
+  entries = new Collection<Entry>(this)
 }

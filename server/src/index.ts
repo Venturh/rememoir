@@ -8,10 +8,9 @@ import { buildSchema } from 'type-graphql'
 import { MikroORM } from '@mikro-orm/core'
 import { verify } from 'jsonwebtoken'
 import { MongoDriver } from '@mikro-orm/mongodb'
+import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 
-import { BaseEntity } from './entities/BaseEntity'
-import { UserResolver } from './resolvers'
-import { User } from './entities/User'
+import { BaseEntity, Entry, User } from './entities'
 import { MyContext } from './types'
 
 import {
@@ -22,11 +21,12 @@ import {
 
 const main = async () => {
   const orm = await MikroORM.init<MongoDriver>({
-    entities: [User, BaseEntity],
+    entities: [BaseEntity, User, Entry],
     dbName: 'synced',
     type: 'mongo',
     debug: true,
     ensureIndexes: true,
+    metadataProvider: TsMorphMetadataProvider,
   })
 
   await orm.em.getDriver().createCollections()

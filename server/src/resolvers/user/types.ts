@@ -1,4 +1,4 @@
-import { User } from '../../entities/User'
+import { User } from '../../entities'
 import { InputType, Field, ObjectType, registerEnumType } from 'type-graphql'
 import { ErrorMessage } from '../../types'
 

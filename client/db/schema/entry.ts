@@ -1,7 +1,7 @@
 import { RxJsonSchema } from 'rxdb'
-import { RxEntryDocumentType } from '../types'
+import { EntryDocType } from '../types'
 
-const entrySchema: RxJsonSchema<RxEntryDocumentType> = {
+const entrySchema: RxJsonSchema<EntryDocType> = {
   title: 'Entry Schema',
   description: 'The Entry',
   version: 0,
