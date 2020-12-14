@@ -30,7 +30,7 @@ const entrySchema: RxJsonSchema<EntryDocType> = {
       },
     },
     updatedAt: {
-      type: 'number',
+      type: 'string',
     },
   },
 }

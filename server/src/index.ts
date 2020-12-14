@@ -3,8 +3,9 @@ import 'reflect-metadata'
 import * as express from 'express'
 import * as cookieParser from 'cookie-parser'
 import * as cors from 'cors'
-import { ApolloServer } from 'apollo-server-express'
-import { buildSchema } from 'type-graphql'
+import * as http from 'http'
+import { ApolloServer, PubSub } from 'apollo-server-express'
+import { buildSchema, Subscription } from 'type-graphql'
 import { MikroORM } from '@mikro-orm/core'
 import { verify } from 'jsonwebtoken'
 import { MongoDriver } from '@mikro-orm/mongodb'
@@ -13,6 +14,8 @@ import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { BaseEntity, Entry, User } from './entities'
 import { MyContext } from './types'
 
+import { SubscriptionServer } from 'subscriptions-transport-ws'
+
 import {
   createAccessToken,
   createRefreshToken,
@@ -20,6 +23,7 @@ import {
 } from './utils/auth'
 
 const main = async () => {
+  const pubsub = new PubSub()
   const orm = await MikroORM.init<MongoDriver>({
     entities: [BaseEntity, User, Entry],
     dbName: 'synced',
@@ -73,13 +77,32 @@ const main = async () => {
       resolvers: [__dirname + '/resolvers/**/*.ts'],
     }),
     context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
+    subscriptions: {
+      onConnect: async (connectionParams, webSocket) => {
+        console.log('Subscription Connected')
+        console.log(connectionParams)
+      },
+    },
   })
 
   apolloServer.applyMiddleware({ app, cors: false })
 
-  app.listen(4000, () => {
+  const httpServer = http.createServer(app)
+  apolloServer.installSubscriptionHandlers(httpServer)
+
+  httpServer.listen(4000, () => {
     console.log('express server started')
   })
+
+  // setInterval(() => {
+  //   const flag = new Date().getTime()
+  //   pubsub.publish('changedEntry', {
+  //     humanChanged: {
+  //       name: 'name-' + flag,
+  //     },
+  //   })
+  //   console.log('published humanChanged ' + flag)
+  // }, 1000)
 }
 
 main().catch((err) => {

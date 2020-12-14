@@ -49,3 +49,7 @@ export const pushQueryBuilder = (entry: EntryDocType) => {
     variables,
   }
 }
+
+export const wsQuery = `subscription onEntryChanged {
+    changedEntry
+}`

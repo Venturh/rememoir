@@ -1,3 +1,4 @@
+import { PubSub } from 'apollo-server-express'
 import {
   Resolver,
   Query,
@@ -5,6 +6,7 @@ import {
   Mutation,
   Arg,
   UseMiddleware,
+  Subscription,
 } from 'type-graphql'
 
 import { Entry, User } from '../../entities'
@@ -12,6 +14,7 @@ import { MyContext } from '../../types'
 import { isAuth } from '../../utils/auth'
 import { EntryInput } from './types'
 
+const pubsub = new PubSub()
 @Resolver()
 class EntryResolver {
   @Query(() => [Entry])
@@ -68,12 +71,12 @@ class EntryResolver {
     console.log('🚀 ~ file: index.ts ~ line 68 ~ EntryResolver ~ entry', entry)
     const user = await em.findOne(User, { id: payload?.userId })
     const entries = await em.find(Entry, {})
-    let oldEntry = entries!.find((e) => e.id === entry!.id)
-    if (oldEntry) {
-      oldEntry = { ...entry, ...oldEntry }
-      em.persistAndFlush(oldEntry)
-      return oldEntry
-    }
+    // let oldEntry = entries!.find((e) => e.id === entry!.id)
+    // if (oldEntry) {
+    //   oldEntry = { ...entry, ...oldEntry }
+    //   em.persistAndFlush(oldEntry)
+    //   return oldEntry
+    // }
     const doc = new Entry(
       entry.id,
       entry.text,
@@ -83,7 +86,19 @@ class EntryResolver {
       user!
     )
     em.persistAndFlush(doc)
+
+    pubsub.publish('changeDEntry', { changedHero: doc })
     return doc
+  }
+
+  @Subscription(() => Boolean, {
+    subscribe: () => {
+      return pubsub.asyncIterator('changedEntry')
+    },
+  })
+  @UseMiddleware(isAuth)
+  async changedEntry() {
+    return true
   }
 }
 

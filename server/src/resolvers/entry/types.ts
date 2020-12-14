@@ -18,5 +18,5 @@ export class EntryInput {
   categories: [string]
 
   @Field()
-  updatedAt: number
+  updatedAt: string
 }

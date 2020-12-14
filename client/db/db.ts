@@ -11,12 +11,13 @@ import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
 import { RxDBReplicationGraphQLPlugin } from 'rxdb/plugins/replication-graphql'
 
 import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 import { getAccessToken } from '../utils/auth'
 import { MyDatabase, Collections } from './types'
 import entrySchema from './schema/entry'
 
-import { pullQueryBuilder, pushQueryBuilder } from './builders'
+import { pullQueryBuilder, pushQueryBuilder, wsQuery } from './builders'
 
 if (process.env.NODE_ENV === 'development') {
   addRxPlugin(RxDBDevModePlugin)
@@ -61,10 +62,51 @@ async function _create(): Promise<MyDatabase> {
       batchSize: 5,
       modifier: (d) => d,
     },
-    live: true,
     deletedFlag: 'deleted',
+    live: true,
+    liveInterval: 1000 * 60 * 10,
   })
+
+  replication.error$.subscribe((err) => {
+    console.error('replication error:')
+    console.dir(err)
+  })
+
+  const wsClient = new SubscriptionClient('ws://localhost:4000/graphql', {
+    reconnect: true,
+    timeout: 1000 * 60,
+    connectionCallback: () => {
+      console.log('SubscriptionClient.connectionCallback:')
+    },
+    reconnectionAttempts: 10000,
+    inactivityTimeout: 10 * 1000,
+
+    lazy: true,
+  })
+
+  const ret = wsClient.request({
+    query: wsQuery,
+    variables: {
+      token: getAccessToken(),
+    },
+  })
+
+  ret.subscribe({
+    next: async (data) => {
+      console.log('subscription emitted => trigger run()')
+      console.dir(data)
+      await replication.run()
+      console.log('run() done')
+    },
+    error(error) {
+      console.log('run() got error:')
+      console.dir(error)
+    },
+  })
+
   await replication.awaitInitialReplication()
+  console.log('jo gewartet')
+
   return db
 }
 

@@ -29,7 +29,7 @@ export default defineComponent({
         type: 'Link',
         url: 'www.test.de',
         categories: ['Youtube', 'Test'],
-        updatedAt: Date.now(),
+        updatedAt: Date.now().toString(),
       }
       await db.entries.insert(obj)
     }

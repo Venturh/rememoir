@@ -6,7 +6,7 @@ export type EntryDocType = {
   url: string
   type: string
   categories: Array<string>
-  updatedAt: number
+  updatedAt: string
 }
 
 type EntryDocMethods = {
