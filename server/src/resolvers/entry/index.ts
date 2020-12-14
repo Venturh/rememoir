@@ -14,18 +14,6 @@ import { EntryInput } from './types'
 
 @Resolver()
 class EntryResolver {
-  @Mutation(() => Boolean)
-  @UseMiddleware(isAuth)
-  async createEntry(
-    @Arg('input') { text, url, type, categories }: EntryInput,
-    @Ctx() { em, payload }: MyContext
-  ) {
-    const user = await em.findOne(User, { id: payload?.userId })
-    const entry = new Entry(text, url, type, categories, user!)
-    await em.persistAndFlush(entry)
-    return true
-  }
-
   @Query(() => [Entry])
   @UseMiddleware(isAuth)
   async allEntriesByUser(
@@ -72,16 +60,30 @@ class EntryResolver {
   }
 
   @Mutation(() => Entry)
+  @UseMiddleware(isAuth)
   async setEntry(
-    @Arg('entry') id: string,
-    @Ctx() { em }: MyContext
+    @Arg('entry') entry: EntryInput,
+    @Ctx() { em, payload }: MyContext
   ): Promise<Entry> {
+    console.log('🚀 ~ file: index.ts ~ line 68 ~ EntryResolver ~ entry', entry)
+    const user = await em.findOne(User, { id: payload?.userId })
     const entries = await em.find(Entry, {})
-    const entry = await em.findOne(Entry, { id })
-    entries!.filter((e) => e.id !== entry!.id)
-    entry!.updatedAt = Math.round(new Date().getTime() / 1000)
-    em.persistAndFlush(entry!)
-    return entry!
+    let oldEntry = entries!.find((e) => e.id === entry!.id)
+    if (oldEntry) {
+      oldEntry = { ...entry, ...oldEntry }
+      em.persistAndFlush(oldEntry)
+      return oldEntry
+    }
+    const doc = new Entry(
+      entry.id,
+      entry.text,
+      entry.url,
+      entry.type,
+      entry.categories,
+      user!
+    )
+    em.persistAndFlush(doc)
+    return doc
   }
 }
 

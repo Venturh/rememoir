@@ -8,17 +8,15 @@ import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election'
 
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
 
-import {
-  pullQueryBuilderFromRxSchema,
-  pushQueryBuilderFromRxSchema,
-  RxDBReplicationGraphQLPlugin,
-  syncGraphQL,
-} from 'rxdb/plugins/replication-graphql'
+import { RxDBReplicationGraphQLPlugin } from 'rxdb/plugins/replication-graphql'
 
 import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb'
 
+import { getAccessToken } from '../utils/auth'
 import { MyDatabase, Collections } from './types'
 import entrySchema from './schema/entry'
+
+import { pullQueryBuilder, pushQueryBuilder } from './builders'
 
 if (process.env.NODE_ENV === 'development') {
   addRxPlugin(RxDBDevModePlugin)
@@ -30,7 +28,6 @@ addRxPlugin(PouchdbAdapterIdb)
 addRxPlugin(RxDBReplicationGraphQLPlugin)
 
 const syncURL = 'http://localhost:4000/graphql'
-const batchSize = 5
 export const graphQLGenerationInput = {
   entry: {
     schema: entrySchema,
@@ -41,16 +38,6 @@ export const graphQLGenerationInput = {
     },
   },
 }
-
-const pullQueryBuilder = pullQueryBuilderFromRxSchema(
-  'entry',
-  graphQLGenerationInput.entry,
-  batchSize
-)
-const pushQueryBuilder = pushQueryBuilderFromRxSchema(
-  'entry',
-  graphQLGenerationInput.entry
-)
 
 async function _create(): Promise<MyDatabase> {
   console.log('DatabaseService: creating database..')
@@ -63,18 +50,21 @@ async function _create(): Promise<MyDatabase> {
 
   const replication = db.collections.entries.syncGraphQL({
     url: syncURL,
-    push: {
-      batchSize,
-      queryBuilder: pushQueryBuilder,
+    headers: {
+      Authorization: 'Bearer ' + getAccessToken(),
     },
     pull: {
       queryBuilder: pullQueryBuilder,
     },
+    push: {
+      queryBuilder: pushQueryBuilder,
+      batchSize: 5,
+      modifier: (d) => d,
+    },
     live: true,
-    liveInterval: 1000 * 60 * 10,
     deletedFlag: 'deleted',
   })
-  // await replication.awaitInitialReplication()
+  await replication.awaitInitialReplication()
   return db
 }
 

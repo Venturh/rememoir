@@ -5,9 +5,8 @@ export type EntryDocType = {
   text: string
   url: string
   type: string
-  categories: Array<{
-    name?: string
-  }>
+  categories: Array<string>
+  updatedAt: number
 }
 
 type EntryDocMethods = {

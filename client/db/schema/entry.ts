@@ -29,6 +29,9 @@ const entrySchema: RxJsonSchema<EntryDocType> = {
         type: 'string',
       },
     },
+    updatedAt: {
+      type: 'number',
+    },
   },
 }
 
