@@ -7,11 +7,12 @@ import {
   Arg,
   UseMiddleware,
   Subscription,
+  Root,
 } from 'type-graphql'
 
 import { Entry, User } from '../../entities'
 import { MyContext } from '../../types'
-import { isAuth } from '../../utils/auth'
+import { isAuth, verifyToken } from '../../utils/auth'
 import { EntryInput } from './types'
 
 const pubsub = new PubSub()
@@ -68,9 +69,8 @@ class EntryResolver {
     @Arg('entry') entry: EntryInput,
     @Ctx() { em, payload }: MyContext
   ): Promise<Entry> {
-    console.log('🚀 ~ file: index.ts ~ line 68 ~ EntryResolver ~ entry', entry)
     const user = await em.findOne(User, { id: payload?.userId })
-    const entries = await em.find(Entry, {})
+    // const entries = await em.find(Entry, {})
     // let oldEntry = entries!.find((e) => e.id === entry!.id)
     // if (oldEntry) {
     //   oldEntry = { ...entry, ...oldEntry }
@@ -85,20 +85,20 @@ class EntryResolver {
       entry.categories,
       user!
     )
-    em.persistAndFlush(doc)
 
-    pubsub.publish('changeDEntry', { changedHero: doc })
+    em.persistAndFlush(doc)
+    pubsub.publish('changedEntry', doc)
     return doc
   }
 
-  @Subscription(() => Boolean, {
+  @Subscription(() => Entry, {
     subscribe: () => {
       return pubsub.asyncIterator('changedEntry')
     },
   })
-  @UseMiddleware(isAuth)
-  async changedEntry() {
-    return true
+  async changedEntry(@Arg('token') token: string, @Root() entry: Entry) {
+    verifyToken(token)
+    return entry
   }
 }
 

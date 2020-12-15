@@ -4,6 +4,12 @@ import { Response } from 'express'
 import { MiddlewareFn } from 'type-graphql/dist/interfaces/Middleware'
 import { MyContext } from '../types'
 
+type JWTToken = {
+  userId: string
+  iat: number
+  exp: number
+}
+
 export const validateEmail = (email: string) => {
   const valid = email.match(
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -28,23 +34,33 @@ export const createRefreshToken = (user: User) => {
   )
 }
 
-export const isAuth: MiddlewareFn<MyContext> = ({ context }, next) => {
-  const authorization = context.req.headers['authorization']
-  if (!authorization) throw new Error('ERROR_NO_AUTH')
-
-  try {
-    const token = authorization?.split(' ')[1]
-    context.payload = verify(token, process.env.ACCESS_TOKEN_SECRET!) as any
-  } catch (error) {
-    throw new Error('ERROR_NO_AUTH')
-  }
-  return next()
-}
-
 export const sendRefreshToken = (res: Response, token: string) => {
   res.cookie('jid', token, {
     httpOnly: true,
     path: '/refresh_token',
     expires: new Date(Date.now() + 604800000),
   })
+}
+
+export const isAuth: MiddlewareFn<MyContext> = ({ context }, next) => {
+  const authorization = context.req.headers['authorization']
+  if (!authorization) throw new Error('ERROR_NO_AUTH')
+
+  try {
+    const token = authorization?.split(' ')[1]
+    const verify = verifyToken(token)
+
+    context.payload = verify
+  } catch (error) {
+    throw new Error('ERROR_NO_AUTH')
+  }
+  return next()
+}
+
+export function verifyToken(token: string): JWTToken {
+  try {
+    return verify(token, process.env.ACCESS_TOKEN_SECRET!) as JWTToken
+  } catch (error) {
+    throw new Error('ERROR_NO_AUTH')
+  }
 }

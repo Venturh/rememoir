@@ -41,10 +41,10 @@ export const graphQLGenerationInput = {
 }
 
 async function _create(): Promise<MyDatabase> {
-  console.log('DatabaseService: creating database..')
   const db = await createRxDatabase<Collections>({
     name: 'clientdb',
     adapter: 'idb',
+    multiInstance: true,
   })
 
   await db.addCollections({ entries: { schema: entrySchema } })
@@ -76,7 +76,7 @@ async function _create(): Promise<MyDatabase> {
     reconnect: true,
     timeout: 1000 * 60,
     connectionCallback: () => {
-      console.log('SubscriptionClient.connectionCallback:')
+      console.log('SubscriptionClient.connectionCallback: connected')
     },
     reconnectionAttempts: 10000,
     inactivityTimeout: 10 * 1000,
@@ -103,9 +103,7 @@ async function _create(): Promise<MyDatabase> {
       console.dir(error)
     },
   })
-
   await replication.awaitInitialReplication()
-  console.log('jo gewartet')
 
   return db
 }

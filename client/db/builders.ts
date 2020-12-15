@@ -50,6 +50,8 @@ export const pushQueryBuilder = (entry: EntryDocType) => {
   }
 }
 
-export const wsQuery = `subscription onEntryChanged {
-    changedEntry
+export const wsQuery = `subscription onEntryChanged($token: String!) {
+    changedEntry(token: $token){
+      id
+    }
 }`

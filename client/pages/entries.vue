@@ -36,8 +36,10 @@ export default defineComponent({
 
     onMounted(async () => {
       const db = await DatabaseService.get()
-      entries.value = await db.entries.find().exec()
-      console.log('🚀 ~ file: default.vue ~ line 27 ~ onMounted ~ db', db)
+      const query = db.entries.find()
+      query.$.subscribe((results) => {
+        entries.value = results
+      })
     })
 
     return { me, loading, entries, test }

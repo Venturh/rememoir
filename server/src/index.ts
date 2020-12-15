@@ -4,8 +4,8 @@ import * as express from 'express'
 import * as cookieParser from 'cookie-parser'
 import * as cors from 'cors'
 import * as http from 'http'
-import { ApolloServer, PubSub } from 'apollo-server-express'
-import { buildSchema, Subscription } from 'type-graphql'
+import { ApolloServer } from 'apollo-server-express'
+import { buildSchema } from 'type-graphql'
 import { MikroORM } from '@mikro-orm/core'
 import { verify } from 'jsonwebtoken'
 import { MongoDriver } from '@mikro-orm/mongodb'
@@ -14,8 +14,6 @@ import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 import { BaseEntity, Entry, User } from './entities'
 import { MyContext } from './types'
 
-import { SubscriptionServer } from 'subscriptions-transport-ws'
-
 import {
   createAccessToken,
   createRefreshToken,
@@ -23,12 +21,11 @@ import {
 } from './utils/auth'
 
 const main = async () => {
-  const pubsub = new PubSub()
   const orm = await MikroORM.init<MongoDriver>({
     entities: [BaseEntity, User, Entry],
     dbName: 'synced',
     type: 'mongo',
-    debug: true,
+    debug: false,
     ensureIndexes: true,
     metadataProvider: TsMorphMetadataProvider,
   })
