@@ -74,13 +74,14 @@ class EntryResolver {
     @Ctx() { em, payload }: MyContext
   ): Promise<Entry> {
     const user = await em.findOne(User, { id: payload?.userId })
-    // const entries = await em.find(Entry, {})
-    // let oldEntry = entries!.find((e) => e.id === entry!.id)
-    // if (oldEntry) {
-    //   oldEntry = { ...entry, ...oldEntry }
-    //   em.persistAndFlush(oldEntry)
-    //   return oldEntry
-    // }
+    const entries = await em.find(Entry, {})
+    let oldEntry = entries!.find((e) => e.id === entry!.id)
+    if (oldEntry) {
+      oldEntry = { ...entry, ...oldEntry }
+      em.persistAndFlush(oldEntry)
+      pubsub.publish('changedEntry', oldEntry)
+      return oldEntry
+    }
     const doc = new Entry(entry, user!)
 
     em.persistAndFlush(doc)

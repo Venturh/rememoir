@@ -1,5 +1,4 @@
 import { EntryInput } from '../generated/graphql'
-import { EntryDocType } from './types'
 
 export const pullQueryBuilder = (doc) => {
   if (!doc) {
@@ -11,11 +10,11 @@ export const pullQueryBuilder = (doc) => {
   }
   const query = `{
         rxEntryReplication(lastId: "${doc.id}", minUpdatedAt: ${doc.updatedAt}, limit: 5) {
-            _id
             id,
             contentText
             contentUrl
             contentType
+            categories
             calendarDate
             processing
             updatedAt
@@ -52,8 +51,6 @@ export const pushQueryBuilder = (entry: EntryInput) => {
       updatedAt: entry.updatedAt,
     },
   }
-  console.log(variables.entry, entry)
-
   return {
     query,
     variables,

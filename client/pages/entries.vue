@@ -2,7 +2,25 @@
   <div class="">
     <p v-if="!loading">Welcome back {{ me.email }}</p>
     <button @click="test">INSERT</button>
-    <pre>{{ entries }}</pre>
+    <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
+    <div v-if="!awaitReplication" class="space-y-2">
+      <div v-for="(entry, index) in entries" :key="index">
+        <!-- Todo: v-bind="entry" throws error -->
+        <BaseEntry
+          v-bind="{
+            contentText: entry.contentText,
+            contentUrl: entry.contentUrl,
+            contentType: entry.contentType,
+            categories: entry.categories,
+            hashedKey: entry.hashedKey,
+            calendarDate: entry.calendarDate,
+            processing: entry.processing,
+            updatedAt: entry.updatedAt,
+            id: entry.id,
+          }"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,6 +37,7 @@ export default defineComponent({
 
     const me = useResult(result, null, (data) => data.me)
     const entries = ref()
+    const awaitReplication = ref(true)
 
     async function test() {
       const db = await DatabaseService.get()
@@ -38,14 +57,16 @@ export default defineComponent({
     }
 
     onMounted(async () => {
+      awaitReplication.value = true
       const db = await DatabaseService.get()
       const query = db.entries.find()
       query.$.subscribe((results) => {
         entries.value = results
       })
+      awaitReplication.value = false
     })
 
-    return { me, loading, entries, test }
+    return { me, loading, entries, test, awaitReplication }
   },
 })
 </script>

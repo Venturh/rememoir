@@ -41,7 +41,6 @@ export const graphQLGenerationInput = {
 }
 
 async function _create(): Promise<MyDatabase> {
-  const token = await tryAccessToken()
   const db = await createRxDatabase<Collections>({
     name: 'clientdb',
     adapter: 'idb',
@@ -50,11 +49,14 @@ async function _create(): Promise<MyDatabase> {
 
   await db.addCollections({ entries: { schema: entrySchema } })
 
-  console.log('🚀 ~ file: db.ts ~ line 52 ~ _create ~ token', token)
+  db.waitForLeadership().then(function () {
+    document.title = '♛ ' + document.title
+  })
+
   const replication = db.collections.entries.syncGraphQL({
     url: syncURL,
     headers: {
-      Authorization: 'Bearer ' + token,
+      Authorization: 'Bearer ' + getAccessToken(),
     },
     pull: {
       queryBuilder: pullQueryBuilder,
@@ -69,9 +71,13 @@ async function _create(): Promise<MyDatabase> {
     liveInterval: 1000 * 60 * 10,
   })
 
-  replication.error$.subscribe((err) => {
+  replication.error$.subscribe(async (err) => {
     console.error('replication error:')
     console.dir(err)
+    // TODO: Neu Validieren wenn abgelaufen
+    replication.setHeaders({
+      Authorization: 'Bearer ' + (await tryAccessToken()),
+    })
   })
 
   const wsClient = new SubscriptionClient('ws://localhost:4000/graphql', {
@@ -89,7 +95,7 @@ async function _create(): Promise<MyDatabase> {
   const ret = wsClient.request({
     query: wsQuery,
     variables: {
-      token,
+      token: getAccessToken(),
     },
   })
 
@@ -105,6 +111,12 @@ async function _create(): Promise<MyDatabase> {
       console.dir(error)
     },
   })
+
+  if (!db.isLeader()) {
+    console.log('not leader')
+
+    replication.run()
+  }
   await replication.awaitInitialReplication()
 
   return db

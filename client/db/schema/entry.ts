@@ -10,6 +10,7 @@ const entrySchema: RxJsonSchema<EntryInput> = {
   properties: {
     id: {
       type: 'string',
+      primary: true,
     },
     contentText: {
       type: 'string',
