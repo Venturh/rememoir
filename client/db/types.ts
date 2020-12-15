@@ -2,10 +2,14 @@ import { RxCollection, RxDocument, RxDatabase } from 'rxdb'
 
 export type EntryDocType = {
   id: string
-  text: string
-  url: string
-  type: string
+  contentText: string
+  contentUrl: string
+  contentType: string
   categories: Array<string>
+  calendarDate: string
+  hashedKey: string
+  processing: boolean
+
   updatedAt: string
 }
 

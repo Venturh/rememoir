@@ -13,14 +13,14 @@ const entrySchema: RxJsonSchema<EntryDocType> = {
       primary: true,
       default: '',
     },
-    text: {
+    contentText: {
       type: 'string',
       default: '',
     },
-    url: {
+    contentUrl: {
       type: 'string',
     },
-    type: {
+    contentType: {
       type: 'string',
     },
     categories: {
@@ -30,6 +30,15 @@ const entrySchema: RxJsonSchema<EntryDocType> = {
       },
     },
     updatedAt: {
+      type: 'string',
+    },
+    calendarDate: {
+      type: 'string',
+    },
+    processing: {
+      type: 'boolean',
+    },
+    hashedKey: {
       type: 'string',
     },
   },

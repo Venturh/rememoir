@@ -39,6 +39,10 @@ class EntryResolver {
     { em, payload }: MyContext
   ) {
     const entries = await em.find(Entry, { user: payload?.userId })
+    console.log(
+      '🚀 ~ file: index.ts ~ line 42 ~ EntryResolver ~ entries',
+      entries
+    )
     if (!entries) return
 
     const sorted = entries!.sort((a, b) => {
@@ -77,14 +81,7 @@ class EntryResolver {
     //   em.persistAndFlush(oldEntry)
     //   return oldEntry
     // }
-    const doc = new Entry(
-      entry.id,
-      entry.text,
-      entry.url,
-      entry.type,
-      entry.categories,
-      user!
-    )
+    const doc = new Entry(entry, user!)
 
     em.persistAndFlush(doc)
     pubsub.publish('changedEntry', doc)

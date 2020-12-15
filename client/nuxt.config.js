@@ -1,6 +1,6 @@
 import i18n from './config/i18n'
 export default {
-  // Global page headers (https://go.nuxtjs.dev/config-head)
+  ssr: false,
   head: {
     title: 'client',
     meta: [
@@ -17,26 +17,20 @@ export default {
     ],
   },
 
-  // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [],
 
-  // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: ['@/plugins/provide-apollo-client'],
 
-  // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
 
-  // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
-    // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
 
     '@nuxtjs/composition-api',
-    // https://go.nuxtjs.dev/tailwindcss
+
     '@nuxtjs/tailwindcss',
   ],
 
-  // Modules (https://go.nuxtjs.dev/config-modules)
   modules: ['@nuxtjs/apollo', ['nuxt-i18n', i18n]],
 
   apollo: {
@@ -45,7 +39,5 @@ export default {
     },
   },
 
-  // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
-  ssr: false,
 }

@@ -8,7 +8,19 @@ import {
 } from '@mikro-orm/core'
 
 import { BaseEntity, Entry } from '.'
-import { BilligDetails, Verification } from '../types'
+
+export type Verification = {
+  email: string
+  code: string
+}
+
+export type BilligDetails = {
+  firstName: string
+  lastName: string
+  creditNr: number
+  expiration: string
+  cvc: number
+}
 
 @ObjectType()
 @Entity()

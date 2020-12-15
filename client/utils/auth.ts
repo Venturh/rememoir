@@ -1,6 +1,6 @@
 let accessToken = ''
 
-export const setAccessToken = (s: string) => {
+export function setAccessToken(s: string) {
   accessToken = s
 }
 
@@ -16,4 +16,9 @@ export async function requestAccessToken() {
   const { accessToken } = await response.json()
 
   setAccessToken(accessToken)
+}
+
+export async function tryAccessToken() {
+  if (accessToken === '') await requestAccessToken()
+  return accessToken
 }

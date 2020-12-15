@@ -1,64 +1,63 @@
-import { Field, ObjectType } from 'type-graphql'
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
-import { User } from '.'
-import { ObjectId } from 'mongodb'
+import { Field, ObjectType, registerEnumType } from 'type-graphql'
+import { Entity, ManyToOne, Property } from '@mikro-orm/core'
+import { BaseEntity, User } from '.'
+import { EntryInput } from '../resolvers/entry/types'
 
+export enum ContentType {
+  LINK = 'Link',
+  IMAGE = 'Image',
+  VIDEO = 'Video',
+  Note = 'Note',
+}
+
+registerEnumType(ContentType, {
+  name: 'ContentType',
+})
 @ObjectType()
 @Entity()
-export default class Entry {
-  @Field(() => String)
-  @PrimaryKey()
-  _id!: ObjectId
-
+export default class Entry extends BaseEntity {
   @Field()
-  @PrimaryKey()
-  id!: string
+  @Property()
+  contentText: string
 
   @Field()
   @Property()
-  text: string
+  contentUrl: string
+
+  @Field(() => ContentType)
+  @Property()
+  contentType!: ContentType
 
   @Field()
   @Property()
-  url: string
+  calendarDate!: string
 
   @Field()
   @Property()
-  type!: string
+  hashedKey!: string
+
+  @Field()
+  @Property()
+  processing: boolean
 
   @Field(() => [String])
   @Property()
   categories!: [string]
 
-  @Field(() => String)
-  @Property({ type: 'date', onUpdate: () => Date.now() })
-  updatedAt = Date.now()
-
-  @Field(() => String)
-  @Property({ type: 'date', onUpdate: () => Date.now() })
-  createdAt = Date.now()
-
-  @Field(() => Boolean)
-  @Property({ onCreate: () => false })
-  deleted: boolean
-
   @Field(() => User)
   @ManyToOne()
   user!: User
 
-  constructor(
-    id: string,
-    text: string,
-    url: string,
-    type: string,
-    categories: [string],
-    user: User
-  ) {
-    this.id = id
-    this.text = text
-    this.url = url
-    this.type = type
-    this.categories = categories
+  constructor(entryData: EntryInput, user: User) {
+    super()
+    this.id = entryData.id
+    this.contentText = entryData.contentText
+    this.contentUrl = entryData.contentUrl
+    this.contentType = entryData.contentType
+    this.categories = entryData.categories
+    this.calendarDate = entryData.calendarDate
+    this.processing = entryData.processing
+    this.hashedKey = entryData.hashedKey
     this.user = user
   }
 }

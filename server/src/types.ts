@@ -10,19 +10,6 @@ export type MyContext = {
   payload?: { userId: string }
 }
 
-export type Verification = {
-  email: string
-  code: string
-}
-
-export type BilligDetails = {
-  firstName: string
-  lastName: string
-  creditNr: number
-  expiration: string
-  cvc: number
-}
-
 export enum ErrorMessage {
   EMAIL_INVALID,
   EMAIL_EXISTS,

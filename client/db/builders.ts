@@ -11,10 +11,13 @@ export const pullQueryBuilder = (doc) => {
   const query = `{
         rxEntryReplication(lastId: "${doc.id}", minUpdatedAt: ${doc.updatedAt}, limit: 5) {
             id,
-            text
-            url
-            type
+            contentText
+            contentUrl
+            contentType
+            calendarDate
+            processing
             updatedAt
+            hashedKey
             deleted
         }
     }`
@@ -35,14 +38,7 @@ export const pushQueryBuilder = (entry: EntryDocType) => {
         }
     `
   const variables: { entry: EntryDocType } = {
-    entry: {
-      id: entry.id,
-      text: entry.text,
-      url: entry.url,
-      categories: entry.categories,
-      type: entry.type,
-      updatedAt: entry.updatedAt,
-    },
+    entry,
   }
   return {
     query,

@@ -1,4 +1,5 @@
 import { InputType, Field } from 'type-graphql'
+import { ContentType } from '../../entities/Entry'
 
 @InputType()
 export class EntryInput {
@@ -6,17 +7,29 @@ export class EntryInput {
   id: string
 
   @Field()
-  text: string
+  contentText: string
 
   @Field()
-  url: string
+  contentUrl: string
 
   @Field()
-  type: string
+  contentType: ContentType
 
   @Field(() => [String])
   categories: [string]
 
   @Field()
+  calendarDate: string
+
+  @Field()
   updatedAt: string
+
+  @Field()
+  hashedKey!: string
+
+  @Field()
+  processing: boolean
+
+  @Field()
+  deleted!: boolean
 }

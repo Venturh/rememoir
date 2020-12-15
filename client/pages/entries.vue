@@ -11,6 +11,7 @@ import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { useResult } from '@vue/apollo-composable'
 import { useMeQuery } from '@/generated/graphql'
 import DatabaseService from '@/db/db'
+import { EntryDocType } from '@/db/types'
 
 export default defineComponent({
   middleware: ['authenticated'],
@@ -21,14 +22,19 @@ export default defineComponent({
     const entries = ref()
 
     async function test() {
+      console.log('run')
+
       const db = await DatabaseService.get()
       const id = require('bson-objectid')
-      const obj = {
+      const obj: EntryDocType = {
         id: id().str,
-        text: 'Moin',
-        type: 'Link',
-        url: 'www.test.de',
+        contentText: 'Moin',
+        contentType: 'Link',
+        contentUrl: 'www.test.de',
         categories: ['Youtube', 'Test'],
+        hashedKey: 'hashed',
+        calendarDate: Date().toString(),
+        processing: false,
         updatedAt: Date.now().toString(),
       }
       await db.entries.insert(obj)
