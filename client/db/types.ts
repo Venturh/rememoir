@@ -1,30 +1,31 @@
 import { RxCollection, RxDocument, RxDatabase } from 'rxdb'
+import { EntryInput } from '../generated/graphql'
 
-export type EntryDocType = {
-  id: string
-  contentText: string
-  contentUrl: string
-  contentType: string
-  categories: Array<string>
-  calendarDate: string
-  hashedKey: string
-  processing: boolean
+// export type EntryDocType = {
+//   id: string
+//   contentText: string
+//   contentUrl: string
+//   contentType: string
+//   categories: Array<string>
+//   calendarDate: string
+//   hashedKey: string
+//   processing: boolean
 
-  updatedAt: string
-}
+//   updatedAt: string
+// }
 
 type EntryDocMethods = {
   getText: (id: string) => string
 }
 
-export type EntryDocument = RxDocument<EntryDocType, EntryDocMethods>
+export type EntryDocument = RxDocument<EntryInput, EntryDocMethods>
 
 type EntryCollectionMethods = {
   countAllDocuments: () => Promise<number>
 }
 
 export type EntryCollection = RxCollection<
-  EntryDocType,
+  EntryInput,
   EntryDocMethods,
   EntryCollectionMethods
 >

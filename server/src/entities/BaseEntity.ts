@@ -20,7 +20,7 @@ export default abstract class BaseEntity {
   @Property({ type: 'date', onUpdate: () => Date.now() })
   createdAt = Date.now()
 
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true })
   @Property({ onCreate: () => false })
-  deleted: boolean
+  deleted?: boolean
 }

@@ -29,7 +29,4 @@ export class EntryInput {
 
   @Field()
   processing: boolean
-
-  @Field()
-  deleted!: boolean
 }

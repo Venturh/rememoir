@@ -13,7 +13,7 @@ import { RxDBReplicationGraphQLPlugin } from 'rxdb/plugins/replication-graphql'
 import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 
-import { getAccessToken } from '../utils/auth'
+import { getAccessToken, tryAccessToken } from '../utils/auth'
 import { MyDatabase, Collections } from './types'
 import entrySchema from './schema/entry'
 
@@ -41,6 +41,7 @@ export const graphQLGenerationInput = {
 }
 
 async function _create(): Promise<MyDatabase> {
+  const token = await tryAccessToken()
   const db = await createRxDatabase<Collections>({
     name: 'clientdb',
     adapter: 'idb',
@@ -49,10 +50,11 @@ async function _create(): Promise<MyDatabase> {
 
   await db.addCollections({ entries: { schema: entrySchema } })
 
+  console.log('🚀 ~ file: db.ts ~ line 52 ~ _create ~ token', token)
   const replication = db.collections.entries.syncGraphQL({
     url: syncURL,
     headers: {
-      Authorization: 'Bearer ' + getAccessToken(),
+      Authorization: 'Bearer ' + token,
     },
     pull: {
       queryBuilder: pullQueryBuilder,
@@ -87,7 +89,7 @@ async function _create(): Promise<MyDatabase> {
   const ret = wsClient.request({
     query: wsQuery,
     variables: {
-      token: getAccessToken(),
+      token,
     },
   })
 

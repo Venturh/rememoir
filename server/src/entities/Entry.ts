@@ -24,9 +24,9 @@ export default class Entry extends BaseEntity {
   @Property()
   contentUrl: string
 
-  @Field(() => ContentType)
+  @Field()
   @Property()
-  contentType!: ContentType
+  contentType!: string
 
   @Field()
   @Property()
@@ -46,7 +46,7 @@ export default class Entry extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne()
-  user!: User
+  user: User
 
   constructor(entryData: EntryInput, user: User) {
     super()

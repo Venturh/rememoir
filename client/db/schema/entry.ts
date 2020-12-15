@@ -1,7 +1,7 @@
 import { RxJsonSchema } from 'rxdb'
-import { EntryDocType } from '../types'
+import { EntryInput } from '../../generated/graphql'
 
-const entrySchema: RxJsonSchema<EntryDocType> = {
+const entrySchema: RxJsonSchema<EntryInput> = {
   title: 'Entry Schema',
   description: 'The Entry',
   version: 0,
@@ -10,8 +10,6 @@ const entrySchema: RxJsonSchema<EntryDocType> = {
   properties: {
     id: {
       type: 'string',
-      primary: true,
-      default: '',
     },
     contentText: {
       type: 'string',

@@ -1,3 +1,4 @@
+import { EntryInput } from '../generated/graphql'
 import { EntryDocType } from './types'
 
 export const pullQueryBuilder = (doc) => {
@@ -10,6 +11,7 @@ export const pullQueryBuilder = (doc) => {
   }
   const query = `{
         rxEntryReplication(lastId: "${doc.id}", minUpdatedAt: ${doc.updatedAt}, limit: 5) {
+            _id
             id,
             contentText
             contentUrl
@@ -27,7 +29,7 @@ export const pullQueryBuilder = (doc) => {
   }
 }
 
-export const pushQueryBuilder = (entry: EntryDocType) => {
+export const pushQueryBuilder = (entry: EntryInput) => {
   const query = `
 
         mutation createEntry($entry: EntryInput!) {
@@ -37,9 +39,21 @@ export const pushQueryBuilder = (entry: EntryDocType) => {
             }
         }
     `
-  const variables: { entry: EntryDocType } = {
-    entry,
+  const variables: { entry: EntryInput } = {
+    entry: {
+      id: entry.id,
+      contentType: entry.contentType,
+      contentUrl: entry.contentUrl,
+      contentText: entry.contentText,
+      hashedKey: entry.hashedKey,
+      processing: entry.processing,
+      calendarDate: entry.calendarDate,
+      categories: entry.categories,
+      updatedAt: entry.updatedAt,
+    },
   }
+  console.log(variables.entry, entry)
+
   return {
     query,
     variables,

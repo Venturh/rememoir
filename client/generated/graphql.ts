@@ -21,7 +21,24 @@ export type BaseEntity = {
   id: Scalars['String'];
   updatedAt: Scalars['String'];
   createdAt: Scalars['String'];
-  deleted: Scalars['Boolean'];
+  deleted?: Maybe<Scalars['Boolean']>;
+};
+
+export type Entry = {
+  __typename?: 'Entry';
+  _id: Scalars['String'];
+  id: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdAt: Scalars['String'];
+  deleted?: Maybe<Scalars['Boolean']>;
+  contentText: Scalars['String'];
+  contentUrl: Scalars['String'];
+  contentType: Scalars['String'];
+  calendarDate: Scalars['String'];
+  hashedKey: Scalars['String'];
+  processing: Scalars['Boolean'];
+  categories: Array<Scalars['String']>;
+  user: User;
 };
 
 export type User = {
@@ -30,10 +47,11 @@ export type User = {
   id: Scalars['String'];
   updatedAt: Scalars['String'];
   createdAt: Scalars['String'];
-  deleted: Scalars['Boolean'];
+  deleted?: Maybe<Scalars['Boolean']>;
   email: Scalars['String'];
   username: Scalars['String'];
   verified: Scalars['Boolean'];
+  entries: User;
 };
 
 export type FieldError = {
@@ -75,6 +93,18 @@ export type ValidResponse = {
   message?: Maybe<Scalars['String']>;
 };
 
+export type EntryInput = {
+  id: Scalars['String'];
+  contentText: Scalars['String'];
+  contentUrl: Scalars['String'];
+  contentType: Scalars['String'];
+  categories: Array<Scalars['String']>;
+  calendarDate: Scalars['String'];
+  updatedAt: Scalars['String'];
+  hashedKey: Scalars['String'];
+  processing: Scalars['Boolean'];
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -82,12 +112,22 @@ export type LoginInput = {
 
 export type Query = {
   __typename?: 'Query';
+  allEntriesByUser: Array<Entry>;
+  rxEntryReplication: Array<Entry>;
   users: Array<User>;
   me: User;
 };
 
+
+export type QueryRxEntryReplicationArgs = {
+  limit: Scalars['Float'];
+  minUpdatedAt: Scalars['Float'];
+  lastId: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  setEntry: Entry;
   revokeRefreshToken: Scalars['Boolean'];
   logout: Scalars['Boolean'];
   login: LoginResponse;
@@ -97,6 +137,11 @@ export type Mutation = {
   changePassword: ValidResponse;
   register: UserResponse;
   verifyEmailCode: LoginResponse;
+};
+
+
+export type MutationSetEntryArgs = {
+  entry: EntryInput;
 };
 
 
@@ -144,6 +189,16 @@ export type MutationRegisterArgs = {
 export type MutationVerifyEmailCodeArgs = {
   code: Scalars['String'];
   id: Scalars['String'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  changedEntry: Entry;
+};
+
+
+export type SubscriptionChangedEntryArgs = {
+  token: Scalars['String'];
 };
 
 export type LoginMutationVariables = Exact<{
@@ -248,7 +303,7 @@ export type VerifyAccountByEmailMutation = (
       & Pick<FieldError, 'message' | 'field'>
     )>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'email' | 'id' | 'username' | 'verified'>
+      & Pick<User, 'email' | 'id' | 'verified'>
     )> }
   ) }
 );
@@ -467,7 +522,6 @@ export const VerifyAccountByEmailDocument = gql`
     user {
       email
       id
-      username
       verified
     }
   }
