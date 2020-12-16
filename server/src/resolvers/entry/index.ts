@@ -13,6 +13,7 @@ import {
 import { Entry, User } from '../../entities'
 import { MyContext } from '../../types'
 import { isAuth, verifyToken } from '../../utils/auth'
+import { generateLinkPreview } from '../../utils/linkPreview'
 import { EntryInput } from './types'
 
 const pubsub = new PubSub()
