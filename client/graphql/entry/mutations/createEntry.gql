@@ -1,0 +1,6 @@
+mutation createEntry($entry: EntryInput!) {
+  setEntry(entry: $entry) {
+    id
+    updatedAt
+  }
+}

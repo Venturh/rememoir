@@ -1,0 +1,5 @@
+subscription onEntryChanged($token: String!) {
+  changedEntry(token: $token) {
+    id
+  }
+}

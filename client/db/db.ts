@@ -17,7 +17,11 @@ import { getAccessToken, tryAccessToken } from '../utils/auth'
 import { MyDatabase, Collections } from './types'
 import entrySchema from './schema/entry'
 
-import { pullQueryBuilder, pushQueryBuilder, wsQuery } from './builders'
+import {
+  pullQueryBuilder,
+  pushQueryBuilder,
+  entrySubscription,
+} from './builders'
 
 if (process.env.NODE_ENV === 'development') {
   addRxPlugin(RxDBDevModePlugin)
@@ -93,7 +97,7 @@ async function _create(): Promise<MyDatabase> {
   })
 
   const ret = wsClient.request({
-    query: wsQuery,
+    query: entrySubscription,
     variables: {
       token: getAccessToken(),
     },

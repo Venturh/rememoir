@@ -32,17 +32,15 @@ class EntryResolver {
   @UseMiddleware(isAuth)
   async rxEntryReplication(
     @Arg('lastId') lastId: string,
-    @Arg('minUpdatedAt') minUpdatedAt: number,
+    @Arg('minUpdatedAt') minUpdatedAtString: string,
     @Arg('limit') limit: number,
 
     @Ctx()
     { em, payload }: MyContext
   ) {
+    //TODO: Maybe nake this
+    const minUpdatedAt = parseInt(minUpdatedAtString)
     const entries = await em.find(Entry, { user: payload?.userId })
-    console.log(
-      '🚀 ~ file: index.ts ~ line 42 ~ EntryResolver ~ entries',
-      entries
-    )
     if (!entries) return
 
     const sorted = entries!.sort((a, b) => {

@@ -1,0 +1,22 @@
+query rxEntryReplication(
+  $lastId: String!
+  $minUpdatedAt: String!
+  $limit: Float!
+) {
+  rxEntryReplication(
+    lastId: $lastId
+    minUpdatedAt: $minUpdatedAt
+    limit: $limit
+  ) {
+    id
+    contentText
+    contentUrl
+    contentType
+    categories
+    calendarDate
+    processing
+    updatedAt
+    hashedKey
+    deleted
+  }
+}

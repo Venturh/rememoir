@@ -1,44 +1,27 @@
-import { EntryInput } from '../generated/graphql'
+import { print } from 'graphql/language/printer'
+import {
+  EntryInput,
+  RxEntryReplicationDocument,
+  CreateEntryDocument,
+  OnEntryChangedDocument,
+} from '../generated/graphql'
 
 export const pullQueryBuilder = (doc) => {
   if (!doc) {
     // the first pull does not have a start-document
     doc = {
       id: '',
-      updatedAt: 0,
+      updatedAt: '0',
     }
   }
-  const query = `{
-        rxEntryReplication(lastId: "${doc.id}", minUpdatedAt: ${doc.updatedAt}, limit: 5) {
-            id,
-            contentText
-            contentUrl
-            contentType
-            categories
-            calendarDate
-            processing
-            updatedAt
-            hashedKey
-            deleted
-        }
-    }`
   return {
-    query,
-    variables: {},
+    query: print(RxEntryReplicationDocument),
+    variables: { lastId: doc.id, minUpdatedAt: doc.updatedAt, limit: 5 },
   }
 }
 
 export const pushQueryBuilder = (entry: EntryInput) => {
-  const query = `
-
-        mutation createEntry($entry: EntryInput!) {
-            setEntry(entry: $entry) {
-                id,
-                updatedAt
-            }
-        }
-    `
-  const variables: { entry: EntryInput } = {
+  const variables = {
     entry: {
       id: entry.id,
       contentType: entry.contentType,
@@ -51,14 +34,11 @@ export const pushQueryBuilder = (entry: EntryInput) => {
       updatedAt: entry.updatedAt,
     },
   }
+
   return {
-    query,
+    query: print(CreateEntryDocument),
     variables,
   }
 }
 
-export const wsQuery = `subscription onEntryChanged($token: String!) {
-    changedEntry(token: $token){
-      id
-    }
-}`
+export const entrySubscription = print(OnEntryChangedDocument)
