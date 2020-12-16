@@ -12,6 +12,12 @@ query rxEntryReplication(
     contentText
     contentUrl
     contentType
+    contentPreview {
+      ogTitle
+      ogDescription
+      ogUrl
+      ogImage
+    }
     categories
     calendarDate
     processing

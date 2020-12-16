@@ -5,7 +5,7 @@ enum LinkType {
   'video.other',
 }
 
-type LinkPreview = {
+export type LinkPreview = {
   ogTitle: string
   ogDescription: string
   imageUrl: string

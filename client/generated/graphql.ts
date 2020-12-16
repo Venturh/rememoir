@@ -24,6 +24,14 @@ export type BaseEntity = {
   deleted?: Maybe<Scalars['Boolean']>;
 };
 
+export type ContentPreview = {
+  __typename?: 'ContentPreview';
+  ogTitle: Scalars['String'];
+  ogDescription: Scalars['String'];
+  ogUrl: Scalars['String'];
+  ogImage: Scalars['String'];
+};
+
 export type Entry = {
   __typename?: 'Entry';
   _id: Scalars['String'];
@@ -34,6 +42,7 @@ export type Entry = {
   contentText: Scalars['String'];
   contentUrl: Scalars['String'];
   contentType: Scalars['String'];
+  contentPreview?: Maybe<ContentPreview>;
   calendarDate: Scalars['String'];
   hashedKey: Scalars['String'];
   processing: Scalars['Boolean'];
@@ -361,6 +370,10 @@ export type RxEntryReplicationQuery = (
   & { rxEntryReplication: Array<(
     { __typename?: 'Entry' }
     & Pick<Entry, 'id' | 'contentText' | 'contentUrl' | 'contentType' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted'>
+    & { contentPreview?: Maybe<(
+      { __typename?: 'ContentPreview' }
+      & Pick<ContentPreview, 'ogTitle' | 'ogDescription' | 'ogUrl' | 'ogImage'>
+    )> }
   )> }
 );
 
@@ -686,6 +699,12 @@ export const RxEntryReplicationDocument = gql`
     contentText
     contentUrl
     contentType
+    contentPreview {
+      ogTitle
+      ogDescription
+      ogUrl
+      ogImage
+    }
     categories
     calendarDate
     processing

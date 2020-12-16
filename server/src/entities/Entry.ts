@@ -10,9 +10,26 @@ export enum ContentType {
   Note = 'Note',
 }
 
+enum LinkType {
+  'website',
+  'video.other',
+}
+
 registerEnumType(ContentType, {
   name: 'ContentType',
 })
+@ObjectType()
+class ContentPreview {
+  @Field()
+  ogTitle: string
+  @Field()
+  ogDescription: string
+  @Field()
+  ogUrl: string
+  @Field()
+  ogImage: string
+}
+
 @ObjectType()
 @Entity()
 export default class Entry extends BaseEntity {
@@ -27,6 +44,10 @@ export default class Entry extends BaseEntity {
   @Field()
   @Property()
   contentType!: string
+
+  @Field({ nullable: true })
+  @Property()
+  contentPreview?: ContentPreview
 
   @Field()
   @Property()
