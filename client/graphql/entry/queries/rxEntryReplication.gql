@@ -15,8 +15,10 @@ query rxEntryReplication(
     contentPreview {
       ogTitle
       ogDescription
-      ogUrl
-      ogImage
+      ogImageUrl
+      ogAudioUrl
+      ogVideoUrl
+      type
     }
     categories
     calendarDate

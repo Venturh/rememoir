@@ -22,6 +22,9 @@ const entrySchema: RxJsonSchema<EntryInput> = {
     contentType: {
       type: 'string',
     },
+    contentPreview: {
+      type: 'object',
+    },
     categories: {
       type: 'array',
       items: {

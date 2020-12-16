@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { ContentType } from '../../entities/Entry'
+import { ContentPreview, ContentType } from '../../entities/Entry'
 
 @InputType()
 export class EntryInput {
@@ -11,6 +11,9 @@ export class EntryInput {
 
   @Field()
   contentUrl: string
+
+  @Field(() => ContentPreview, { nullable: true })
+  contentPreview?: ContentPreview
 
   @Field()
   contentType: ContentType

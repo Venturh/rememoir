@@ -28,8 +28,10 @@ export type ContentPreview = {
   __typename?: 'ContentPreview';
   ogTitle: Scalars['String'];
   ogDescription: Scalars['String'];
-  ogUrl: Scalars['String'];
-  ogImage: Scalars['String'];
+  ogImageUrl: Scalars['String'];
+  ogVideoUrl: Scalars['String'];
+  ogAudioUrl: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export type Entry = {
@@ -106,12 +108,22 @@ export type EntryInput = {
   id: Scalars['String'];
   contentText: Scalars['String'];
   contentUrl: Scalars['String'];
+  contentPreview?: Maybe<ContentPreviewInput>;
   contentType: Scalars['String'];
   categories: Array<Scalars['String']>;
   calendarDate: Scalars['String'];
   updatedAt: Scalars['String'];
   hashedKey: Scalars['String'];
   processing: Scalars['Boolean'];
+};
+
+export type ContentPreviewInput = {
+  ogTitle: Scalars['String'];
+  ogDescription: Scalars['String'];
+  ogImageUrl: Scalars['String'];
+  ogVideoUrl: Scalars['String'];
+  ogAudioUrl: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export type LoginInput = {
@@ -123,6 +135,7 @@ export type Query = {
   __typename?: 'Query';
   allEntriesByUser: Array<Entry>;
   rxEntryReplication: Array<Entry>;
+  test: ContentPreview;
   users: Array<User>;
   me: User;
 };
@@ -132,6 +145,11 @@ export type QueryRxEntryReplicationArgs = {
   limit: Scalars['Float'];
   minUpdatedAt: Scalars['String'];
   lastId: Scalars['String'];
+};
+
+
+export type QueryTestArgs = {
+  url: Scalars['String'];
 };
 
 export type Mutation = {
@@ -372,7 +390,7 @@ export type RxEntryReplicationQuery = (
     & Pick<Entry, 'id' | 'contentText' | 'contentUrl' | 'contentType' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted'>
     & { contentPreview?: Maybe<(
       { __typename?: 'ContentPreview' }
-      & Pick<ContentPreview, 'ogTitle' | 'ogDescription' | 'ogUrl' | 'ogImage'>
+      & Pick<ContentPreview, 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'type'>
     )> }
   )> }
 );
@@ -702,8 +720,10 @@ export const RxEntryReplicationDocument = gql`
     contentPreview {
       ogTitle
       ogDescription
-      ogUrl
-      ogImage
+      ogImageUrl
+      ogAudioUrl
+      ogVideoUrl
+      type
     }
     categories
     calendarDate

@@ -11,6 +11,7 @@ import {
 } from 'type-graphql'
 
 import { Entry, User } from '../../entities'
+import { ContentType, ContentPreview } from '../../entities/Entry'
 import { MyContext } from '../../types'
 import { isAuth, verifyToken } from '../../utils/auth'
 import { generateLinkPreview } from '../../utils/linkPreview'
@@ -69,19 +70,23 @@ class EntryResolver {
   @Mutation(() => Entry)
   @UseMiddleware(isAuth)
   async setEntry(
-    @Arg('entry') entry: EntryInput,
+    @Arg('entry') entryInput: EntryInput,
     @Ctx() { em, payload }: MyContext
   ): Promise<Entry> {
     const user = await em.findOne(User, { id: payload?.userId })
     const entries = await em.find(Entry, {})
-    let oldEntry = entries!.find((e) => e.id === entry!.id)
+    let oldEntry = entries!.find((e) => e.id === entryInput!.id)
     if (oldEntry) {
-      oldEntry = { ...entry, ...oldEntry }
+      oldEntry = { ...entryInput, ...oldEntry }
       em.persistAndFlush(oldEntry)
       pubsub.publish('changedEntry', oldEntry)
       return oldEntry
     }
-    const doc = new Entry(entry, user!)
+    const doc = new Entry(entryInput, user!)
+    if (entryInput.contentType === ContentType.LINK) {
+      const linkPreview = await generateLinkPreview(entryInput.contentUrl)
+      doc.contentPreview = linkPreview
+    }
 
     em.persistAndFlush(doc)
     pubsub.publish('changedEntry', doc)
@@ -96,6 +101,12 @@ class EntryResolver {
   async changedEntry(@Arg('token') token: string, @Root() entry: Entry) {
     verifyToken(token)
     return entry
+  }
+
+  @Query(() => ContentPreview)
+  async test(@Arg('url') url: string) {
+    const preview = await generateLinkPreview(url)
+    return preview
   }
 }
 

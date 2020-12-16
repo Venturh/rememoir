@@ -1,4 +1,4 @@
-import { Field, ObjectType, registerEnumType } from 'type-graphql'
+import { Field, InputType, ObjectType, registerEnumType } from 'type-graphql'
 import { Entity, ManyToOne, Property } from '@mikro-orm/core'
 import { BaseEntity, User } from '.'
 import { EntryInput } from '../resolvers/entry/types'
@@ -13,21 +13,27 @@ export enum ContentType {
 enum LinkType {
   'website',
   'video.other',
+  'music.song',
 }
 
 registerEnumType(ContentType, {
   name: 'ContentType',
 })
 @ObjectType()
-class ContentPreview {
+@InputType('ContentPreviewInput')
+export class ContentPreview {
   @Field()
   ogTitle: string
   @Field()
   ogDescription: string
+  @Field({ nullable: true })
+  ogImageUrl: string
+  @Field({ nullable: true })
+  ogVideoUrl?: string
+  @Field({ nullable: true })
+  ogAudioUrl?: string
   @Field()
-  ogUrl: string
-  @Field()
-  ogImage: string
+  type: string
 }
 
 @ObjectType()
