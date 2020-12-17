@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute flex justify-center h-screen md:static bg-secondary">
+  <div class="flex justify-center bg-secondary">
     <transition name="slide-fade">
       <div
         v-if="toggled || !isMobile"
@@ -8,7 +8,7 @@
       >
         <IconOnlyButton
           class="absolute right-1 top-10"
-          @click="expanded = !expanded"
+          @click="$emit('sidebarExpand')"
         >
           <ChevronLeftIcon v-if="expanded" />
           <ChevronRightIcon v-if="!expanded" />
@@ -57,12 +57,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  ref,
-  useContext,
-} from '@nuxtjs/composition-api'
+import { computed, defineComponent, useContext } from '@nuxtjs/composition-api'
 import { useBreakpointTailwindCSS } from 'vue-composable'
 
 import {
@@ -82,6 +77,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    expanded: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     XIcon,
@@ -96,7 +95,6 @@ export default defineComponent({
     const { app } = useContext()
     const { userInfo } = useUserInfo()
     const { mutate: logout } = useLogoutMutation()
-    const expanded = ref(true)
 
     const isMobile = computed(() => {
       if (['md', 'lg', 'xl'].includes(current.value as string)) return false
@@ -109,7 +107,7 @@ export default defineComponent({
       app.router!.push('/')
     }
 
-    return { current, expanded, userInfo, logOut, isMobile }
+    return { current, userInfo, logOut, isMobile }
   },
 })
 </script>

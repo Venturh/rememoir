@@ -5,6 +5,7 @@
       <LinkEntry
         class="relative w-4/6 h-full p-2"
         :content-text="contentText"
+        :content-url="contentUrl"
         :content-preview="contentPreview"
       />
       <div class="flex items-center">
