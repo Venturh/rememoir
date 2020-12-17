@@ -1,20 +1,25 @@
 <template>
-  <div class="flex flex-col justify-between p-2 space-y-2 bg-secondary">
+  <div
+    class="flex flex-col justify-between p-2 space-y-2 rounded-lg bg-secondary"
+  >
     <div class="flex items-start justify-between">
-      <!-- <span>{{ contentText }}</span> -->
-      <LinkEntry
-        class="relative w-4/6 h-full p-2"
-        :content-text="contentText"
-        :content-url="contentUrl"
-        :content-preview="contentPreview"
-      />
+      <div class="relative h-full space-y-2">
+        <span>{{ contentText }}</span>
+      </div>
       <div class="flex items-center">
         <span class="text-sm">{{ timeFrom }}</span>
         <MoreVerticalIcon size="1.25x" />
       </div>
     </div>
+    <LinkEntry
+      v-if="contentType === 'Link'"
+      class="md:w-4/6"
+      :content-text="contentText"
+      :content-url="contentUrl"
+      :content-preview="contentPreview"
+    />
     <div class="flex items-center justify-between">
-      <span class="text-xs">{{ contentUrl }}</span>
+      <span />
       <div class="space-x-2">
         <span
           v-for="category in categories"

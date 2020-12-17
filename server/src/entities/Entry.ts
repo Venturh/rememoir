@@ -23,6 +23,8 @@ registerEnumType(ContentType, {
 @InputType('ContentPreviewInput')
 export class ContentPreview {
   @Field()
+  ogSiteName: string
+  @Field()
   ogTitle: string
   @Field()
   ogDescription: string

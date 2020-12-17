@@ -45,9 +45,10 @@ export default defineComponent({
       const id = require('bson-objectid')
       const obj: EntryInput = {
         id: id().str,
-        contentText: 'Moin',
+        contentText: 'Meine Playlist zu der ich code',
         contentType: 'Link',
-        contentUrl: 'https://www.youtube.com/watch?v=azxzALh6R_0',
+        contentUrl: 'https://www.youtube.com/watch?v=5qap5aO4i9A',
+        // contentUrl:'https://open.spotify.com/track/1J2OlTIPluzOmf3RX8eKhT?si=vnZacwXhTEGC4Hbb95u2mg',
         categories: ['Youtube', 'Test'],
         hashedKey: 'hashed',
         calendarDate: Date().toString(),

@@ -1,6 +1,7 @@
 import * as ogs from 'open-graph-scraper'
 
 export type LinkPreview = {
+  ogSiteName: string
   ogTitle: string
   ogDescription: string
   ogImageUrl: string
@@ -24,9 +25,11 @@ export async function generateLinkPreview(url: string) {
         ogVideo,
         ogAudio,
         ogType,
+        ogSiteName,
       } = result
       console.log(result!)
       const preview: LinkPreview = {
+        ogSiteName: ogSiteName!,
         ogTitle: ogTitle!,
         ogDescription: ogDescription!,
         ogImageUrl: ogImage!.url,

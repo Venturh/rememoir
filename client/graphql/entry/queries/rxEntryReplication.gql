@@ -13,6 +13,7 @@ query rxEntryReplication(
     contentUrl
     contentType
     contentPreview {
+      ogSiteName
       ogTitle
       ogDescription
       ogImageUrl

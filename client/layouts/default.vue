@@ -4,7 +4,7 @@
       class="flex flex-col min-h-screen md:flex-row md:justify-between bg-primary text-primary"
     >
       <Sidebar
-        class="fixed min-h-screen"
+        class="fixed z-50 min-h-screen"
         :toggled="toggle"
         :expanded="expanded"
         @sidebartoggle="toggle = !toggle"
@@ -12,7 +12,7 @@
       />
       <div
         class="w-full min-h-screen py-2 mx-auto space-y-2 max-w-xsm md:max-w-6xl"
-        :class="expanded ? 'pl-64 ' : 'pl-32 '"
+        :class="expanded ? 'md:pl-64 ' : 'md:pl-32 '"
       >
         <Header @sidebartoggle="toggle = !toggle" />
         <Nuxt />

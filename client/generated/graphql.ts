@@ -26,11 +26,12 @@ export type BaseEntity = {
 
 export type ContentPreview = {
   __typename?: 'ContentPreview';
+  ogSiteName: Scalars['String'];
   ogTitle: Scalars['String'];
   ogDescription: Scalars['String'];
-  ogImageUrl: Scalars['String'];
-  ogVideoUrl: Scalars['String'];
-  ogAudioUrl: Scalars['String'];
+  ogImageUrl?: Maybe<Scalars['String']>;
+  ogVideoUrl?: Maybe<Scalars['String']>;
+  ogAudioUrl?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -118,11 +119,12 @@ export type EntryInput = {
 };
 
 export type ContentPreviewInput = {
+  ogSiteName: Scalars['String'];
   ogTitle: Scalars['String'];
   ogDescription: Scalars['String'];
-  ogImageUrl: Scalars['String'];
-  ogVideoUrl: Scalars['String'];
-  ogAudioUrl: Scalars['String'];
+  ogImageUrl?: Maybe<Scalars['String']>;
+  ogVideoUrl?: Maybe<Scalars['String']>;
+  ogAudioUrl?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -390,7 +392,7 @@ export type RxEntryReplicationQuery = (
     & Pick<Entry, 'id' | 'contentText' | 'contentUrl' | 'contentType' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted'>
     & { contentPreview?: Maybe<(
       { __typename?: 'ContentPreview' }
-      & Pick<ContentPreview, 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'type'>
+      & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'type'>
     )> }
   )> }
 );
@@ -718,6 +720,7 @@ export const RxEntryReplicationDocument = gql`
     contentUrl
     contentType
     contentPreview {
+      ogSiteName
       ogTitle
       ogDescription
       ogImageUrl
