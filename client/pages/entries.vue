@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="mx-auto max-w-xsm md:max-w-2xl">
     <p v-if="!loading">Welcome back {{ me.email }}</p>
     <button @click="test">INSERT</button>
     <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center bg-secondary">
+  <div class="flex justify-center bg-secondary sm:bg-none">
     <transition name="slide-fade">
       <div
         v-if="toggled || !isMobile"

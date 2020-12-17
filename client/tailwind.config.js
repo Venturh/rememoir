@@ -33,6 +33,7 @@ module.exports = {
       maxWidth: {
         xxs: '18rem',
         xsm: '21rem',
+        xxl: '100rem',
       },
       transitionProperty: {
         height: 'height',

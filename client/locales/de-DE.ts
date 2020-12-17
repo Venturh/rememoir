@@ -28,4 +28,6 @@ export default {
   lists: 'Listen',
   pinned: 'Angepinnt',
   archive: 'Archiv',
+
+  addNewEntry: 'Füge einen neuen Eintrag ein (# für Kategorien) ',
 }
