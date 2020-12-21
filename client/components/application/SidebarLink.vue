@@ -1,22 +1,17 @@
 <template>
   <nuxt-link
-    class="relative z-10 flex items-center cursor-pointer"
-    :class="expanded ? 'justify-between px-2 md:px-4' : 'justify-center'"
+    class="relative z-10 flex items-center justify-between px-2 cursor-pointer md:px-4"
     :to="localePath(`/${item.name}`)"
   >
-    <div
-      class="flex space-x-2"
-      :class="expanded ? ' w-11/12' : 'w-full justify-center'"
-      @click="$emit('click')"
-    >
+    <div class="flex space-x-4" @click="$emit('click')">
       <component
         :is="item.icon"
         :class="{ 'text-brand stroke-current': active }"
       />
-      <span :class="expanded ? 'block' : 'hidden'">{{ $t(item.name) }}</span>
+      <span>{{ $t(item.name) }}</span>
     </div>
 
-    <div :class="expanded ? 'block' : 'hidden'" @click="open = !open">
+    <div @click="open = !open">
       <ChevronDownIcon v-if="!open" size="1.1x" />
       <ChevronUpIcon v-else size="1.1x" />
     </div>
@@ -42,10 +37,6 @@ export default defineComponent({
     active: {
       type: Boolean,
       default: false,
-    },
-    expanded: {
-      type: Boolean,
-      default: true,
     },
   },
   setup() {

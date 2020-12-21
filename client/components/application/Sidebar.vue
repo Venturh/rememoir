@@ -1,40 +1,20 @@
 <template>
-  <div class="flex justify-center bg-secondary sm:bg-none">
+  <div class="flex justify-center bg-primary">
     <transition name="slide-fade">
       <div
         v-if="toggled || !isMobile"
-        class="relative flex flex-col justify-between p-4"
-        :class="expanded ? 'w-64 ' : 'w-32'"
+        class="relative flex flex-col justify-between p-4 w-52"
       >
-        <IconOnlyButton
-          class="absolute right-1 top-10"
-          @click="$emit('sidebarExpand')"
-        >
-          <ChevronLeftIcon v-if="expanded" />
-          <ChevronRightIcon v-if="!expanded" />
-        </IconOnlyButton>
-        <SidebarMenu :toggled="toggled" :expanded="expanded" />
+        <SidebarMenu :toggled="toggled" />
 
         <div
-          class="flex w-full p-2 space-x-2 rounded-lg"
-          :class="
-            expanded
-              ? 'flex-row items-center  bg-primary'
-              : 'flex-col space-y-2 bg-secondary'
-          "
+          class="flex flex-row items-center w-full p-2 space-x-2 rounded-lg bg-primary"
         >
-          <div class="w-2/3 space-y-2" :class="expanded ? 'block' : 'hidden'">
+          <div class="w-2/3 space-y-2">
             <div class="">{{ userInfo.username }}</div>
             <span class="text-sm">{{ userInfo.email }}</span>
           </div>
-          <div
-            class="flex"
-            :class="
-              expanded
-                ? 'space-x-2 '
-                : 'flex-col space-x-0 justify-center space-y-6'
-            "
-          >
+          <div class="flex space-x-2">
             <IconOnlyButton @click="logOut">
               <LogOutIcon size="1.25x" />
             </IconOnlyButton>
@@ -74,10 +54,6 @@ import { setAccessToken } from '@/utils/auth'
 export default defineComponent({
   props: {
     toggled: {
-      type: Boolean,
-      default: false,
-    },
-    expanded: {
       type: Boolean,
       default: false,
     },

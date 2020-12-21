@@ -15,7 +15,7 @@ export async function generateLinkPreview(url: string) {
   const data = await ogs({
     url,
   })
-  const { error, result } = data
+  const { error, result } = data as any
   if (!error) {
     if (result.success) {
       const {

@@ -1,12 +1,15 @@
 <template>
-  <div class="mx-auto max-w-xsm md:max-w-2xl">
-    <p v-if="!loading">Welcome back {{ me.email }}</p>
-    <button @click="test">INSERT</button>
-    <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
-    <div v-if="!awaitReplication" class="space-y-2">
-      <div v-for="(entry, index) in entries" :key="index">
+  <div class="flex flex-col-reverse space-x-6 md:flex-row md:justify-between">
+    <div>
+      <p v-if="!loading">Welcome back {{ me.email }}</p>
+      <button @click="test">INSERT</button>
+      <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
+      <div v-if="!awaitReplication" class="space-y-2">
         <!-- Todo: v-bind="entry" throws error -->
         <BaseEntry
+          v-for="(entry, index) in entries"
+          :key="index"
+          class="mx-auto max-w-xsm md:max-w-xl"
           v-bind="{
             contentText: entry.contentText,
             contentUrl: entry.contentUrl,
@@ -22,6 +25,7 @@
         />
       </div>
     </div>
+    <div>Kalender und Filter</div>
   </div>
 </template>
 

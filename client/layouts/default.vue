@@ -1,24 +1,21 @@
 <template>
-  <html>
+  <div class="min-h-screen text-primary bg-primary">
     <div
-      class="flex flex-col min-h-screen md:flex-row md:justify-between bg-primary text-primary"
+      class="flex flex-col mx-auto md:flex-row md:justify-between max-w-xsm lg:max-w-6xl"
     >
       <Sidebar
-        class="fixed z-50 min-h-screen"
+        class="fixed z-50 min-h-screen border-r border-primaryText"
         :toggled="toggle"
-        :expanded="expanded"
         @sidebartoggle="toggle = !toggle"
-        @sidebarExpand="expanded = !expanded"
       />
-      <div
-        class="w-full min-h-screen py-2 mx-auto space-y-2 max-w-xsm md:max-w-6xl"
-        :class="expanded ? 'md:pl-64 ' : 'md:pl-32 '"
-      >
+      <div class="w-full min-h-screen py-2 space-y-2 md:pl-64">
         <Header @sidebartoggle="toggle = !toggle" />
-        <Nuxt />
+        <div class="">
+          <Nuxt />
+        </div>
       </div>
     </div>
-  </html>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,9 +26,8 @@ export default defineComponent({
   setup() {
     const { theme } = useTheme()
     const toggle = ref(false)
-    const expanded = ref(false)
 
-    return { toggle, theme, expanded }
+    return { toggle, theme }
   },
 })
 </script>

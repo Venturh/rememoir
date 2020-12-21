@@ -11,14 +11,13 @@
       <div v-for="item in items" :key="item.name">
         <SidebarLink
           :item="item"
-          :expanded="expanded"
           :active="selected === item.index"
           @click="setSelected(item.index)"
         />
       </div>
     </nav>
     <span
-      class="absolute z-0 duration-100 ease-in transition-top rounded-xl bg-primary"
+      class="absolute z-0 duration-100 ease-in transition-top rounded-xl bg-secondary"
       :style="activeStyle"
     />
   </div>
@@ -38,16 +37,11 @@ import {
   ref,
   useContext,
   watch,
-  watchEffect,
 } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
     toggled: {
-      type: Boolean,
-      default: false,
-    },
-    expanded: {
       type: Boolean,
       default: false,
     },
@@ -94,15 +88,6 @@ export default defineComponent({
         setSelected(selected.value, true)
       }, 0)
     })
-
-    watch(
-      () => props.expanded,
-      () => {
-        setTimeout(() => {
-          setSelected(selected.value, true)
-        }, 0)
-      }
-    )
 
     watch(
       () => props.toggled,
