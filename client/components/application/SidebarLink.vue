@@ -1,6 +1,6 @@
 <template>
   <nuxt-link
-    class="relative z-10 flex items-center justify-between px-2 cursor-pointer md:px-4"
+    class="relative z-10 flex items-center justify-between px-2 cursor-pointer lg:px-4"
     :to="localePath(`/${item.name}`)"
   >
     <div class="flex space-x-4" @click="$emit('click')">

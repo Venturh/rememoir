@@ -1,6 +1,6 @@
 <template>
   <landing>
-    <div class="w-full mx-auto my-auto h-1/2 md:max-w-sm">
+    <div class="w-full mx-auto my-auto h-1/2 lg:max-w-sm">
       <Nuxt />
     </div>
   </landing>

@@ -13,7 +13,7 @@
     </div>
     <LinkEntry
       v-if="contentType === 'Link'"
-      class="md:w-4/6"
+      class="lg:w-4/6"
       :content-text="contentText"
       :content-url="contentUrl"
       :content-preview="contentPreview"

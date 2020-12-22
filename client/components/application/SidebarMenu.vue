@@ -2,7 +2,7 @@
   <div class="space-y-12">
     <div class="flex items-center justify-center flex-shrink-0 h-16">
       <img
-        class="w-auto h-16 md:h-16"
+        class="w-auto h-16 lg:h-16"
         src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
         alt="logo"
       />

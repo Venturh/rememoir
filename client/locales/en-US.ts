@@ -30,4 +30,5 @@ export default {
   archive: 'Archive',
 
   addNewEntry: 'Add a new Entry (# for categories) ',
+  searchPlaceholder: 'Search for entries or lists (press Ctrl K to focus)',
 }

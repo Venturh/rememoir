@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col-reverse space-x-6 md:flex-row md:justify-between">
+  <div class="flex flex-col-reverse space-x-6 lg:flex-row lg:justify-between">
     <div>
       <p v-if="!loading">Welcome back {{ me.email }}</p>
       <button @click="test">INSERT</button>
@@ -9,7 +9,7 @@
         <BaseEntry
           v-for="(entry, index) in entries"
           :key="index"
-          class="mx-auto max-w-xsm md:max-w-xl"
+          class="mx-auto max-w-xsm sm:max-w-md md:max-w-lg lg:max-w-xl"
           v-bind="{
             contentText: entry.contentText,
             contentUrl: entry.contentUrl,

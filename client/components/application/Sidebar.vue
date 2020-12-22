@@ -1,5 +1,8 @@
 <template>
-  <div class="flex justify-center bg-primary">
+  <div
+    class="flex justify-center bg-primary"
+    :class="{ 'border-r border-primaryText': !isMobile }"
+  >
     <transition name="slide-fade">
       <div
         v-if="toggled || !isMobile"
@@ -27,7 +30,7 @@
     </transition>
 
     <IconOnlyButton
-      class="absolute right-1 md:hidden"
+      class="absolute right-1 lg:hidden"
       :class="{ hidden: !toggled }"
       @click="$emit('sidebartoggle')"
     >
@@ -73,7 +76,7 @@ export default defineComponent({
     const { mutate: logout } = useLogoutMutation()
 
     const isMobile = computed(() => {
-      if (['md', 'lg', 'xl'].includes(current.value as string)) return false
+      if (['lg', 'xl'].includes(current.value as string)) return false
       return true
     })
 

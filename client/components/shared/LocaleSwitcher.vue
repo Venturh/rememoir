@@ -8,7 +8,7 @@
       :class="
         !open
           ? 'hidden'
-          : 'flex flex-col justify-center text-center right-0 w-28 rounded-md h-20 absolute top-11 md:top-12 md:right-0 space-y-2 bg-secondary'
+          : 'flex flex-col justify-center text-center right-0 w-28 rounded-md h-20 absolute top-11 lg:top-12 lg:right-0 space-y-2 bg-secondary'
       "
     >
       <div

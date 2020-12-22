@@ -30,4 +30,6 @@ export default {
   archive: 'Archiv',
 
   addNewEntry: 'Füge einen neuen Eintrag ein (# für Kategorien) ',
+  searchPlaceholder:
+    'Suche nach Einträgen und Listen for entries or lists (drücke Strg K zum Fokusieren)',
 }
