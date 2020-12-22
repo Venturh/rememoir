@@ -44,7 +44,7 @@ export default {
   dayjs: {
     locales: ['en', 'de'],
     defaultLocale: 'de',
-    plugins: ['utc', 'relativeTime'],
+    plugins: ['utc', 'relativeTime', 'Calendar', 'updateLocale'],
   },
 
   build: {},

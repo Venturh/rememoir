@@ -9,6 +9,7 @@
         class="relative flex flex-col justify-between p-4 w-52"
       >
         <SidebarMenu :toggled="toggled" />
+
         <div
           class="flex flex-row items-center w-full p-2 space-x-2 rounded-lg bg-primary"
         >

@@ -43,7 +43,6 @@ export default defineComponent({
   },
   setup() {
     // TODO: nuxt-i18n fix when migrate to composition api
-
     const { switchLocalePath, i18n, router, $dayjs } = useContext().app
     const currentLocale = i18n.getLocaleCookie()
     const open = ref(false)

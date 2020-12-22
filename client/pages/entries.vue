@@ -9,7 +9,7 @@
         :key="date"
         class="space-y-2"
       >
-        <div class="p-2 text-lg font-medium rounded-md bg-secondary">
+        <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
           {{ date }}
         </div>
         <BaseEntry
@@ -69,7 +69,7 @@ export default defineComponent({
       })
 
       entries.value = groupBy(dbEntries, (result: EntryInput) =>
-        dayjs(parseInt(result.updatedAt)).format('DD.MM.YYYY')
+        dayjs(parseInt(result.updatedAt)).calendar()
       )
       awaitReplication.value = false
     })

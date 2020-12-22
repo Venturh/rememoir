@@ -19,12 +19,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  onUnmounted,
+  useContext,
+} from '@nuxtjs/composition-api'
 import { useTheme } from '@/hooks'
 
 export default defineComponent({
   setup() {
     const { theme } = useTheme()
+    const { $dayjs } = useContext().app
     const toggle = ref(false)
     const type = ref('search')
 
@@ -36,6 +42,23 @@ export default defineComponent({
         type.value = 'search'
       }
     }
+
+    $dayjs.updateLocale('en', {
+      calendar: {
+        lastDay: '[Yesterday, ] DD.MM.YYYY',
+        sameDay: '[Today, ] DD.MM.YYYY',
+        nextDay: '[Morgen, ] DD.MM.YYYY',
+        lastWeek: '[last] dddd ',
+      },
+    })
+    $dayjs.updateLocale('de', {
+      calendar: {
+        lastDay: '[Gestern, ] DD.MM.YYYY',
+        sameDay: '[Heute, ] DD.MM.YYYY',
+        nextDay: '[Morgen, ] DD.MM.YYYY',
+        lastWeek: '[Letzte Woche] dddd ',
+      },
+    })
 
     window.addEventListener('keydown', hotkeyListener)
 
