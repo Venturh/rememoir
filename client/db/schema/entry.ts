@@ -7,6 +7,7 @@ const entrySchema: RxJsonSchema<EntryInput> = {
   version: 0,
   keyCompression: false,
   type: 'object',
+  indexes: ['updatedAt'],
   properties: {
     id: {
       type: 'string',

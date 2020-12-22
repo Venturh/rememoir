@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col justify-between p-2 space-y-2 rounded-lg bg-secondary"
+    class="flex flex-col justify-between w-screen p-2 space-y-2 rounded-lg bg-secondary"
   >
     <div class="flex items-start justify-between">
       <div class="relative h-full space-y-2">
@@ -13,7 +13,6 @@
     </div>
     <LinkEntry
       v-if="contentType === 'Link'"
-      class="lg:w-4/6"
       :content-text="contentText"
       :content-url="contentUrl"
       :content-preview="contentPreview"
@@ -33,12 +32,8 @@
 </template>
 
 <script>
-import { computed, defineComponent } from '@nuxtjs/composition-api'
-import * as dayjs from 'dayjs'
-import * as relativeTime from 'dayjs/plugin/relativeTime'
+import { computed, defineComponent, useContext } from '@nuxtjs/composition-api'
 import { MoreVerticalIcon } from 'vue-feather-icons'
-
-dayjs.extend(relativeTime)
 export default defineComponent({
   components: {
     MoreVerticalIcon,
@@ -86,10 +81,10 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const dayjs = useContext().app.$dayjs
     const timeFrom = computed(() => {
       return dayjs(parseInt(props.updatedAt)).fromNow()
     })
-    console.log(props)
     return { timeFrom }
   },
 })

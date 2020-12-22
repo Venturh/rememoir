@@ -1,4 +1,5 @@
 import i18n from './config/i18n'
+
 export default {
   ssr: false,
   head: {
@@ -29,6 +30,7 @@ export default {
     '@nuxtjs/composition-api',
 
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/dayjs',
   ],
 
   modules: ['@nuxtjs/apollo', ['nuxt-i18n', i18n]],
@@ -37,6 +39,12 @@ export default {
     clientConfigs: {
       default: '~/plugins/apollo-config.js',
     },
+  },
+
+  dayjs: {
+    locales: ['en', 'de'],
+    defaultLocale: 'de',
+    plugins: ['utc', 'relativeTime'],
   },
 
   build: {},

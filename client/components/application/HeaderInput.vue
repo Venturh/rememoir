@@ -11,7 +11,8 @@
     <div>
       <input
         v-model="input"
-        type="text"
+        type="search"
+        autocomplete="off"
         name="input"
         class="block w-full border-none rounded-lg outline-none pl-9 sm:pl-14 bg-secondary focus:ring focus:ring-brand"
         :placeholder="placeholder"

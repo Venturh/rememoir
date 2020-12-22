@@ -18,9 +18,9 @@
         @click="open = false"
       >
         <GlobeIcon size="1x" />
-        <nuxt-link :to="switchLocalePath(locale.code)">
+        <ButtonOrLink @click="changeLocale(locale.code)">
           {{ locale.name }}
-        </nuxt-link>
+        </ButtonOrLink>
       </div>
     </div>
   </div>
@@ -32,6 +32,7 @@ import {
   ref,
   watch,
   onUnmounted,
+  useContext,
 } from '@nuxtjs/composition-api'
 import i18n from '@/config/i18n'
 import { GlobeIcon } from 'vue-feather-icons'
@@ -40,14 +41,20 @@ export default defineComponent({
   components: {
     GlobeIcon,
   },
-  setup(props, { root }) {
+  setup() {
     // TODO: nuxt-i18n fix when migrate to composition api
-    const currentLocale = root._i18n.getLocaleCookie()
 
+    const { switchLocalePath, i18n, router, $dayjs } = useContext().app
+    const currentLocale = i18n.getLocaleCookie()
     const open = ref(false)
     const el = ref<HTMLDivElement>()
     const dropDown = ref<HTMLDivElement>()
     const { locales } = i18n
+
+    function changeLocale(code: string) {
+      $dayjs.locale(code)
+      router!.push(switchLocalePath(code))
+    }
 
     function handleClickOutside({ target }: MouseEvent) {
       if (el.value?.contains(target) || dropDown.value?.contains(target)) return
@@ -72,7 +79,7 @@ export default defineComponent({
       document.removeEventListener('mousedown', handleClickOutside)
     })
 
-    return { currentLocale, open, locales, el, dropDown }
+    return { currentLocale, changeLocale, open, locales, el, dropDown }
   },
 })
 </script>

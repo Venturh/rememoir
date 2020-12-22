@@ -9,7 +9,6 @@
         class="relative flex flex-col justify-between p-4 w-52"
       >
         <SidebarMenu :toggled="toggled" />
-
         <div
           class="flex flex-row items-center w-full p-2 space-x-2 rounded-lg bg-primary"
         >
@@ -17,6 +16,7 @@
             <div class="">{{ userInfo.username }}</div>
             <span class="text-sm">{{ userInfo.email }}</span>
           </div>
+
           <div class="flex space-x-2">
             <IconOnlyButton @click="logOut">
               <LogOutIcon size="1.25x" />
