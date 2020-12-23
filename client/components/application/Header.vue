@@ -12,6 +12,7 @@
     />
     <HeaderInput
       v-else
+      :ref="addInput"
       v-model="input"
       :placeholder="$t('addNewEntry')"
       class="sm:max-w-md md:max-w-lg lg:max-w-xl"
@@ -51,8 +52,11 @@ export default defineComponent({
   setup(props) {
     const input = ref('')
     const inputType = ref(props.type)
+
     const { $db } = useContext().app
 
+    const addInput = ref<HTMLInputElement>()
+    console.log('🚀 ~ file: Header.vue ~ line 59 ~ setup ~ addInput', addInput)
     watch(
       () => props.type,
       (value) => {
@@ -91,7 +95,7 @@ export default defineComponent({
       input.value = ''
     }
 
-    return { input, add, inputType }
+    return { input, add, inputType, addInput }
   },
 })
 </script>

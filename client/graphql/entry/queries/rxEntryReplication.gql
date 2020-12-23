@@ -19,6 +19,7 @@ query rxEntryReplication(
       ogImageUrl
       ogAudioUrl
       ogVideoUrl
+      embeddedUrl
       type
     }
     categories

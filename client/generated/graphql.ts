@@ -32,6 +32,7 @@ export type ContentPreview = {
   ogImageUrl?: Maybe<Scalars['String']>;
   ogVideoUrl?: Maybe<Scalars['String']>;
   ogAudioUrl?: Maybe<Scalars['String']>;
+  embeddedUrl?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -125,6 +126,7 @@ export type ContentPreviewInput = {
   ogImageUrl?: Maybe<Scalars['String']>;
   ogVideoUrl?: Maybe<Scalars['String']>;
   ogAudioUrl?: Maybe<Scalars['String']>;
+  embeddedUrl?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -392,7 +394,7 @@ export type RxEntryReplicationQuery = (
     & Pick<Entry, 'id' | 'contentText' | 'contentUrl' | 'contentType' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted'>
     & { contentPreview?: Maybe<(
       { __typename?: 'ContentPreview' }
-      & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'type'>
+      & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'type'>
     )> }
   )> }
 );
@@ -726,6 +728,7 @@ export const RxEntryReplicationDocument = gql`
       ogImageUrl
       ogAudioUrl
       ogVideoUrl
+      embeddedUrl
       type
     }
     categories

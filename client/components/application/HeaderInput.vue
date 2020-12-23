@@ -10,6 +10,7 @@
     </div>
     <div>
       <input
+        :ref="ref"
         v-model="input"
         type="search"
         autocomplete="off"
@@ -48,6 +49,10 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: '',
+    },
+    ref: {
+      type: Object,
+      defaul: () => {},
     },
   },
   setup() {

@@ -1,38 +1,41 @@
 <template>
-  <div class="relative w-3/4 px-4 space-y-2 rounded-lg">
+  <div class="relative px-4 space-y-2 rounded-lg">
     <p class="text-xs">{{ contentPreview.ogSiteName }}</p>
     <ButtonOrLink out :to="contentUrl">
       {{ contentPreview.ogTitle }}
     </ButtonOrLink>
-    <div v-if="contentPreview.type === 'video.other'">
+    <div v-if="contentPreview.type.includes('video')">
       <div v-if="!play" class="relative">
         <img
           :src="contentPreview.ogImageUrl"
           alt="previewImage"
           class="object-cover"
         />
-        <div
-          class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center w-20 h-12 m-auto space-x-2 rounded-full opacity-80 bg-primary"
-        >
-          <IconOnlyButton @click="play = !play">
-            <PlayIcon
-              class="opacity-100 fill-current text-primary"
-              size="1.5x"
-            />
-          </IconOnlyButton>
-          <IconOnlyButton out :to="contentUrl">
-            <ExternalLinkIcon
-              class="opacity-100 stroke-current text-primary"
-              size="1.5x"
-            />
-          </IconOnlyButton>
-        </div>
+        <PlayOverlay :content-url="contentUrl" @play="play = true" />
       </div>
       <iframe
         v-if="play"
         class="object-cover w-full h-60"
-        :src="contentPreview.ogVideoUrl + '?autoplay=1&auto_play=1'"
+        :src="contentPreview.ogVideoUrl + '?autoplay=1'"
         sandbox="allow-same-origin allow-scripts"
+      />
+    </div>
+
+    <div v-else-if="contentPreview.type.includes('music')">
+      <div v-if="!play" class="relative">
+        <img
+          :src="contentPreview.ogImageUrl"
+          alt="previewImage"
+          class="object-cover w-full h-32"
+        />
+        <PlayOverlay :content-url="contentUrl" @play="play = true" />
+      </div>
+      <iframe
+        v-else
+        class="w-screen h-32 max-w-full"
+        :src="contentPreview.embeddedUrl"
+        frameborder="0"
+        sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
       />
     </div>
 
@@ -43,10 +46,8 @@
 
 <script>
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { PlayIcon, ExternalLinkIcon } from 'vue-feather-icons'
 
 export default defineComponent({
-  components: { PlayIcon, ExternalLinkIcon },
   props: {
     contentUrl: {
       type: String,
@@ -58,6 +59,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    console.log('🚀 ~ file: LinkEntry.vue ~ line 63 ~ setup ~ props', props)
     const play = ref(false)
     return { play }
   },

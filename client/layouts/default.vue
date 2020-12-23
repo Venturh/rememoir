@@ -50,6 +50,21 @@ export default defineComponent({
         nextDay: '[Morgen, ] DD.MM.YYYY',
         lastWeek: '[last] dddd ',
       },
+      relativeTime: {
+        future: '%s',
+        past: '%s',
+        s: 'now',
+        m: '1 min',
+        mm: '%d min',
+        h: '1 h',
+        hh: '%d hrs',
+        d: '1 d',
+        dd: '% d',
+        M: '1 m',
+        MM: '% dm',
+        y: '1 y',
+        yy: '%d y',
+      },
     })
     $dayjs.updateLocale('de', {
       calendar: {
@@ -58,16 +73,28 @@ export default defineComponent({
         nextDay: '[Morgen, ] DD.MM.YYYY',
         lastWeek: '[Letzte Woche] dddd ',
       },
+      relativeTime: {
+        future: '%s',
+        past: '%s',
+        s: 'gerade',
+        m: '1 min',
+        mm: '%d min',
+        h: '1 std',
+        hh: '%d std',
+        d: '1 t',
+        dd: '%d t',
+        M: '1 m',
+        MM: '%d m',
+        y: '1 j',
+        yy: '%d j',
+      },
     })
 
     window.addEventListener('keydown', hotkeyListener)
 
     onUnmounted(async () => {
-      console.log('unmount')
-
       window.removeEventListener('keydown', hotkeyListener)
-      await $db.destroy()
-      console.log($db)
+      await $db.remove()
     })
 
     return { toggle, theme, type }

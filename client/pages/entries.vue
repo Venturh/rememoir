@@ -2,7 +2,7 @@
   <div class="flex flex-col-reverse space-x-6 lg:flex-row lg:justify-between">
     <div class="sm:max-w-md md:max-w-lg lg:max-w-xl">
       <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
-      <div v-if="entries">
+      <div v-if="entries" class="space-y-2">
         <div v-for="date in Object.keys(entries)" :key="date" class="space-y-2">
           <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
             {{ date }}
@@ -26,9 +26,8 @@
           />
         </div>
       </div>
-
-      <div>Kalender und Filter</div>
     </div>
+    <div>Kalender und Filters</div>
   </div>
 </template>
 

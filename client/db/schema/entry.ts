@@ -40,7 +40,7 @@ export const entrySchema: RxJsonSchema<EntryInput> = {
       type: 'string',
     },
     contentPreview: {
-      type: 'object',
+      type: ['object', 'null'],
     },
     categories: {
       type: 'array',

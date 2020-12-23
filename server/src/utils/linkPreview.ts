@@ -7,6 +7,7 @@ export type LinkPreview = {
   ogImageUrl: string
   ogVideoUrl?: string
   ogAudioUrl?: string
+  embeddedUrl?: string
   type: string
   // type: keyof typeof LinkType
 }
@@ -25,6 +26,7 @@ export async function generateLinkPreview(url: string) {
         ogVideo,
         ogAudio,
         ogType,
+        twitterPlayer,
         ogSiteName,
       } = result
       console.log(result!)
@@ -35,6 +37,7 @@ export async function generateLinkPreview(url: string) {
         ogImageUrl: ogImage!.url,
         ogVideoUrl: ogVideo?.url,
         ogAudioUrl: ogAudio,
+        embeddedUrl: twitterPlayer.url,
         type: ogType! as string,
       }
       console.log('preview', preview)
