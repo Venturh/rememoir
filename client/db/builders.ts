@@ -8,7 +8,6 @@ import {
 
 export const pullQueryBuilder = (doc) => {
   if (!doc) {
-    // the first pull does not have a start-document
     doc = {
       id: '',
       updatedAt: '0',

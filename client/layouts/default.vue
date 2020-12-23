@@ -30,7 +30,7 @@ import { useTheme } from '@/hooks'
 export default defineComponent({
   setup() {
     const { theme } = useTheme()
-    const { $dayjs } = useContext().app
+    const { $dayjs, $db } = useContext().app
     const toggle = ref(false)
     const type = ref('search')
 
@@ -62,8 +62,12 @@ export default defineComponent({
 
     window.addEventListener('keydown', hotkeyListener)
 
-    onUnmounted(() => {
+    onUnmounted(async () => {
+      console.log('unmount')
+
       window.removeEventListener('keydown', hotkeyListener)
+      await $db.destroy()
+      console.log($db)
     })
 
     return { toggle, theme, type }

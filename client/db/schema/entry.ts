@@ -1,7 +1,23 @@
-import { RxJsonSchema } from 'rxdb'
+import { RxJsonSchema, RxCollection, RxDocument, RxDatabase } from 'rxdb'
 import { EntryInput } from '../../generated/graphql'
 
-const entrySchema: RxJsonSchema<EntryInput> = {
+type EntryDocMethods = {
+  getText: (id: string) => string
+}
+
+export type EntryDocument = RxDocument<EntryInput, EntryDocMethods>
+
+type EntryCollectionMethods = {
+  countAllDocuments: () => Promise<number>
+}
+
+export type EntryCollection = RxCollection<
+  EntryInput,
+  EntryDocMethods,
+  EntryCollectionMethods
+>
+
+export const entrySchema: RxJsonSchema<EntryInput> = {
   title: 'Entry Schema',
   description: 'The Entry',
   version: 0,
@@ -46,5 +62,3 @@ const entrySchema: RxJsonSchema<EntryInput> = {
     },
   },
 }
-
-export default entrySchema

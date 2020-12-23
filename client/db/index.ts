@@ -1,4 +1,9 @@
-import { createRxDatabase, addRxPlugin } from 'rxdb/plugins/core'
+import {
+  createRxDatabase,
+  addRxPlugin,
+  RxDatabase,
+  addRxPlugin,
+} from 'rxdb/plugins/core'
 
 import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode'
 
@@ -9,13 +14,13 @@ import { RxDBLeaderElectionPlugin } from 'rxdb/plugins/leader-election'
 import { RxDBReplicationPlugin } from 'rxdb/plugins/replication'
 
 import { RxDBReplicationGraphQLPlugin } from 'rxdb/plugins/replication-graphql'
+import { RxDBQueryBuilderPlugin } from 'rxdb/plugins/query-builder'
 
 import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 import { getAccessToken, tryAccessToken } from '../utils/auth'
-import { MyDatabase, Collections } from './types'
-import entrySchema from './schema/entry'
+import { EntryCollection, entrySchema } from './schema/entry'
 
 import {
   pullQueryBuilder,
@@ -31,6 +36,12 @@ addRxPlugin(RxDBLeaderElectionPlugin)
 addRxPlugin(RxDBReplicationPlugin)
 addRxPlugin(PouchdbAdapterIdb)
 addRxPlugin(RxDBReplicationGraphQLPlugin)
+addRxPlugin(RxDBQueryBuilderPlugin)
+
+export interface Collections {
+  entries: EntryCollection
+}
+export type MyDatabase = RxDatabase<Collections>
 
 const syncURL = 'http://localhost:4000/graphql'
 export const graphQLGenerationInput = {
@@ -44,7 +55,7 @@ export const graphQLGenerationInput = {
   },
 }
 
-async function _create(): Promise<MyDatabase> {
+export async function createDb(): Promise<MyDatabase> {
   const db = await createRxDatabase<Collections>({
     name: 'clientdb',
     adapter: 'idb',
@@ -126,11 +137,6 @@ async function _create(): Promise<MyDatabase> {
   return db
 }
 
-const DatabaseService = {
-  DB_CREATE_PROMISE: _create(),
-  get(): Promise<MyDatabase> {
-    return this.DB_CREATE_PROMISE
-  },
+export async function queryEntries(db: MyDatabase) {
+  return await db.entries.find().sort({ updatedAt: 'desc' })
 }
-
-export default DatabaseService

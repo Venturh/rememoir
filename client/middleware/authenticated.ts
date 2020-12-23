@@ -1,10 +1,13 @@
+import { defineNuxtMiddleware } from '@nuxtjs/composition-api'
+import { createDb } from '../db'
 import { tryAccessToken } from '../utils/auth'
 
-export default async function ({ redirect, app }) {
-  // Todo: Make this better and doesnt work with ssr on first load
-
+export default defineNuxtMiddleware(async ({ redirect, app }) => {
   const hasToken = await tryAccessToken()
+
   if (!hasToken) {
     return redirect(app.localePath('/auth/login'))
+  } else {
+    app.$db = await createDb()
   }
-}
+})

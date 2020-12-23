@@ -28,9 +28,14 @@
 </template>
 
 <script lang="ts">
-import DatabaseService from '@/db/db'
 import { EntryInput } from '@/generated/graphql'
-import { defineComponent, ref, watch } from '@nuxtjs/composition-api'
+
+import {
+  defineComponent,
+  ref,
+  useContext,
+  watch,
+} from '@nuxtjs/composition-api'
 import { MenuIcon, PlusIcon } from 'vue-feather-icons'
 export default defineComponent({
   props: {
@@ -46,6 +51,7 @@ export default defineComponent({
   setup(props) {
     const input = ref('')
     const inputType = ref(props.type)
+    const { $db } = useContext().app
 
     watch(
       () => props.type,
@@ -74,15 +80,13 @@ export default defineComponent({
         contentText: split.join(' '),
         contentType,
         contentUrl: contentUrl === null ? '' : contentUrl![0],
-        // contentUrl:'https://open.spotify.com/track/1J2OlTIPluzOmf3RX8eKhT?si=vnZacwXhTEGC4Hbb95u2mg',
         categories,
         hashedKey: 'hashed',
         calendarDate: Date().toString(),
         processing: false,
         updatedAt: Date.now().toString(),
       }
-      const db = await DatabaseService.get()
-      await db.entries.insert(entry)
+      await $db.entries.insert(entry)
       inputType.value = 'search'
       input.value = ''
     }

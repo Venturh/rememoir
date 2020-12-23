@@ -1,6 +1,7 @@
+import { defineNuxtMiddleware } from '@nuxtjs/composition-api'
 import { getAccessToken, requestAccessToken } from '../utils/auth'
 
-export default async function ({ redirect, app }) {
+export default defineNuxtMiddleware(async ({ redirect, app }) => {
   let hasToken = getAccessToken()
   if (!hasToken) await requestAccessToken()
   hasToken = getAccessToken()
@@ -8,4 +9,4 @@ export default async function ({ redirect, app }) {
   if (hasToken) {
     return redirect(app.localePath('/entries'))
   }
-}
+})
