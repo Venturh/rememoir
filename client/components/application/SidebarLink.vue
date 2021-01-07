@@ -1,6 +1,7 @@
 <template>
   <nuxt-link
-    class="relative z-10 flex items-center justify-between p-4 rounded-lg cursor-pointer hover:bg-secondary"
+    active-class="bg-brand25 text-primary hover:bg-brand25"
+    class="relative z-10 flex items-center justify-between p-4 rounded-lg cursor-pointer sidebarlink hover:bg-secondary"
     :to="localePath(`/${item.name}`)"
   >
     <div class="flex space-x-4" @click="$emit('click')">
@@ -39,9 +40,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="postcss">
-a.nuxt-link-exact-active {
-  @apply bg-brand25 text-primary hover:bg-brand25;
-}
-</style>
