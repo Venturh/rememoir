@@ -5,8 +5,8 @@
 .dark {
   --brand: #9ae6b4;
   --brandContrast: #1b2439;
-  --bg: #202a41;
-  --bg-secondary: #1b2439;
+  --bg: #1d2333;
+  --bg-secondary: #171d2d;
   --text-primary: #edf2f7;
   --text-secondary: #cbd5e0;
   --error: #fc8181;
@@ -17,7 +17,7 @@
   --brand: #97e1b0;
   --brandContrast: #1b2439;
   --bg: #ffffff;
-  --bg-secondary: #f7fafc;
+  --bg-secondary: #eeeeee;
   --text-primary: #000000;
   --text-secondary: #4a5568;
   --error: #f56565;

@@ -20,15 +20,13 @@ export default {
 
   css: [],
 
-  plugins: ['@/plugins/provide-apollo-client'],
+  plugins: ['@/plugins/provide-apollo-client', '@/plugins/dayjs'],
 
   components: true,
 
   buildModules: [
     '@nuxt/typescript-build',
-
     '@nuxtjs/composition-api',
-
     '@nuxtjs/tailwindcss',
     '@nuxtjs/dayjs',
   ],
@@ -37,7 +35,7 @@ export default {
 
   apollo: {
     clientConfigs: {
-      default: '~/plugins/apollo-config.js',
+      default: '~/plugins/apollo-config.ts',
     },
   },
 

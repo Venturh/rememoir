@@ -3,9 +3,9 @@
     <div class="sm:max-w-md md:max-w-lg lg:max-w-xl">
       <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
       <div v-if="entries" class="grid gap-4">
-        <div v-for="date in Object.keys(entries)" :key="date" class="cards">
+        <div v-for="date in Object.keys(entries)" :key="date" class="timeline">
           <div
-            class="relative flex-shrink-0 w-3.5 h-3.5 rounded-full bg-brand -left-2 top-2"
+            class="relative flex-shrink-0 w-3.5 h-3.5 rounded-full bg-brand -left-2 top-3.5"
           />
           <div>
             <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
@@ -77,21 +77,21 @@ export default defineComponent({
 </script>
 
 <style>
-.cards {
+.timeline {
   display: flex;
 }
-.cards::before {
+.timeline::before {
   @apply bg-brand;
   content: '';
   position: relative;
-  height: 100%;
+
   width: 3px;
   border-radius: 2px;
-  margin-top: 2em;
+  margin-top: 4em;
 }
 
 /* @media only screen and (min-width: 600px) {
-  .cards::before {
+  .timeline::before {
     display: flex;
   }
 } */

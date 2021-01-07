@@ -25,6 +25,7 @@
             <IconOnlyButton @click="logOut">
               <SettingsIcon size="1.25x" />
             </IconOnlyButton>
+            <ThemeToggle />
           </div>
         </div>
       </div>
