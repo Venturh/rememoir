@@ -9,7 +9,7 @@
         @sidebartoggle="toggle = !toggle"
       />
       <div class="w-full min-h-screen py-2 space-y-2 lg:pl-64">
-        <Header :type="type" @sidebartoggle="toggle = !toggle" />
+        <Header @sidebartoggle="toggle = !toggle" />
         <div class="">
           <Nuxt />
         </div>
@@ -29,19 +29,11 @@ import { useTheme } from '@/hooks'
 
 export default defineComponent({
   setup() {
+    const content = ref<HTMLDivElement>()
+
     const { theme } = useTheme()
     const { $dayjs, $db } = useContext().app
     const toggle = ref(false)
-    const type = ref('search')
-
-    function hotkeyListener(event: KeyboardEvent) {
-      if (event.key === 'i' && event.ctrlKey) {
-        type.value = 'addEntry'
-      } else if (event.key === 'k' && event.ctrlKey) {
-        event.preventDefault()
-        type.value = 'search'
-      }
-    }
 
     $dayjs.updateLocale('en', {
       calendar: {
@@ -90,14 +82,11 @@ export default defineComponent({
       },
     })
 
-    window.addEventListener('keydown', hotkeyListener)
-
     onUnmounted(async () => {
-      window.removeEventListener('keydown', hotkeyListener)
       await $db.remove()
     })
 
-    return { toggle, theme, type }
+    return { toggle, theme, content }
   },
 })
 </script>

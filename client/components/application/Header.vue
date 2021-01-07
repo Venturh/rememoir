@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center justify-between">
-    <div class="lg:hidden">
+  <div class="flex items-center justify-between space-x-2 md:space-x-0">
+    <div class="mt-1.5 lg:hidden">
       <IconOnlyButton @click="$emit('sidebartoggle')">
         <MenuIcon class="stroke-current text-brand" />
       </IconOnlyButton>
@@ -10,13 +10,13 @@
       class="sm:max-w-md md:max-w-lg lg:max-w-xl"
       :placeholder="$t('searchPlaceholder')"
     />
-    <HeaderInput
+    <HeaderAdd
       v-else
-      :ref="addInput"
       v-model="input"
       :placeholder="$t('addNewEntry')"
       class="sm:max-w-md md:max-w-lg lg:max-w-xl"
-      @action="add"
+      @cancel="inputType = 'search'"
+      @action="addEntry"
     />
     <ButtonOrLink
       class="flex items-center h-full p-2 space-x-2 rounded-lg bg-secondary"
@@ -29,73 +29,50 @@
 </template>
 
 <script lang="ts">
-import { EntryInput } from '@/generated/graphql'
+import { add } from '@/db/entry'
 
 import {
   defineComponent,
+  onUnmounted,
   ref,
   useContext,
-  watch,
 } from '@nuxtjs/composition-api'
 import { MenuIcon, PlusIcon } from 'vue-feather-icons'
 export default defineComponent({
-  props: {
-    type: {
-      type: String,
-      default: 'search',
-    },
-  },
   components: {
     MenuIcon,
     PlusIcon,
   },
-  setup(props) {
+  setup() {
     const input = ref('')
-    const inputType = ref(props.type)
-
+    const inputType = ref('search')
     const { $db } = useContext().app
 
-    const addInput = ref<HTMLInputElement>()
-    console.log('🚀 ~ file: Header.vue ~ line 59 ~ setup ~ addInput', addInput)
-    watch(
-      () => props.type,
-      (value) => {
-        inputType.value = value
-      }
-    )
-
-    async function add(data: string) {
-      const split = data.split(' ')
-      let categories = split.filter((s) => s.includes('#'))
-      if (categories) {
-        categories = categories.map((s) => {
-          split.splice(split.indexOf(s), 1)
-          return s.substring(1)
-        })
-      }
-
-      const contentUrl = data.match(/\b(https?:\/\/.*?\.[a-z]{2,4}\/[^\s]*\b)/g)
-      if (contentUrl) split.splice(split.indexOf(contentUrl[0], 1))
-      const contentType = contentUrl === null ? 'Note' : 'Link'
-
-      const id = require('bson-objectid')
-      const entry: EntryInput = {
-        id: id().str,
-        contentText: split.join(' '),
-        contentType,
-        contentUrl: contentUrl === null ? '' : contentUrl![0],
-        categories,
-        hashedKey: 'hashed',
-        calendarDate: Date().toString(),
-        processing: false,
-        updatedAt: Date.now().toString(),
-      }
-      await $db.entries.insert(entry)
+    async function addEntry(data: string) {
+      await add(data, $db)
       inputType.value = 'search'
       input.value = ''
     }
 
-    return { input, add, inputType, addInput }
+    function cancel() {
+      inputType.value = 'search'
+    }
+
+    function hotkeyListener(event: KeyboardEvent) {
+      if (event.key === 'i' && event.ctrlKey) {
+        inputType.value = 'addEntry'
+      } else if (event.key === 'k' && event.ctrlKey) {
+        event.preventDefault()
+        inputType.value = 'search'
+      }
+    }
+
+    window.addEventListener('keydown', hotkeyListener)
+    onUnmounted(() => {
+      window.removeEventListener('keydown', hotkeyListener)
+    })
+
+    return { input, addEntry, inputType, cancel }
   },
 })
 </script>

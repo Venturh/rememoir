@@ -2,28 +2,35 @@
   <div class="flex flex-col-reverse space-x-6 lg:flex-row lg:justify-between">
     <div class="sm:max-w-md md:max-w-lg lg:max-w-xl">
       <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
-      <div v-if="entries" class="space-y-2">
-        <div v-for="date in Object.keys(entries)" :key="date" class="space-y-2">
-          <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
-            {{ date }}
-          </div>
-          <BaseEntry
-            v-for="(entry, index) in entries[date]"
-            :key="index"
-            class="mx-auto max-w-xsm sm:max-w-md md:max-w-lg lg:max-w-xl"
-            v-bind="{
-              contentText: entry.contentText,
-              contentUrl: entry.contentUrl,
-              contentType: entry.contentType,
-              contentPreview: entry.contentPreview,
-              categories: entry.categories,
-              hashedKey: entry.hashedKey,
-              calendarDate: entry.calendarDate,
-              processing: entry.processing,
-              updatedAt: entry.updatedAt,
-              id: entry.id,
-            }"
+      <div v-if="entries" class="grid gap-4">
+        <div v-for="date in Object.keys(entries)" :key="date" class="cards">
+          <div
+            class="relative flex-shrink-0 w-3.5 h-3.5 rounded-full bg-brand -left-2 top-2"
           />
+          <div>
+            <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
+              {{ date }}
+            </div>
+            <div class="mt-3 space-y-3">
+              <BaseEntry
+                v-for="(entry, index) in entries[date]"
+                :key="index"
+                class="mx-auto max-w-xsm sm:max-w-md md:max-w-lg lg:max-w-xl"
+                v-bind="{
+                  contentText: entry.contentText,
+                  contentUrl: entry.contentUrl,
+                  contentType: entry.contentType,
+                  contentPreview: entry.contentPreview,
+                  categories: entry.categories,
+                  hashedKey: entry.hashedKey,
+                  calendarDate: entry.calendarDate,
+                  processing: entry.processing,
+                  updatedAt: entry.updatedAt,
+                  id: entry.id,
+                }"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -68,3 +75,24 @@ export default defineComponent({
   },
 })
 </script>
+
+<style>
+.cards {
+  display: flex;
+}
+.cards::before {
+  @apply bg-brand;
+  content: '';
+  position: relative;
+  height: 100%;
+  width: 3px;
+  border-radius: 2px;
+  margin-top: 2em;
+}
+
+/* @media only screen and (min-width: 600px) {
+  .cards::before {
+    display: flex;
+  }
+} */
+</style>

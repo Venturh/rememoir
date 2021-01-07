@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex flex-col justify-between w-screen px-3 py-4 rounded-lg bg-secondary"
-  >
+  <div class="flex flex-col justify-between px-3 py-4 rounded-lg bg-secondary">
     <div class="flex items-start justify-between">
       <div class="flex flex-col w-3/4 space-y-2 overflow-hidden overflow-clip">
         <span v-if="contentText" class="">{{ contentText }}</span>

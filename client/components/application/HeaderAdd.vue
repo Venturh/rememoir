@@ -8,9 +8,10 @@
         class="ml-2 stroke-current bg-secondary text-brand"
       />
     </div>
-    <div>
+
+    <div class="flex space-x-2">
       <input
-        :ref="ref"
+        ref="inputRef"
         v-model="input"
         type="search"
         autocomplete="off"
@@ -25,19 +26,20 @@
             : $emit('action', input)
         "
       />
-      <select-menu
-        ref="selectMenu"
-        name="categories"
-        :open="categoriesOpen"
-        :options="['Youtube', 'Music', 'Audio', 'Link']"
-        @selected="addFromMenu"
-      />
+      <Button @click="$emit('cancel')">Cancel</Button>
     </div>
+    <select-menu
+      ref="selectMenu"
+      name="categories"
+      :open="categoriesOpen"
+      :options="['Youtube', 'Music', 'Audio', 'Link']"
+      @selected="addFromMenu"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { SearchIcon, ColumnsIcon } from 'vue-feather-icons'
 
 export default defineComponent({
@@ -50,18 +52,19 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    ref: {
-      type: Object,
-      defaul: () => {},
-    },
   },
   setup() {
     const input = ref('')
+    const inputRef = ref<HTMLInputElement>()
     const categoriesOpen = ref(false)
 
     function addFromMenu(value: string) {
       input.value += value
     }
+
+    onMounted(() => {
+      inputRef.value?.focus()
+    })
 
     watch(
       () => input.value,
@@ -72,7 +75,7 @@ export default defineComponent({
       }
     )
 
-    return { input, categoriesOpen, addFromMenu }
+    return { input, inputRef, categoriesOpen, addFromMenu }
   },
 })
 </script>

@@ -58,8 +58,7 @@ export default defineComponent({
       default: () => ({ type: 'none' }),
     },
   },
-  setup(props) {
-    console.log('🚀 ~ file: LinkEntry.vue ~ line 63 ~ setup ~ props', props)
+  setup() {
     const play = ref(false)
     return { play }
   },
