@@ -20,6 +20,7 @@ module.exports = {
       secondaryText: 'var(--text-secondary)',
       primaryBg: 'var(--bg)',
       secondaryBg: 'var(--bg-secondary)',
+      transparent: 'transparent',
     },
 
     extend: {
@@ -44,6 +45,9 @@ module.exports = {
       },
     },
   },
-  variants: { ringColor: ['hover', 'active'], ringWidth: ['hover', 'active'] },
+  variants: {
+    ringColor: ['hover', 'active', 'focus'],
+    ringWidth: ['hover', 'active', 'focus'],
+  },
   plugins: [require('@tailwindcss/forms')],
 }

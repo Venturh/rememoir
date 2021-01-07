@@ -12,6 +12,7 @@
     />
     <HeaderAdd
       v-else
+      ref="headerAdd"
       v-model="input"
       :placeholder="$t('addNewEntry')"
       class="sm:max-w-md md:max-w-lg lg:max-w-xl"
@@ -47,6 +48,7 @@ export default defineComponent({
   setup() {
     const input = ref('')
     const inputType = ref('search')
+    const headerAdd = ref()
     const { $db } = useContext().app
 
     async function addEntry(data: string) {
@@ -62,6 +64,7 @@ export default defineComponent({
     function hotkeyListener(event: KeyboardEvent) {
       if (event.key === 'i' && event.ctrlKey) {
         inputType.value = 'addEntry'
+        if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
       } else if (event.key === 'k' && event.ctrlKey) {
         event.preventDefault()
         inputType.value = 'search'
@@ -73,7 +76,7 @@ export default defineComponent({
       window.removeEventListener('keydown', hotkeyListener)
     })
 
-    return { input, addEntry, inputType, cancel }
+    return { input, addEntry, inputType, cancel, headerAdd }
   },
 })
 </script>

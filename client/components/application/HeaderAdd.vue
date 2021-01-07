@@ -9,22 +9,20 @@
       />
     </div>
 
-    <div class="flex space-x-2">
-      <input
+    <div
+      class="flex space-x-2"
+      @keydown.esc.prevent="$emit('cancel')"
+      @keydown.up.prevent="$refs.selectMenu.up()"
+      @keydown.down.prevent="$refs.selectMenu.down()"
+      @keydown.exact.enter.prevent="
+        categoriesOpen ? $refs.selectMenu.setSelected() : $emit('action', input)
+      "
+    >
+      <Input
         ref="inputRef"
         v-model="input"
-        type="search"
-        autocomplete="off"
-        name="input"
-        class="block w-full border-none rounded-lg outline-none pl-9 sm:pl-14 bg-secondary focus:ring focus:ring-brand"
+        :input-value="input"
         :placeholder="placeholder"
-        @keydown.up.prevent="$refs.selectMenu.up()"
-        @keydown.down.prevent="$refs.selectMenu.down()"
-        @keydown.exact.enter.prevent="
-          categoriesOpen
-            ? $refs.selectMenu.setSelected()
-            : $emit('action', input)
-        "
       />
       <Button @click="$emit('cancel')">Cancel</Button>
     </div>
@@ -55,7 +53,7 @@ export default defineComponent({
   },
   setup() {
     const input = ref('')
-    const inputRef = ref<HTMLInputElement>()
+    const inputRef = ref<any>()
     const categoriesOpen = ref(false)
 
     function addFromMenu(value: string) {
@@ -63,7 +61,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      inputRef.value?.focus()
+      inputRef.value?.$el.focus()
     })
 
     watch(
@@ -75,7 +73,7 @@ export default defineComponent({
       }
     )
 
-    return { input, inputRef, categoriesOpen, addFromMenu }
+    return { input, inputRef, categoriesOpen, addFromMenu, focus }
   },
 })
 </script>
