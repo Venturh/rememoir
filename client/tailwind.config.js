@@ -10,7 +10,9 @@ module.exports = {
   theme: {
     colors: {
       brand: 'var(--brand)',
+      brandDarker: 'var(--brandDarker)',
       brandContrast: 'var(--brandContrast)',
+      brand25: 'var(--brand25)',
       error: 'var(--error)',
       success: 'var(--success)',
       gray: colors.coolGray,
@@ -42,6 +44,6 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: { ringColor: ['hover', 'active'], ringWidth: ['hover', 'active'] },
   plugins: [require('@tailwindcss/forms')],
 }

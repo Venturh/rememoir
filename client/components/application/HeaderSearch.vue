@@ -1,7 +1,7 @@
 <template>
-  <div class="relative w-full mt-1 rounded-md shadow-sm">
+  <div class="relative w-full rounded-md shadow-sm">
     <div
-      class="absolute inset-y-0 left-0 flex items-center pointer-events-none sm:pl-3"
+      class="absolute inset-y-0 left-0 flex items-center pointer-events-none"
     >
       <SearchIcon
         size="1.25x"
@@ -13,7 +13,7 @@
         type="search"
         autocomplete="off"
         name="input"
-        class="block w-full border-none rounded-lg outline-none pl-9 sm:pl-14 bg-secondary focus:ring focus:ring-brand"
+        class="block w-full p-2 border-none rounded-lg outline-none pl-9 sm:pl-14 bg-secondary focus:ring focus:ring-brand"
         :placeholder="placeholder"
         @keydown.exact.enter.prevent="$emit('action', input)"
       />

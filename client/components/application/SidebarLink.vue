@@ -1,13 +1,10 @@
 <template>
   <nuxt-link
-    class="relative z-10 flex items-center justify-between px-2 cursor-pointer lg:px-4"
+    class="relative z-10 flex items-center justify-between p-4 rounded-lg cursor-pointer hover:bg-secondary"
     :to="localePath(`/${item.name}`)"
   >
     <div class="flex space-x-4" @click="$emit('click')">
-      <component
-        :is="item.icon"
-        :class="{ 'text-brand stroke-current': active }"
-      />
+      <component :is="item.icon" />
       <span>{{ $t(item.name) }}</span>
     </div>
 
@@ -34,10 +31,6 @@ export default defineComponent({
       type: Object,
       default: () => {},
     },
-    active: {
-      type: Boolean,
-      default: false,
-    },
   },
   setup() {
     const open = ref(false)
@@ -46,3 +39,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="postcss">
+a.nuxt-link-exact-active {
+  @apply bg-brand25 text-primary hover:bg-brand25;
+}
+</style>

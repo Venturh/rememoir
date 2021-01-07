@@ -18,13 +18,14 @@
       @cancel="inputType = 'search'"
       @action="addEntry"
     />
-    <ButtonOrLink
-      class="flex items-center h-full p-2 space-x-2 rounded-lg bg-secondary"
+    <Button
+      variant="1"
+      class="px-3 py-2 lg:space-x-2"
       @click="inputType = 'addEntry'"
     >
-      <PlusIcon class="fill-current text-brand" size="1.5x" />
       <span class="hidden lg:block">Add Entry</span>
-    </ButtonOrLink>
+      <PlusIcon class="fill-current" size="1.5x" />
+    </Button>
   </div>
 </template>
 

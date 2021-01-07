@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="flex justify-center bg-primary"
-    :class="{ 'border-r border-primaryText': !isMobile }"
-  >
+  <div class="flex justify-center bg-primary lg:border-r lg:border-brand25">
     <transition name="slide-fade">
       <div
         v-if="toggled || !isMobile"

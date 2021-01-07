@@ -4,7 +4,9 @@
 
 .dark {
   --brand: #9ae6b4;
+  --brandDarker: #8bcfa2;
   --brandContrast: #1b2439;
+  --brand25: rgba(154, 230, 180, 0.25);
   --bg: #1d2333;
   --bg-secondary: #171d2d;
   --text-primary: #edf2f7;
@@ -15,9 +17,11 @@
 
 .light {
   --brand: #97e1b0;
+  --brandDarker: #88cb9e;
   --brandContrast: #1b2439;
+  --brand25: rgba(151, 225, 176, 0.25);
   --bg: #ffffff;
-  --bg-secondary: #eeeeee;
+  --bg-secondary: #eef1f4;
   --text-primary: #000000;
   --text-secondary: #4a5568;
   --error: #f56565;
