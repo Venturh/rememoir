@@ -5,7 +5,13 @@
   <nuxt-link v-else-if="to && !out" :to="to">
     <slot />
   </nuxt-link>
-  <button v-else type="button" @click="$emit('click')">
+  <button
+    v-else
+    type="button"
+    @mouseover="$emit('mouseover')"
+    @mouseleave="$emit('mouseleave')"
+    @click="$emit('click')"
+  >
     <slot />
   </button>
 </template>

@@ -10,7 +10,7 @@
           <img
             :src="contentPreview.ogImageUrl"
             alt="previewImage"
-            class="object-cover"
+            class="object-cover w-full h-60"
           />
           <PlayOverlay :content-url="contentUrl" @play="play = true" />
         </div>
