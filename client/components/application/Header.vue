@@ -24,7 +24,6 @@
       class="px-3 py-2 lg:space-x-2"
       @click="inputType = 'addEntry'"
     >
-      <span class="hidden lg:block">Add Entry</span>
       <PlusIcon class="fill-current" size="1.5x" />
     </Button>
   </div>

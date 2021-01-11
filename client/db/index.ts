@@ -20,6 +20,7 @@ import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 import { getAccessToken, tryAccessToken } from '../utils/auth'
+import { decryptEntry } from '../utils/crypto'
 import { EntryCollection, entrySchema } from './schema/entry'
 
 import {
@@ -137,6 +138,6 @@ export async function createDb(): Promise<MyDatabase> {
   return db
 }
 
-export async function queryEntries(db: MyDatabase) {
-  return await db.entries.find().sort({ updatedAt: 'desc' })
+export function queryEntries(db: MyDatabase) {
+  return db.entries.find().sort({ updatedAt: 'desc' })
 }

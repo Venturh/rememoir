@@ -1,7 +1,7 @@
 import { RxJsonSchema, RxCollection, RxDocument, RxDatabase } from 'rxdb'
 import { EntryInput } from '../../generated/graphql'
 
-type EntryDocMethods = {
+export type EntryDocMethods = {
   getText: (id: string) => string
 }
 

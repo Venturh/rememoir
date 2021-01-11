@@ -1,4 +1,5 @@
 import { EntryInput } from '../../generated/graphql'
+import { encryptEntry } from '../../utils/crypto'
 import { MyDatabase } from '../index'
 
 export async function add(data: string, db: MyDatabase) {
@@ -27,5 +28,6 @@ export async function add(data: string, db: MyDatabase) {
     processing: false,
     updatedAt: Date.now().toString(),
   }
-  await db.entries.insert(entry)
+  const encrypedEntry = encryptEntry(entry)
+  await db.entries.insert(encrypedEntry)
 }

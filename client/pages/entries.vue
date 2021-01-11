@@ -16,18 +16,20 @@
                 v-for="(entry, index) in entries[date]"
                 :key="index"
                 class="mx-auto max-w-xsm sm:max-w-md md:max-w-lg lg:max-w-xl"
-                v-bind="{
-                  contentText: entry.contentText,
-                  contentUrl: entry.contentUrl,
-                  contentType: entry.contentType,
-                  contentPreview: entry.contentPreview,
-                  categories: entry.categories,
-                  hashedKey: entry.hashedKey,
-                  calendarDate: entry.calendarDate,
-                  processing: entry.processing,
-                  updatedAt: entry.updatedAt,
-                  id: entry.id,
-                }"
+                v-bind="
+                  decryptEntry({
+                    contentText: entry.contentText,
+                    contentUrl: entry.contentUrl,
+                    contentType: entry.contentType,
+                    contentPreview: entry.contentPreview,
+                    categories: entry.categories,
+                    hashedKey: entry.hashedKey,
+                    calendarDate: entry.calendarDate,
+                    processing: entry.processing,
+                    updatedAt: entry.updatedAt,
+                    id: entry.id,
+                  })
+                "
               />
             </div>
           </div>
@@ -49,6 +51,7 @@ import {
 import { groupBy } from 'lodash'
 import { queryEntries } from '@/db'
 import { EntryInput } from '@/generated/graphql'
+import { decryptEntry } from '@/utils/crypto'
 
 export default defineComponent({
   middleware: ['authenticated'],
@@ -60,18 +63,20 @@ export default defineComponent({
     onMounted(async () => {
       const query = await queryEntries($db)
 
-      query.$.subscribe((results) => {
+      query.$.subscribe(async (results) => {
         awaitReplication.value = true
-        entries.value = groupBy(results, (result: EntryInput) =>
+        const grouped = await groupBy(results, (result: EntryInput) =>
           $dayjs(parseInt(result.updatedAt)).calendar()
         )
+
+        entries.value = grouped
+
         awaitReplication.value = false
       })
-
       awaitReplication.value = false
     })
 
-    return { entries, awaitReplication }
+    return { entries, awaitReplication, decryptEntry }
   },
 })
 </script>
