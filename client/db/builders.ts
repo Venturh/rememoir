@@ -31,6 +31,7 @@ export const pushQueryBuilder = (entry: EntryInput) => {
       calendarDate: entry.calendarDate,
       categories: entry.categories,
       updatedAt: entry.updatedAt,
+      deleted: entry.deleted,
     },
   }
 

@@ -1,3 +1,4 @@
+import { wrap } from '@mikro-orm/core'
 import { PubSub } from 'apollo-server-express'
 import {
   Resolver,
@@ -40,7 +41,6 @@ class EntryResolver {
     @Ctx()
     { em, payload }: MyContext
   ) {
-    //TODO: Maybe nake this
     const minUpdatedAt = parseInt(minUpdatedAtString)
     const entries = await em.find(Entry, { user: payload?.userId })
     if (!entries) return
@@ -75,22 +75,22 @@ class EntryResolver {
   ): Promise<Entry> {
     const user = await em.findOne(User, { id: payload?.userId })
     const entries = await em.find(Entry, {})
-    let oldEntry = entries!.find((e) => e.id === entryInput!.id)
+    const oldEntry = entries!.find((e) => e.id === entryInput!.id)
     if (oldEntry) {
-      oldEntry = { ...entryInput, ...oldEntry }
-      em.persistAndFlush(oldEntry)
+      wrap(oldEntry).assign({ ...entryInput })
+      await em.flush()
       pubsub.publish('changedEntry', oldEntry)
       return oldEntry
+    } else {
+      const doc = new Entry(entryInput, user!)
+      if (entryInput.contentType === ContentType.LINK) {
+        const linkPreview = await generateLinkPreview(entryInput.contentUrl)
+        doc.contentPreview = linkPreview
+      }
+      em.persistAndFlush(doc)
+      pubsub.publish('changedEntry', doc)
+      return doc
     }
-    const doc = new Entry(entryInput, user!)
-    if (entryInput.contentType === ContentType.LINK) {
-      const linkPreview = await generateLinkPreview(entryInput.contentUrl)
-      doc.contentPreview = linkPreview
-    }
-
-    em.persistAndFlush(doc)
-    pubsub.publish('changedEntry', doc)
-    return doc
   }
 
   @Subscription(() => Entry, {

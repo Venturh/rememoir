@@ -117,6 +117,7 @@ export type EntryInput = {
   updatedAt: Scalars['String'];
   hashedKey: Scalars['String'];
   processing: Scalars['Boolean'];
+  deleted?: Maybe<Scalars['Boolean']>;
 };
 
 export type ContentPreviewInput = {

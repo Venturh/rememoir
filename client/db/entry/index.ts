@@ -31,3 +31,18 @@ export async function add(data: string, db: MyDatabase) {
   const encrypedEntry = encryptEntry(entry)
   await db.entries.insert(encrypedEntry)
 }
+
+export async function remove(idToDelete: number, db: MyDatabase) {
+  const entry = await db.entries
+    .findOne({ selector: { id: idToDelete } })
+    .exec()
+  console.log('remove ~ entry', entry)
+  if (entry) {
+    try {
+      await entry.remove()
+    } catch (err) {
+      console.error('could not remove entry')
+      console.dir(err)
+    }
+  }
+}

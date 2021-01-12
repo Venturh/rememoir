@@ -40,7 +40,7 @@ export async function generateLinkPreview(url: string) {
         embeddedUrl: twitterPlayer.url,
         type: ogType! as string,
       }
-      console.log('preview', preview)
+
       return preview
     } else throw Error('INVALID_URL')
   } else throw Error('INVALID_URL')

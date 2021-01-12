@@ -14,12 +14,9 @@
       </div>
       <div class="flex items-center">
         <span class="text-sm">{{ timeFrom }}</span>
-        <IconOnlyButton
-          @mouseover="showMenu = !showMenu"
-          @click="showMenu = !showMenu"
-        >
+        <button @mouseover="showMenu = !showMenu" @click="showMenu = !showMenu">
           <MoreVerticalIcon size="1.25x" />
-        </IconOnlyButton>
+        </button>
       </div>
       <Menu
         v-if="showMenu"
@@ -27,7 +24,7 @@
         :secondary-items="secondaryMenuItems"
         class="absolute right-5 top-10"
         @mouseleave="showMenu = false"
-        @click="handleMenuClick(item)"
+        @click="handleMenuClick"
       />
     </div>
 
@@ -46,13 +43,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   computed,
   defineComponent,
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
+
 import {
   MoreVerticalIcon,
   BookmarkIcon,
@@ -64,6 +62,9 @@ import {
   MailIcon,
   SkipBackIcon,
 } from 'vue-feather-icons'
+
+import { remove } from '@/db/entry'
+
 export default defineComponent({
   components: {
     MoreVerticalIcon,
@@ -119,13 +120,14 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { $db } = useContext().app
     const showMenu = ref(false)
     const dayjs = useContext().app.$dayjs
     const primaryMenuItems = [
-      { name: 'Pin', icon: BookmarkIcon },
-      { name: 'Edit', icon: EditIcon },
-      { name: 'Archive', icon: ArchiveIcon },
-      { name: 'Remove', icon: DeleteIcon },
+      { name: 'Pin', icon: BookmarkIcon, action: 'pin' },
+      { name: 'Edit', icon: EditIcon, action: 'edit' },
+      { name: 'Archive', icon: ArchiveIcon, action: 'archieve' },
+      { name: 'Delete', icon: DeleteIcon, action: 'delete' },
       {
         name: 'Share',
         icon: Share2Icon,
@@ -134,13 +136,22 @@ export default defineComponent({
     ]
 
     const secondaryMenuItems = [
-      { name: 'Copy Link', icon: BookmarkIcon },
-      { name: 'Twitter', icon: TwitterIcon },
-      { name: 'Mail', icon: MailIcon },
-      { name: 'Back', icon: SkipBackIcon, goto: 'primary' },
+      { name: 'Copy Link', icon: BookmarkIcon, action: 'link' },
+      { name: 'Twitter', icon: TwitterIcon, action: 'twitter' },
+      { name: 'Mail', icon: MailIcon, action: 'mail' },
+      { name: 'Back', icon: SkipBackIcon, goto: 'primary', action: 'back' },
     ]
 
-    function handleMenuClick(item) {
+    function handleMenuClick(itemName: string) {
+      console.log('handleMenuClick ~ item', itemName)
+      switch (itemName) {
+        case 'delete':
+          remove(props.id, $db)
+          break
+
+        default:
+          break
+      }
       showMenu.value = false
       // TODO make stuff with item
     }

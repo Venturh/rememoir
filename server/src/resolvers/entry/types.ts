@@ -32,4 +32,7 @@ export class EntryInput {
 
   @Field()
   processing: boolean
+
+  @Field({ nullable: true })
+  deleted?: boolean
 }
