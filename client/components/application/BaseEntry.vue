@@ -1,9 +1,9 @@
 <template>
   <div
-    class="relative flex flex-col justify-between px-3 py-4 rounded-lg bg-secondary"
+    class="relative flex flex-col justify-between w-screen px-3 py-4 rounded-lg bg-secondary"
   >
     <div class="flex items-start justify-between">
-      <div class="flex flex-col w-3/4 space-y-2 overflow-hidden overflow-clip">
+      <div class="space-y-2">
         <span v-if="contentText" class="">{{ contentText }}</span>
         <LinkEntry
           v-if="contentType === 'Link'"
@@ -12,7 +12,7 @@
           :content-preview="contentPreview"
         />
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center flex-shrink-0">
         <span class="text-sm">{{ timeFrom }}</span>
         <button @mouseover="showMenu = !showMenu" @click="showMenu = !showMenu">
           <MoreVerticalIcon size="1.25x" />
@@ -153,7 +153,6 @@ export default defineComponent({
           break
       }
       showMenu.value = false
-      // TODO make stuff with item
     }
     const timeFrom = computed(() => {
       return dayjs(parseInt(props.updatedAt)).fromNow()

@@ -24,7 +24,6 @@
         :input-value="input"
         :placeholder="placeholder"
       />
-      <Button @click="$emit('cancel')">Cancel</Button>
     </div>
     <select-menu
       ref="selectMenu"

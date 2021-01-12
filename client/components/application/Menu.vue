@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-32 rounded-md bg-primary"
+    class="z-50 w-32 rounded-md bg-primary"
     @mouseover="$emit('mouseover')"
     @mouseleave="$emit('mouseleave')"
   >
@@ -8,7 +8,7 @@
       <div
         v-for="item in primaryItems"
         :key="item.name"
-        class="flex items-center w-full px-4 py-2 space-x-2 rounded-md cursor-pointer hover:bg-secondary"
+        class="flex items-center w-full px-4 py-2 space-x-2 rounded-md cursor-pointer hover:bg-brand hover:text-white"
         @click="handleClick(item)"
       >
         <component :is="item.icon" size="1.25x" />
@@ -20,7 +20,7 @@
       <div
         v-for="item in secondaryItems"
         :key="item.name"
-        class="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-secondary"
+        class="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-brand hover:text-white"
         @click="handleClick(item)"
       >
         <component :is="item.icon" size="1.25x" />

@@ -21,6 +21,7 @@ module.exports = {
       primaryBg: 'var(--bg)',
       secondaryBg: 'var(--bg-secondary)',
       transparent: 'transparent',
+      white: '#ffffff',
     },
 
     extend: {

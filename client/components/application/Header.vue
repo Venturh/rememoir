@@ -6,7 +6,7 @@
       </IconOnlyButton>
     </div>
     <HeaderSearch
-      v-if="inputType === 'search'"
+      v-if="search === true"
       class="sm:max-w-md md:max-w-lg lg:max-w-xl"
       :placeholder="$t('searchPlaceholder')"
     />
@@ -16,15 +16,17 @@
       v-model="input"
       :placeholder="$t('addNewEntry')"
       class="sm:max-w-md md:max-w-lg lg:max-w-xl"
-      @cancel="inputType = 'search'"
+      @cancel="cancel"
       @action="addEntry"
     />
     <Button
       variant="1"
       class="px-3 py-2 lg:space-x-2"
-      @click="inputType = 'addEntry'"
+      @click="search = !search"
     >
-      <PlusIcon class="fill-current" size="1.5x" />
+      <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
+      <XIcon v-if="search === false" class="fill-current" size="1.5x" />
+      <PlusIcon v-else class="fill-current" size="1.5x" />
     </Button>
   </div>
 </template>
@@ -38,35 +40,38 @@ import {
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
-import { MenuIcon, PlusIcon } from 'vue-feather-icons'
+import { MenuIcon, PlusIcon, XIcon } from 'vue-feather-icons'
 export default defineComponent({
   components: {
     MenuIcon,
     PlusIcon,
+    XIcon,
   },
   setup() {
     const input = ref('')
-    const inputType = ref('search')
+    const search = ref(true)
     const headerAdd = ref()
     const { $db } = useContext().app
 
     async function addEntry(data: string) {
       await add(data, $db)
-      inputType.value = 'search'
+      search.value = true
       input.value = ''
     }
 
     function cancel() {
-      inputType.value = 'search'
+      console.log()
+
+      search.value = true
     }
 
     function hotkeyListener(event: KeyboardEvent) {
       if (event.key === 'i' && event.ctrlKey) {
-        inputType.value = 'addEntry'
+        search.value = false
         if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
       } else if (event.key === 'k' && event.ctrlKey) {
         event.preventDefault()
-        inputType.value = 'search'
+        search.value = true
       }
     }
 
@@ -75,7 +80,7 @@ export default defineComponent({
       window.removeEventListener('keydown', hotkeyListener)
     })
 
-    return { input, addEntry, inputType, cancel, headerAdd }
+    return { input, addEntry, search, cancel, headerAdd }
   },
 })
 </script>

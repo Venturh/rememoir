@@ -9,6 +9,7 @@ export type LinkPreview = {
   ogAudioUrl?: string
   embeddedUrl?: string
   type: string
+  color?: string
   // type: keyof typeof LinkType
 }
 
@@ -39,9 +40,23 @@ export async function generateLinkPreview(url: string) {
         ogAudioUrl: ogAudio,
         embeddedUrl: twitterPlayer.url,
         type: ogType! as string,
+        color: getColor(ogSiteName),
       }
 
       return preview
     } else throw Error('INVALID_URL')
   } else throw Error('INVALID_URL')
+}
+
+function getColor(name: string) {
+  switch (name.toLocaleLowerCase()) {
+    case 'spotify':
+      return '#1DB954'
+
+    case 'youtube':
+      return '#FF0000'
+
+    default:
+      return undefined
+  }
 }

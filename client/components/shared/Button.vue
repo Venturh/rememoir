@@ -21,15 +21,12 @@ export default defineComponent({
   setup() {
     function buttonVariant(variant: string) {
       const map = new Map([
-        [
-          '1',
-          'bg-secondary text-brand hover:bg-brand25 hover:text-brand hover:ring-1 hover:ring-brand ',
-        ],
+        ['1', 'bg-secondary text-brand hover:bg-brand hover:text-white'],
       ])
 
       return (
         map.get(variant) ||
-        'bg-brand text-brandContrast border-secondary px-4 py-1 hover:bg-brandDarker  focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-brand'
+        'bg-brand text-white border-secondary px-4 py-1 hover:bg-brandDarker  focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-brand'
       )
     }
     return { buttonVariant }

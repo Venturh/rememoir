@@ -20,6 +20,7 @@ query rxEntryReplication(
       ogAudioUrl
       ogVideoUrl
       embeddedUrl
+      color
       type
     }
     categories

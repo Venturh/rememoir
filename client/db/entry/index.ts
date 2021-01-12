@@ -32,7 +32,7 @@ export async function add(data: string, db: MyDatabase) {
   await db.entries.insert(encrypedEntry)
 }
 
-export async function remove(idToDelete: number, db: MyDatabase) {
+export async function remove(idToDelete: string, db: MyDatabase) {
   const entry = await db.entries
     .findOne({ selector: { id: idToDelete } })
     .exec()

@@ -3,10 +3,10 @@
     <div class="sm:max-w-md md:max-w-lg lg:max-w-xl">
       <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
       <div v-if="entries" class="grid gap-4">
-        <div v-for="date in Object.keys(entries)" :key="date" class="timeline">
-          <div
+        <div v-for="date in Object.keys(entries)" :key="date" class="">
+          <!-- <div dark
             class="relative flex-shrink-0 w-3.5 h-3.5 rounded-full bg-brand -left-2 top-3.5"
-          />
+          /> -->
           <div>
             <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
               {{ date }}

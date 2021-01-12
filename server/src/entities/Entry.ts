@@ -36,6 +36,8 @@ export class ContentPreview {
   ogAudioUrl?: string
   @Field({ nullable: true })
   embeddedUrl?: string
+  @Field({ nullable: true })
+  color?: string
   @Field()
   type: string
 }
