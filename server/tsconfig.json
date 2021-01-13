@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["@nuxt/types", "@nuxtjs/dayjs"],
+    "types": ["@nuxt/types", "@nuxtjs/dayjs", "vue-final-modal"],
     "target": "es6",
     "module": "commonjs",
     "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],

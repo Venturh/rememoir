@@ -15790,6 +15790,11 @@ vue-feather-icons@^5.1.0:
   dependencies:
     babel-helper-vue-jsx-merge-props "^2.0.2"
 
+vue-final-modal@^0.21.3:
+  version "0.21.3"
+  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-0.21.3.tgz#74a2ae88d6d0c7afc9f822c3bfbe7a99c4c8014d"
+  integrity sha512-8l1uMi+k8TSFtIJobtl1J3pYabD4AjgtavTxflDHckVI+XI7nwvMWotMbWCAs+rHQ83Hnz4QGq/Z1JefA/ZsqA==
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"

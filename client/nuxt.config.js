@@ -20,7 +20,11 @@ export default {
 
   css: [],
 
-  plugins: ['@/plugins/provide-apollo-client', '@/plugins/dayjs'],
+  plugins: [
+    '@/plugins/provide-apollo-client',
+    '@/plugins/dayjs',
+    '@/plugins/vue-final-modal',
+  ],
 
   components: true,
 
@@ -45,5 +49,5 @@ export default {
     plugins: ['utc', 'relativeTime', 'Calendar', 'updateLocale'],
   },
 
-  build: {},
+  build: { transpile: ['vue-final-modal'] },
 }
