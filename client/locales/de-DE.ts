@@ -6,6 +6,7 @@ export default {
   password: 'Passwort',
   username: 'Username',
   confirm: 'Bestätigen',
+  cancel: 'Abrechen',
   submit: 'Senden',
   checkInbox: 'Bitte schau in dein Postfach',
   yourKey: 'Dein Secretkey',
@@ -28,6 +29,15 @@ export default {
   lists: 'Listen',
   pinned: 'Angepinnt',
   archive: 'Archiv',
+
+  pin: 'Pinnen',
+  edit: 'Bearbeiten',
+  delete: 'Löschen',
+  share: 'Teilen',
+  copylink: 'Link Kopieren',
+  twitter: 'Twitter',
+  mail: 'Mail',
+  back: 'Zurück',
 
   addNewEntry: 'Füge einen neuen Eintrag ein (# für Kategorien) ',
   searchPlaceholder:

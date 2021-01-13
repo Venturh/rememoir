@@ -12,7 +12,7 @@
         @click="handleClick(item)"
       >
         <component :is="item.icon" size="1.25x" />
-        <span class="text-sm">{{ item.name }}</span>
+        <span class="text-sm">{{ $t(item.name) }}</span>
       </div>
     </div>
 
@@ -36,7 +36,6 @@ import { defineComponent, ref } from '@nuxtjs/composition-api'
 type Item = {
   name: string
   icon: any
-  action: string
   goto?: string
 }
 
@@ -56,7 +55,7 @@ export default defineComponent({
 
     function handleClick(item: Item) {
       if (item.goto) activeMenu.value = item.goto
-      else emit('click', item.action)
+      else emit('click', item.name)
     }
     return { activeMenu, handleClick }
   },

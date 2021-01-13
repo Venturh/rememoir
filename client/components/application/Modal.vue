@@ -7,7 +7,7 @@
     v-on="$listeners"
   >
     <h1 class="text-xl font-semibold">
-      <slot name="title"></slot>
+      {{ title }}
     </h1>
     <form
       v-if="form"
@@ -16,8 +16,10 @@
     >
       <slot />
       <div class="flex items-center flex-shrink-0 space-x-2">
-        <Button variant="1" type="submit">Confirm</Button>
-        <Button variant="secondary" @click="$emit('cancel')">Cancel</Button>
+        <Button variant="1" type="submit">{{ $t(buttonNames[0]) }}</Button>
+        <Button variant="secondary" @click="$emit('cancel')">
+          {{ $t(buttonNames[1]) }}
+        </Button>
       </div>
     </form>
 
@@ -32,16 +34,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import { XIcon } from 'vue-feather-icons'
 export default defineComponent({
   components: {
     XIcon,
   },
   props: {
+    title: {
+      type: String,
+      default: '',
+    },
     form: {
       type: Boolean,
       default: false,
+    },
+    buttonNames: {
+      type: Array as PropType<string[]>,
+      default: () => ['confirm', 'cancel'],
     },
   },
   inheritAttrs: false,

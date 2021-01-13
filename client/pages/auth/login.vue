@@ -12,7 +12,7 @@
         <FormInput v-model="password" type="password">
           {{ $t('password') }}
         </FormInput>
-        <Links to="/auth/resetPassword">{{ $t('forgottenPassword') }} </Links>
+        <!-- <Links to="/auth/resetPassword">{{ $t('forgottenPassword') }} </Links> -->
       </AuthForm>
     </div>
   </main>

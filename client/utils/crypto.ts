@@ -15,11 +15,14 @@ export function generateSecretKey() {
   localStorage.setItem('secretKey', key)
   return key
 }
+export function setSecretKey(key: string) {
+  localStorage.setItem('secretKey', key)
+}
 
 export function getSectretKey() {
   const key = localStorage.getItem('secretKey')
   if (key) return key
-  else throw new Error('SECRET_KEY_NOT_FOUND')
+  else return null
 }
 
 export function hash(toHash: string) {

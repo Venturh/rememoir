@@ -2,7 +2,7 @@
   <button
     type="button"
     :class="buttonVariant(variant)"
-    class="inline-flex items-center font-medium rounded-md shadow-sm"
+    class="inline-flex items-center font-medium rounded-md shadow-sm focus:outline-none"
     @click="$emit('click')"
   >
     <slot />

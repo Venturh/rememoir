@@ -142,7 +142,6 @@ export type Query = {
   __typename?: 'Query';
   allEntriesByUser: Array<Entry>;
   rxEntryReplication: Array<Entry>;
-  test: ContentPreview;
   users: Array<User>;
   me: User;
 };
@@ -152,11 +151,6 @@ export type QueryRxEntryReplicationArgs = {
   limit: Scalars['Float'];
   minUpdatedAt: Scalars['String'];
   lastId: Scalars['String'];
-};
-
-
-export type QueryTestArgs = {
-  url: Scalars['String'];
 };
 
 export type Mutation = {
@@ -171,6 +165,7 @@ export type Mutation = {
   changePassword: ValidResponse;
   register: UserResponse;
   verifyEmailCode: LoginResponse;
+  verifySecretKey: Scalars['Boolean'];
 };
 
 
@@ -223,6 +218,11 @@ export type MutationRegisterArgs = {
 export type MutationVerifyEmailCodeArgs = {
   code: Scalars['String'];
   id: Scalars['String'];
+};
+
+
+export type MutationVerifySecretKeyArgs = {
+  key: Scalars['String'];
 };
 
 export type Subscription = {
@@ -319,6 +319,16 @@ export type ResetPasswordMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )> }
   ) }
+);
+
+export type VerifySecretKeyMutationVariables = Exact<{
+  key: Scalars['String'];
+}>;
+
+
+export type VerifySecretKeyMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'verifySecretKey'>
 );
 
 export type VerifyAccountByEmailMutationVariables = Exact<{
@@ -590,6 +600,33 @@ export function useResetPasswordMutation(options: VueApolloComposable.UseMutatio
   return VueApolloComposable.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, options);
 }
 export type ResetPasswordMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<ResetPasswordMutation, ResetPasswordMutationVariables>;
+export const VerifySecretKeyDocument = gql`
+    mutation verifySecretKey($key: String!) {
+  verifySecretKey(key: $key)
+}
+    `;
+
+/**
+ * __useVerifySecretKeyMutation__
+ *
+ * To run a mutation, you first call `useVerifySecretKeyMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useVerifySecretKeyMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useVerifySecretKeyMutation({
+ *   variables: {
+ *     key: // value for 'key'
+ *   },
+ * });
+ */
+export function useVerifySecretKeyMutation(options: VueApolloComposable.UseMutationOptions<VerifySecretKeyMutation, VerifySecretKeyMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<VerifySecretKeyMutation, VerifySecretKeyMutationVariables>>) {
+  return VueApolloComposable.useMutation<VerifySecretKeyMutation, VerifySecretKeyMutationVariables>(VerifySecretKeyDocument, options);
+}
+export type VerifySecretKeyMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VerifySecretKeyMutation, VerifySecretKeyMutationVariables>;
 export const VerifyAccountByEmailDocument = gql`
     mutation verifyAccountByEmail($id: String!, $code: String!) {
   verifyEmailCode(id: $id, code: $code) {

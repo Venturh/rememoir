@@ -89,22 +89,22 @@ export default defineComponent({
       },
     })
     const primaryMenuItems = [
-      { name: 'Pin', icon: BookmarkIcon, action: 'pin' },
-      { name: 'Edit', icon: EditIcon, action: 'edit' },
-      { name: 'Archive', icon: ArchiveIcon, action: 'archieve' },
-      { name: 'Delete', icon: DeleteIcon, action: 'delete' },
+      { name: 'pin', icon: BookmarkIcon },
+      { name: 'edit', icon: EditIcon },
+      { name: 'archive', icon: ArchiveIcon },
+      { name: 'delete', icon: DeleteIcon },
       {
-        name: 'Share',
+        name: 'share',
         icon: Share2Icon,
         goto: 'secondary',
       },
     ]
 
     const secondaryMenuItems = [
-      { name: 'Copy Link', icon: BookmarkIcon, action: 'link' },
-      { name: 'Twitter', icon: TwitterIcon, action: 'twitter' },
-      { name: 'Mail', icon: MailIcon, action: 'mail' },
-      { name: 'Back', icon: SkipBackIcon, goto: 'primary', action: 'back' },
+      { name: 'copylink', icon: BookmarkIcon },
+      { name: 'twitter', icon: TwitterIcon },
+      { name: 'mail', icon: MailIcon },
+      { name: 'back', icon: SkipBackIcon, goto: 'primary' },
     ]
 
     function handleMenu(itemName: string) {
@@ -127,6 +127,7 @@ export default defineComponent({
       console.log('toSend', editedEntry.value)
       if (!isEmpty(editedEntry.value))
         update(props.entry.id, editedEntry.value, $db)
+      editedEntry.value = {}
 
       showModal.value = false
     }

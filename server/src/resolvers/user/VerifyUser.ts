@@ -1,7 +1,7 @@
-import { Resolver, Mutation, Arg, Ctx } from 'type-graphql'
+import { Resolver, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql'
 import { User } from '../../entities'
 import { MyContext, ErrorMessage } from '../../types'
-import { createAccessToken } from '../../utils/auth'
+import { createAccessToken, isAuth } from '../../utils/auth'
 import { LoginResponse } from './types'
 
 @Resolver()
@@ -30,5 +30,20 @@ export class VerifyUser {
     }
 
     return { user, accessToken: createAccessToken(user) }
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async verifySecretKey(
+    @Arg('key') key: string,
+    @Ctx() { em, payload }: MyContext
+  ): Promise<boolean> {
+    const user = await em.findOne(User, { id: payload?.userId })
+    const verify = key === user!.secret
+    if (verify) {
+      return true
+    } else {
+      return false
+    }
   }
 }
