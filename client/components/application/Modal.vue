@@ -1,20 +1,30 @@
 <template>
   <vue-final-modal
     v-bind="$attrs"
-    classes="flex items-center justify-center"
-    content-class="relative flex flex-col p-4 mx-4 space-y-1 rounded-md bg-primary"
+    classes=" flex items-center justify-center"
+    content-class="relative flex flex-col w-full max-w-lg p-4 space-y-4 rounded-md bg-primary"
+    esc-to-close
     v-on="$listeners"
   >
     <h1 class="text-xl font-semibold">
       <slot name="title"></slot>
     </h1>
-    <div class="flex-grow overflow-y-auto">
+    <form
+      v-if="form"
+      class="flex-grow space-y-2 overflow-y-auto"
+      @submit.prevent="$emit('confirm')"
+    >
+      <slot />
+      <div class="flex items-center flex-shrink-0 space-x-2">
+        <Button variant="1" type="submit">Confirm</Button>
+        <Button variant="secondary" @click="$emit('cancel')">Cancel</Button>
+      </div>
+    </form>
+
+    <div v-else class="flex-grow overflow-y-auto">
       <slot />
     </div>
-    <div class="flex space-x-2">
-      <Button @click="$emit('confirm')">Confirm</Button>
-      <Button @click="$emit('cancel')">Cancel</Button>
-    </div>
+
     <button class="absolute top-2 right-2" @click="$emit('input', false)">
       <XIcon size="1.25x" />
     </button>
@@ -27,6 +37,12 @@ import { XIcon } from 'vue-feather-icons'
 export default defineComponent({
   components: {
     XIcon,
+  },
+  props: {
+    form: {
+      type: Boolean,
+      default: false,
+    },
   },
   inheritAttrs: false,
 })

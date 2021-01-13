@@ -12,7 +12,7 @@ import {
 } from 'type-graphql'
 
 import { Entry, User } from '../../entities'
-import { ContentType, ContentPreview } from '../../entities/Entry'
+import { ContentType } from '../../entities/Entry'
 import { MyContext } from '../../types'
 import { isAuth, verifyToken } from '../../utils/auth'
 import { generateLinkPreview } from '../../utils/linkPreview'
@@ -73,14 +73,18 @@ class EntryResolver {
     @Arg('entry') entryInput: EntryInput,
     @Ctx() { em, payload }: MyContext
   ): Promise<Entry> {
+    console.log('EntryResolver ~ entryInput', entryInput)
     const user = await em.findOne(User, { id: payload?.userId })
-    const entries = await em.find(Entry, {})
-    const oldEntry = entries!.find((e) => e.id === entryInput!.id)
-    if (oldEntry) {
-      wrap(oldEntry).assign({ ...entryInput })
+    const entry = await em.findOne(Entry, { id: entryInput.id })
+    if (entry) {
+      let preview
+      if (entry.contentUrl !== entryInput.contentUrl) {
+        preview = await generateLinkPreview(entryInput.contentUrl)
+      }
+      wrap(entry).assign({ ...entryInput, contentPreview: preview })
       await em.flush()
-      pubsub.publish('changedEntry', oldEntry)
-      return oldEntry
+      pubsub.publish('changedEntry', entry)
+      return entry
     } else {
       const doc = new Entry(entryInput, user!)
       if (entryInput.contentType === ContentType.LINK) {
@@ -101,12 +105,6 @@ class EntryResolver {
   async changedEntry(@Arg('token') token: string, @Root() entry: Entry) {
     verifyToken(token)
     return entry
-  }
-
-  @Query(() => ContentPreview)
-  async test(@Arg('url') url: string) {
-    const preview = await generateLinkPreview(url)
-    return preview
   }
 }
 

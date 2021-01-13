@@ -2,14 +2,35 @@
   <div>
     <Modal
       v-model="showModal"
-      @confirm="handleModal"
+      form
+      @confirm="submitEditedEntry"
       @cancel="showModal = false"
     >
-      <template v-slot:title>Hello, vue-final-modal</template>
-      <p>
-        Vue Final Modal is a renderless, stackable, detachable and lightweight
-        modal component.
-      </p>
+      <template v-slot:title>Edit Entry</template>
+      <FormInput
+        v-model="editedEntry.contentText"
+        label="Text"
+        type="text"
+        :placeholder="entry.contentText"
+      >
+        Text
+      </FormInput>
+      <FormInput
+        v-model="editedEntry.contentUrl"
+        label="Text"
+        type="text"
+        :placeholder="entry.contentUrl"
+      >
+        Url
+      </FormInput>
+      <FormInput
+        v-model="categories"
+        label="Text"
+        type="text"
+        :placeholder="entry.categories.join(' ')"
+      >
+        Categories
+      </FormInput>
     </Modal>
     <Menu
       v-if="showMenu"
@@ -23,7 +44,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  useContext,
+} from '@nuxtjs/composition-api'
+import { isEmpty } from 'lodash'
 import {
   ArchiveIcon,
   BookmarkIcon,
@@ -34,7 +62,9 @@ import {
   SkipBackIcon,
   TwitterIcon,
 } from 'vue-feather-icons'
-import { remove } from '@/db/entry'
+import { remove, update } from '@/db/entry'
+import { Entry } from '@/generated/graphql'
+import { EditedEntry } from '@/types'
 
 export default defineComponent({
   props: {
@@ -42,10 +72,22 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    entry: {
+      type: Object as PropType<Entry>,
+      default: () => {},
+    },
   },
   setup(props, { emit }) {
     const { $db } = useContext().app
+    const editedEntry = ref<EditedEntry>({})
     const showModal = ref(false)
+
+    const categories = computed({
+      get: () => editedEntry.value.categories,
+      set: (val) => {
+        editedEntry.value.categories = val
+      },
+    })
     const primaryMenuItems = [
       { name: 'Pin', icon: BookmarkIcon, action: 'pin' },
       { name: 'Edit', icon: EditIcon, action: 'edit' },
@@ -66,10 +108,9 @@ export default defineComponent({
     ]
 
     function handleMenu(itemName: string) {
-      console.log('handleMenuClick ~ item', itemName)
       switch (itemName) {
         case 'delete':
-          remove(props.id, $db)
+          remove(props.entry.id, $db)
           break
         case 'edit':
           emit('showMenu', false)
@@ -82,16 +123,22 @@ export default defineComponent({
       emit('showMenu', false)
     }
 
-    function handleModal() {
-      console.log('handleModal')
-      emit('showModal', false)
+    function submitEditedEntry() {
+      console.log('toSend', editedEntry.value)
+      if (!isEmpty(editedEntry.value))
+        update(props.entry.id, editedEntry.value, $db)
+
+      showModal.value = false
     }
+
     return {
       showModal,
       primaryMenuItems,
       secondaryMenuItems,
       handleMenu,
-      handleModal,
+      categories,
+      editedEntry,
+      submitEditedEntry,
     }
   },
 })

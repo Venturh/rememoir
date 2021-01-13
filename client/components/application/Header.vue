@@ -54,6 +54,7 @@ export default defineComponent({
     const { $db } = useContext().app
 
     async function addEntry(data: string) {
+      console.log('addEntry ~ data', data)
       await add(data, $db)
       search.value = true
       input.value = ''

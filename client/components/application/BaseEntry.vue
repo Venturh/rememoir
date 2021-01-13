@@ -32,7 +32,12 @@
         </span>
       </div>
     </div>
-    <BaseEntryActions :show-menu="showMenu" @showMenu="setMenu" />
+    <BaseEntryActions
+      :entry-id="id"
+      :entry="$props"
+      :show-menu="showMenu"
+      @showMenu="setMenu"
+    />
   </div>
 </template>
 

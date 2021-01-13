@@ -13,6 +13,8 @@ module.exports = {
       brandDarker: 'var(--brandDarker)',
       brandContrast: 'var(--brandContrast)',
       brand25: 'var(--brand25)',
+      brand15: 'var(--brand15)',
+      borderPrimary: 'var(--border)',
       error: 'var(--error)',
       success: 'var(--success)',
       gray: colors.coolGray,

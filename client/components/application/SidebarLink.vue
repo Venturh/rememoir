@@ -1,7 +1,6 @@
-//TODO: vue3 active class hover
 <template>
   <nuxt-link
-    active-class="text-white bg-brand hover:bg-brand"
+    active-class="text-brand bg-secondary"
     class="relative z-10 flex items-center justify-between p-4 rounded-lg cursor-pointer sidebarlink hover:bg-secondary"
     :to="localePath(`/${item.name}`)"
   >

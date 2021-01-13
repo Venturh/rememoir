@@ -6,7 +6,9 @@
   --brand: #3485e4;
   --brandDarker: #2f78cd;
   --brandContrast: #1b2439;
-  --brand25: rgba(52, 133, 228, 0.25);
+  --brand25: rgba(52, 133, 228, 0.15);
+  --brand15: rgba(52, 133, 228, 0.25);
+  --border: #696d78;
   --bg: #1d2333;
   --bg-secondary: #171d2d;
   --text-primary: #edf2f7;
@@ -20,6 +22,8 @@
   --brandDarker: #2f78cd;
   --brandContrast: #1b2439;
   --brand25: rgba(52, 133, 228, 0.25);
+  --brand15: rgba(52, 133, 228, 0.15);
+  --border: #949494;
   --bg: #ffffff;
   --bg-secondary: #f6f6f6;
   --text-primary: #000000;

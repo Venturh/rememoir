@@ -21,7 +21,12 @@ export default defineComponent({
   setup() {
     function buttonVariant(variant: string) {
       const map = new Map([
-        ['1', 'bg-secondary text-brand hover:bg-brand hover:text-white'],
+        [
+          '1',
+          'bg-secondary  px-4 py-2 text-brand hover:bg-brand hover:text-white',
+        ],
+        ['inherit', 'bg-none text-primary  hover:text-brand'],
+        ['secondary', 'bg-brand25 text-brand px-4 py-2  hover:bg-brand15'],
       ])
 
       return (

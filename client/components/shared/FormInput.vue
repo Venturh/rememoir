@@ -5,7 +5,7 @@
       <input
         :value="value"
         autocomplete="new-password"
-        class="block w-full bg-opacity-75 rounded-md border-1 border-secondaryText bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
+        class="block w-full border rounded-md bg-primary border-borderPrimary hover:border-primaryText hover:bg-secondary focus:bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
         :type="type"
         :placeholder="placeholder"
         @input="$emit('input', $event.target.value)"
