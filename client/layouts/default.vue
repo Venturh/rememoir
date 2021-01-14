@@ -11,11 +11,7 @@
       <div class="w-full min-h-screen py-2 space-y-2 lg:pl-64">
         <Header @sidebartoggle="toggle = !toggle" />
         <div class="">
-          <Nuxt v-if="secretKey" />
-          <SecretKeyModal
-            v-if="secretKey === null"
-            @success="updateSecretKey"
-          />
+          <Nuxt />
         </div>
       </div>
     </div>
@@ -31,7 +27,6 @@ import {
 } from '@nuxtjs/composition-api'
 
 import { useTheme } from '@/hooks'
-import { getSectretKey } from '@/utils/crypto'
 
 export default defineComponent({
   setup() {
@@ -40,12 +35,6 @@ export default defineComponent({
     const toggle = ref(false)
 
     // TODO: Somhehow watch localstorage if secret key is removed
-    const secretKey = ref(getSectretKey())
-
-    function updateSecretKey() {
-      secretKey.value = getSectretKey()
-      console.log('updateSecretKey ~ secretKey.value', secretKey.value)
-    }
 
     onUnmounted(async () => {
       await $db.remove()
@@ -54,8 +43,6 @@ export default defineComponent({
     return {
       toggle,
       theme,
-      secretKey,
-      updateSecretKey,
     }
   },
 })

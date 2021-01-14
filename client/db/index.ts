@@ -20,7 +20,8 @@ import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 import { getAccessToken, tryAccessToken } from '../utils/auth'
-import { decryptEntry } from '../utils/crypto'
+import { decryptEntry, encryptEntry } from '../utils/crypto'
+import { EntryInput } from '../generated/graphql'
 import { EntryCollection, entrySchema } from './schema/entry'
 
 import {
@@ -76,11 +77,16 @@ export async function createDb(): Promise<MyDatabase> {
     },
     pull: {
       queryBuilder: pullQueryBuilder,
+      modifier: (d: EntryInput) => {
+        return decryptEntry(d)
+      },
     },
     push: {
       queryBuilder: pushQueryBuilder,
       batchSize: 5,
-      modifier: (d) => d,
+      modifier: (d: EntryInput) => {
+        return encryptEntry(d)
+      },
     },
     deletedFlag: 'deleted',
     live: true,
@@ -136,8 +142,4 @@ export async function createDb(): Promise<MyDatabase> {
   await replication.awaitInitialReplication()
 
   return db
-}
-
-export function queryEntries(db: MyDatabase) {
-  return db.entries.find().sort({ updatedAt: 'desc' })
 }

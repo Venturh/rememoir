@@ -49,6 +49,8 @@ export function encryptEntry(entry: EntryInput) {
 }
 export function decryptEntry(entry: EntryInput) {
   const secretKey = getSectretKey()
+  console.log('decryptEntry ~ secretKey', secretKey)
+  if (secretKey === null) return
   const key = aesDecrypt(entry.hashedKey, secretKey)
   const decrypted: EntryInput = {
     ...entry,

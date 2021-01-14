@@ -17,7 +17,7 @@ import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {},
-  setup(props, { emit }) {
+  setup() {
     const { router, localePath } = useContext().app
     const show = ref(true)
     const input = ref('')
@@ -34,8 +34,9 @@ export default defineComponent({
         if (data) {
           if (data.verifySecretKey) {
             show.value = false
+
             setSecretKey(input.value)
-            emit('success')
+            router!.push(localePath('/entries'))
           } else {
             // TODO Show error
             console.log('key ist falsch')

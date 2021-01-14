@@ -16,20 +16,18 @@
                 v-for="(entry, index) in entries[date]"
                 :key="index"
                 class="mx-auto max-w-xsm sm:max-w-md md:max-w-lg lg:max-w-xl"
-                v-bind="
-                  decryptEntry({
-                    contentText: entry.contentText,
-                    contentUrl: entry.contentUrl,
-                    contentType: entry.contentType,
-                    contentPreview: entry.contentPreview,
-                    categories: entry.categories,
-                    hashedKey: entry.hashedKey,
-                    calendarDate: entry.calendarDate,
-                    processing: entry.processing,
-                    updatedAt: entry.updatedAt,
-                    id: entry.id,
-                  })
-                "
+                v-bind="{
+                  contentText: entry.contentText,
+                  contentUrl: entry.contentUrl,
+                  contentType: entry.contentType,
+                  contentPreview: entry.contentPreview,
+                  categories: entry.categories,
+                  hashedKey: entry.hashedKey,
+                  calendarDate: entry.calendarDate,
+                  processing: entry.processing,
+                  updatedAt: entry.updatedAt,
+                  id: entry.id,
+                }"
               />
             </div>
           </div>
@@ -49,7 +47,7 @@ import {
 } from '@nuxtjs/composition-api'
 
 import { groupBy } from 'lodash'
-import { queryEntries } from '@/db'
+import { queryEntries } from '@/db/entry'
 import { EntryInput } from '@/generated/graphql'
 import { decryptEntry } from '@/utils/crypto'
 
