@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "nodemon -r dotenv/config src/index.ts",
+    "dev": "nodemon -r dotenv/config src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -32,12 +33,12 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.3",
     "nodemailer": "^6.4.16",
-    "open-graph-scraper": "^4.7.1",
     "prettier": "^2.2.1",
     "reflect-metadata": "^0.1.13",
     "rxdb": "^9.10.1",
     "rxjs": "^6.6.3",
     "subscriptions-transport-ws": "^0.9.18",
+    "ts-open-graph-scraper": "^0.0.2",
     "type-graphql": "^1.1.1"
   },
   "devDependencies": {
@@ -49,7 +50,6 @@
     "@types/cors": "^2.8.8",
     "@types/crypto-js": "^4.0.1",
     "@types/nodemailer": "^6.4.0",
-    "@types/open-graph-scraper": "^4.3.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "eslint": "^7.14.0",

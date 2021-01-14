@@ -5,7 +5,6 @@ import { EntryInput } from '../../generated/graphql'
 import { EditedEntry } from '../../types'
 import { MyDatabase } from '../index'
 
-import { encryptEntry } from '../../utils/crypto'
 import { createEntry } from './utils'
 
 addRxPlugin(RxDBUpdatePlugin)
@@ -40,7 +39,7 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
       } else {
         categories = entry.categories
       }
-      const test: EntryInput = {
+      const editedEntry: EntryInput = {
         id: entry.id,
         contentText: edited.contentText || entry.contentText,
         contentType: edited.contentUrl ? 'Link' : entry.contentType,
@@ -52,9 +51,7 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
         updatedAt: Date.now().toString(),
       }
 
-      const encrypedEntry = encryptEntry(test)
-
-      await entry.update({ $set: { ...encrypedEntry } })
+      await entry.update({ $set: { ...editedEntry } })
     } catch (err) {
       console.error('could not update entry')
     }

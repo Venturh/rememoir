@@ -1,51 +1,47 @@
-import * as ogs from 'open-graph-scraper'
+import { default as opengraph } from 'ts-open-graph-scraper'
 
 export type LinkPreview = {
   ogSiteName: string
   ogTitle: string
   ogDescription: string
-  ogImageUrl: string
+  ogImageUrl?: string
   ogVideoUrl?: string
   ogAudioUrl?: string
   embeddedUrl?: string
   type: string
   color?: string
-  // type: keyof typeof LinkType
 }
 
 export async function generateLinkPreview(url: string) {
-  const data = await ogs({
+  const data = await opengraph({
     url,
   })
-  const { error, result } = data as any
-  if (!error) {
-    if (result.success) {
-      const {
-        ogTitle,
-        ogDescription,
-        ogImage,
-        ogVideo,
-        ogAudio,
-        ogType,
-        twitterPlayer,
-        ogSiteName,
-      } = result
-      console.log(result!)
-      const preview: LinkPreview = {
-        ogSiteName: ogSiteName!,
-        ogTitle: ogTitle!,
-        ogDescription: ogDescription!,
-        ogImageUrl: ogImage!.url,
-        ogVideoUrl: ogVideo?.url,
-        ogAudioUrl: ogAudio,
-        embeddedUrl: twitterPlayer.url,
-        type: ogType! as string,
-        color: getColor(ogSiteName),
-      }
 
-      return preview
-    } else throw Error('INVALID_URL')
-  } else throw Error('INVALID_URL')
+  const {
+    ogTitle,
+    ogDescription,
+    ogImage,
+    ogVideo,
+    ogAudio,
+    ogType,
+    twitterPlayer,
+    ogSiteName,
+  } = data
+  const preview: LinkPreview = {
+    ogSiteName: ogSiteName! as string,
+    ogTitle: ogTitle ? ogTitle : 'No title',
+    ogDescription: ogDescription ? ogDescription : 'No description',
+    ogImageUrl: ogImage ? ogImage[0].url : undefined,
+    ogVideoUrl: ogVideo ? ogVideo[0].url : undefined,
+    ogAudioUrl: ogAudio ? (ogAudio as string) : undefined,
+    embeddedUrl: twitterPlayer ? twitterPlayer[0].url : undefined,
+    type: ogType!,
+    color: getColor(ogSiteName as string),
+  }
+
+  console.log('preview', preview)
+
+  return preview
 }
 
 function getColor(name: string) {

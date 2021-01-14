@@ -29,7 +29,7 @@ export class ContentPreview {
   @Field()
   ogDescription: string
   @Field({ nullable: true })
-  ogImageUrl: string
+  ogImageUrl?: string
   @Field({ nullable: true })
   ogVideoUrl?: string
   @Field({ nullable: true })

@@ -22,7 +22,7 @@ import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { getAccessToken, tryAccessToken } from '../utils/auth'
 import { decryptEntry, encryptEntry } from '../utils/crypto'
 import { EntryInput } from '../generated/graphql'
-import { EntryCollection, entrySchema } from './schema/entry'
+import { EntryCollection, entrySchema } from './entry/schema'
 
 import {
   pullQueryBuilder,

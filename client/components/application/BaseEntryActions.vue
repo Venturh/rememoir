@@ -51,20 +51,17 @@ import {
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
-import { isEmpty } from 'lodash'
-import {
-  ArchiveIcon,
-  BookmarkIcon,
-  DeleteIcon,
-  EditIcon,
-  MailIcon,
-  Share2Icon,
-  SkipBackIcon,
-  TwitterIcon,
-} from 'vue-feather-icons'
-import { remove, update } from '@/db/entry'
-import { Entry } from '@/generated/graphql'
+
 import { EditedEntry } from '@/types'
+import { Entry } from '@/generated/graphql'
+
+import {
+  hoverPrimaryMenuItems as primaryMenuItems,
+  hoverSecondaryMenuItems as secondaryMenuItems,
+} from '@/config/data'
+
+import { isEmpty } from 'lodash'
+import { remove, update } from '@/db/entry'
 
 export default defineComponent({
   props: {
@@ -88,24 +85,6 @@ export default defineComponent({
         editedEntry.value.categories = val
       },
     })
-    const primaryMenuItems = [
-      { name: 'pin', icon: BookmarkIcon },
-      { name: 'edit', icon: EditIcon },
-      { name: 'archive', icon: ArchiveIcon },
-      { name: 'delete', icon: DeleteIcon },
-      {
-        name: 'share',
-        icon: Share2Icon,
-        goto: 'secondary',
-      },
-    ]
-
-    const secondaryMenuItems = [
-      { name: 'copylink', icon: BookmarkIcon },
-      { name: 'twitter', icon: TwitterIcon },
-      { name: 'mail', icon: MailIcon },
-      { name: 'back', icon: SkipBackIcon, goto: 'primary' },
-    ]
 
     function handleMenu(itemName: string) {
       switch (itemName) {

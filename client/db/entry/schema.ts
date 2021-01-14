@@ -1,5 +1,5 @@
 import { RxJsonSchema, RxCollection, RxDocument, RxDatabase } from 'rxdb'
-import { ContentPreviewInput, EntryInput } from '../../generated/graphql'
+import { EntryInput } from '../../generated/graphql'
 
 export type EntryDocMethods = {
   getText: (id: string) => string
@@ -16,19 +16,6 @@ export type EntryCollection = RxCollection<
   EntryDocMethods,
   EntryCollectionMethods
 >
-
-type Entry = {
-  id: string
-  contentText: string
-  contentUrl: string
-  contentPreview?: ContentPreviewInput
-  contentType: string
-  categories: Array<string>
-  calendarDate: string
-  updatedAt: string
-  hashedKey: string
-  processing: boolean
-}
 
 export const entrySchema: RxJsonSchema<EntryInput> = {
   title: 'Entry Schema',

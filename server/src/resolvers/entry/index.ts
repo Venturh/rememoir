@@ -77,7 +77,7 @@ class EntryResolver {
     const user = await em.findOne(User, { id: payload?.userId })
     const entry = await em.findOne(Entry, { id: entryInput.id })
     if (entry) {
-      let preview
+      let preview = entry.contentPreview
       if (entry.contentUrl !== entryInput.contentUrl) {
         preview = await generateLinkPreview(entryInput.contentUrl)
       }
