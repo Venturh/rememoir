@@ -85,6 +85,7 @@ export async function createDb(): Promise<MyDatabase> {
       queryBuilder: pushQueryBuilder,
       batchSize: 5,
       modifier: (d: EntryInput) => {
+        console.log('createDb ~ d', d)
         return encryptEntry(d)
       },
     },

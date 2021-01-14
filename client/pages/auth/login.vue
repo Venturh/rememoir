@@ -42,10 +42,11 @@ export default defineComponent({
     async function login() {
       const { data } = await sendLogin()
       const { errors, accessToken, user } = data!.login
+      console.log('login ~ user', user)
       if (errors) {
         error.value = errors.message
         if (errors.message === 'USER_NOT_VERIIFIED') {
-          router.push(`/accountVerification/?id=${user?.id}`)
+          router.push(`/auth/accountVerification/?id=${user?.id}`)
         }
       } else {
         setUserInfo({

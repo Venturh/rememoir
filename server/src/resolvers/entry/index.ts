@@ -106,6 +106,15 @@ class EntryResolver {
     verifyToken(token)
     return entry
   }
+
+  @Query(() => Boolean)
+  async preview(
+    @Arg('url')
+    url: string
+  ) {
+    generateLinkPreview(url)
+    return true
+  }
 }
 
 export default EntryResolver

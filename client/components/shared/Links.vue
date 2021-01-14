@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    class="p-2 font-medium rounded-lg hover:text-brand"
+    :class="styled ? 'font-medium rounded-lg p-2 ' : ''"
     :to="localePath(to)"
   >
     <slot />
@@ -15,6 +15,10 @@ export default defineComponent({
     to: {
       type: String,
       default: '/',
+    },
+    styled: {
+      type: Boolean,
+      default: true,
     },
   },
 })

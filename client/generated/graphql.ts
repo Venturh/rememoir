@@ -26,9 +26,9 @@ export type BaseEntity = {
 
 export type ContentPreview = {
   __typename?: 'ContentPreview';
-  ogSiteName: Scalars['String'];
-  ogTitle: Scalars['String'];
-  ogDescription: Scalars['String'];
+  ogSiteName?: Maybe<Scalars['String']>;
+  ogTitle?: Maybe<Scalars['String']>;
+  ogDescription?: Maybe<Scalars['String']>;
   ogImageUrl?: Maybe<Scalars['String']>;
   ogVideoUrl?: Maybe<Scalars['String']>;
   ogAudioUrl?: Maybe<Scalars['String']>;
@@ -122,9 +122,9 @@ export type EntryInput = {
 };
 
 export type ContentPreviewInput = {
-  ogSiteName: Scalars['String'];
-  ogTitle: Scalars['String'];
-  ogDescription: Scalars['String'];
+  ogSiteName?: Maybe<Scalars['String']>;
+  ogTitle?: Maybe<Scalars['String']>;
+  ogDescription?: Maybe<Scalars['String']>;
   ogImageUrl?: Maybe<Scalars['String']>;
   ogVideoUrl?: Maybe<Scalars['String']>;
   ogAudioUrl?: Maybe<Scalars['String']>;
@@ -142,6 +142,7 @@ export type Query = {
   __typename?: 'Query';
   allEntriesByUser: Array<Entry>;
   rxEntryReplication: Array<Entry>;
+  preview: Scalars['Boolean'];
   users: Array<User>;
   me: User;
 };
@@ -151,6 +152,11 @@ export type QueryRxEntryReplicationArgs = {
   limit: Scalars['Float'];
   minUpdatedAt: Scalars['String'];
   lastId: Scalars['String'];
+};
+
+
+export type QueryPreviewArgs = {
+  url: Scalars['String'];
 };
 
 export type Mutation = {
@@ -347,7 +353,7 @@ export type VerifyAccountByEmailMutation = (
       & Pick<FieldError, 'message' | 'field'>
     )>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'email' | 'id' | 'verified'>
+      & Pick<User, 'email' | 'id' | 'verified' | 'username'>
     )> }
   ) }
 );
@@ -639,6 +645,7 @@ export const VerifyAccountByEmailDocument = gql`
       email
       id
       verified
+      username
     }
   }
 }

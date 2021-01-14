@@ -1,9 +1,9 @@
 import { default as opengraph } from 'ts-open-graph-scraper'
 
 export type LinkPreview = {
-  ogSiteName: string
-  ogTitle: string
-  ogDescription: string
+  ogSiteName?: string
+  ogTitle?: string
+  ogDescription?: string
   ogImageUrl?: string
   ogVideoUrl?: string
   ogAudioUrl?: string
@@ -28,14 +28,14 @@ export async function generateLinkPreview(url: string) {
     ogSiteName,
   } = data
   const preview: LinkPreview = {
-    ogSiteName: ogSiteName! as string,
-    ogTitle: ogTitle ? ogTitle : 'No title',
-    ogDescription: ogDescription ? ogDescription : 'No description',
-    ogImageUrl: ogImage ? ogImage[0].url : undefined,
+    ogSiteName: ogSiteName ? ogSiteName.toString() : undefined,
+    ogTitle: ogTitle ? ogTitle : undefined,
+    ogDescription: ogDescription ? ogDescription : undefined,
+    ogImageUrl: ogImage ? ogImage[0].url : url,
     ogVideoUrl: ogVideo ? ogVideo[0].url : undefined,
     ogAudioUrl: ogAudio ? (ogAudio as string) : undefined,
     embeddedUrl: twitterPlayer ? twitterPlayer[0].url : undefined,
-    type: ogType!,
+    type: ogType ? ogType : 'undefined',
     color: getColor(ogSiteName as string),
   }
 
@@ -45,6 +45,8 @@ export async function generateLinkPreview(url: string) {
 }
 
 function getColor(name: string) {
+  console.log('getColor ~ name', name)
+  if (name === undefined) return undefined
   switch (name.toLocaleLowerCase()) {
     case 'spotify':
       return '#1DB954'

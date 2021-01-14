@@ -22,12 +22,12 @@ registerEnumType(ContentType, {
 @ObjectType()
 @InputType('ContentPreviewInput')
 export class ContentPreview {
-  @Field()
-  ogSiteName: string
-  @Field()
-  ogTitle: string
-  @Field()
-  ogDescription: string
+  @Field({ nullable: true })
+  ogSiteName?: string
+  @Field({ nullable: true })
+  ogTitle?: string
+  @Field({ nullable: true })
+  ogDescription?: string
   @Field({ nullable: true })
   ogImageUrl?: string
   @Field({ nullable: true })

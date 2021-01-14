@@ -9,6 +9,7 @@ mutation verifyAccountByEmail($id: String!, $code: String!) {
       email
       id
       verified
+      username
     }
   }
 }

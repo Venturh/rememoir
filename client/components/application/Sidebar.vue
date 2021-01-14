@@ -10,7 +10,7 @@
         <div
           class="flex flex-row items-center w-full p-2 space-x-2 rounded-lg bg-primary"
         >
-          <div class="w-2/3 space-y-2">
+          <div v-if="userInfo" class="w-2/3 space-y-2">
             <div class="">{{ userInfo.username }}</div>
             <span class="text-sm">{{ userInfo.email }}</span>
           </div>

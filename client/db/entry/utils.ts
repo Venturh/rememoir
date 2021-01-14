@@ -8,16 +8,21 @@ export function createEntry(data: string) {
     })
   }
 
-  const contentUrl = data.match(/\b(https?:\/\/.*?\.[a-z]{2,4}\/[^\s]*\b)/g)
-  if (contentUrl) split.splice(split.indexOf(contentUrl[0], 1))
-  const contentType = contentUrl === null ? 'Note' : 'Link'
+  const expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
+  const match = data.match(expression)
+  let contentUrl = ''
+  if (match) {
+    contentUrl = match[0]
+    split.splice(split.indexOf(contentUrl, 1))
+  }
+  const contentType = match === null ? 'Note' : 'Link'
 
   const id = require('bson-objectid')
   return {
     id: id().str as string,
     contentText: split.join(' '),
     contentType,
-    contentUrl: contentUrl === null ? '' : contentUrl![0],
+    contentUrl: contentUrl === null ? '' : contentUrl,
     categories,
     hashedKey: 'hashed',
     calendarDate: Date().toString(),
