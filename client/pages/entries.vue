@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col-reverse space-x-6 lg:flex-row lg:justify-between">
+  <div
+    class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
+  >
     <div class="sm:max-w-md md:max-w-lg lg:max-w-xl">
       <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
       <div v-if="entries" class="grid gap-4">
@@ -16,6 +18,7 @@
                 v-for="(entry, index) in entries[date]"
                 :key="index"
                 class="mx-auto max-w-xsm sm:max-w-md md:max-w-lg lg:max-w-xl"
+                :show-preview="showPreview"
                 v-bind="{
                   contentText: entry.contentText,
                   contentUrl: entry.contentUrl,
@@ -34,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div>Kalender und Filters</div>
+    <Filters class="mb-2 lg:mb-0" @filter="setFilters" />
   </div>
 </template>
 
@@ -50,31 +53,62 @@ import { groupBy } from 'lodash'
 import { queryEntries } from '@/db/entry'
 import { EntryInput } from '@/generated/graphql'
 import { decryptEntry } from '@/utils/crypto'
+import { categories } from '@/config/data'
+import { Filters } from '@/types'
 
 export default defineComponent({
   middleware: ['authenticated'],
   setup() {
     const { $db, $dayjs } = useContext().app
     const entries = ref()
+    const showPreview = ref(true)
+    const filters = ref<{ categories: string; preview: boolean }>({
+      categories: '',
+      preview: true,
+    })
     const awaitReplication = ref(true)
 
-    onMounted(async () => {
-      const query = await queryEntries($db)
+    async function setFilters({ type, item }: Filters) {
+      switch (type) {
+        case 'categories': {
+          filters.value.categories = item as string
+          const query = await queryEntries($db, filters.value.categories).exec()
+          const grouped = await groupBy(query, (result: EntryInput) =>
+            $dayjs(parseInt(result.updatedAt)).calendar()
+          )
+          entries.value = grouped
+          break
+        }
+        case 'preview':
+          showPreview.value = item as boolean
+          break
 
+        default:
+          break
+      }
+    }
+
+    onMounted(async () => {
+      const query = await queryEntries($db, categories[0])
       query.$.subscribe(async (results) => {
         awaitReplication.value = true
         const grouped = await groupBy(results, (result: EntryInput) =>
           $dayjs(parseInt(result.updatedAt)).calendar()
         )
-
         entries.value = grouped
-
         awaitReplication.value = false
       })
       awaitReplication.value = false
     })
 
-    return { entries, awaitReplication, decryptEntry }
+    return {
+      entries,
+      awaitReplication,
+      decryptEntry,
+      filters,
+      setFilters,
+      showPreview,
+    }
   },
 })
 </script>

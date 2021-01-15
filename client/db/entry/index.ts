@@ -9,8 +9,12 @@ import { createEntry } from './utils'
 
 addRxPlugin(RxDBUpdatePlugin)
 
-export function queryEntries(db: MyDatabase) {
-  return db.entries.find().sort({ updatedAt: 'desc' })
+export function queryEntries(db: MyDatabase, category: string) {
+  if (!category || category === 'All')
+    return db.entries.find().sort({ updatedAt: 'desc' })
+  return db.entries
+    .find({ selector: { categories: { $in: [category] } } })
+    .sort({ updatedAt: 'desc' })
 }
 
 export async function add(data: string, db: MyDatabase) {

@@ -1,6 +1,6 @@
 //TODO Keyboard Navigation scroll
 <template>
-  <div v-if="open" class="relative mt-1">
+  <div v-if="open" class="relative">
     <div
       class="absolute z-50 w-full mt-1 rounded-md shadow-lg bg-primary"
       aria-haspopup="listbox"
@@ -13,7 +13,7 @@
         role="listbox"
         aria-labelledby="listbox-label"
         aria-activedescendant="listbox-item-3"
-        class="py-1 overflow-auto text-base rounded-md bg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        class="overflow-auto text-base rounded-md bg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
       >
         <li
           v-for="(option, index) in options"

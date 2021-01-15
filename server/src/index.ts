@@ -90,16 +90,6 @@ const main = async () => {
   httpServer.listen(4000, () => {
     console.log('express server started')
   })
-
-  // setInterval(() => {
-  //   const flag = new Date().getTime()
-  //   pubsub.publish('changedEntry', {
-  //     humanChanged: {
-  //       name: 'name-' + flag,
-  //     },
-  //   })
-  //   console.log('published humanChanged ' + flag)
-  // }, 1000)
 }
 
 main().catch((err) => {

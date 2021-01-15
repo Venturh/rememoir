@@ -37,3 +37,12 @@ export const hoverSecondaryMenuItems = [
   { name: 'mail', icon: MailIcon },
   { name: 'back', icon: SkipBackIcon, goto: 'primary' },
 ]
+
+export const categories = [
+  'All',
+  'Videos',
+  'Audio',
+  'Youtube',
+  'Website',
+  'Link',
+]

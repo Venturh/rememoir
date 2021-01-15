@@ -29,7 +29,7 @@
       ref="selectMenu"
       name="categories"
       :open="categoriesOpen"
-      :options="['Youtube', 'Music', 'Audio', 'Link']"
+      :options="categories"
       @selected="addFromMenu"
     />
   </div>
@@ -38,6 +38,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
 import { SearchIcon, ColumnsIcon } from 'vue-feather-icons'
+import { categories } from '@/config/data'
 
 export default defineComponent({
   components: {
@@ -72,7 +73,7 @@ export default defineComponent({
       }
     )
 
-    return { input, inputRef, categoriesOpen, addFromMenu, focus }
+    return { input, inputRef, categoriesOpen, addFromMenu, focus, categories }
   },
 })
 </script>

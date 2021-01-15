@@ -16,7 +16,7 @@ export default function () {
 
   const link = onError(({ graphQLErrors }) => {
     graphQLErrors.forEach((err) => {
-      console.log('graphQLErrors', err)
+      console.log('graphQLErrors', err.name, err.message)
     })
   })
 

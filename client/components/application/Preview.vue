@@ -6,11 +6,17 @@
     "
   >
     <div v-if="!play" class="relative">
-      <img :src="contentPreview.ogImageUrl" alt="previewImage" :class="size" />
+      <img
+        class="w-screen max-w-full rounded-md"
+        :class="size"
+        :src="contentPreview.ogImageUrl"
+        alt="previewImage"
+      />
       <PlayOverlay :content-url="contentUrl" @play="$emit('play')" />
     </div>
     <iframe
       v-else
+      class="w-screen max-w-full rounded-md"
       :class="size"
       :src="
         contentPreview.ogVideoUrl
@@ -22,7 +28,12 @@
   </div>
   <div v-else>
     <ButtonOrLink out :to="contentUrl">
-      <img :src="contentPreview.ogImageUrl" alt="previewImage" :class="size" />
+      <img
+        class="w-screen max-w-full rounded-md"
+        :class="size"
+        :src="contentPreview.ogImageUrl"
+        alt="previewImage"
+      />
     </ButtonOrLink>
   </div>
 </template>
@@ -49,19 +60,10 @@ export default defineComponent({
   setup(props) {
     const size = computed(() => {
       const map = new Map([
-        [
-          'video.other',
-          'object-conatain object-left w-screen max-w-full max-w-full h-48',
-        ],
-        [
-          'music.song',
-          'object-contain bg-brand25 rounded-md object-left w-screen max-w-full h-20',
-        ],
-        [
-          'undefined',
-          'object-contain object-left w-screen max-w-full max-w-full h-48',
-        ],
-        ['website', 'object-cover w-screen max-w-full max-w-full h-48'],
+        ['video.other', 'object-cover h-48'],
+        ['music.song', 'object-contain bg-brand25  object-left h-20'],
+        ['undefined', 'object-contain bg-brand15  h-48'],
+        ['website', 'object-cover h-48'],
       ])
 
       return (

@@ -1,12 +1,12 @@
 <template>
   <div
-    class="relative flex flex-col justify-between w-screen px-3 py-4 rounded-lg bg-secondary"
+    class="relative flex flex-col w-screen px-3 py-2 rounded-lg bg-secondary"
   >
     <div class="flex items-start justify-between">
       <div class="space-y-2">
         <span v-if="contentText" class="">{{ contentText }}</span>
         <LinkEntry
-          v-if="contentType === 'Link'"
+          v-if="contentType === 'Link' && showPreview"
           :content-text="contentText"
           :content-url="contentUrl"
           :content-preview="contentPreview"
@@ -95,6 +95,10 @@ export default defineComponent({
     categories: {
       type: Array,
       default: () => [],
+    },
+    showPreview: {
+      type: Boolean,
+      default: true,
     },
   },
   setup(props) {
