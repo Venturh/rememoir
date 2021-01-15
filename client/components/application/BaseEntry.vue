@@ -3,7 +3,7 @@
     class="relative flex flex-col w-screen px-3 py-2 rounded-lg bg-secondary"
   >
     <div class="flex items-start justify-between">
-      <div class="space-y-2">
+      <div class="space-y-3">
         <span v-if="contentText" class="">{{ contentText }}</span>
         <LinkEntry
           v-if="contentType === 'Link' && showPreview"

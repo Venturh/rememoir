@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 export function createEntry(data: string) {
   const split = data.split(' ')
   let categories = split.filter((s) => s.includes('#'))
@@ -25,7 +27,7 @@ export function createEntry(data: string) {
     contentUrl: contentUrl === null ? '' : contentUrl,
     categories,
     hashedKey: 'hashed',
-    calendarDate: Date().toString(),
+    calendarDate: dayjs().format('DD.MM.YY'),
     processing: false,
     updatedAt: Date.now().toString(),
   }

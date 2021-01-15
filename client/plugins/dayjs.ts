@@ -1,8 +1,17 @@
 import { Context } from '@nuxt/types'
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import updateLocale from 'dayjs/plugin/updateLocale'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import calendar from 'dayjs/plugin/calendar'
 
-export default defineNuxtPlugin(({ app: { $dayjs } }: Context) => {
-  $dayjs.updateLocale('en', {
+export default defineNuxtPlugin((ctx, inject) => {
+  dayjs.extend(customParseFormat)
+  dayjs.extend(updateLocale)
+  dayjs.extend(relativeTime)
+  dayjs.extend(calendar)
+  dayjs.updateLocale('en', {
     calendar: {
       lastDay: '[Yesterday, ] DD.MM.YYYY',
       sameDay: '[Today, ] DD.MM.YYYY',
@@ -26,7 +35,7 @@ export default defineNuxtPlugin(({ app: { $dayjs } }: Context) => {
       yy: '%d y',
     },
   })
-  $dayjs.updateLocale('de', {
+  dayjs.updateLocale('de', {
     calendar: {
       lastDay: '[Gestern, ] DD.MM.YYYY',
       sameDay: '[Heute, ] DD.MM.YYYY',
@@ -50,4 +59,5 @@ export default defineNuxtPlugin(({ app: { $dayjs } }: Context) => {
       yy: '%d j',
     },
   })
+  inject('dayjs', dayjs)
 })

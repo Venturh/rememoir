@@ -1,25 +1,28 @@
 <template>
-  <div class="flex space-x-2">
-    <IconOnlyButton
-      class="p-2 bg-secondary"
-      @click="onChange({ type: 'preview', item: !previewFilter })"
-    >
-      <SquareIcon v-if="previewFilter" size="1.25x" />
-      <LayoutIcon v-else size="1.25x" />
-    </IconOnlyButton>
-    <Dropdown
-      type="categories"
-      :items="categories"
-      :icon="FolderIcon"
-      @selected="onChange"
-    />
+  <div class="space-y-2">
+    <div class="flex flex-wrap space-x-2">
+      <IconOnlyButton
+        class="p-2 bg-secondary"
+        @click="onChange({ type: 'preview', item: !previewFilter })"
+      >
+        <SquareIcon v-if="previewFilter" size="1.25x" />
+        <LayoutIcon v-else size="1.25x" />
+      </IconOnlyButton>
+      <Dropdown
+        type="categories"
+        :items="categories"
+        :icon="FolderIcon"
+        @selected="onChange"
+      />
 
-    <Dropdown
-      type="categories"
-      :items="categories"
-      :icon="ListIcon"
-      @selected="onChange"
-    />
+      <Dropdown
+        type="categories"
+        :items="['No Lists']"
+        :icon="ListIcon"
+        @selected="onChange"
+      />
+    </div>
+    <Calendar @change="onChange" />
   </div>
 </template>
 

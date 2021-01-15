@@ -24,6 +24,7 @@ export default {
     '@/plugins/provide-apollo-client',
     '@/plugins/dayjs',
     '@/plugins/vue-final-modal',
+    '@/plugins/vue-calendar',
   ],
 
   components: true,
@@ -32,7 +33,6 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/composition-api',
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/dayjs',
   ],
 
   modules: ['@nuxtjs/apollo', ['nuxt-i18n', i18n]],
@@ -41,12 +41,6 @@ export default {
     clientConfigs: {
       default: '~/plugins/apollo-config.ts',
     },
-  },
-
-  dayjs: {
-    locales: ['en', 'de'],
-    defaultLocale: 'de',
-    plugins: ['utc', 'relativeTime', 'Calendar', 'updateLocale'],
   },
 
   build: { transpile: ['vue-final-modal'] },

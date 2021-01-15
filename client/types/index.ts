@@ -5,6 +5,6 @@ export type EditedEntry = {
 }
 
 export type Filters = {
-  type: 'categories' | 'preview'
+  type: 'categories' | 'preview' | 'date'
   item: string | boolean
 }

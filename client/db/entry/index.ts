@@ -1,6 +1,7 @@
 import { RxDBUpdatePlugin } from 'rxdb/plugins/update'
 import { addRxPlugin } from 'rxdb'
 
+import dayjs from 'dayjs'
 import { EntryInput } from '../../generated/graphql'
 import { EditedEntry } from '../../types'
 import { MyDatabase } from '../index'
@@ -9,12 +10,42 @@ import { createEntry } from './utils'
 
 addRxPlugin(RxDBUpdatePlugin)
 
-export function queryEntries(db: MyDatabase, category: string) {
-  if (!category || category === 'All')
-    return db.entries.find().sort({ updatedAt: 'desc' })
-  return db.entries
-    .find({ selector: { categories: { $in: [category] } } })
-    .sort({ updatedAt: 'desc' })
+export function queryEntries(
+  db: MyDatabase,
+  { category, date }: { category?: string; date?: string }
+) {
+  if (category === 'All') {
+    if (date === undefined) return db.entries.find().sort({ updatedAt: 'desc' })
+    else {
+      const calendarDate = dayjs(date).format('DD.MM.YY')
+      return db.entries
+        .find({
+          selector: {
+            calendarDate: {
+              $eq: calendarDate,
+            },
+          },
+        })
+        .sort({ updatedAt: 'desc' })
+    }
+  } else if (date === undefined)
+    return db.entries
+      .find({
+        selector: {
+          categories: { $in: [category] },
+        },
+      })
+      .sort({ updatedAt: 'desc' })
+  else {
+    return db.entries
+      .find({
+        selector: {
+          categories: { $in: [category] },
+          calendarDate: { $eq: dayjs(date).format('DD.MM.YY') },
+        },
+      })
+      .sort({ updatedAt: 'desc' })
+  }
 }
 
 export async function add(data: string, db: MyDatabase) {

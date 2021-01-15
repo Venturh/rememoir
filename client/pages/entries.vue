@@ -45,8 +45,10 @@
 import {
   defineComponent,
   onMounted,
+  reactive,
   ref,
   useContext,
+  watch,
 } from '@nuxtjs/composition-api'
 
 import { groupBy } from 'lodash'
@@ -62,25 +64,28 @@ export default defineComponent({
     const { $db, $dayjs } = useContext().app
     const entries = ref()
     const showPreview = ref(true)
-    const filters = ref<{ categories: string; preview: boolean }>({
-      categories: '',
+    const filters = reactive<{
+      categories: string
+      preview: boolean
+      date?: string
+    }>({
+      categories: 'All',
       preview: true,
+      date: undefined,
     })
     const awaitReplication = ref(true)
 
-    async function setFilters({ type, item }: Filters) {
+    function setFilters({ type, item }: Filters) {
       switch (type) {
         case 'categories': {
-          filters.value.categories = item as string
-          const query = await queryEntries($db, filters.value.categories).exec()
-          const grouped = await groupBy(query, (result: EntryInput) =>
-            $dayjs(parseInt(result.updatedAt)).calendar()
-          )
-          entries.value = grouped
+          filters.categories = item as string
           break
         }
         case 'preview':
           showPreview.value = item as boolean
+          break
+        case 'date':
+          filters.date = item as string
           break
 
         default:
@@ -88,8 +93,26 @@ export default defineComponent({
       }
     }
 
+    watch(
+      () => filters,
+      async (filter) => {
+        const query = await queryEntries($db, {
+          category: filter.categories,
+          date: filter.date,
+        }).exec()
+        const grouped = await groupBy(query, (result: EntryInput) =>
+          $dayjs(parseInt(result.updatedAt)).calendar()
+        )
+        entries.value = grouped
+      },
+      { deep: true }
+    )
+
     onMounted(async () => {
-      const query = await queryEntries($db, categories[0])
+      const query = await queryEntries($db, {
+        category: categories[0],
+        date: undefined,
+      })
       query.$.subscribe(async (results) => {
         awaitReplication.value = true
         const grouped = await groupBy(results, (result: EntryInput) =>
