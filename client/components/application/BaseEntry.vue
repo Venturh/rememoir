@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative flex flex-col w-screen px-3 py-2 rounded-lg bg-secondary"
-  >
+  <div class="relative flex flex-col px-3 py-2 rounded-lg bg-secondary">
     <div class="flex items-start justify-between">
       <div class="space-y-3">
         <span v-if="contentText" class="">{{ contentText }}</span>
@@ -12,6 +10,7 @@
           :content-preview="contentPreview"
         />
       </div>
+
       <div class="flex items-center flex-shrink-0">
         <span class="text-sm">{{ timeFrom }}</span>
         <button @mouseover="showMenu = !showMenu" @click="showMenu = !showMenu">

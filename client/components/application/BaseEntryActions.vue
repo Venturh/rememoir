@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="absolute z-50 top-10 right-5">
     <Modal
+      v-if="showModal"
       v-model="showModal"
       form
       @confirm="submitEditedEntry"
@@ -36,7 +37,6 @@
       v-if="showMenu"
       :primary-items="primaryMenuItems"
       :secondary-items="secondaryMenuItems"
-      class="absolute right-5 top-10"
       @mouseleave="$emit('hideMenu', true)"
       @click="handleMenu"
     />

@@ -2,8 +2,8 @@
   <div
     class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
-    <div class="sm:max-w-md md:max-w-lg lg:max-w-xl">
-      <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
+    <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
+    <div class="lg:w-screen lg:max-w-lg">
       <div v-if="entries" class="grid gap-4">
         <div v-for="date in Object.keys(entries)" :key="date" class="">
           <!-- <div dark
@@ -13,11 +13,10 @@
             <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
               {{ date }}
             </div>
-            <div class="mt-3 space-y-3">
+            <div class="mt-2 space-y-2">
               <BaseEntry
                 v-for="(entry, index) in entries[date]"
                 :key="index"
-                class="mx-auto max-w-xsm sm:max-w-md md:max-w-lg lg:max-w-xl"
                 :show-preview="showPreview"
                 v-bind="{
                   contentText: entry.contentText,
@@ -37,7 +36,7 @@
         </div>
       </div>
     </div>
-    <Filters class="mb-2 lg:mb-0" @filter="setFilters" />
+    <Filters @filter="setFilters" />
   </div>
 </template>
 

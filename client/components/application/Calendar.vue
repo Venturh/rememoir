@@ -1,5 +1,7 @@
 <template>
-  <div class="relative flex space-x-2 lg:space-x-0 lg:space-y-2 lg:flex-col">
+  <div
+    class="relative flex space-x-2 -top-2 lg:space-x-0 lg:space-y-2 lg:flex-col"
+  >
     <VueTailWindPicker
       v-if="!isMobile"
       :inline="true"
@@ -13,22 +15,17 @@
     </VueTailWindPicker>
     <Dropdown v-if="isMobile" :show="show" @change="setShow">
       <CalendarIcon size="1.25x" />
-      <input
-        :value="$dayjs(date).calendar()"
-        class="text-xs border-none outline-none bg-secondary"
-        @change="onChange"
-      />
+
       <template v-slot:menu>
         <VueTailWindPicker
           :inline="true"
-          :selected-date="null"
+          :start-date="date"
           :init="false"
           :date-range="true"
           class="picker"
           :theme="calendarTheme(isMobile)"
           @change="onChange"
-        >
-        </VueTailWindPicker>
+        />
       </template>
     </Dropdown>
     <Button
@@ -85,6 +82,9 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 /* Hide calendar header */
+.picker >>> * {
+  @apply rounded-lg;
+}
 .picker >>> #v-tailwind-picker-header {
   display: none;
 }

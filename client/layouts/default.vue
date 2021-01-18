@@ -10,9 +10,7 @@
       />
       <div class="w-full min-h-screen py-2 space-y-2 lg:pl-64">
         <Header @sidebartoggle="toggle = !toggle" />
-        <div class="">
-          <Nuxt />
-        </div>
+        <Nuxt />
       </div>
     </div>
   </div>

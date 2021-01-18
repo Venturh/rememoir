@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full space-y-2">
-    <div class="flex flex-wrap space-x-2">
+  <div class="flex flex-col w-full lg:flex-col-reverse lg:w-80">
+    <div class="flex space-x-2">
       <IconOnlyButton
         class="p-2 bg-secondary"
         @click="onChange({ type: 'preview', item: !previewFilter })"
@@ -22,7 +22,7 @@
         @selected="onChange"
       />
     </div>
-    <Calendar @change="onChange" />
+    <Calendar class="mt-4 lg:mt-0" @change="onChange" />
   </div>
 </template>
 

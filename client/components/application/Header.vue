@@ -1,28 +1,28 @@
 <template>
-  <div class="flex items-center justify-between space-x-2 md:space-x-0">
+  <div class="flex items-center justify-between space-x-2 lg:space-x-0">
     <div class="mt-1.5 lg:hidden">
       <IconOnlyButton @click="$emit('sidebartoggle')">
         <MenuIcon class="stroke-current text-brand" />
       </IconOnlyButton>
     </div>
-    <HeaderSearch
-      v-if="search === true"
-      class="sm:max-w-md md:max-w-lg lg:max-w-xl"
-      :placeholder="$t('searchPlaceholder')"
-    />
-    <HeaderAdd
-      v-else
-      ref="headerAdd"
-      v-model="input"
-      :placeholder="$t('addNewEntry')"
-      class="sm:max-w-md md:max-w-lg lg:max-w-xl"
-      @cancel="search = true"
-      @action="addEntry"
-    />
+    <div class="w-screen lg:max-w-lg">
+      <HeaderSearch
+        v-if="search === true"
+        :placeholder="$t('searchPlaceholder')"
+      />
+      <HeaderAdd
+        v-else
+        ref="headerAdd"
+        v-model="input"
+        :placeholder="$t('addNewEntry')"
+        @cancel="search = true"
+        @action="addEntry"
+      />
+    </div>
     <Button
       variant="1"
       padding
-      class="p-2 lg:px-4 lg:space-x-2"
+      class="p-2 lg:ml-6 lg:px-4 lg:space-x-2 lg:w-80"
       @click="search = !search"
     >
       <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
