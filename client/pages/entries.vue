@@ -3,7 +3,14 @@
     class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
     <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
+
     <div class="lg:w-screen lg:max-w-lg">
+      <NotFound
+        v-if="!awaitReplication && Object.keys(entries).length === 0"
+        class="mt-20"
+        target="entries"
+      />
+
       <div v-if="entries" class="grid gap-4">
         <div v-for="date in Object.keys(entries)" :key="date" class="">
           <!-- <div dark
@@ -61,7 +68,7 @@ export default defineComponent({
   middleware: ['authenticated'],
   setup() {
     const { $db, $dayjs } = useContext().app
-    const entries = ref()
+    const entries = ref({})
     const showPreview = ref(true)
     const filters = reactive<{
       categories: string
