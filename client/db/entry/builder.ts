@@ -4,9 +4,9 @@ import {
   RxEntryReplicationDocument,
   CreateEntryDocument,
   OnEntryChangedDocument,
-} from '../generated/graphql'
+} from '../../generated/graphql'
 
-export const pullQueryBuilder = (doc) => {
+export const entryPullQueryBuilder = (doc) => {
   if (!doc) {
     doc = {
       id: '',
@@ -19,7 +19,7 @@ export const pullQueryBuilder = (doc) => {
   }
 }
 
-export const pushQueryBuilder = (entry: EntryInput) => {
+export const entryPushQueryBuilder = (entry: EntryInput) => {
   const variables = {
     entry: {
       id: entry.id,

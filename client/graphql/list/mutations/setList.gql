@@ -1,0 +1,6 @@
+mutation setList($list: ListInput!) {
+  setList(list: $list) {
+    id
+    updatedAt
+  }
+}

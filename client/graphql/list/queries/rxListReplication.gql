@@ -1,0 +1,45 @@
+query rxListReplication(
+  $lastId: String!
+  $minUpdatedAt: String!
+  $limit: Float!
+) {
+  rxListReplication(
+    lastId: $lastId
+    minUpdatedAt: $minUpdatedAt
+    limit: $limit
+  ) {
+    id
+    updatedAt
+    createdAt
+    deleted
+    title
+    description
+    calendarDate
+    hashedKey
+    processing
+    categories
+    entries {
+      id
+      updatedAt
+      createdAt
+      deleted
+      contentText
+      contentUrl
+      contentType
+      contentPreview {
+        ogSiteName
+        ogTitle
+        ogDescription
+        ogImageUrl
+        ogAudioUrl
+        ogVideoUrl
+        embeddedUrl
+        color
+        type
+      }
+      calendarDate
+      categories
+      processing
+    }
+  }
+}

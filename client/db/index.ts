@@ -21,14 +21,20 @@ import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 import { getAccessToken, tryAccessToken } from '../utils/auth'
 import { decryptEntry, encryptEntry } from '../utils/crypto'
-import { EntryInput } from '../generated/graphql'
+import { EntryInput, ListInput } from '../generated/graphql'
 import { EntryCollection, entrySchema } from './entry/schema'
+import { ListCollection, listSchema } from './list/schema'
 
 import {
-  pullQueryBuilder,
-  pushQueryBuilder,
+  listPullQueryBuilder,
+  listPushQueryBuilder,
+  listSubscription,
+} from './list/builder'
+import {
+  entryPullQueryBuilder,
+  entryPushQueryBuilder,
   entrySubscription,
-} from './builders'
+} from './entry/builder'
 
 if (process.env.NODE_ENV === 'development') {
   addRxPlugin(RxDBDevModePlugin)
@@ -42,20 +48,11 @@ addRxPlugin(RxDBQueryBuilderPlugin)
 
 export interface Collections {
   entries: EntryCollection
+  lists: ListCollection
 }
 export type MyDatabase = RxDatabase<Collections>
 
 const syncURL = 'http://localhost:4000/graphql'
-export const graphQLGenerationInput = {
-  entry: {
-    schema: entrySchema,
-    feedKeys: ['id', 'updatedAt'],
-    deletedFlag: 'deleted',
-    subscriptionParams: {
-      token: 'String!',
-    },
-  },
-}
 
 export async function createDb(): Promise<MyDatabase> {
   const db = await createRxDatabase<Collections>({
@@ -65,24 +62,25 @@ export async function createDb(): Promise<MyDatabase> {
   })
 
   await db.addCollections({ entries: { schema: entrySchema } })
+  await db.addCollections({ lists: { schema: listSchema } })
 
   db.waitForLeadership().then(function () {
     document.title = '♛ ' + document.title
   })
 
-  const replication = db.collections.entries.syncGraphQL({
+  const entryReplication = db.collections.entries.syncGraphQL({
     url: syncURL,
     headers: {
       Authorization: 'Bearer ' + getAccessToken(),
     },
     pull: {
-      queryBuilder: pullQueryBuilder,
+      queryBuilder: entryPullQueryBuilder,
       modifier: (d: EntryInput) => {
         return decryptEntry(d)
       },
     },
     push: {
-      queryBuilder: pushQueryBuilder,
+      queryBuilder: entryPushQueryBuilder,
       batchSize: 5,
       modifier: (d: EntryInput) => {
         console.log('createDb ~ d', d)
@@ -94,11 +92,43 @@ export async function createDb(): Promise<MyDatabase> {
     liveInterval: 1000 * 60 * 10,
   })
 
-  replication.error$.subscribe(async (err) => {
+  const listReplication = db.collections.lists.syncGraphQL({
+    url: syncURL,
+    headers: {
+      Authorization: 'Bearer ' + getAccessToken(),
+    },
+    pull: {
+      queryBuilder: listPullQueryBuilder,
+      modifier: (d: ListInput) => {
+        return d
+      },
+    },
+    push: {
+      queryBuilder: listPushQueryBuilder,
+      batchSize: 5,
+      modifier: (d: ListInput) => {
+        console.log('createDb ~ d', d)
+        return d
+      },
+    },
+    deletedFlag: 'deleted',
+    live: true,
+    liveInterval: 1000 * 60 * 10,
+  })
+
+  entryReplication.error$.subscribe(async (err) => {
     console.error('replication error:')
     console.dir(err)
     // TODO: Neu Validieren wenn abgelaufen
-    replication.setHeaders({
+    entryReplication.setHeaders({
+      Authorization: 'Bearer ' + (await tryAccessToken()),
+    })
+  })
+  listReplication.error$.subscribe(async (err) => {
+    console.error('replication error:')
+    console.dir(err)
+    // TODO: Neu Validieren wenn abgelaufen
+    entryReplication.setHeaders({
       Authorization: 'Bearer ' + (await tryAccessToken()),
     })
   })
@@ -126,7 +156,7 @@ export async function createDb(): Promise<MyDatabase> {
     next: async (data) => {
       console.log('subscription emitted => trigger run()')
       console.dir(data)
-      await replication.run()
+      await entryReplication.run()
       console.log('run() done')
     },
     error(error) {
@@ -138,9 +168,10 @@ export async function createDb(): Promise<MyDatabase> {
   if (!db.isLeader()) {
     console.log('not leader')
 
-    replication.run()
+    entryReplication.run()
   }
-  await replication.awaitInitialReplication()
+  await entryReplication.awaitInitialReplication()
+  await listReplication.awaitInitialReplication()
 
   return db
 }

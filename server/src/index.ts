@@ -11,7 +11,7 @@ import { verify } from 'jsonwebtoken'
 import { MongoDriver } from '@mikro-orm/mongodb'
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 
-import { BaseEntity, Entry, User } from './entities'
+import { BaseEntity, Entry, User, List } from './entities'
 import { MyContext } from './types'
 
 import {
@@ -22,7 +22,7 @@ import {
 
 const main = async () => {
   const orm = await MikroORM.init<MongoDriver>({
-    entities: [BaseEntity, User, Entry],
+    entities: [BaseEntity, User, Entry, List],
     dbName: 'synced',
     type: 'mongo',
     debug: false,

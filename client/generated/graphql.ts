@@ -68,6 +68,23 @@ export type User = {
   entries: User;
 };
 
+export type List = {
+  __typename?: 'List';
+  _id: Scalars['String'];
+  id: Scalars['String'];
+  updatedAt: Scalars['String'];
+  createdAt: Scalars['String'];
+  deleted?: Maybe<Scalars['Boolean']>;
+  title: Scalars['String'];
+  description: Scalars['String'];
+  calendarDate: Scalars['String'];
+  hashedKey: Scalars['String'];
+  processing: Scalars['Boolean'];
+  categories: Array<Scalars['String']>;
+  user: User;
+  entries: Array<Entry>;
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -133,6 +150,19 @@ export type ContentPreviewInput = {
   type: Scalars['String'];
 };
 
+export type ListInput = {
+  id: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  categories: Array<Scalars['String']>;
+  entries: Array<EntryInput>;
+  calendarDate: Scalars['String'];
+  updatedAt: Scalars['String'];
+  hashedKey: Scalars['String'];
+  processing: Scalars['Boolean'];
+  deleted?: Maybe<Scalars['Boolean']>;
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -145,6 +175,7 @@ export type Query = {
   preview: Scalars['Boolean'];
   users: Array<User>;
   me: User;
+  rxListReplication: Array<List>;
 };
 
 
@@ -159,11 +190,19 @@ export type QueryPreviewArgs = {
   url: Scalars['String'];
 };
 
+
+export type QueryRxListReplicationArgs = {
+  limit: Scalars['Float'];
+  minUpdatedAt: Scalars['String'];
+  lastId: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   setEntry: Entry;
   revokeRefreshToken: Scalars['Boolean'];
   logout: Scalars['Boolean'];
+  setList: List;
   login: LoginResponse;
   requestResetPassword: ValidResponse;
   verifyPasswordReset: ValidResponse;
@@ -182,6 +221,11 @@ export type MutationSetEntryArgs = {
 
 export type MutationRevokeRefreshTokenArgs = {
   userId: Scalars['String'];
+};
+
+
+export type MutationSetListArgs = {
+  list: ListInput;
 };
 
 
@@ -429,6 +473,42 @@ export type OnEntryChangedSubscription = (
     { __typename?: 'Entry' }
     & Pick<Entry, 'id'>
   ) }
+);
+
+export type SetListMutationVariables = Exact<{
+  list: ListInput;
+}>;
+
+
+export type SetListMutation = (
+  { __typename?: 'Mutation' }
+  & { setList: (
+    { __typename?: 'List' }
+    & Pick<List, 'id' | 'updatedAt'>
+  ) }
+);
+
+export type RxListReplicationQueryVariables = Exact<{
+  lastId: Scalars['String'];
+  minUpdatedAt: Scalars['String'];
+  limit: Scalars['Float'];
+}>;
+
+
+export type RxListReplicationQuery = (
+  { __typename?: 'Query' }
+  & { rxListReplication: Array<(
+    { __typename?: 'List' }
+    & Pick<List, 'id' | 'updatedAt' | 'createdAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories'>
+    & { entries: Array<(
+      { __typename?: 'Entry' }
+      & Pick<Entry, 'id' | 'updatedAt' | 'createdAt' | 'deleted' | 'contentText' | 'contentUrl' | 'contentType' | 'calendarDate' | 'categories' | 'processing'>
+      & { contentPreview?: Maybe<(
+        { __typename?: 'ContentPreview' }
+        & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
+      )> }
+    )> }
+  )> }
 );
 
 
@@ -837,3 +917,94 @@ export function useOnEntryChangedSubscription(variables: OnEntryChangedSubscript
   return VueApolloComposable.useSubscription<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>(OnEntryChangedDocument, variables, options);
 }
 export type OnEntryChangedSubscriptionCompositionFunctionResult = VueApolloComposable.UseSubscriptionReturn<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>;
+export const SetListDocument = gql`
+    mutation setList($list: ListInput!) {
+  setList(list: $list) {
+    id
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useSetListMutation__
+ *
+ * To run a mutation, you first call `useSetListMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useSetListMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useSetListMutation({
+ *   variables: {
+ *     list: // value for 'list'
+ *   },
+ * });
+ */
+export function useSetListMutation(options: VueApolloComposable.UseMutationOptions<SetListMutation, SetListMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<SetListMutation, SetListMutationVariables>>) {
+  return VueApolloComposable.useMutation<SetListMutation, SetListMutationVariables>(SetListDocument, options);
+}
+export type SetListMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<SetListMutation, SetListMutationVariables>;
+export const RxListReplicationDocument = gql`
+    query rxListReplication($lastId: String!, $minUpdatedAt: String!, $limit: Float!) {
+  rxListReplication(lastId: $lastId, minUpdatedAt: $minUpdatedAt, limit: $limit) {
+    id
+    updatedAt
+    createdAt
+    deleted
+    title
+    description
+    calendarDate
+    hashedKey
+    processing
+    categories
+    entries {
+      id
+      updatedAt
+      createdAt
+      deleted
+      contentText
+      contentUrl
+      contentType
+      contentPreview {
+        ogSiteName
+        ogTitle
+        ogDescription
+        ogImageUrl
+        ogAudioUrl
+        ogVideoUrl
+        embeddedUrl
+        color
+        type
+      }
+      calendarDate
+      categories
+      processing
+    }
+  }
+}
+    `;
+
+/**
+ * __useRxListReplicationQuery__
+ *
+ * To run a query within a Vue component, call `useRxListReplicationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRxListReplicationQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useRxListReplicationQuery({
+ *   lastId: // value for 'lastId'
+ *   minUpdatedAt: // value for 'minUpdatedAt'
+ *   limit: // value for 'limit'
+ * });
+ */
+export function useRxListReplicationQuery(variables: RxListReplicationQueryVariables | VueCompositionApi.Ref<RxListReplicationQueryVariables> | ReactiveFunction<RxListReplicationQueryVariables>, options: VueApolloComposable.UseQueryOptions<RxListReplicationQuery, RxListReplicationQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<RxListReplicationQuery, RxListReplicationQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<RxListReplicationQuery, RxListReplicationQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<RxListReplicationQuery, RxListReplicationQueryVariables>(RxListReplicationDocument, variables, options);
+}
+export type RxListReplicationQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<RxListReplicationQuery, RxListReplicationQueryVariables>;
