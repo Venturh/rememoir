@@ -46,3 +46,27 @@ export const categories = [
   'Website',
   'Link',
 ]
+
+export const calendarTheme = (isMobile: boolean) => {
+  return {
+    background: 'var(--bg-secondary)',
+    text: 'text-primary',
+    border: isMobile ? 'border-borderPrimary' : 'border-none',
+    currentColor: 'bg-secondary',
+    navigation: {
+      hover: 'hover:bg-primary',
+      focus: 'bg-brand25',
+    },
+    picker: {
+      rounded: 'rounded-full',
+      selected: {
+        background: 'bg-brand ',
+        text: 'text-brandContrast',
+        border: 'border-primaryText ',
+      },
+    },
+    event: {
+      border: 'border-gray-700',
+    },
+  }
+}

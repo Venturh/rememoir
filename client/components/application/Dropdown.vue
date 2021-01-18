@@ -1,8 +1,8 @@
 <template>
   <div>
     <IconOnlyButton
-      class="flex items-center justify-between p-2 space-x-2 bg-secondary focus:outline-none"
-      @click="open = !open"
+      class="relative flex items-center justify-between p-2 space-x-2 bg-secondary focus:outline-none"
+      @click="onChange"
     >
       <div class="flex items-center space-x-2">
         <component :is="icon" size="1.25x" />
@@ -10,7 +10,8 @@
         <slot v-else class="text-xs" />
       </div>
 
-      <ChevronDownIcon class="flex-shrink-0" size="1.25x" />
+      <ChevronDownIcon v-if="!open" class="flex-shrink-0" size="1.25x" />
+      <ChevronUpIcon v-else class="flex-shrink-0" size="1.25x" />
     </IconOnlyButton>
     <SelectMenu
       v-if="items.length > 0"
@@ -18,12 +19,15 @@
       :options="items"
       @selected="handleSelected"
     />
+    <div v-else-if="items.length === 0 && open" class="absolute z-50 top-8">
+      <slot name="menu" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { FolderIcon, ChevronDownIcon } from 'vue-feather-icons'
+import { defineComponent, ref, watch } from '@nuxtjs/composition-api'
+import { FolderIcon, ChevronDownIcon, ChevronUpIcon } from 'vue-feather-icons'
 
 export default defineComponent({
   props: {
@@ -35,6 +39,10 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    show: {
+      type: Boolean,
+      default: false,
+    },
     icon: {
       type: Object,
       default: () => {},
@@ -44,18 +52,31 @@ export default defineComponent({
   components: {
     FolderIcon,
     ChevronDownIcon,
+    ChevronUpIcon,
   },
 
   setup(props, { emit }) {
-    const open = ref(false)
+    const open = ref(props.show)
     const selectedItem = ref(props.items[0])
+
+    function onChange() {
+      open.value = !open.value
+      emit('change', open.value)
+    }
+
+    watch(
+      () => props.show,
+      (show) => {
+        open.value = show
+      }
+    )
 
     function handleSelected(item: string) {
       selectedItem.value = item
       open.value = false
       emit('selected', { item, type: props.type })
     }
-    return { open, selectedItem, handleSelected }
+    return { open, close, selectedItem, handleSelected, onChange }
   },
 })
 </script>

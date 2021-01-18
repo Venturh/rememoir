@@ -16,12 +16,13 @@
       v-model="input"
       :placeholder="$t('addNewEntry')"
       class="sm:max-w-md md:max-w-lg lg:max-w-xl"
-      @cancel="cancel"
+      @cancel="search = true"
       @action="addEntry"
     />
     <Button
       variant="1"
-      class="px-3 py-2 lg:space-x-2"
+      padding
+      class="p-2 lg:px-4 lg:space-x-2"
       @click="search = !search"
     >
       <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
@@ -54,16 +55,9 @@ export default defineComponent({
     const { $db } = useContext().app
 
     async function addEntry(data: string) {
-      console.log('addEntry ~ data', data)
       await add(data, $db)
       search.value = true
       input.value = ''
-    }
-
-    function cancel() {
-      console.log()
-
-      search.value = true
     }
 
     function hotkeyListener(event: KeyboardEvent) {
@@ -81,7 +75,7 @@ export default defineComponent({
       window.removeEventListener('keydown', hotkeyListener)
     })
 
-    return { input, addEntry, search, cancel, headerAdd }
+    return { input, addEntry, search, headerAdd }
   },
 })
 </script>

@@ -1,54 +1,56 @@
 <template>
-  <VueTailWindPicker
-    :inline="isMobile ? false : true"
-    :init="false"
-    :date-range="true"
-    class="picker"
-    :theme="{
-      background: 'var(--bg-secondary)',
-      text: 'text-primary',
-      border: 'border-none',
-      currentColor: 'bg-secondary',
-      navigation: {
-        hover: 'hover:bg-primary',
-        focus: 'bg-brand25',
-      },
-      picker: {
-        rounded: 'rounded-full',
-        selected: {
-          background: 'bg-brand ',
-          text: 'text-brandContrast',
-          border: 'border-primaryText ',
-        },
-      },
-      event: {
-        border: 'border-gray-700',
-      },
-    }"
-    @change="onChange"
-  >
-    <Dropdown v-if="isMobile">
+  <div class="relative flex space-x-2 lg:space-x-0 lg:space-y-2 lg:flex-col">
+    <VueTailWindPicker
+      v-if="!isMobile"
+      :inline="true"
+      :selected-date="null"
+      :init="false"
+      :date-range="true"
+      class="picker"
+      :theme="calendarTheme(isMobile)"
+      @change="onChange"
+    >
+    </VueTailWindPicker>
+    <Dropdown v-if="isMobile" :show="show" @change="setShow">
       <CalendarIcon size="1.25x" />
       <input
         :value="$dayjs(date).calendar()"
         class="text-xs border-none outline-none bg-secondary"
         @change="onChange"
       />
+      <template v-slot:menu>
+        <VueTailWindPicker
+          :inline="true"
+          :selected-date="null"
+          :init="false"
+          :date-range="true"
+          class="picker"
+          :theme="calendarTheme(isMobile)"
+          @change="onChange"
+        >
+        </VueTailWindPicker>
+      </template>
     </Dropdown>
-  </VueTailWindPicker>
+    <Button
+      class="w-full px-4 text-xs md:text-base"
+      variant="1"
+      @click="$emit('change', { type: 'date', item: undefined })"
+    >
+      {{ $t('reset') }}
+    </Button>
+  </div>
 </template>
 
 <script lang="ts">
-import { useTheme } from '@/hooks'
 import {
   computed,
   defineComponent,
   ref,
   useContext,
-  watch,
 } from '@nuxtjs/composition-api'
 import { useBreakpointTailwindCSS } from 'vue-composable'
 import { CalendarIcon } from 'vue-feather-icons'
+import { calendarTheme } from '@/config/data'
 
 export default defineComponent({
   components: {
@@ -58,10 +60,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const { $dayjs } = useContext().app
     const { current } = useBreakpointTailwindCSS()
-    const { theme } = useTheme()
-    watch(theme, () => {
-      console.log(theme.value)
-    })
+    const show = ref(false)
+
     const isMobile = computed(() => {
       if (['lg', 'xl'].includes(current.value as string)) return false
       return true
@@ -69,10 +69,16 @@ export default defineComponent({
 
     const date = ref()
     function onChange(value: any) {
+      if (isMobile) show.value = false
       date.value = value
       emit('change', { type: 'date', item: $dayjs(value) })
     }
-    return { date, onChange, isMobile, theme }
+
+    function setShow(val: boolean) {
+      show.value = val
+    }
+
+    return { calendarTheme, date, onChange, isMobile, show, setShow }
   },
 })
 </script>

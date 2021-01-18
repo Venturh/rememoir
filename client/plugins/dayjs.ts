@@ -1,4 +1,3 @@
-import { Context } from '@nuxt/types'
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -28,9 +27,9 @@ export default defineNuxtPlugin((ctx, inject) => {
       h: '1 h',
       hh: '%d hrs',
       d: '1 d',
-      dd: '% d',
+      dd: '%d d',
       M: '1 m',
-      MM: '% dm',
+      MM: '%d m',
       y: '1 y',
       yy: '%d y',
     },

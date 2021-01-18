@@ -42,4 +42,5 @@ export default {
 
   addNewEntry: 'Add a new Entry (# for categories) ',
   searchPlaceholder: 'Search for entries or lists (press Ctrl K to focus)',
+  reset: 'Reset',
 }

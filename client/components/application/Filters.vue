@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-2">
+  <div class="w-full space-y-2">
     <div class="flex flex-wrap space-x-2">
       <IconOnlyButton
         class="p-2 bg-secondary"
