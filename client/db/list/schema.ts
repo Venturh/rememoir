@@ -19,7 +19,7 @@ export type ListCollection = RxCollection<
 
 export const listSchema: RxJsonSchema<ListInput> = {
   title: 'List Schema',
-  description: 'The List',
+  description: 'The Entry',
   version: 0,
   keyCompression: false,
   type: 'object',
@@ -36,18 +36,14 @@ export const listSchema: RxJsonSchema<ListInput> = {
     description: {
       type: 'string',
     },
-    entries: {
-      type: 'array',
-      items: {
-        type: 'object',
-      },
-    },
-
     categories: {
       type: 'array',
       items: {
         type: 'string',
       },
+    },
+    entries: {
+      type: 'array',
     },
     updatedAt: {
       type: 'string',

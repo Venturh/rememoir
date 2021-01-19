@@ -1,6 +1,6 @@
 import { Field, InputType, ObjectType, registerEnumType } from 'type-graphql'
 import { Entity, ManyToOne, Property } from '@mikro-orm/core'
-import { BaseEntity, User } from '.'
+import { BaseEntity, List, User } from '.'
 import { EntryInput } from '../resolvers/entry/types'
 
 export enum ContentType {
@@ -80,6 +80,10 @@ export default class Entry extends BaseEntity {
   @Field(() => User)
   @ManyToOne()
   user: User
+
+  @Field(() => List)
+  @ManyToOne()
+  list: List
 
   constructor(entryData: EntryInput, user: User) {
     super()

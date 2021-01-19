@@ -499,7 +499,7 @@ export type RxListReplicationQuery = (
   { __typename?: 'Query' }
   & { rxListReplication: Array<(
     { __typename?: 'List' }
-    & Pick<List, 'id' | 'updatedAt' | 'createdAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories'>
+    & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories'>
     & { entries: Array<(
       { __typename?: 'Entry' }
       & Pick<Entry, 'id' | 'updatedAt' | 'createdAt' | 'deleted' | 'contentText' | 'contentUrl' | 'contentType' | 'calendarDate' | 'categories' | 'processing'>
@@ -952,7 +952,6 @@ export const RxListReplicationDocument = gql`
   rxListReplication(lastId: $lastId, minUpdatedAt: $minUpdatedAt, limit: $limit) {
     id
     updatedAt
-    createdAt
     deleted
     title
     description

@@ -32,8 +32,6 @@ export default defineComponent({
     const { $db } = useContext().app
     const toggle = ref(false)
 
-    console.log(useContext().app)
-
     // TODO: Somhehow watch localstorage if secret key is removed
 
     onUnmounted(async () => {

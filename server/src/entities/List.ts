@@ -41,8 +41,12 @@ export default class List extends BaseEntity {
   @ManyToOne()
   user: User
 
+  // @Field(() => [Entry])
+  // @Property()
+  // entries: Array<Entry> = []
+
   @Field(() => [Entry])
-  @OneToMany(() => Entry, (e) => e, { cascade: [Cascade.ALL] })
+  @OneToMany(() => Entry, (entry) => entry.list)
   entries = new Collection<Entry>(this)
 
   constructor(entryData: ListInput, user: User) {

@@ -61,8 +61,11 @@ export async function createDb(): Promise<MyDatabase> {
     multiInstance: true,
   })
 
-  await db.addCollections({ entries: { schema: entrySchema } })
-  await db.addCollections({ lists: { schema: listSchema } })
+  const colle = await db.addCollections({
+    entries: { schema: entrySchema },
+    lists: { schema: listSchema },
+  })
+  console.log('createDb ~ colle', colle)
 
   db.waitForLeadership().then(function () {
     document.title = '♛ ' + document.title

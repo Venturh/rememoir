@@ -10,7 +10,6 @@ query rxListReplication(
   ) {
     id
     updatedAt
-    createdAt
     deleted
     title
     description

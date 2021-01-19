@@ -1,3 +1,4 @@
+import { wrap } from '@mikro-orm/core'
 import { PubSub } from 'apollo-server-express'
 import {
   Resolver,
@@ -8,7 +9,7 @@ import {
   Mutation,
 } from 'type-graphql'
 
-import { List, User } from '../../entities'
+import { Entry, List, User } from '../../entities'
 
 import { MyContext } from '../../types'
 import { isAuth } from '../../utils/auth'
@@ -66,8 +67,14 @@ class ListResolver {
       pubsub.publish('changedList', list)
       return list
     } else {
+      const ids = listInput.entries.map((e) => e.id)
+      console.log('ListResolver ~ ids', ids)
+      const entries = await em.find(Entry, { id: { $in: ids } })
       const doc = new List(listInput, user!)
+      doc.entries.add(...entries)
+
       em.persistAndFlush(doc)
+      console.log('ListResolver ~ doc', doc)
       pubsub.publish('changedlist', doc)
       return doc
     }
