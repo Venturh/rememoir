@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { ListInput } from '../../generated/graphql'
-import { MyDatabase } from '../index'
+import { MyDatabase } from '..'
 
 export function getLists(db: MyDatabase) {
   const lists = db.lists.find().sort({ updatedAt: 'desc' })
@@ -16,7 +16,7 @@ export async function addList(db: MyDatabase) {
     categories: ['Nix'],
     entries: [
       {
-        id: '6006aa307544fbcea465bb79',
+        id: '6006d3c8e3811445f8c6572a',
         contentText: 'U2FsdGVkX1/CTavHq3UIFVbrpZkUW7JpPlnJSoZ9UQA=',
         contentType: 'Note',
         categories: [],
