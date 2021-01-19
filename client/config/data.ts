@@ -70,3 +70,5 @@ export const calendarTheme = (isMobile: boolean) => {
     },
   }
 }
+
+export const lists = ['Test', 'Test123']

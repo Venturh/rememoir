@@ -22,12 +22,21 @@
               {{ date }}
             </div>
             <div class="mt-2 space-y-2">
-              <div v-for="(list, index) in lists[date]" :key="index">
-                {{ list.title }}
-                <h1 v-for="entry in list.entries" :key="entry.id">
-                  {{ entry.contentText }}
-                </h1>
-              </div>
+              <BaseList
+                v-for="(list, index) in lists[date]"
+                :key="index"
+                v-bind="{
+                  title: list.title,
+                  description: list.description,
+                  entries: list.entries,
+                  categories: list.categories,
+                  hashedKey: list.hashedKey,
+                  calendarDate: list.calendarDate,
+                  processing: list.processing,
+                  updatedAt: list.updatedAt,
+                  id: list.id,
+                }"
+              />
             </div>
           </div>
         </div>

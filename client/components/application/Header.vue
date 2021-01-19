@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import { add } from '@/db/entry'
+import { handleAdd } from '@/utils/add'
 
 import {
   defineComponent,
@@ -54,8 +55,9 @@ export default defineComponent({
     const headerAdd = ref()
     const { $db } = useContext().app
 
-    async function addEntry(data: string) {
-      await add(data, $db)
+    function addEntry(data: string) {
+      // await add(data, $db)
+      handleAdd(data, $db)
       search.value = true
       input.value = ''
     }
