@@ -5,8 +5,7 @@ import dayjs from 'dayjs'
 import { EntryInput } from '../../generated/graphql'
 import { EditedEntry } from '../../types'
 import { MyDatabase } from '../index'
-
-import { createEntry } from './utils'
+const id = require('bson-objectid')
 
 addRxPlugin(RxDBUpdatePlugin)
 
@@ -48,8 +47,31 @@ export function queryEntries(
   }
 }
 
-export async function add(data: string, db: MyDatabase) {
-  const entry = createEntry(data)
+export async function addEntry(
+  {
+    contentText,
+    contentType,
+    contentUrl,
+    categories,
+  }: {
+    contentText: string
+    categories: string[]
+    contentType: string
+    contentUrl: string
+  },
+  db: MyDatabase
+) {
+  const entry = {
+    id: id().str as string,
+    contentText,
+    contentType,
+    contentUrl,
+    categories,
+    hashedKey: 'hashed',
+    calendarDate: dayjs().format('DD.MM.YY'),
+    processing: false,
+    updatedAt: Date.now().toString(),
+  }
   await db.entries.insert(entry)
 }
 

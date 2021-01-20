@@ -40,7 +40,8 @@ export default {
   mail: 'Mail',
   back: 'Zurück',
 
-  addNewEntry: 'Add a new Entry (# for categories) ',
+  addNewEntry: 'Create a new Entry (# for categories // for more Text) ',
+  addNewList: 'Create a new List (# for categories // for more Text) ',
   searchPlaceholder: 'Search for entries or lists (press Ctrl K to focus)',
   reset: 'Reset',
 }

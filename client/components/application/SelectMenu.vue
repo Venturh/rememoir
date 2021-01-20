@@ -17,14 +17,20 @@
       >
         <li
           v-for="(option, index) in options"
-          :key="option"
+          :key="index"
           role="option"
-          class="relative py-2 pl-3 cursor-default select-none pr-9"
-          :class="selectedIndex === index ? 'bg-brand text-brandContrast' : ''"
+          class="relative flex items-center p-2 space-x-2 cursor-default select-none"
+          :class="[
+            { 'bg-brand text-brandContrast': selectedIndex === index },
+            selected && option.icon === selected.icon
+              ? 'hidden'
+              : 'block justify-center space-x-0',
+          ]"
           @click="setSelected()"
           @mouseenter="selectedIndex = index"
         >
-          {{ option }}
+          <component :is="option.icon" v-if="option.icon" size="1.25x" />
+          <span class="text-sm">{{ option.text }}</span>
         </li>
       </ul>
     </div>
@@ -32,7 +38,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { MenuOption, MenuOptionItem } from '@/types'
+import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -45,12 +52,17 @@ export default defineComponent({
       default: false,
     },
     options: {
-      type: Array,
+      type: Array as PropType<MenuOption>,
       default: () => [],
+    },
+    selected: {
+      type: Object as PropType<MenuOptionItem>,
+      default: () => {},
     },
   },
   setup(props, { emit }) {
     const selectedIndex = ref(0)
+
     function up() {
       if (selectedIndex.value > 0) selectedIndex.value -= 1
     }
@@ -59,7 +71,7 @@ export default defineComponent({
     }
 
     function setSelected() {
-      emit('selected', props.options[selectedIndex.value], props.name)
+      emit('selected', props.options[selectedIndex.value].text, props.name)
     }
     return { selectedIndex, up, down, setSelected }
   },

@@ -4,7 +4,8 @@
     autocomplete="off"
     name="input"
     :value="inputValue"
-    class="block w-full border border-transparent rounded-lg pl-9 sm:pl-14 bg-secondary focus:outline-none focus:ring focus:ring-brand"
+    class="block w-full border border-transparent rounded-lg bg-secondary focus:outline-none focus:ring focus:ring-brand"
+    :class="search ? 'pl-12' : 'pl-16 sm:pl-20'"
     :placeholder="placeholder"
     @input="$emit('input', $event.target.value)"
   />
@@ -22,6 +23,10 @@ export default defineComponent({
     inputValue: {
       type: String,
       default: '',
+    },
+    search: {
+      type: Boolean,
+      default: false,
     },
   },
 })

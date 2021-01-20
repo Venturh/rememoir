@@ -17,8 +17,8 @@
 
       <Dropdown
         type="categories"
-        :items="['No Lists']"
-        :icon="ListIcon"
+        :items="lists"
+        :icon="LayoutIcon"
         @selected="onChange"
       />
     </div>
@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { categories } from '@/config/data'
+import { categories, lists } from '@/config/data'
 import { FolderIcon, ListIcon, LayoutIcon, SquareIcon } from 'vue-feather-icons'
 import { Filters } from '@/types'
 
@@ -43,7 +43,15 @@ export default defineComponent({
       if (type === 'preview') previewFilter.value = !previewFilter.value
       emit('filter', { item, type })
     }
-    return { categories, onChange, previewFilter, FolderIcon, ListIcon }
+    return {
+      categories,
+      lists,
+      onChange,
+      previewFilter,
+      FolderIcon,
+      ListIcon,
+      LayoutIcon,
+    }
   },
 })
 </script>

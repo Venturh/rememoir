@@ -13,3 +13,8 @@ export type Filters = {
   type: 'categories' | 'preview' | 'date'
   item: string | boolean
 }
+
+export type HeaderInputType = 'list' | 'entry'
+
+export type MenuOptionItem = { icon: any; text: string }
+export type MenuOption = Array<MenuOptionItem>

@@ -72,7 +72,7 @@ export class GraphQLReplicator {
         queryBuilder: entryPushQueryBuilder,
         batchSize,
         modifier: (d: EntryInput) => {
-          console.log('createDb ~ d', d)
+          console.log('add Entry ~ d', d)
           return encryptEntry(d)
         },
       },
@@ -96,7 +96,7 @@ export class GraphQLReplicator {
         queryBuilder: listPushQueryBuilder,
         batchSize,
         modifier: (d: ListInput) => {
-          console.log('createDb ~ d', d)
+          console.log('add List ~ d', d)
           return d
         },
       },

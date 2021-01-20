@@ -39,12 +39,11 @@ export const hoverSecondaryMenuItems = [
 ]
 
 export const categories = [
-  'All',
-  'Videos',
-  'Audio',
-  'Youtube',
-  'Website',
-  'Link',
+  { icon: null, text: 'All' },
+  { icon: null, text: 'Videos' },
+  { icon: null, text: 'Youtube' },
+  { icon: null, text: 'Audio' },
+  { icon: null, text: 'Link' },
 ]
 
 export const calendarTheme = (isMobile: boolean) => {
@@ -71,4 +70,8 @@ export const calendarTheme = (isMobile: boolean) => {
   }
 }
 
-export const lists = ['Test', 'Test123']
+export const lists = [
+  { icon: null, text: 'No List' },
+  { icon: null, text: 'Test' },
+  { icon: null, text: 'Liste123' },
+]

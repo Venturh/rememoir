@@ -5,8 +5,14 @@
       @click="onChange"
     >
       <div class="flex items-center space-x-2">
-        <component :is="icon" size="1.25x" />
-        <span v-if="items.length > 0" class="text-xs">{{ selectedItem }}</span>
+        <component :is="selected.icon" v-if="selected" size="1.25x" />
+        <component :is="icon" v-else size="1.25x" />
+        <!-- <span v-if="selected" class="text-xs">
+          {{ selected.text }}
+        </span> -->
+        <span v-if="!selected && items.length > 0" class="text-xs">
+          {{ selectedItem.text }}
+        </span>
         <slot v-else class="text-xs" />
       </div>
 
@@ -17,6 +23,8 @@
       v-if="items.length > 0"
       :open="open"
       :options="items"
+      :selected="selected"
+      with-icons
       @selected="handleSelected"
     />
     <div v-else-if="items.length === 0 && open" class="absolute z-50 top-8">
@@ -26,13 +34,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from '@nuxtjs/composition-api'
+import { MenuOption, MenuOptionItem } from '@/types'
+import { defineComponent, PropType, ref, watch } from '@nuxtjs/composition-api'
 import { FolderIcon, ChevronDownIcon, ChevronUpIcon } from 'vue-feather-icons'
 
 export default defineComponent({
   props: {
     items: {
-      type: Array,
+      type: Array as PropType<MenuOption>,
       default: () => [],
     },
     type: {
@@ -47,6 +56,10 @@ export default defineComponent({
       type: Object,
       default: () => {},
     },
+    selected: {
+      type: Object as PropType<MenuOptionItem>,
+      default: () => {},
+    },
   },
 
   components: {
@@ -57,7 +70,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const open = ref(props.show)
-    const selectedItem = ref(props.items[0])
+    const selectedItem = ref(props.selected || props.items[0])
 
     function onChange() {
       open.value = !open.value
@@ -71,7 +84,7 @@ export default defineComponent({
       }
     )
 
-    function handleSelected(item: string) {
+    function handleSelected(item: MenuOptionItem) {
       selectedItem.value = item
       open.value = false
       emit('selected', { item, type: props.type })

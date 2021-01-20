@@ -1,21 +1,12 @@
 <template>
   <div class="relative w-full mt-1 rounded-md shadow-sm">
     <div class="absolute inset-y-0 left-0 flex items-center sm:pl-3">
-      <button
-        class="flex items-center justify-center h-full p-2 rounded-md focus:outline-none focus:ring focus:ring-brand"
-        @click="setInputType"
-      >
-        <ColumnsIcon
-          v-if="inputType === 'entry'"
-          size="1.25x"
-          class="stroke-current bg-secondary text-brand"
-        />
-        <ListIcon
-          v-else
-          size="1.25x"
-          class="stroke-current bg-secondary text-brand"
-        />
-      </button>
+      <Dropdown
+        type="categories"
+        :items="items"
+        :selected="selected"
+        @selected="handleInputTypeDropdown"
+      />
     </div>
 
     <div
@@ -29,11 +20,14 @@
           : $emit('action', input)
       "
     >
-      <Input
+      <HeaderInput
         ref="inputRef"
         v-model="input"
         :input-value="input"
-        :placeholder="placeholder"
+        :placeholder="
+          inputType === 'entry' ? $t('addNewEntry') : $t('addNewList')
+        "
+        :search="false"
       />
     </div>
     <select-menu
@@ -54,11 +48,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  PropType,
+  ref,
+  watch,
+} from '@nuxtjs/composition-api'
 import { ColumnsIcon, ListIcon } from 'vue-feather-icons'
 import { categories, lists } from '@/config/data'
-
-type InputType = 'list' | 'entry'
+import { HeaderInputType } from '@/types'
 
 export default defineComponent({
   components: {
@@ -70,21 +70,39 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    inputType: {
+      type: String as PropType<HeaderInputType>,
+      default: 'entry',
+    },
   },
-  setup() {
-    const inputType = ref<InputType>('entry')
+  setup(props, { emit }) {
     const input = ref('')
     const inputRef = ref<any>()
+    const inputTypeOpen = ref(false)
     const categoriesOpen = ref(false)
     const listsOpen = ref(false)
+
+    const items = [
+      { icon: ListIcon, text: '' },
+      { icon: ColumnsIcon, text: '' },
+    ]
 
     function addFromMenu(value: string) {
       input.value += value
     }
 
     function setInputType() {
-      if (inputType.value === 'entry') inputType.value = 'list'
-      else inputType.value = 'entry'
+      if (props.inputType === 'entry') emit('inputTypeChange', 'list')
+      else emit('inputTypeChange', 'entry')
+    }
+
+    const selected = computed(() => {
+      return props.inputType === 'list' ? items[0] : items[1]
+    })
+
+    function handleInputTypeDropdown() {
+      inputTypeOpen.value = false
+      setInputType()
     }
 
     onMounted(() => {
@@ -108,14 +126,19 @@ export default defineComponent({
     return {
       input,
       inputRef,
-      inputType,
       setInputType,
+      inputTypeOpen,
       categoriesOpen,
+      handleInputTypeDropdown,
       addFromMenu,
       focus,
       categories,
       lists,
       listsOpen,
+      ListIcon,
+      ColumnsIcon,
+      items,
+      selected,
     }
   },
 })

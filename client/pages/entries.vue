@@ -51,6 +51,7 @@
 import {
   defineComponent,
   onMounted,
+  onUnmounted,
   reactive,
   ref,
   useContext,
@@ -116,7 +117,7 @@ export default defineComponent({
 
     onMounted(async () => {
       const query = await queryEntries($db, {
-        category: categories[0],
+        category: categories[0].text,
         date: undefined,
       })
       query.$.subscribe(async (results) => {
@@ -128,6 +129,12 @@ export default defineComponent({
         awaitReplication.value = false
       })
       awaitReplication.value = false
+    })
+
+    onUnmounted(() => {
+      filters.categories = 'All'
+      filters.preview = true
+      filters.date = undefined
     })
 
     return {

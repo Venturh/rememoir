@@ -13,9 +13,12 @@
       @change="onChange"
     >
     </VueTailWindPicker>
-    <Dropdown v-if="isMobile" :show="show" @change="setShow">
-      <CalendarIcon size="1.25x" />
-
+    <Dropdown
+      v-if="isMobile"
+      :show="show"
+      :icon="CalendarIcon"
+      @change="setShow"
+    >
       <template v-slot:menu>
         <VueTailWindPicker
           :inline="true"
@@ -75,7 +78,15 @@ export default defineComponent({
       show.value = val
     }
 
-    return { calendarTheme, date, onChange, isMobile, show, setShow }
+    return {
+      calendarTheme,
+      date,
+      onChange,
+      isMobile,
+      show,
+      setShow,
+      CalendarIcon,
+    }
   },
 })
 </script>
