@@ -10,7 +10,6 @@
         class="mt-20"
         target="lists"
       />
-      <Button @click="add"> Add List </Button>
 
       <div v-if="lists" class="grid gap-4">
         <div v-for="date in Object.keys(lists)" :key="date" class="">
@@ -53,7 +52,7 @@ import {
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
-import { getLists, addList } from '@/db/list'
+import { getLists } from '@/db/list'
 import { groupBy } from 'lodash'
 import { ListInput } from '@/generated/graphql'
 
@@ -77,11 +76,7 @@ export default defineComponent({
       awaitReplication.value = false
     })
 
-    async function add() {
-      await addList($db)
-    }
-
-    return { awaitReplication, lists, add }
+    return { awaitReplication, lists }
   },
 })
 </script>

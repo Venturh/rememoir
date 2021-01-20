@@ -24,7 +24,7 @@
             { 'bg-brand text-brandContrast': selectedIndex === index },
             selected && option.icon === selected.icon
               ? 'hidden'
-              : 'block justify-center space-x-0',
+              : 'block  space-x-0',
           ]"
           @click="setSelected()"
           @mouseenter="selectedIndex = index"
@@ -71,7 +71,7 @@ export default defineComponent({
     }
 
     function setSelected() {
-      emit('selected', props.options[selectedIndex.value].text, props.name)
+      emit('selected', props.options[selectedIndex.value], props.name)
     }
     return { selectedIndex, up, down, setSelected }
   },

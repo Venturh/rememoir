@@ -37,13 +37,20 @@
       :options="categories"
       @selected="addFromMenu"
     />
-    <select-menu
-      ref="selectMenu"
-      name="list"
-      :open="listsOpen"
-      :options="lists"
-      @selected="addFromMenu"
-    />
+    <div>
+      <select-menu
+        v-if="inputType === 'entry'"
+        ref="selectMenu"
+        name="list"
+        :open="listsOpen"
+        :options="lists"
+        @selected="addFromMenu"
+      />
+      <Error
+        v-if="inputType === 'list' && listsOpen"
+        message="Cant add a List to List"
+      />
+    </div>
   </div>
 </template>
 
@@ -51,14 +58,17 @@
 import {
   computed,
   defineComponent,
+  onBeforeMount,
   onMounted,
   PropType,
   ref,
+  useContext,
   watch,
 } from '@nuxtjs/composition-api'
 import { ColumnsIcon, ListIcon } from 'vue-feather-icons'
-import { categories, lists } from '@/config/data'
-import { HeaderInputType } from '@/types'
+import { categories } from '@/config/data'
+import { HeaderInputType, MenuOption, MenuOptionItem } from '@/types'
+import { getLists } from '@/db/list'
 
 export default defineComponent({
   components: {
@@ -81,14 +91,17 @@ export default defineComponent({
     const inputTypeOpen = ref(false)
     const categoriesOpen = ref(false)
     const listsOpen = ref(false)
+    const lists = ref<MenuOption>([])
+
+    const { $db } = useContext().app
 
     const items = [
       { icon: ListIcon, text: '' },
       { icon: ColumnsIcon, text: '' },
     ]
 
-    function addFromMenu(value: string) {
-      input.value += value
+    function addFromMenu(value: MenuOptionItem) {
+      input.value += value.text
     }
 
     function setInputType() {
@@ -107,6 +120,14 @@ export default defineComponent({
 
     onMounted(() => {
       inputRef.value?.$el.focus()
+    })
+
+    onBeforeMount(async () => {
+      const query = await getLists($db).exec()
+      lists.value = query.map((e) => {
+        return { icon: null, text: e.title }
+      })
+      console.log('onBeforeMount ~ query', lists.value)
     })
 
     watch(

@@ -4,12 +4,12 @@
       class="relative flex items-center justify-between p-2 space-x-2 bg-secondary focus:outline-none"
       @click="onChange"
     >
-      <div class="flex items-center space-x-2">
+      <div
+        class="flex items-center space-x-2"
+        :class="{ 'space-x-0': selected }"
+      >
         <component :is="selected.icon" v-if="selected" size="1.25x" />
         <component :is="icon" v-else size="1.25x" />
-        <!-- <span v-if="selected" class="text-xs">
-          {{ selected.text }}
-        </span> -->
         <span v-if="!selected && items.length > 0" class="text-xs">
           {{ selectedItem.text }}
         </span>
@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { MenuOption, MenuOptionItem } from '@/types'
-import { defineComponent, PropType, ref, watch } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
 import { FolderIcon, ChevronDownIcon, ChevronUpIcon } from 'vue-feather-icons'
 
 export default defineComponent({
@@ -77,17 +77,11 @@ export default defineComponent({
       emit('change', open.value)
     }
 
-    watch(
-      () => props.show,
-      (show) => {
-        open.value = show
-      }
-    )
-
     function handleSelected(item: MenuOptionItem) {
       selectedItem.value = item
+      console.log('handleSelected ~  selectedItem.value ', selectedItem.value)
       open.value = false
-      emit('selected', { item, type: props.type })
+      emit('selected', { item: item.text, type: props.type })
     }
     return { open, close, selectedItem, handleSelected, onChange }
   },
