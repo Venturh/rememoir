@@ -12,6 +12,7 @@
         ref="headerAdd"
         v-model="input"
         :input-type="inputType"
+        :loading="loading"
         @cancel="search = true"
         @action="handleInputAction"
         @inputTypeChange="setInputType"
@@ -32,13 +33,14 @@
 
 <script lang="ts">
 import { HeaderInputType } from '@/types'
-import { handleAdd } from '@/utils/add'
+import { useAddDb } from '@/hooks'
 
 import {
   defineComponent,
   onUnmounted,
   ref,
   useContext,
+  watch,
 } from '@nuxtjs/composition-api'
 import { MenuIcon, PlusIcon, XIcon } from 'vue-feather-icons'
 export default defineComponent({
@@ -53,14 +55,19 @@ export default defineComponent({
     const search = ref(true)
     const headerAdd = ref()
     const { $db } = useContext().app
+    const { loading, execute, result } = useAddDb({
+      db: $db,
+    })
+    console.log('setup ~ result', result)
+    console.log('setup ~ loading', loading)
 
     function setInputType(type: HeaderInputType) {
       inputType.value = type
     }
 
     function handleInputAction(data: string) {
-      handleAdd({ data, target: inputType.value, db: $db })
-      search.value = true
+      execute({ target: inputType.value, data })
+
       input.value = ''
     }
 
@@ -92,6 +99,8 @@ export default defineComponent({
       handleInputAction,
       search,
       headerAdd,
+      loading,
+      result,
     }
   },
 })

@@ -56,10 +56,10 @@ export async function handleAdd({
       contentType,
       contentUrl,
     })
-    await addEntry(
-      { categories, contentUrl, contentText: title, contentType },
-      db
-    )
+    // await addEntry(
+    //   { categories, contentUrl, contentText: title, contentType },
+    //   db
+    // )
     return { categories, contentUrl, contentType, list }
   }
 }

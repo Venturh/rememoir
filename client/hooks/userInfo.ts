@@ -4,7 +4,7 @@ type UserInfo = {
   username: string
 }
 
-export default function useUserUnfo() {
+export default function useUserInfo() {
   const userInfo: UserInfo = JSON.parse(localStorage.getItem('user'))
 
   function setUserInfo(info: UserInfo) {

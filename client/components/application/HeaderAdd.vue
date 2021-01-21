@@ -29,6 +29,8 @@
         "
         :search="false"
       />
+      <Loading v-if="loading" />
+      {{ loading ? loading : null }}
     </div>
     <select-menu
       ref="selectMenu"
@@ -84,6 +86,10 @@ export default defineComponent({
       type: String as PropType<HeaderInputType>,
       default: 'entry',
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit }) {
     const input = ref('')
@@ -92,7 +98,6 @@ export default defineComponent({
     const categoriesOpen = ref(false)
     const listsOpen = ref(false)
     const lists = ref<MenuOption>([])
-
     const { $db } = useContext().app
 
     const items = [
