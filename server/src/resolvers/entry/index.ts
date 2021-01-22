@@ -87,7 +87,7 @@ class EntryResolver {
       return entry
     } else {
       const doc = new Entry(entryInput, user!)
-      if (entryInput.contentType === ContentType.LINK) {
+      if (entryInput.contentType === 'Link') {
         const linkPreview = await generateLinkPreview(entryInput.contentUrl)
         doc.contentPreview = linkPreview
       }

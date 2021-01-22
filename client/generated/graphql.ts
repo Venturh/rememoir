@@ -53,6 +53,7 @@ export type Entry = {
   processing: Scalars['Boolean'];
   categories: Array<Scalars['String']>;
   user: User;
+  list: List;
 };
 
 export type User = {

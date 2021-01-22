@@ -1,7 +1,7 @@
 import { ref } from '@nuxtjs/composition-api'
 import { MyDatabase } from '../db'
 import { addEntry } from '../db/entry'
-import { addList } from '../db/list'
+import { addList, getLists } from '../db/list'
 import { HeaderInputType } from '../types'
 
 export function useAddDb({ db }: { db: MyDatabase }) {
@@ -46,23 +46,44 @@ export function useAddDb({ db }: { db: MyDatabase }) {
       split = split.filter((w) => w !== contentUrl)
     }
     const contentType = match === null ? 'Note' : 'Link'
+    console.log('useAddDb ~ contentType', contentType)
     const title = split.join(' ')
 
     if (target === 'list') {
-      // await addList(db, title, desc, categories)
+      await addList(db, title, desc, categories)
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
     } else {
-      // await addEntry(
-      //   { categories, contentUrl, contentText: title, contentType },
-      //   db
-      // )
+      await addEntry(
+        { categories, contentUrl, contentText: title, contentType },
+        db
+      )
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
     }
     result.value = { title, desc, contentUrl, contentType, categories }
     console.log('result', data, result.value, loading)
-
-    setTimeout(() => {
-      loading.value = false
-    }, 2000)
   }
 
   return { result, loading, execute }
+}
+
+export function useQueryLists(db: MyDatabase) {
+  const loading = ref(false)
+  const lists = ref([])
+
+  function execute() {
+    const query = getLists(db)
+    query.$.subscribe((results) => {
+      loading.value = true
+      lists.value = results
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
+    })
+  }
+
+  return { lists, loading, execute }
 }

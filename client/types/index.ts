@@ -14,7 +14,7 @@ export type Filters = {
   item: string | boolean
 }
 
-export type HeaderInputType = 'list' | 'entry'
+export type HeaderInputType = 'list' | 'entry' | 'search'
 
 export type MenuOptionItem = { icon: any; text: string }
 export type MenuOption = Array<MenuOptionItem>

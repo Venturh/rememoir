@@ -15,9 +15,7 @@
       @keydown.up.prevent="$refs.selectMenu.up()"
       @keydown.down.prevent="$refs.selectMenu.down()"
       @keydown.exact.enter.prevent="
-        categoriesOpen || listsOpen
-          ? $refs.selectMenu.setSelected()
-          : $emit('action', input)
+        categoriesOpen || listsOpen ? $refs.selectMenu.setSelected() : submit()
       "
     >
       <HeaderInput
@@ -28,9 +26,9 @@
           inputType === 'entry' ? $t('addNewEntry') : $t('addNewList')
         "
         :search="false"
+        :disabled="loading"
       />
-      <Loading v-if="loading" />
-      {{ loading ? loading : null }}
+      <Loading v-if="loading" class="absolute w-6 h-6 right-4 top-2" />
     </div>
     <select-menu
       ref="selectMenu"
@@ -45,7 +43,11 @@
         ref="selectMenu"
         name="list"
         :open="listsOpen"
-        :options="lists"
+        :options="
+          lists.map((l) => {
+            return { icon: null, text: l.title }
+          })
+        "
         @selected="addFromMenu"
       />
       <Error
@@ -69,8 +71,8 @@ import {
 } from '@nuxtjs/composition-api'
 import { ColumnsIcon, ListIcon } from 'vue-feather-icons'
 import { categories } from '@/config/data'
-import { HeaderInputType, MenuOption, MenuOptionItem } from '@/types'
-import { getLists } from '@/db/list'
+import { HeaderInputType, MenuOptionItem } from '@/types'
+import { useQueryLists } from '@/hooks/database'
 
 export default defineComponent({
   components: {
@@ -97,13 +99,18 @@ export default defineComponent({
     const inputTypeOpen = ref(false)
     const categoriesOpen = ref(false)
     const listsOpen = ref(false)
-    const lists = ref<MenuOption>([])
+
     const { $db } = useContext().app
+    const { lists, execute } = useQueryLists($db)
 
     const items = [
       { icon: ListIcon, text: '' },
       { icon: ColumnsIcon, text: '' },
     ]
+
+    const selected = computed(() => {
+      return props.inputType === 'list' ? items[0] : items[1]
+    })
 
     function addFromMenu(value: MenuOptionItem) {
       input.value += value.text
@@ -114,25 +121,22 @@ export default defineComponent({
       else emit('inputTypeChange', 'entry')
     }
 
-    const selected = computed(() => {
-      return props.inputType === 'list' ? items[0] : items[1]
-    })
-
     function handleInputTypeDropdown() {
       inputTypeOpen.value = false
       setInputType()
+    }
+
+    function submit() {
+      emit('action', input.value)
+      input.value = ''
     }
 
     onMounted(() => {
       inputRef.value?.$el.focus()
     })
 
-    onBeforeMount(async () => {
-      const query = await getLists($db).exec()
-      lists.value = query.map((e) => {
-        return { icon: null, text: e.title }
-      })
-      console.log('onBeforeMount ~ query', lists.value)
+    onBeforeMount(() => {
+      execute()
     })
 
     watch(
@@ -165,6 +169,7 @@ export default defineComponent({
       ColumnsIcon,
       items,
       selected,
+      submit,
     }
   },
 })

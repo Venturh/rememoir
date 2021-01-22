@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { ContentPreview, ContentType } from '../../entities/Entry'
+import { ContentPreview } from '../../entities/Entry'
 
 @InputType()
 export class EntryInput {
@@ -16,7 +16,7 @@ export class EntryInput {
   contentPreview?: ContentPreview
 
   @Field()
-  contentType: ContentType
+  contentType: string
 
   @Field(() => [String])
   categories: [string]

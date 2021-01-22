@@ -1,7 +1,9 @@
 <template>
-  <div class="relative flex flex-col px-3 py-2 rounded-lg bg-secondary">
+  <div
+    class="relative flex flex-col w-full h-full px-3 py-2 rounded-lg bg-secondary"
+  >
     <div class="flex items-start justify-between">
-      <div class="space-y-3">
+      <div class="w-full h-full space-y-3">
         <span v-if="contentText" class="">{{ contentText }}</span>
         <LinkEntry
           v-if="contentType === 'Link' && showPreview"
@@ -111,6 +113,8 @@ export default defineComponent({
     const timeFrom = computed(() => {
       return dayjs(parseInt(props.updatedAt)).fromNow()
     })
+
+    console.log('type', props.contentType)
 
     return {
       showMenu,

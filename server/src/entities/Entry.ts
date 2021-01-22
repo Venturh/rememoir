@@ -4,16 +4,10 @@ import { BaseEntity, List, User } from '.'
 import { EntryInput } from '../resolvers/entry/types'
 
 export enum ContentType {
-  LINK = 'Link',
-  IMAGE = 'Image',
-  VIDEO = 'Video',
-  Note = 'Note',
-}
-
-enum LinkType {
-  'website',
-  'video.other',
-  'music.song',
+  LINK,
+  IMAGE,
+  VIDEO,
+  NOTE,
 }
 
 registerEnumType(ContentType, {

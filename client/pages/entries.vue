@@ -3,7 +3,6 @@
     class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
     <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
-
     <div class="lg:w-screen lg:max-w-lg">
       <NotFound
         v-if="!awaitReplication && Object.keys(entries).length === 0"

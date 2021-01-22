@@ -3,6 +3,7 @@
   <input
     type="search"
     autocomplete="off"
+    :disabled="disabled"
     name="input"
     :value="inputValue"
     class="block w-full border border-transparent rounded-lg bg-secondary focus:outline-none focus:ring focus:ring-brand"
@@ -26,6 +27,10 @@ export default defineComponent({
       default: '',
     },
     search: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },

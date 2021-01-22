@@ -17,7 +17,7 @@
       class="absolute top-0 left-0 z-10 w-1.5 h-full rounded-md bg-brand25"
     />
   </div>
-  <div v-else>Loading...</div>
+  <Loading v-else type="skeleton" custom class="w-full h-20" />
 </template>
 
 <script lang="ts">
@@ -35,8 +35,10 @@ export default defineComponent({
       default: () => {},
     },
   },
-  setup() {
+  setup(props) {
     const play = ref(false)
+    console.log('preview', props.contentPreview)
+
     return { play }
   },
 })

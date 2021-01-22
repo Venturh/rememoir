@@ -22,7 +22,7 @@
       variant="1"
       padding
       class="p-2 lg:ml-6 lg:px-4 lg:space-x-2 lg:w-80"
-      @click="search = !search"
+      @click="search = 'entry'"
     >
       <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
       <XIcon v-if="search === false" class="fill-current" size="1.5x" />
@@ -36,11 +36,11 @@ import { HeaderInputType } from '@/types'
 import { useAddDb } from '@/hooks'
 
 import {
+  computed,
   defineComponent,
   onUnmounted,
   ref,
   useContext,
-  watch,
 } from '@nuxtjs/composition-api'
 import { MenuIcon, PlusIcon, XIcon } from 'vue-feather-icons'
 export default defineComponent({
@@ -51,39 +51,39 @@ export default defineComponent({
   },
   setup() {
     const input = ref('')
-    const inputType = ref<HeaderInputType>('entry')
-    const search = ref(true)
+    const inputType = ref<HeaderInputType>('search')
     const headerAdd = ref()
     const { $db } = useContext().app
     const { loading, execute, result } = useAddDb({
       db: $db,
     })
-    console.log('setup ~ result', result)
-    console.log('setup ~ loading', loading)
+
+    const search = computed({
+      get: () => inputType.value === 'search',
+      set: () => {
+        inputType.value = inputType.value === 'search' ? 'entry' : 'search'
+      },
+    })
 
     function setInputType(type: HeaderInputType) {
       inputType.value = type
     }
 
-    function handleInputAction(data: string) {
-      execute({ target: inputType.value, data })
-
-      input.value = ''
+    async function handleInputAction(data: string) {
+      await execute({ target: inputType.value, data })
     }
 
     function hotkeyListener(event: KeyboardEvent) {
       if (event.key === 'e' && event.ctrlKey) {
         event.preventDefault()
-        search.value = false
         setInputType('entry')
         if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
       } else if (event.key === 'l' && event.ctrlKey) {
         event.preventDefault()
-        search.value = false
         setInputType('list')
       } else if (event.key === 'k' && event.ctrlKey) {
         event.preventDefault()
-        search.value = true
+        inputType.value = 'search'
       }
     }
 
