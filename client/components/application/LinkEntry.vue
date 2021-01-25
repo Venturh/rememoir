@@ -1,17 +1,26 @@
 <template>
-  <div v-if="contentPreview" class="relative px-4 mx-auto rounded-lg">
-    <p class="text-xs">{{ contentPreview.ogSiteName }}</p>
-    <ButtonOrLink out :to="contentUrl">
-      {{ contentPreview.ogTitle }}
-    </ButtonOrLink>
-    <div class="mt-2">
+  <div v-if="contentPreview" class="relative pl-4 rounded-lg">
+    <div>
       <Preview
         v-if="contentPreview.type"
         :content-preview="contentPreview"
-        :play="play"
         :content-url="contentUrl"
-        @play="play = !play"
       />
+    </div>
+    <div>
+      <p class="text-sm">
+        {{ contentPreview.ogSiteName }}
+      </p>
+      <p class="text-sm">
+        {{ contentPreview.ogTitle }}
+      </p>
+      <p
+        v-if="
+          contentPreview.type === 'website' || contentPreview.type === 'article'
+        "
+      >
+        {{ contentPreview.ogDescription }}
+      </p>
     </div>
     <span
       class="absolute top-0 left-0 z-10 w-1.5 h-full rounded-md bg-brand25"
@@ -22,7 +31,7 @@
 
 <script lang="ts">
 import { ContentPreview } from '@/generated/graphql'
-import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -34,12 +43,6 @@ export default defineComponent({
       type: Object as PropType<ContentPreview>,
       default: () => {},
     },
-  },
-  setup(props) {
-    const play = ref(false)
-    console.log('preview', props.contentPreview)
-
-    return { play }
   },
 })
 </script>

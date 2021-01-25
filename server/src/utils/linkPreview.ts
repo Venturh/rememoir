@@ -27,6 +27,7 @@ export async function generateLinkPreview(url: string) {
     twitterPlayer,
     ogSiteName,
   } = data
+
   const preview: LinkPreview = {
     ogSiteName: ogSiteName ? ogSiteName.toString() : undefined,
     ogTitle: ogTitle ? ogTitle : undefined,
@@ -35,7 +36,7 @@ export async function generateLinkPreview(url: string) {
     ogVideoUrl: ogVideo ? ogVideo[0].url : undefined,
     ogAudioUrl: ogAudio ? (ogAudio as string) : undefined,
     embeddedUrl: twitterPlayer ? twitterPlayer[0].url : undefined,
-    type: ogType ? ogType : 'undefined',
+    type: ogType ? ogType : 'website',
     color: getColor(ogSiteName as string),
   }
 

@@ -1,24 +1,24 @@
 <template>
   <div
-    class="relative flex flex-col w-full h-full px-3 py-2 rounded-lg bg-secondary"
+    class="relative flex flex-col w-full h-full px-3 py-2 space-y-1 rounded-lg bg-secondary"
   >
-    <div class="flex items-start justify-between">
-      <div class="w-full h-full space-y-3">
-        <span v-if="contentText" class="">{{ contentText }}</span>
-        <LinkEntry
-          v-if="contentType === 'Link' && showPreview"
-          :content-text="contentText"
-          :content-url="contentUrl"
-          :content-preview="contentPreview"
-        />
-      </div>
-
+    <div class="flex items-center justify-between">
+      <span>Tite Placeholder</span>
       <div class="flex items-center flex-shrink-0">
         <span class="text-sm">{{ timeFrom }}</span>
         <button @mouseover="showMenu = !showMenu" @click="showMenu = !showMenu">
           <MoreVerticalIcon size="1.25x" />
         </button>
       </div>
+    </div>
+    <div class="w-full h-full space-y-3">
+      <span v-if="contentText" class="">{{ contentText }}</span>
+      <LinkEntry
+        v-if="contentType === 'Link' && showPreview"
+        :content-text="contentText"
+        :content-url="contentUrl"
+        :content-preview="contentPreview"
+      />
     </div>
 
     <div class="flex items-center justify-between">
