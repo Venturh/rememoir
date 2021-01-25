@@ -11,16 +11,17 @@ export function useAddDb({ db }: { db: MyDatabase }) {
   async function execute({
     data,
     target,
+    description,
   }: {
     data: string
     target: HeaderInputType
+    description: string
   }) {
     loading.value = true
     let split = data.split(' ')
     let list = split.find((s) => s.includes('@'))
     let categories = split.filter((s) => s.includes('#'))
     let contentUrl = ''
-    let desc = split.find((s) => s.includes('//'))
 
     if (categories) {
       categories = categories.map((s) => {
@@ -33,10 +34,6 @@ export function useAddDb({ db }: { db: MyDatabase }) {
       split = split.filter((w) => w !== list)
       list = list.substring(1)
     }
-    if (desc) {
-      split = split.filter((w) => w !== desc)
-      desc = desc.substring(2)
-    }
 
     const expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
     const match = data.match(expression)
@@ -46,11 +43,10 @@ export function useAddDb({ db }: { db: MyDatabase }) {
       split = split.filter((w) => w !== contentUrl)
     }
     const contentType = match === null ? 'Note' : 'Link'
-    console.log('useAddDb ~ contentType', contentType)
     const title = split.join(' ')
 
     if (target === 'list') {
-      await addList(db, title, desc, categories)
+      await addList(db, title, description, categories)
       setTimeout(() => {
         loading.value = false
       }, 1000)
@@ -60,7 +56,7 @@ export function useAddDb({ db }: { db: MyDatabase }) {
           categories,
           contentUrl,
           title,
-          contentDescription: desc,
+          contentDescription: description,
           contentType,
         },
         db
@@ -69,7 +65,7 @@ export function useAddDb({ db }: { db: MyDatabase }) {
         loading.value = false
       }, 1000)
     }
-    result.value = { title, desc, contentUrl, contentType, categories }
+    result.value = { title, description, contentUrl, contentType, categories }
     console.log('result', data, result.value, loading)
   }
 

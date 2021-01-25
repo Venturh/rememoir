@@ -1,6 +1,7 @@
 //textarea
 <template>
   <input
+    v-if="!expanded"
     type="search"
     autocomplete="off"
     :disabled="disabled"
@@ -11,10 +12,24 @@
     :placeholder="placeholder"
     @input="$emit('input', $event.target.value)"
   />
+  <textarea
+    v-else
+    ref="textRef"
+    :value="inputValue"
+    class="block w-full border rounded-md bg-primary border-borderPrimary hover:border-primaryText hover:bg-secondary focus:bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
+    :placeholder="placeholder"
+    @input="$emit('input', $event.target.value)"
+    @keydown.prevent.enter="$emit('enter')"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import {
+  defineComponent,
+  ref,
+  nextTick,
+  onMounted,
+} from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -34,6 +49,20 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    expanded: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
+    const textRef = ref<HTMLTextAreaElement>()
+
+    onMounted(() => {
+      if (props.expanded) {
+        nextTick(() => textRef.value?.focus())
+      }
+    })
+    return { textRef }
   },
 })
 </script>

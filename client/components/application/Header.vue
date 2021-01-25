@@ -69,8 +69,14 @@ export default defineComponent({
       inputType.value = type
     }
 
-    async function handleInputAction(data: string) {
-      await execute({ target: inputType.value, data })
+    async function handleInputAction({
+      data,
+      description,
+    }: {
+      data: string
+      description: string
+    }) {
+      await execute({ target: inputType.value, data, description })
     }
 
     function hotkeyListener(event: KeyboardEvent) {
