@@ -34,7 +34,7 @@ export const listSchema: RxJsonSchema<ListInput> = {
       default: '',
     },
     description: {
-      type: 'string',
+      type: ['string', 'null'],
     },
     categories: {
       type: 'array',

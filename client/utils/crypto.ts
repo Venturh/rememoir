@@ -41,7 +41,8 @@ export function encryptEntry(entry: EntryInput) {
   const key = generateKey()
   const encrypted: EntryInput = {
     ...entry,
-    contentText: aesEncrypt(entry.contentText, key),
+    title: aesEncrypt(entry.title, key),
+    contentDescription: aesEncrypt(entry.contentDescription, key),
     hashedKey: aesEncrypt(key, secretKey),
   }
 
@@ -54,7 +55,8 @@ export function decryptEntry(entry: EntryInput) {
   const key = aesDecrypt(entry.hashedKey, secretKey)
   const decrypted: EntryInput = {
     ...entry,
-    contentText: aesDecrypt(entry.contentText, key),
+    title: aesDecrypt(entry.title, key),
+    contentDescription: aesDecrypt(entry.contentDescription, key),
   }
 
   return decrypted

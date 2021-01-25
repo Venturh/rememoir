@@ -7,7 +7,10 @@ export class EntryInput {
   id: string
 
   @Field()
-  contentText: string
+  title: string
+
+  @Field({ nullable: true })
+  contentDescription?: string
 
   @Field()
   contentUrl: string

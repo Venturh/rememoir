@@ -9,7 +9,8 @@ query rxEntryReplication(
     limit: $limit
   ) {
     id
-    contentText
+    title
+    contentDescription
     contentUrl
     contentType
     contentPreview {

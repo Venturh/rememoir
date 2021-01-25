@@ -3,7 +3,7 @@
     class="relative flex flex-col w-full h-full px-3 py-2 space-y-1 rounded-lg bg-secondary"
   >
     <div class="flex items-center justify-between">
-      <span>Tite Placeholder</span>
+      <span>{{ title }}</span>
       <div class="flex items-center flex-shrink-0">
         <span class="text-sm">{{ timeFrom }}</span>
         <button @mouseover="showMenu = !showMenu" @click="showMenu = !showMenu">
@@ -12,10 +12,9 @@
       </div>
     </div>
     <div class="w-full h-full space-y-3">
-      <span v-if="contentText" class="">{{ contentText }}</span>
+      <span v-if="contentDescription" class="">{{ contentDescription }}</span>
       <LinkEntry
         v-if="contentType === 'Link' && showPreview"
-        :content-text="contentText"
         :content-url="contentUrl"
         :content-preview="contentPreview"
       />
@@ -61,7 +60,11 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    contentText: {
+    title: {
+      type: String,
+      default: '',
+    },
+    contentDescription: {
       type: String,
       default: '',
     },
@@ -113,8 +116,6 @@ export default defineComponent({
     const timeFrom = computed(() => {
       return dayjs(parseInt(props.updatedAt)).fromNow()
     })
-
-    console.log('type', props.contentType)
 
     return {
       showMenu,

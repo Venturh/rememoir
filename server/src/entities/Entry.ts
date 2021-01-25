@@ -41,7 +41,11 @@ export class ContentPreview {
 export default class Entry extends BaseEntity {
   @Field()
   @Property()
-  contentText: string
+  title: string
+
+  @Field({ nullable: true })
+  @Property()
+  contentDescription?: string
 
   @Field()
   @Property()
@@ -82,7 +86,8 @@ export default class Entry extends BaseEntity {
   constructor(entryData: EntryInput, user: User) {
     super()
     this.id = entryData.id
-    this.contentText = entryData.contentText
+    this.title = entryData.title
+    this.contentDescription = entryData.contentDescription
     this.contentUrl = entryData.contentUrl
     this.contentType = entryData.contentType
     this.categories = entryData.categories

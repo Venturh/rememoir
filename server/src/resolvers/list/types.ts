@@ -10,8 +10,8 @@ export class ListInput {
   @Field()
   title: string
 
-  @Field()
-  description: string
+  @Field({ nullable: true })
+  description?: string
 
   @Field(() => [String])
   categories: [string]

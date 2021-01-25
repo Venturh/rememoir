@@ -22,7 +22,8 @@ query rxListReplication(
       updatedAt
       createdAt
       deleted
-      contentText
+      title
+      contentDescription
       contentUrl
       contentType
       contentPreview {

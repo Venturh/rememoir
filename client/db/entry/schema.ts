@@ -29,7 +29,10 @@ export const entrySchema: RxJsonSchema<EntryInput> = {
       type: 'string',
       primary: true,
     },
-    contentText: {
+    title: {
+      type: 'string',
+    },
+    contentDescription: {
       type: 'string',
       default: '',
     },

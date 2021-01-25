@@ -56,7 +56,13 @@ export function useAddDb({ db }: { db: MyDatabase }) {
       }, 1000)
     } else {
       await addEntry(
-        { categories, contentUrl, contentText: title, contentType },
+        {
+          categories,
+          contentUrl,
+          title,
+          contentDescription: desc,
+          contentType,
+        },
         db
       )
       setTimeout(() => {

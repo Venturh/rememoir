@@ -25,7 +25,8 @@
                 :key="index"
                 :show-preview="showPreview"
                 v-bind="{
-                  contentText: entry.contentText,
+                  title: entry.title,
+                  contentDescription: entry.contentDescription,
                   contentUrl: entry.contentUrl,
                   contentType: entry.contentType,
                   contentPreview: entry.contentPreview,

@@ -1,5 +1,6 @@
 export type EditedEntry = {
-  contentText?: string
+  title: string
+  contentDescription?: string
   contentUrl?: string
   categories?: string
 }

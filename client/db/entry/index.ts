@@ -49,12 +49,14 @@ export function queryEntries(
 
 export async function addEntry(
   {
-    contentText,
+    title,
+    contentDescription,
     contentType,
     contentUrl,
     categories,
   }: {
-    contentText: string
+    title: string
+    contentDescription: string
     categories: string[]
     contentType: string
     contentUrl: string
@@ -63,7 +65,8 @@ export async function addEntry(
 ) {
   const entry = {
     id: id().str as string,
-    contentText,
+    title,
+    contentDescription,
     contentType,
     contentUrl,
     categories,
@@ -98,7 +101,9 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
       }
       const editedEntry: EntryInput = {
         id: entry.id,
-        contentText: edited.contentText || entry.contentText,
+        title: edited.title,
+        contentDescription:
+          edited.contentDescription || entry.contentDescription,
         contentType: edited.contentUrl ? 'Link' : entry.contentType,
         contentUrl: edited.contentUrl || entry.contentUrl,
         categories,

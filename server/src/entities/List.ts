@@ -1,6 +1,5 @@
 import { Field, ObjectType } from 'type-graphql'
 import {
-  Cascade,
   Collection,
   Entity,
   ManyToOne,
@@ -17,9 +16,9 @@ export default class List extends BaseEntity {
   @Property()
   title: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property()
-  description: string
+  description?: string
 
   @Field()
   @Property()
