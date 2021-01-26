@@ -1,21 +1,9 @@
-import { RxJsonSchema, RxCollection, RxDocument, RxDatabase } from 'rxdb'
+import { RxJsonSchema, RxCollection, RxDocument } from 'rxdb'
 import { ListInput } from '../../generated/graphql'
 
-export type ListDocMethods = {
-  getText: (id: string) => string
-}
+export type ListDocument = RxDocument<ListInput>
 
-export type ListDocument = RxDocument<ListInput, ListDocMethods>
-
-type ListCollectionMethods = {
-  countAllDocuments: () => Promise<number>
-}
-
-export type ListCollection = RxCollection<
-  ListInput,
-  ListDocMethods,
-  ListCollectionMethods
->
+export type ListCollection = RxCollection<ListInput>
 
 export const listSchema: RxJsonSchema<ListInput> = {
   title: 'List Schema',

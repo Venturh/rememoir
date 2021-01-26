@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
-import { ListInput } from '../../generated/graphql'
+import { entries } from 'lodash'
+import { Entry, EntryInput, ListInput } from '../../generated/graphql'
 import { MyDatabase } from '..'
 import { EditedList } from '../../types'
 
@@ -7,13 +8,16 @@ const id = require('bson-objectid')
 
 export function getLists(
   db: MyDatabase,
-  { category, date }: { category: string | undefined; date: string | undefined }
+  {
+    category,
+    date,
+  }: { category?: string | undefined; date?: string | undefined }
 ) {
   if (category === undefined) {
-    if (date === undefined) return db.entries.find().sort({ updatedAt: 'desc' })
+    if (date === undefined) return db.lists.find().sort({ updatedAt: 'desc' })
     else {
       const calendarDate = dayjs(date).format('DD.MM.YY')
-      return db.entries
+      return db.lists
         .find({
           selector: {
             calendarDate: {
@@ -24,7 +28,7 @@ export function getLists(
         .sort({ updatedAt: 'desc' })
     }
   } else if (date === undefined)
-    return db.entries
+    return db.lists
       .find({
         selector: {
           categories: { $in: [category] },
@@ -32,7 +36,7 @@ export function getLists(
       })
       .sort({ updatedAt: 'desc' })
   else {
-    return db.entries
+    return db.lists
       .find({
         selector: {
           categories: { $in: [category] },
@@ -103,6 +107,54 @@ export async function updateList(
       await list.update({ $set: { ...editedList } })
     } catch (err) {
       console.error('could not update list')
+    }
+  }
+}
+export async function addEntryToList(
+  id: string,
+  entryId: string,
+  db: MyDatabase
+) {
+  const list = await db.lists.findOne({ selector: { id } }).exec()
+
+  if (list) {
+    try {
+      const entryFind = await db.entries
+        .findOne({ selector: { id: entryId } })
+        .exec()
+      console.log('found list,', list)
+
+      const entry: EntryInput = {
+        id: entryFind.id,
+        title: entryFind.title,
+        url: entryFind.url,
+        type: entryFind.type,
+        calendarDate: entryFind.calendarDate,
+        categories: entryFind.categories,
+        hashedKey: entryFind.hashedKey,
+        processing: entryFind.processing,
+        updatedAt: entryFind.updatedAt,
+        deleted: entryFind.deleted,
+        description: entryFind.description,
+        preview: entryFind.preview,
+      }
+
+      // BUG: Das besser machen. Bekommen auch fields wie created ein rein...
+      const editedList: ListInput = {
+        id: list.id,
+        title: list.title,
+        description: list.description,
+        categories: list.categories,
+        entries: [...list.entries, entry],
+        hashedKey: 'hashed',
+        calendarDate: list.calendarDate,
+        processing: list.processing,
+        updatedAt: Date.now().toString(),
+      }
+      console.log('editedList', editedList.entries)
+      await list.update({ $set: { ...editedList } })
+    } catch (err) {
+      console.error('could not update list', err)
     }
   }
 }

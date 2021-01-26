@@ -86,8 +86,8 @@ export default defineComponent({
       },
     })
 
-    function handleMenu(itemName: string) {
-      switch (itemName) {
+    function handleMenu({ name, info }: { name: string; info: string }) {
+      switch (name) {
         case 'delete':
           removeList(props.list.id, $db)
           break
@@ -103,7 +103,6 @@ export default defineComponent({
     }
 
     function submitEditedEntry() {
-      console.log('toSend', editedEntry.value)
       if (!isEmpty(editedEntry.value))
         updateList(props.list.id, editedEntry.value, $db)
       editedEntry.value = {}

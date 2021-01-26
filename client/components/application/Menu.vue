@@ -31,31 +31,26 @@
 </template>
 
 <script lang="ts">
+import { HoverMenuItem } from '@/types'
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-
-type Item = {
-  name: string
-  icon: any
-  goto?: string
-}
 
 export default defineComponent({
   props: {
     primaryItems: {
-      type: Array as () => Item[],
+      type: Array as () => HoverMenuItem[],
       default: () => [],
     },
     secondaryItems: {
-      type: Array as () => Item[],
+      type: Array as () => HoverMenuItem[],
       default: () => [],
     },
   },
   setup(props, { emit }) {
     const activeMenu = ref('primary')
 
-    function handleClick(item: Item) {
+    function handleClick(item: HoverMenuItem) {
       if (item.goto) activeMenu.value = item.goto
-      else emit('click', item.name)
+      emit('click', { name: item.name, info: item.info })
     }
     return { activeMenu, handleClick }
   },

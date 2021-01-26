@@ -40,10 +40,6 @@ export default class List extends BaseEntity {
   @ManyToOne()
   user: User
 
-  // @Field(() => [Entry])
-  // @Property()
-  // entries: Array<Entry> = []
-
   @Field(() => [Entry])
   @OneToMany(() => Entry, (entry) => entry.list)
   entries = new Collection<Entry>(this)

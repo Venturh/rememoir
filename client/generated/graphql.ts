@@ -505,7 +505,7 @@ export type RxListReplicationQuery = (
     & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories'>
     & { entries: Array<(
       { __typename?: 'Entry' }
-      & Pick<Entry, 'id' | 'updatedAt' | 'createdAt' | 'deleted' | 'title' | 'description' | 'url' | 'type' | 'calendarDate' | 'categories' | 'processing'>
+      & Pick<Entry, 'id' | 'hashedKey' | 'updatedAt' | 'createdAt' | 'deleted' | 'title' | 'description' | 'url' | 'type' | 'calendarDate' | 'categories' | 'processing'>
       & { preview?: Maybe<(
         { __typename?: 'ContentPreview' }
         & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
@@ -965,6 +965,7 @@ export const RxListReplicationDocument = gql`
     categories
     entries {
       id
+      hashedKey
       updatedAt
       createdAt
       deleted

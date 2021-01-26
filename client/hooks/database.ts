@@ -2,6 +2,7 @@ import { ref } from '@nuxtjs/composition-api'
 import { MyDatabase } from '../db'
 import { addEntry } from '../db/entry'
 import { addList, getLists } from '../db/list'
+import { ListInput } from '../generated/graphql'
 import { HeaderInputType } from '../types'
 
 export function useAddDb({ db }: { db: MyDatabase }) {
@@ -74,10 +75,10 @@ export function useAddDb({ db }: { db: MyDatabase }) {
 
 export function useQueryLists(db: MyDatabase) {
   const loading = ref(false)
-  const lists = ref([])
+  const lists = ref<Array<ListInput>>([])
 
   function execute() {
-    const query = getLists(db)
+    const query = getLists(db, {})
     query.$.subscribe((results) => {
       loading.value = true
       lists.value = results

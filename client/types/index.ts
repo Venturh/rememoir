@@ -20,4 +20,11 @@ export type HeaderInputType = 'list' | 'entry' | 'search'
 export type MenuOptionItem = { icon: any; text: string }
 export type MenuOption = Array<MenuOptionItem>
 
+export type HoverMenuItem = {
+  name: string
+  icon: any
+  goto?: string
+  info?: string
+}
+
 export type Error = { show: boolean; msg: string }

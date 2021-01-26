@@ -12,7 +12,10 @@ addRxPlugin(RxDBUpdatePlugin)
 // TODO: Clean this up
 export function queryEntries(
   db: MyDatabase,
-  { category, date }: { category: string | undefined; date: string | undefined }
+  {
+    category,
+    date,
+  }: { category?: string | undefined; date?: string | undefined }
 ) {
   if (category === undefined) {
     if (date === undefined) return db.entries.find().sort({ updatedAt: 'desc' })

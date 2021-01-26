@@ -9,6 +9,7 @@ import {
   SkipBackIcon,
   HeartIcon,
   HomeIcon,
+  PlusSquareIcon,
 } from 'vue-feather-icons'
 
 export const sidebarItems = [
@@ -18,6 +19,7 @@ export const sidebarItems = [
 ]
 
 export const hoverPrimaryMenuItems = [
+  { name: 'addToList', icon: PlusSquareIcon, goto: 'secondary' },
   { name: 'pin', icon: BookmarkIcon },
   { name: 'edit', icon: EditIcon },
   { name: 'archive', icon: ArchiveIcon },

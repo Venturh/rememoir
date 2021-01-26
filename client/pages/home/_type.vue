@@ -153,15 +153,7 @@ export default defineComponent({
     onMounted(() => {
       // as <<RxQuery<EntryInput, RxDocument<EntryInput, EntryDocMethods>[]>, <RxQuery<ListInput, RxDocument<ListInput, ListDocMethods>[]>>
       const query: any =
-        type === 'entries'
-          ? queryEntries($db, {
-              category: undefined,
-              date: undefined,
-            })
-          : getLists($db, {
-              category: undefined,
-              date: undefined,
-            })
+        type === 'entries' ? queryEntries($db, {}) : getLists($db, {})
 
       query.$.subscribe((results: RxDocument[]) => {
         loading.value = true

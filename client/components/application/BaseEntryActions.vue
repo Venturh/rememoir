@@ -1,11 +1,11 @@
 <template>
   <div class="absolute z-50 top-10 right-5">
     <Modal
-      v-if="showModal"
-      v-model="showModal"
+      v-if="showEditModal"
+      v-model="showEditModal"
       form
       @confirm="submitEditedEntry"
-      @cancel="showModal = false"
+      @cancel="showEditModal = false"
     >
       <template v-slot:title>Edit Entry</template>
       <FormInput
@@ -36,7 +36,7 @@
     <Menu
       v-if="showMenu"
       :primary-items="primaryMenuItems"
-      :secondary-items="secondaryMenuItems"
+      :secondary-items="secondaryItems"
       @mouseleave="$emit('hideMenu', true)"
       @click="handleMenu"
     />
@@ -46,13 +46,14 @@
 <script lang="ts">
 import {
   computed,
+  ComputedRef,
   defineComponent,
   PropType,
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
 
-import { EditedEntry } from '@/types'
+import { EditedEntry, HoverMenuItem } from '@/types'
 import { Entry } from '@/generated/graphql'
 
 import {
@@ -61,7 +62,11 @@ import {
 } from '@/config/data'
 
 import { isEmpty } from 'lodash'
+import { ListIcon, SkipBackIcon } from 'vue-feather-icons'
+
 import { remove, update } from '@/db/entry'
+import { useQueryLists } from '@/hooks/database'
+import { addEntryToList } from '@/db/list'
 
 export default defineComponent({
   props: {
@@ -77,7 +82,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const { $db } = useContext().app
     const editedEntry = ref<EditedEntry>({})
-    const showModal = ref(false)
+    const showEditModal = ref(false)
+    const showLists = ref(false)
+    const { lists, execute } = useQueryLists($db)
 
     const categories = computed({
       get: () => editedEntry.value.categories,
@@ -86,19 +93,45 @@ export default defineComponent({
       },
     })
 
-    function handleMenu(itemName: string) {
-      switch (itemName) {
+    const secondaryItems: ComputedRef<HoverMenuItem[]> = computed(() => {
+      const listItems: HoverMenuItem[] = lists.value.map((l) => {
+        return { icon: ListIcon, name: l.title, goto: '', info: l.id }
+      })
+      listItems[listItems.length] = {
+        name: 'back',
+        icon: SkipBackIcon,
+        goto: 'primary',
+      }
+      return showLists.value ? listItems : secondaryMenuItems
+    })
+
+    function handleMenu({ name, info }: { name: string; info: string }) {
+      switch (name) {
         case 'delete':
           remove(props.entry.id, $db)
           break
         case 'edit':
           emit('showMenu', false)
-          showModal.value = true
+          showEditModal.value = true
+          break
+        case 'addToList':
+          execute()
+          showLists.value = true
+          return
+        case 'share':
+          return
+        case 'back':
+          showLists.value = false
+          return
+        case 'pin':
+          break
+        case 'archive':
           break
 
         default:
-          break
+          addEntryToList(info, props.entry.id, $db)
       }
+
       emit('showMenu', false)
     }
 
@@ -108,13 +141,13 @@ export default defineComponent({
         update(props.entry.id, editedEntry.value, $db)
       editedEntry.value = {}
 
-      showModal.value = false
+      showEditModal.value = false
     }
 
     return {
-      showModal,
+      showEditModal,
       primaryMenuItems,
-      secondaryMenuItems,
+      secondaryItems,
       handleMenu,
       categories,
       editedEntry,

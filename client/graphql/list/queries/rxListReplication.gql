@@ -19,6 +19,7 @@ query rxListReplication(
     categories
     entries {
       id
+      hashedKey
       updatedAt
       createdAt
       deleted

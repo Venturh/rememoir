@@ -35,9 +35,11 @@
 </template>
 
 <script lang="ts">
+import { EntryInput } from '@/generated/graphql'
 import {
   computed,
   defineComponent,
+  PropType,
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
@@ -81,8 +83,8 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
-    catehories: {
-      type: Array,
+    entries: {
+      type: Array as PropType<EntryInput[]>,
       default: () => [],
     },
   },
