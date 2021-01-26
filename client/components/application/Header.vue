@@ -5,7 +5,7 @@
         <MenuIcon class="stroke-current text-brand" />
       </IconOnlyButton>
     </div>
-    <div class="w-screen lg:max-w-lg">
+    <div class="w-full space-x-6 lg:w-screen lg:max-w-lg">
       <HeaderSearch v-if="search === true" />
       <HeaderAdd
         v-else
@@ -18,6 +18,7 @@
         @inputTypeChange="setInputType"
       />
     </div>
+
     <Button
       variant="1"
       padding

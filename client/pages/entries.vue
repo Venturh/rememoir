@@ -2,15 +2,24 @@
   <div
     class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
-    <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
     <div class="lg:w-screen lg:max-w-lg">
+      <div v-if="loading" class="space-y-2">
+        <div
+          v-for="i in 4"
+          :key="i"
+          class="flex flex-col justify-center w-full h-64 pl-4 space-y-4 bg-secondary"
+        >
+          <Loading class="w-3/4 h-1/4 bg-primary" type="skeleton" />
+          <Loading class="w-3/4 h-1/2 bg-primary" type="skeleton" />
+        </div>
+      </div>
       <NotFound
-        v-if="!awaitReplication && Object.keys(entries).length === 0"
+        v-if="!loading && Object.keys(entries).length === 0"
         class="mt-20"
         target="entries"
       />
 
-      <div v-if="entries" class="grid gap-4">
+      <div v-if="entries && !loading" class="grid gap-4">
         <div v-for="date in Object.keys(entries)" :key="date" class="">
           <!-- <div dark
             class="relative flex-shrink-0 w-3.5 h-3.5 rounded-full bg-brand -left-2 top-3.5"
@@ -43,7 +52,10 @@
         </div>
       </div>
     </div>
-    <Filters @filter="setFilters" />
+    <div>
+      <Filters @filter="setFilters" />
+      <TabNavigation />
+    </div>
   </div>
 </template>
 
@@ -80,7 +92,7 @@ export default defineComponent({
       preview: true,
       date: undefined,
     })
-    const awaitReplication = ref(true)
+    const loading = ref(true)
 
     function setFilters({ type, item }: Filters) {
       switch (type) {
@@ -115,20 +127,21 @@ export default defineComponent({
       { deep: true }
     )
 
-    onMounted(async () => {
-      const query = await queryEntries($db, {
+    onMounted(() => {
+      const query = queryEntries($db, {
         category: categories[0].text,
         date: undefined,
       })
       query.$.subscribe(async (results) => {
-        awaitReplication.value = true
+        loading.value = true
         const grouped = await groupBy(results, (result: EntryInput) =>
           $dayjs(parseInt(result.updatedAt)).calendar()
         )
         entries.value = grouped
-        awaitReplication.value = false
+        setInterval(() => {
+          loading.value = false
+        }, 2000)
       })
-      awaitReplication.value = false
     })
 
     onUnmounted(() => {
@@ -139,7 +152,7 @@ export default defineComponent({
 
     return {
       entries,
-      awaitReplication,
+      loading,
       decryptEntry,
       filters,
       setFilters,

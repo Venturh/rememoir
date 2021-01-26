@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col w-full lg:flex-col-reverse lg:w-80">
-    <div class="flex space-x-2">
+  <div class="flex flex-col lg:flex-col-reverse">
+    <div class="flex justify-end space-x-2">
       <IconOnlyButton
         class="p-2 bg-secondary"
         @click="onChange({ type: 'preview', item: !previewFilter })"

@@ -2,11 +2,19 @@
   <div
     class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
-    <h1 v-if="awaitReplication">Waiting for awaitReplication</h1>
-
     <div class="lg:w-screen lg:max-w-lg">
+      <div v-if="loading" class="space-y-2">
+        <div
+          v-for="i in 4"
+          :key="i"
+          class="flex flex-col justify-center w-full h-64 pl-4 space-y-4 bg-secondary"
+        >
+          <Loading class="w-3/4 h-1/4 bg-primary" type="skeleton" />
+          <Loading class="w-3/4 h-1/2 bg-primary" type="skeleton" />
+        </div>
+      </div>
       <NotFound
-        v-if="!awaitReplication && Object.keys(lists).length === 0"
+        v-if="!loading && Object.keys(lists).length === 0"
         class="mt-20"
         target="lists"
       />
@@ -60,23 +68,24 @@ export default defineComponent({
   middleware: ['authenticated'],
   setup() {
     const { $db, $dayjs } = useContext().app
-    const awaitReplication = ref(true)
+    const loading = ref(true)
     const lists = ref({})
 
-    onMounted(async () => {
-      const query = await getLists($db)
-      query.$.subscribe(async (results) => {
-        awaitReplication.value = true
-        const grouped = await groupBy(results, (result: ListInput) =>
+    onMounted(() => {
+      const query = getLists($db)
+      query.$.subscribe((results) => {
+        loading.value = true
+        const grouped = groupBy(results, (result: ListInput) =>
           $dayjs(parseInt(result.updatedAt)).calendar()
         )
         lists.value = grouped
-        awaitReplication.value = false
+        setTimeout(() => {
+          loading.value = false
+        }, 2000)
       })
-      awaitReplication.value = false
     })
 
-    return { awaitReplication, lists }
+    return { loading, lists }
   },
 })
 </script>

@@ -122,8 +122,6 @@ export class GraphQLReplicator {
 
     await entryReplication.run()
     await listReplication.run()
-    await entryReplication.awaitInitialReplication()
-    await listReplication.awaitInitialReplication()
 
     return { entryReplication, listReplication }
   }

@@ -27,6 +27,7 @@ export default {
 
   entries: 'Einträge',
   lists: 'Listen',
+  home: 'Start',
   pinned: 'Angepinnt',
   archive: 'Archiv',
 

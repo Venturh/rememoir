@@ -20,6 +20,7 @@
     :placeholder="placeholder"
     @input="$emit('input', $event.target.value)"
     @keydown.prevent.enter="$emit('enter')"
+    @keydown.prevent.esc="$emit('cancel')"
   />
 </template>
 

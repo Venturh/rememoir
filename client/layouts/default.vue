@@ -8,7 +8,7 @@
         :toggled="toggle"
         @sidebartoggle="toggle = !toggle"
       />
-      <div class="py-2 space-y-2 lg:pl-64">
+      <div class="w-full py-2 space-y-2 lg:pl-64">
         <Header @sidebartoggle="toggle = !toggle" />
         <Nuxt />
       </div>

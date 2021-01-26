@@ -26,17 +26,20 @@
         :search="false"
         :disabled="loading"
       />
+
       <Loading v-if="loading" class="absolute w-6 h-6 right-4 top-2" />
     </div>
+
     <div v-if="descriptonActive" class="relative">
       <HeaderInput
         ref="inputDescRef"
         v-model="description"
-        class="absolute z-50 w-full border top-5"
+        class="absolute z-50 w-full top-1.5 border"
         type="text"
         placeholder="Add a Description"
         :expanded="descriptonActive"
         @enter="handleEnter"
+        @cancel="cancelDescription"
       />
     </div>
     <select-menu
@@ -139,6 +142,12 @@ export default defineComponent({
       setInputType()
     }
 
+    function cancelDescription() {
+      input.value = input.value.slice(0, -2)
+      descriptonActive.value = false
+      inputRef.value?.$el.focus()
+    }
+
     function handleEnter(event: Event) {
       if (categoriesOpen.value || listsOpen.value) {
         event.preventDefault()
@@ -206,6 +215,7 @@ export default defineComponent({
       handleEnter,
       description,
       inputDescRef,
+      cancelDescription,
     }
   },
 })
