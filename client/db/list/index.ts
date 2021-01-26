@@ -5,9 +5,42 @@ import { EditedList } from '../../types'
 
 const id = require('bson-objectid')
 
-export function getLists(db: MyDatabase) {
-  const lists = db.lists.find().sort({ updatedAt: 'desc' })
-  return lists
+export function getLists(
+  db: MyDatabase,
+  { category, date }: { category: string | undefined; date: string | undefined }
+) {
+  if (category === undefined) {
+    if (date === undefined) return db.entries.find().sort({ updatedAt: 'desc' })
+    else {
+      const calendarDate = dayjs(date).format('DD.MM.YY')
+      return db.entries
+        .find({
+          selector: {
+            calendarDate: {
+              $eq: calendarDate,
+            },
+          },
+        })
+        .sort({ updatedAt: 'desc' })
+    }
+  } else if (date === undefined)
+    return db.entries
+      .find({
+        selector: {
+          categories: { $in: [category] },
+        },
+      })
+      .sort({ updatedAt: 'desc' })
+  else {
+    return db.entries
+      .find({
+        selector: {
+          categories: { $in: [category] },
+          calendarDate: { $eq: dayjs(date).format('DD.MM.YY') },
+        },
+      })
+      .sort({ updatedAt: 'desc' })
+  }
 }
 
 export async function addList(
@@ -16,17 +49,13 @@ export async function addList(
   description: string,
   categories: string[]
 ) {
-  console.log('db', db)
-  console.log('title', title)
-  console.log('description', description)
-  console.log('categories', categories)
   const list: ListInput = {
     id: id().str as string,
     title,
     description,
     categories,
     entries: [],
-    hashedKey: 'hashed',
+    hashedKey: '',
     calendarDate: dayjs().format('DD.MM.YY'),
     processing: false,
     updatedAt: Date.now().toString(),

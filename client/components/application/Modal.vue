@@ -3,8 +3,8 @@
     v-bind="$attrs"
     classes=" flex items-center justify-center"
     content-class="relative flex flex-col w-full max-w-lg p-4 space-y-4 rounded-md bg-primary"
-    esc-to-close
-    v-on="$listeners"
+    :esc-to-close="!required"
+    v-on="!required ? $listeners : null"
   >
     <h1 class="text-xl font-semibold">
       {{ title }}
@@ -15,11 +15,18 @@
       @submit.prevent="$emit('confirm')"
     >
       <slot />
-      <div class="flex items-center flex-shrink-0 space-x-2">
-        <Button variant="1" type="submit">{{ $t(buttonNames[0]) }}</Button>
-        <Button variant="secondary" @click="$emit('cancel')">
-          {{ $t(buttonNames[1]) }}
-        </Button>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center flex-shrink-0 space-x-2">
+          <Button variant="1" type="submit">{{ $t(buttonNames[0]) }}</Button>
+          <Button
+            v-if="buttonNames.length > 1"
+            variant="secondary"
+            @click="$emit('cancel')"
+          >
+            {{ $t(buttonNames[1]) }}
+          </Button>
+        </div>
+        <Error v-if="error && error.show" :message="error.msg" />
       </div>
     </form>
 
@@ -27,15 +34,21 @@
       <slot />
     </div>
 
-    <button class="absolute top-2 right-2" @click="$emit('input', false)">
+    <button
+      v-if="!required"
+      class="absolute top-2 right-2"
+      @click="$emit('input', false)"
+    >
       <XIcon size="1.25x" />
     </button>
   </vue-final-modal>
 </template>
 
 <script lang="ts">
+import { Error } from '@/types'
 import { defineComponent, PropType } from '@nuxtjs/composition-api'
 import { XIcon } from 'vue-feather-icons'
+
 export default defineComponent({
   components: {
     XIcon,
@@ -49,9 +62,17 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    error: {
+      type: Object as PropType<Error>,
+      default: () => {},
+    },
     buttonNames: {
       type: Array as PropType<string[]>,
       default: () => ['confirm', 'cancel'],
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
   inheritAttrs: false,

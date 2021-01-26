@@ -9,11 +9,12 @@ const id = require('bson-objectid')
 
 addRxPlugin(RxDBUpdatePlugin)
 
+// TODO: Clean this up
 export function queryEntries(
   db: MyDatabase,
-  { category, date }: { category?: string; date?: string }
+  { category, date }: { category: string | undefined; date: string | undefined }
 ) {
-  if (category === 'All') {
+  if (category === undefined) {
     if (date === undefined) return db.entries.find().sort({ updatedAt: 'desc' })
     else {
       const calendarDate = dayjs(date).format('DD.MM.YY')
@@ -101,11 +102,10 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
       }
       const editedEntry: EntryInput = {
         id: entry.id,
-        title: edited.title,
-        contentDescription:
-          edited.contentDescription || entry.contentDescription,
-        contentType: edited.contentUrl ? 'Link' : entry.contentType,
-        contentUrl: edited.contentUrl || entry.contentUrl,
+        title: edited.title || entry.title,
+        description: edited.description || entry.description,
+        type: edited.url ? 'Link' : entry.type,
+        url: edited.url || entry.url,
         categories,
         hashedKey: 'hashed',
         calendarDate: entry.calendarDate,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label class="text-secondary"><slot /></label>
+    <label class="text-secondary"><slot /> {{ label }}</label>
     <div class="mt-1">
       <input
         :value="value"
@@ -23,10 +23,13 @@ export default defineComponent({
       type: String,
       default: '',
     },
-
     type: {
       type: String,
       default: 'email',
+    },
+    label: {
+      type: String,
+      default: '',
     },
     placeholder: {
       type: String,

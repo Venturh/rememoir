@@ -9,29 +9,29 @@
     >
       <template v-slot:title>Edit Entry</template>
       <FormInput
-        v-model="editedEntry.contentText"
-        label="Text"
+        v-model="editedEntry.title"
+        label="Title"
         type="text"
-        :placeholder="entry.contentText"
-      >
-        Text
-      </FormInput>
+        :placeholder="entry.title"
+      />
       <FormInput
-        v-model="editedEntry.contentUrl"
-        label="Text"
+        v-model="editedEntry.description"
+        label="Description"
         type="text"
-        :placeholder="entry.contentUrl"
-      >
-        Url
-      </FormInput>
+        :placeholder="entry.description"
+      />
+      <FormInput
+        v-model="editedEntry.url"
+        label="Link"
+        type="text"
+        :placeholder="entry.url"
+      />
       <FormInput
         v-model="categories"
-        label="Text"
+        label="Categories"
         type="text"
         :placeholder="entry.categories.join(' ')"
-      >
-        Categories
-      </FormInput>
+      />
     </Modal>
     <Menu
       v-if="showMenu"

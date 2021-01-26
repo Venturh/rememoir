@@ -1,7 +1,7 @@
 export type EditedEntry = {
-  title: string
-  contentDescription?: string
-  contentUrl?: string
+  title?: string
+  description?: string
+  url?: string
   categories?: string
 }
 export type EditedList = {
@@ -19,3 +19,5 @@ export type HeaderInputType = 'list' | 'entry' | 'search'
 
 export type MenuOptionItem = { icon: any; text: string }
 export type MenuOption = Array<MenuOptionItem>
+
+export type Error = { show: boolean; msg: string }

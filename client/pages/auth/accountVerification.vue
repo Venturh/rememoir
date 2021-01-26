@@ -53,7 +53,7 @@ export default defineComponent({
           username: user!.username,
         })
         setAccessToken(accessToken!)
-        router!.push(localePath('/entries'))
+        router!.push(localePath('/home'))
       }
     }
 

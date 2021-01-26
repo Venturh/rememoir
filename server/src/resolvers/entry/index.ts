@@ -80,7 +80,7 @@ class EntryResolver {
       if (entry.url !== entryInput.url) {
         preview = await generateLinkPreview(entryInput.url)
       }
-      wrap(entry).assign({ ...entryInput, contentPreview: preview })
+      wrap(entry).assign({ ...entryInput, preview })
       await em.flush()
       pubsub.publish('changedEntry', entry)
       return entry

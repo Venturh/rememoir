@@ -1,4 +1,4 @@
-//TODO Clean and seperate Filters
+//TODO filter
 <template>
   <div
     class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
@@ -15,17 +15,12 @@
         </div>
       </div>
       <NotFound
-        v-if="
-          !loading &&
-          Object.keys(entries).length === 0 &&
-          !loading &&
-          Object.keys(lists).length === 0
-        "
+        v-if="!loading && Object.keys(content).length === 0"
         class="mt-20"
-        target="entries"
+        :target="type"
       />
       <div v-if="!loading" class="grid gap-4">
-        <div v-for="date in Object.keys(target)" :key="date" class="">
+        <div v-for="date in Object.keys(content)" :key="date" class="">
           <div>
             <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
               {{ date }}
@@ -33,7 +28,7 @@
             <div class="mt-2 space-y-2">
               <component
                 :is="type === 'entries' ? BaseEntry : BaseList"
-                v-for="(data, index) in target[date]"
+                v-for="(data, index) in content[date]"
                 :key="index"
                 :show-preview="showPreview"
                 v-bind="{
@@ -66,7 +61,6 @@
 
 <script lang="ts">
 import {
-  computed,
   defineComponent,
   onMounted,
   onUnmounted,
@@ -97,26 +91,23 @@ export default defineComponent({
     if (type !== 'entries' && type !== 'lists') {
       type = 'entries'
     }
-    const entries = ref({})
-    const lists = ref({})
+    const content = ref({})
     const showPreview = ref(true)
     const filters = reactive<{
-      categories: string
+      categories?: string
       preview: boolean
       date?: string
     }>({
-      categories: 'All',
+      categories: undefined,
       preview: true,
       date: undefined,
     })
     const loading = ref(true)
-    const target = computed(() => {
-      return type === 'entries' ? entries.value : lists.value
-    })
+
     function setFilters({ type, item }: Filters) {
       switch (type) {
         case 'categories': {
-          filters.categories = item as string
+          filters.categories = item === 'All' ? undefined : (item as string)
           break
         }
         case 'preview':
@@ -132,36 +123,52 @@ export default defineComponent({
     }
 
     watch(
+      () => type,
+      (newValue) => {
+        console.log('watch ~ newValue', newValue)
+      }
+    )
+
+    watch(
       () => filters,
       async (filter) => {
-        const query = await queryEntries($db, {
-          category: filter.categories,
-          date: filter.date,
-        }).exec()
+        const query: any =
+          type === 'entries'
+            ? await queryEntries($db, {
+                category: filter.categories,
+                date: filter.date,
+              }).exec()
+            : await getLists($db, {
+                category: filter.categories,
+                date: filter.date,
+              }).exec()
         const grouped = groupBy(query, (result: EntryInput) =>
           $dayjs(parseInt(result.updatedAt)).calendar()
         )
-        entries.value = grouped
+        content.value = grouped
       },
       { deep: true }
     )
 
     onMounted(() => {
       // as <<RxQuery<EntryInput, RxDocument<EntryInput, EntryDocMethods>[]>, <RxQuery<ListInput, RxDocument<ListInput, ListDocMethods>[]>>
-      const test: any =
+      const query: any =
         type === 'entries'
           ? queryEntries($db, {
-              category: categories[0].text,
+              category: undefined,
               date: undefined,
             })
-          : getLists($db)
+          : getLists($db, {
+              category: undefined,
+              date: undefined,
+            })
 
-      test.$.subscribe((results: RxDocument[]) => {
+      query.$.subscribe((results: RxDocument[]) => {
         loading.value = true
         const grouped = groupBy(results, (result: EntryInput | ListInput) =>
           $dayjs(parseInt(result.updatedAt)).calendar()
         )
-        type === 'entries' ? (entries.value = grouped) : (lists.value = grouped)
+        content.value = grouped
 
         loading.value = false
       })
@@ -175,14 +182,12 @@ export default defineComponent({
 
     return {
       type,
-      entries,
-      lists,
+      content,
       loading,
       decryptEntry,
       filters,
       setFilters,
       showPreview,
-      target,
       BaseEntry,
       BaseList,
     }

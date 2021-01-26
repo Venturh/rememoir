@@ -3,6 +3,9 @@
     v-model="show"
     form
     title="Enter SecretKey to proceed"
+    :error="error"
+    :button-names="['Send']"
+    required
     @confirm="action(true)"
     @cancel="action(false)"
   >
@@ -12,6 +15,7 @@
 
 <script lang="ts">
 import { useVerifySecretKeyMutation } from '@/generated/graphql'
+import { Error } from '@/types'
 import { hash, setSecretKey } from '@/utils/crypto'
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 
@@ -21,6 +25,7 @@ export default defineComponent({
     const { router, localePath } = useContext().app
     const show = ref(true)
     const input = ref('')
+    const error = ref<Error>({ show: false, msg: '' })
 
     const { mutate: verify } = useVerifySecretKeyMutation(() => ({
       variables: {
@@ -30,16 +35,17 @@ export default defineComponent({
 
     async function action(action: boolean) {
       if (action) {
+        error.value.show = false
         const { data } = await verify()
         if (data) {
           if (data.verifySecretKey) {
             show.value = false
 
             setSecretKey(input.value)
-            router!.push(localePath('/entries'))
+            router!.push(localePath('/home/entries'))
           } else {
             // TODO Show error
-            console.log('key ist falsch')
+            error.value = { show: true, msg: 'Secret Key wrong' }
           }
         } else {
           // TODO Show error
@@ -49,7 +55,7 @@ export default defineComponent({
         router!.push(localePath('/'))
       }
     }
-    return { action, show, input }
+    return { action, show, error, input }
   },
 })
 </script>

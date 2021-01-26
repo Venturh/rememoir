@@ -33,7 +33,6 @@
       </div>
     </div>
     <BaseEntryActions
-      :entry-id="id"
       :entry="$props"
       :show-menu="showMenu"
       @showMenu="setMenu"

@@ -32,7 +32,7 @@ export default defineComponent({
 
   setup() {
     const { route } = useContext()
-    const selected = ref(route.value.fullPath.split('/')[3])
+    const selected = ref(route.value.fullPath.split('/')[2])
 
     return { selected }
   },

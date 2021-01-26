@@ -56,7 +56,7 @@ export default defineComponent({
         })
         setAccessToken(accessToken!)
         // TODO: nuxt-i18n fix when migrate to composition api
-        router.push(root.localePath('entries'))
+        router.push(root.localePath('/home/entries'))
       }
     }
 
