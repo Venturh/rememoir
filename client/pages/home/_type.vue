@@ -30,8 +30,9 @@
             <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
               {{ date }}
             </div>
-            <div v-if="type === 'entries'" class="mt-2 space-y-2">
-              <BaseEntry
+            <div class="mt-2 space-y-2">
+              <component
+                :is="type === 'entries' ? BaseEntry : BaseList"
                 v-for="(data, index) in target[date]"
                 :key="index"
                 :show-preview="showPreview"
@@ -47,23 +48,7 @@
                   processing: data.processing,
                   updatedAt: data.updatedAt,
                   id: data.id,
-                }"
-              />
-            </div>
-            <div v-else class="mt-2 space-y-2">
-              <BaseList
-                v-for="(data, index) in target[date]"
-                :key="index"
-                v-bind="{
-                  title: data.title,
-                  description: data.description,
                   entries: data.entries,
-                  categories: data.categories,
-                  hashedKey: data.hashedKey,
-                  calendarDate: data.calendarDate,
-                  processing: data.processing,
-                  updatedAt: data.updatedAt,
-                  id: data.id,
                 }"
               />
             </div>
@@ -99,6 +84,8 @@ import { categories } from '@/config/data'
 import { Filters } from '@/types'
 import { getLists } from '@/db/list'
 import { RxDocument } from 'rxdb/src/types'
+import BaseList from '@/components/application/BaseList.vue'
+import BaseEntry from '@/components/application/BaseEntry.vue'
 
 export default defineComponent({
   middleware: ['authenticated'],
@@ -197,6 +184,8 @@ export default defineComponent({
       setFilters,
       showPreview,
       target,
+      BaseEntry,
+      BaseList,
     }
   },
 })
