@@ -45,10 +45,10 @@ export type Entry = {
   createdAt: Scalars['String'];
   deleted?: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
-  contentDescription?: Maybe<Scalars['String']>;
-  contentUrl: Scalars['String'];
-  contentType: Scalars['String'];
-  contentPreview?: Maybe<ContentPreview>;
+  description?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
+  type: Scalars['String'];
+  preview?: Maybe<ContentPreview>;
   calendarDate: Scalars['String'];
   hashedKey: Scalars['String'];
   processing: Scalars['Boolean'];
@@ -129,10 +129,10 @@ export type ValidResponse = {
 export type EntryInput = {
   id: Scalars['String'];
   title: Scalars['String'];
-  contentDescription?: Maybe<Scalars['String']>;
-  contentUrl: Scalars['String'];
-  contentPreview?: Maybe<ContentPreviewInput>;
-  contentType: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
+  preview?: Maybe<ContentPreviewInput>;
+  type: Scalars['String'];
   categories: Array<Scalars['String']>;
   calendarDate: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -457,8 +457,8 @@ export type RxEntryReplicationQuery = (
   { __typename?: 'Query' }
   & { rxEntryReplication: Array<(
     { __typename?: 'Entry' }
-    & Pick<Entry, 'id' | 'title' | 'contentDescription' | 'contentUrl' | 'contentType' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted'>
-    & { contentPreview?: Maybe<(
+    & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted'>
+    & { preview?: Maybe<(
       { __typename?: 'ContentPreview' }
       & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
     )> }
@@ -505,8 +505,8 @@ export type RxListReplicationQuery = (
     & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories'>
     & { entries: Array<(
       { __typename?: 'Entry' }
-      & Pick<Entry, 'id' | 'updatedAt' | 'createdAt' | 'deleted' | 'title' | 'contentDescription' | 'contentUrl' | 'contentType' | 'calendarDate' | 'categories' | 'processing'>
-      & { contentPreview?: Maybe<(
+      & Pick<Entry, 'id' | 'updatedAt' | 'createdAt' | 'deleted' | 'title' | 'description' | 'url' | 'type' | 'calendarDate' | 'categories' | 'processing'>
+      & { preview?: Maybe<(
         { __typename?: 'ContentPreview' }
         & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
       )> }
@@ -849,10 +849,10 @@ export const RxEntryReplicationDocument = gql`
   rxEntryReplication(lastId: $lastId, minUpdatedAt: $minUpdatedAt, limit: $limit) {
     id
     title
-    contentDescription
-    contentUrl
-    contentType
-    contentPreview {
+    description
+    url
+    type
+    preview {
       ogSiteName
       ogTitle
       ogDescription
@@ -969,10 +969,10 @@ export const RxListReplicationDocument = gql`
       createdAt
       deleted
       title
-      contentDescription
-      contentUrl
-      contentType
-      contentPreview {
+      description
+      url
+      type
+      preview {
         ogSiteName
         ogTitle
         ogDescription

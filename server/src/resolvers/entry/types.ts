@@ -10,16 +10,16 @@ export class EntryInput {
   title: string
 
   @Field({ nullable: true })
-  contentDescription?: string
+  description?: string
 
   @Field()
-  contentUrl: string
+  url: string
 
   @Field(() => ContentPreview, { nullable: true })
-  contentPreview?: ContentPreview
+  preview?: ContentPreview
 
   @Field()
-  contentType: string
+  type: string
 
   @Field(() => [String])
   categories: [string]

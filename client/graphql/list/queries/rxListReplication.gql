@@ -23,10 +23,10 @@ query rxListReplication(
       createdAt
       deleted
       title
-      contentDescription
-      contentUrl
-      contentType
-      contentPreview {
+      description
+      url
+      type
+      preview {
         ogSiteName
         ogTitle
         ogDescription

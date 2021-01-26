@@ -45,4 +45,6 @@ export default {
   addNewList: 'Create a new List (# for categories // for more Text) ',
   searchPlaceholder: 'Search for entries or lists (press Ctrl K to focus)',
   reset: 'Reset',
+
+  previewError: 'There was an error, loading the preview',
 }

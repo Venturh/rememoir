@@ -32,17 +32,17 @@ export const entrySchema: RxJsonSchema<EntryInput> = {
     title: {
       type: 'string',
     },
-    contentDescription: {
+    description: {
       type: 'string',
       default: '',
     },
-    contentUrl: {
+    url: {
       type: 'string',
     },
-    contentType: {
+    type: {
       type: 'string',
     },
-    contentPreview: {
+    preview: {
       type: ['object', 'null'],
     },
     categories: {

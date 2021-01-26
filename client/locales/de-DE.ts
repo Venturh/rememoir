@@ -46,4 +46,6 @@ export default {
     'Suche nach Einträgen und Listen for entries or lists (drücke Strg K zum Fokusieren)',
 
   reset: 'Zurücksetzen',
+
+  previewError: 'Die Vorschau konnte nicht geladen werden',
 }

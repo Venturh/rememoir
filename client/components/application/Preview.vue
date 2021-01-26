@@ -1,38 +1,33 @@
 <template>
-  <div
-    v-if="
-      contentPreview.type.includes('music') ||
-      contentPreview.type.includes('video')
-    "
-  >
+  <div v-if="preview.type.includes('music') || preview.type.includes('video')">
     <div v-if="!play" class="relative">
       <img
         class="w-screen max-w-full rounded-md"
         :class="size"
-        :src="contentPreview.ogImageUrl"
+        :src="preview.ogImageUrl"
         alt="previewImage"
       />
-      <PlayOverlay :content-url="contentUrl" @play="play = true" />
+      <PlayOverlay :content-url="url" @play="play = true" />
     </div>
     <iframe
       v-else
       class="w-screen max-w-full rounded-md"
       :class="size"
       :src="
-        contentPreview.ogVideoUrl
-          ? contentPreview.ogVideoUrl + '?autoplay=1'
-          : contentPreview.embeddedUrl
+        preview.ogVideoUrl
+          ? preview.ogVideoUrl + '?autoplay=1'
+          : preview.embeddedUrl
       "
       sandbox="allow-same-origin allow-scripts"
     />
   </div>
   <div v-else>
-    <ButtonOrLink out :to="contentUrl">
+    <ButtonOrLink out :to="url">
       <img
         v-if="imageLoaded"
         class="w-screen max-w-full rounded-md"
         :class="size"
-        :src="contentPreview.ogImageUrl"
+        :src="preview.ogImageUrl"
         alt="previewImage"
         @error="imageLoaded = false"
       />
@@ -51,11 +46,11 @@ import { ContentPreview } from '@/generated/graphql'
 
 export default defineComponent({
   props: {
-    contentUrl: {
+    url: {
       type: String,
       default: '',
     },
-    contentPreview: {
+    preview: {
       type: Object as PropType<ContentPreview>,
       default: () => {},
     },
@@ -71,7 +66,7 @@ export default defineComponent({
         ['undefined', 'object-contain bg-brand15  h-48'],
       ])
 
-      return map.get(props.contentPreview.type) || 'object-cover h-48'
+      return map.get(props.preview.type) || 'object-cover h-48'
     })
     return { play, size, imageLoaded }
   },

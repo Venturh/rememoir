@@ -38,10 +38,10 @@
                 :show-preview="showPreview"
                 v-bind="{
                   title: data.title,
-                  contentDescription: data.contentDescription,
-                  contentUrl: data.contentUrl,
-                  contentType: data.contentType,
-                  contentPreview: data.contentPreview,
+                  description: data.description,
+                  url: data.url,
+                  type: data.type,
+                  preview: data.preview,
                   categories: data.categories,
                   hashedKey: data.hashedKey,
                   calendarDate: data.calendarDate,
@@ -162,9 +162,8 @@ export default defineComponent({
           $dayjs(parseInt(result.updatedAt)).calendar()
         )
         type === 'entries' ? (entries.value = grouped) : (lists.value = grouped)
-        setTimeout(() => {
-          loading.value = false
-        }, 1000)
+
+        loading.value = false
       })
     })
 

@@ -21,7 +21,7 @@ export function useAddDb({ db }: { db: MyDatabase }) {
     let split = data.split(' ')
     let list = split.find((s) => s.includes('@'))
     let categories = split.filter((s) => s.includes('#'))
-    let contentUrl = ''
+    let url = ''
 
     if (categories) {
       categories = categories.map((s) => {
@@ -39,10 +39,10 @@ export function useAddDb({ db }: { db: MyDatabase }) {
     const match = data.match(expression)
 
     if (match) {
-      contentUrl = match[0]
-      split = split.filter((w) => w !== contentUrl)
+      url = match[0]
+      split = split.filter((w) => w !== url)
     }
-    const contentType = match === null ? 'Note' : 'Link'
+    const type = match === null ? 'Note' : 'Link'
     const title = split.join(' ')
 
     if (target === 'list') {
@@ -54,10 +54,10 @@ export function useAddDb({ db }: { db: MyDatabase }) {
       await addEntry(
         {
           categories,
-          contentUrl,
+          url,
           title,
-          contentDescription: description,
-          contentType,
+          description,
+          type,
         },
         db
       )
@@ -65,7 +65,7 @@ export function useAddDb({ db }: { db: MyDatabase }) {
         loading.value = false
       }, 1000)
     }
-    result.value = { title, description, contentUrl, contentType, categories }
+    result.value = { title, description, url, type, categories }
     console.log('result', data, result.value, loading)
   }
 

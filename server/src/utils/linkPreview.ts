@@ -13,36 +13,37 @@ export type LinkPreview = {
 }
 
 export async function generateLinkPreview(url: string) {
-  const data = await opengraph({
-    url,
-  })
+  try {
+    const data = await opengraph({
+      url,
+    })
 
-  const {
-    ogTitle,
-    ogDescription,
-    ogImage,
-    ogVideo,
-    ogAudio,
-    ogType,
-    twitterPlayer,
-    ogSiteName,
-  } = data
-
-  const preview: LinkPreview = {
-    ogSiteName: ogSiteName ? ogSiteName.toString() : undefined,
-    ogTitle: ogTitle ? ogTitle : undefined,
-    ogDescription: ogDescription ? ogDescription : undefined,
-    ogImageUrl: ogImage ? ogImage[0].url : url,
-    ogVideoUrl: ogVideo ? ogVideo[0].url : undefined,
-    ogAudioUrl: ogAudio ? (ogAudio as string) : undefined,
-    embeddedUrl: twitterPlayer ? twitterPlayer[0].url : undefined,
-    type: ogType ? ogType : 'website',
-    color: getColor(ogSiteName as string),
+    const {
+      ogTitle,
+      ogDescription,
+      ogImage,
+      ogVideo,
+      ogAudio,
+      ogType,
+      twitterPlayer,
+      ogSiteName,
+    } = data
+    console.log('generateLinkPreview ~ ogTitle', ogTitle)
+    const preview: LinkPreview = {
+      ogSiteName: ogSiteName ? ogSiteName.toString() : undefined,
+      ogTitle: ogTitle ? ogTitle : undefined,
+      ogDescription: ogDescription ? ogDescription : undefined,
+      ogImageUrl: ogImage ? ogImage[0].url : url,
+      ogVideoUrl: ogVideo ? ogVideo[0].url : undefined,
+      ogAudioUrl: ogAudio ? (ogAudio as string) : undefined,
+      embeddedUrl: twitterPlayer ? twitterPlayer[0].url : undefined,
+      type: ogType ? ogType : 'website',
+      color: getColor(ogSiteName as string),
+    }
+    return preview
+  } catch (error) {
+    return { type: 'Error' } as LinkPreview
   }
-
-  console.log('preview', preview)
-
-  return preview
 }
 
 function getColor(name: string) {

@@ -45,19 +45,19 @@ export default class Entry extends BaseEntity {
 
   @Field({ nullable: true })
   @Property()
-  contentDescription?: string
+  description?: string
 
   @Field()
   @Property()
-  contentUrl: string
+  url: string
 
   @Field()
   @Property()
-  contentType!: string
+  type!: string
 
   @Field({ nullable: true })
   @Property()
-  contentPreview?: ContentPreview
+  preview?: ContentPreview
 
   @Field()
   @Property()
@@ -87,9 +87,9 @@ export default class Entry extends BaseEntity {
     super()
     this.id = entryData.id
     this.title = entryData.title
-    this.contentDescription = entryData.contentDescription
-    this.contentUrl = entryData.contentUrl
-    this.contentType = entryData.contentType
+    this.description = entryData.description
+    this.url = entryData.url
+    this.type = entryData.type
     this.categories = entryData.categories
     this.calendarDate = entryData.calendarDate
     this.processing = entryData.processing

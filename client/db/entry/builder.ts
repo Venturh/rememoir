@@ -20,13 +20,13 @@ export const entryPullQueryBuilder = (doc) => {
 }
 
 export const entryPushQueryBuilder = (entry: EntryInput) => {
-  const variables = {
+  const variables: { entry: EntryInput } = {
     entry: {
       id: entry.id,
-      contentType: entry.contentType,
-      contentUrl: entry.contentUrl,
+      type: entry.type,
+      url: entry.url,
       title: entry.title,
-      contentDescription: entry.contentDescription,
+      description: entry.description,
       hashedKey: entry.hashedKey,
       processing: entry.processing,
       calendarDate: entry.calendarDate,

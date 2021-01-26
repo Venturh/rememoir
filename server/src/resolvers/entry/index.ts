@@ -12,7 +12,6 @@ import {
 } from 'type-graphql'
 
 import { Entry, User } from '../../entities'
-import { ContentType } from '../../entities/Entry'
 import { MyContext } from '../../types'
 import { isAuth, verifyToken } from '../../utils/auth'
 import { generateLinkPreview } from '../../utils/linkPreview'
@@ -77,9 +76,9 @@ class EntryResolver {
     const user = await em.findOne(User, { id: payload?.userId })
     const entry = await em.findOne(Entry, { id: entryInput.id })
     if (entry) {
-      let preview = entry.contentPreview
-      if (entry.contentUrl !== entryInput.contentUrl) {
-        preview = await generateLinkPreview(entryInput.contentUrl)
+      let preview = entry.preview
+      if (entry.url !== entryInput.url) {
+        preview = await generateLinkPreview(entryInput.url)
       }
       wrap(entry).assign({ ...entryInput, contentPreview: preview })
       await em.flush()
@@ -87,9 +86,9 @@ class EntryResolver {
       return entry
     } else {
       const doc = new Entry(entryInput, user!)
-      if (entryInput.contentType === 'Link') {
-        const linkPreview = await generateLinkPreview(entryInput.contentUrl)
-        doc.contentPreview = linkPreview
+      if (entryInput.type === 'Link') {
+        const linkPreview = await generateLinkPreview(entryInput.url)
+        doc.preview = linkPreview
       }
       em.persistAndFlush(doc)
       pubsub.publish('changedEntry', doc)
@@ -112,7 +111,8 @@ class EntryResolver {
     @Arg('url')
     url: string
   ) {
-    generateLinkPreview(url)
+    const preview = await generateLinkPreview(url)
+    console.log('EntryResolver ~ preview', preview)
     return true
   }
 }

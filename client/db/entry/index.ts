@@ -50,25 +50,25 @@ export function queryEntries(
 export async function addEntry(
   {
     title,
-    contentDescription,
-    contentType,
-    contentUrl,
+    description,
+    type,
+    url,
     categories,
   }: {
     title: string
-    contentDescription: string
+    description: string
     categories: string[]
-    contentType: string
-    contentUrl: string
+    type: string
+    url: string
   },
   db: MyDatabase
 ) {
   const entry = {
     id: id().str as string,
     title,
-    contentDescription,
-    contentType,
-    contentUrl,
+    description,
+    type,
+    url,
     categories,
     hashedKey: 'hashed',
     calendarDate: dayjs().format('DD.MM.YY'),

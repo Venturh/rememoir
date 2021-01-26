@@ -12,11 +12,11 @@
       </div>
     </div>
     <div class="w-full h-full space-y-3">
-      <span v-if="contentDescription" class="">{{ contentDescription }}</span>
+      <span v-if="description" class="">{{ description }}</span>
       <LinkEntry
-        v-if="contentType === 'Link' && showPreview"
-        :content-url="contentUrl"
-        :content-preview="contentPreview"
+        v-if="type === 'Link' && showPreview"
+        :url="url"
+        :preview="preview"
       />
     </div>
 
@@ -64,19 +64,19 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    contentDescription: {
+    description: {
       type: String,
       default: '',
     },
-    contentUrl: {
+    url: {
       type: String,
       default: '',
     },
-    contentType: {
+    type: {
       type: String,
       default: '',
     },
-    contentPreview: {
+    preview: {
       type: Object,
       default: () => {},
     },
