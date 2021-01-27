@@ -73,12 +73,14 @@ export function useAddDb({ db }: { db: MyDatabase }) {
   return { result, loading, execute }
 }
 
-export function useQueryLists(db: MyDatabase) {
+export function useQueryLists(db: MyDatabase, id?: string) {
   const loading = ref(false)
   const lists = ref<Array<ListInput>>([])
 
   function execute() {
-    const query = getLists(db, {})
+    console.log('execute ~ query', id, db)
+    const query = getLists(db, { id })
+
     query.$.subscribe((results) => {
       loading.value = true
       lists.value = results
@@ -89,4 +91,21 @@ export function useQueryLists(db: MyDatabase) {
   }
 
   return { lists, loading, execute }
+}
+export function useList(db: MyDatabase, id: string) {
+  const loading = ref(false)
+  const list = ref<ListInput>()
+
+  function execute() {
+    const query = getLists(db, { id })
+    query.$.subscribe((results) => {
+      loading.value = true
+      list.value = results[0]
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
+    })
+  }
+
+  return { list, loading, execute }
 }

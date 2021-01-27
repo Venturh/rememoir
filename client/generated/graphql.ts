@@ -139,6 +139,7 @@ export type EntryInput = {
   hashedKey: Scalars['String'];
   processing: Scalars['Boolean'];
   deleted?: Maybe<Scalars['Boolean']>;
+  createdAt?: Maybe<Scalars['Boolean']>;
 };
 
 export type ContentPreviewInput = {
@@ -457,7 +458,7 @@ export type RxEntryReplicationQuery = (
   { __typename?: 'Query' }
   & { rxEntryReplication: Array<(
     { __typename?: 'Entry' }
-    & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted'>
+    & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted' | 'createdAt'>
     & { preview?: Maybe<(
       { __typename?: 'ContentPreview' }
       & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
@@ -869,6 +870,7 @@ export const RxEntryReplicationDocument = gql`
     updatedAt
     hashedKey
     deleted
+    createdAt
   }
 }
     `;

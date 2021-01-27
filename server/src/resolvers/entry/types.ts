@@ -38,4 +38,7 @@ export class EntryInput {
 
   @Field({ nullable: true })
   deleted?: boolean
+
+  @Field({ nullable: true })
+  createdAt?: string
 }

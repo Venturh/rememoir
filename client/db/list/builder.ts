@@ -3,7 +3,6 @@ import {
   ListInput,
   RxListReplicationDocument,
   SetListDocument,
-  OnEntryChangedDocument,
 } from '../../generated/graphql'
 
 export const listPullQueryBuilder = (doc) => {
@@ -19,19 +18,20 @@ export const listPullQueryBuilder = (doc) => {
   }
 }
 
-export const listPushQueryBuilder = (entry: ListInput) => {
+export const listPushQueryBuilder = (list: ListInput) => {
+  console.log('listPushQueryBuilder ~ list', list)
   const variables = {
     list: {
-      id: entry.id,
-      title: entry.title,
-      description: entry.description,
-      entries: entry.entries,
-      hashedKey: entry.hashedKey,
-      processing: entry.processing,
-      calendarDate: entry.calendarDate,
-      categories: entry.categories,
-      updatedAt: entry.updatedAt,
-      deleted: entry.deleted,
+      id: list.id,
+      title: list.title,
+      description: list.description,
+      entries: list.entries,
+      hashedKey: list.hashedKey,
+      processing: list.processing,
+      calendarDate: list.calendarDate,
+      categories: list.categories,
+      updatedAt: list.updatedAt,
+      deleted: list.deleted,
     },
   }
 
@@ -40,5 +40,3 @@ export const listPushQueryBuilder = (entry: ListInput) => {
     variables,
   }
 }
-
-export const listSubscription = print(OnEntryChangedDocument)

@@ -129,7 +129,7 @@ export default defineComponent({
           break
 
         default:
-          addEntryToList(info, props.entry.id, $db)
+          addEntryToList(info, props.entry, $db)
       }
 
       emit('showMenu', false)

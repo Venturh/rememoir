@@ -42,6 +42,9 @@ export const entrySchema: RxJsonSchema<EntryInput> = {
     updatedAt: {
       type: 'string',
     },
+    createdAt: {
+      type: 'string',
+    },
     calendarDate: {
       type: 'string',
     },

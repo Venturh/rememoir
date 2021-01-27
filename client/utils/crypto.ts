@@ -1,6 +1,6 @@
 import * as crypto from 'crypto'
 import cryptoJs from 'crypto-js'
-import { EntryInput } from '../generated/graphql'
+import { EntryInput, ListInput } from '../generated/graphql'
 
 function generateKey() {
   return crypto
@@ -61,11 +61,34 @@ export function decryptEntry(entry: EntryInput) {
 
   return decrypted
 }
-export function decryptEntryItem(item: any, skey: string) {
+
+export function encryptList(list: ListInput) {
   const secretKey = getSectretKey()
-  const key = aesDecrypt(skey, secretKey)
-  return aesDecrypt(item, key)
+  const key = generateKey()
+  const encrypted: ListInput = {
+    ...list,
+    title: aesEncrypt(list.title, key),
+    description: aesEncrypt(list.description, key),
+    hashedKey: aesEncrypt(key, secretKey),
+  }
+  return encrypted
 }
+
+export function decryptList(list: ListInput) {
+  const secretKey = getSectretKey()
+  if (secretKey === null) return
+  const key = aesDecrypt(list.hashedKey, secretKey)
+  const decrypted: ListInput = {
+    ...list,
+    title: aesDecrypt(list.title, key),
+    description: aesDecrypt(list.description, key),
+    entries: list.entries.map((entry) => decryptEntry(entry)),
+  }
+  console.log('descrpyted List', decrypted)
+
+  return decrypted
+}
+
 export function decryptDataKey(skey: string) {
   const secretKey = getSectretKey()
   const key = aesDecrypt(skey, secretKey)

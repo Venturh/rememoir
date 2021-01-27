@@ -31,7 +31,7 @@
                 v-for="(data, index) in content[date]"
                 :key="index"
                 :show-preview="showPreview"
-                v-bind="{
+                :entry="{
                   title: data.title,
                   description: data.description,
                   url: data.url,
@@ -42,7 +42,21 @@
                   calendarDate: data.calendarDate,
                   processing: data.processing,
                   updatedAt: data.updatedAt,
+                  deleted: data.deleted,
                   id: data.id,
+                  createdAt: data.createdAt,
+                }"
+                :list="{
+                  title: data.title,
+                  description: data.description,
+                  categories: data.categories,
+                  hashedKey: data.hashedKey,
+                  calendarDate: data.calendarDate,
+                  processing: data.processing,
+                  updatedAt: data.updatedAt,
+                  deleted: data.deleted,
+                  id: data.id,
+
                   entries: data.entries,
                 }"
               />
@@ -74,7 +88,6 @@ import { groupBy } from 'lodash'
 import { queryEntries } from '@/db/entry'
 import { EntryInput, ListInput } from '@/generated/graphql'
 import { decryptEntry } from '@/utils/crypto'
-import { categories } from '@/config/data'
 import { Filters } from '@/types'
 import { getLists } from '@/db/list'
 import { RxDocument } from 'rxdb/src/types'
@@ -121,13 +134,6 @@ export default defineComponent({
           break
       }
     }
-
-    watch(
-      () => type,
-      (newValue) => {
-        console.log('watch ~ newValue', newValue)
-      }
-    )
 
     watch(
       () => filters,

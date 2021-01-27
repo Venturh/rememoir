@@ -3,7 +3,7 @@
     class="relative flex flex-col w-full h-full px-3 py-2 space-y-1 rounded-lg bg-secondary"
   >
     <div class="flex items-center justify-between">
-      <span>{{ title }}</span>
+      <span>{{ entry.title }}</span>
       <div class="flex items-center flex-shrink-0">
         <span class="text-sm">{{ timeFrom }}</span>
         <button @mouseover="showMenu = !showMenu" @click="showMenu = !showMenu">
@@ -12,11 +12,11 @@
       </div>
     </div>
     <div class="w-full h-full space-y-3">
-      <span v-if="description" class="">{{ description }}</span>
+      <span v-if="entry.description" class="">{{ entry.description }}</span>
       <LinkEntry
-        v-if="type === 'Link' && showPreview"
-        :url="url"
-        :preview="preview"
+        v-if="entry.type === 'Link' && showPreview"
+        :url="entry.url"
+        :preview="entry.preview"
       />
     </div>
 
@@ -24,7 +24,7 @@
       <span />
       <div class="space-x-2">
         <span
-          v-for="category in categories"
+          v-for="category in entry.categories"
           :key="category"
           class="px-2 py-1.5 text-xs rounded-lg bg-primary"
         >
@@ -33,7 +33,7 @@
       </div>
     </div>
     <BaseEntryActions
-      :entry="$props"
+      :entry="entry"
       :show-menu="showMenu"
       @showMenu="setMenu"
     />
@@ -41,9 +41,11 @@
 </template>
 
 <script lang="ts">
+import { Entry } from '@/generated/graphql'
 import {
   computed,
   defineComponent,
+  PropType,
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
@@ -55,49 +57,9 @@ export default defineComponent({
     MoreVerticalIcon,
   },
   props: {
-    id: {
-      type: String,
-      default: '',
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    description: {
-      type: String,
-      default: '',
-    },
-    url: {
-      type: String,
-      default: '',
-    },
-    type: {
-      type: String,
-      default: '',
-    },
-    preview: {
-      type: Object,
+    entry: {
+      type: Object as PropType<Entry>,
       default: () => {},
-    },
-    processing: {
-      type: Boolean,
-      default: false,
-    },
-    updatedAt: {
-      type: String,
-      default: '',
-    },
-    hashedKey: {
-      type: String,
-      default: '',
-    },
-    calendarDate: {
-      type: String,
-      default: '',
-    },
-    categories: {
-      type: Array,
-      default: () => [],
     },
     showPreview: {
       type: Boolean,
@@ -107,13 +69,12 @@ export default defineComponent({
   setup(props) {
     const showMenu = ref(false)
     const dayjs = useContext().app.$dayjs
-
     function setMenu(value: boolean) {
       showMenu.value = value
     }
 
     const timeFrom = computed(() => {
-      return dayjs(parseInt(props.updatedAt)).fromNow()
+      return dayjs(parseInt(props.entry.updatedAt)).fromNow()
     })
 
     return {

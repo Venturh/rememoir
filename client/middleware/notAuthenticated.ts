@@ -7,6 +7,6 @@ export default defineNuxtMiddleware(async ({ redirect, app }) => {
   hasToken = getAccessToken()
 
   if (hasToken) {
-    return redirect(app.localePath('/entries'))
+    return redirect(app.localePath('/home/entries'))
   }
 })

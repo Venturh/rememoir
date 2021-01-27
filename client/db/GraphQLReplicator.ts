@@ -9,7 +9,12 @@ import { addRxPlugin } from 'rxdb'
 
 import { EntryInput, ListInput } from '../generated/graphql'
 import { getAccessToken, tryAccessToken } from '../utils/auth'
-import { decryptEntry, encryptEntry } from '../utils/crypto'
+import {
+  decryptEntry,
+  decryptList,
+  encryptEntry,
+  encryptList,
+} from '../utils/crypto'
 import { listPullQueryBuilder, listPushQueryBuilder } from './list/builder'
 import {
   entryPullQueryBuilder,
@@ -88,16 +93,20 @@ export class GraphQLReplicator {
       },
       pull: {
         queryBuilder: listPullQueryBuilder,
-        modifier: (d: ListInput) => {
-          return d
+        modifier: (list: ListInput) => {
+          console.log(
+            'GraphQLReplicator ~ setupGraphQLReplication ~ list',
+            list
+          )
+          return decryptList(list)
         },
       },
       push: {
         queryBuilder: listPushQueryBuilder,
         batchSize,
-        modifier: (d: ListInput) => {
-          console.log('add List ~ d', d)
-          return d
+        modifier: (list: ListInput) => {
+          console.log('add List ~ d', list)
+          return encryptList(list)
         },
       },
       deletedFlag: 'deleted',

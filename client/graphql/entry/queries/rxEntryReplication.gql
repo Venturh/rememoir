@@ -30,5 +30,6 @@ query rxEntryReplication(
     updatedAt
     hashedKey
     deleted
+    createdAt
   }
 }

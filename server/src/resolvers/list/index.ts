@@ -64,8 +64,12 @@ class ListResolver {
     const list = await em.findOne(List, { id: listInput.id })
     console.log('ListResolver ~ list', list)
     if (list) {
-      wrap(list).assign({ ...listInput })
+      const ids = listInput.entries.map((e) => e.id)
+      const entries = await em.find(Entry, { id: { $in: ids } })
+      wrap(list).assign({ ...listInput, entries })
       await em.flush()
+      console.log('liste', await em.findOne(List, { id: listInput.id }))
+
       pubsub.publish('changedList', list)
       return list
     } else {

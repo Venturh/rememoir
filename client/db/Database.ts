@@ -2,7 +2,7 @@ import { addRxPlugin, createRxDatabase, RxDatabase } from 'rxdb'
 
 import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode'
 
-import { RxDBValidatePlugin } from 'rxdb/plugins/validate'
+import { RxDBNoValidatePlugin } from 'rxdb/plugins/no-validate'
 
 import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb'
 import { EntryCollection, entrySchema } from './entry/schema'
@@ -12,7 +12,7 @@ import { GraphQLReplicator } from './GraphQLReplicator'
 if (process.env.NODE_ENV === 'development') {
   addRxPlugin(RxDBDevModePlugin)
 }
-addRxPlugin(RxDBValidatePlugin)
+addRxPlugin(RxDBNoValidatePlugin)
 
 addRxPlugin(PouchdbAdapterIdb)
 

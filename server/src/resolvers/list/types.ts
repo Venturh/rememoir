@@ -1,5 +1,4 @@
 import { InputType, Field } from 'type-graphql'
-
 import { EntryInput } from '../entry/types'
 
 @InputType()

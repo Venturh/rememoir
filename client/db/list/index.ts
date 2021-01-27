@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
-import { entries } from 'lodash'
-import { Entry, EntryInput, ListInput } from '../../generated/graphql'
+import { EntryInput, ListInput } from '../../generated/graphql'
 import { MyDatabase } from '..'
 import { EditedList } from '../../types'
 
@@ -11,8 +10,16 @@ export function getLists(
   {
     category,
     date,
-  }: { category?: string | undefined; date?: string | undefined }
+  }: {
+    category?: string | undefined
+    date?: string | undefined
+    id?: string | undefined
+  }
 ) {
+  if (id === undefined) {
+    console.log('id rein', id, db.lists)
+    return db.lists.find({ selector: { id: { $eq: id } } })
+  }
   if (category === undefined) {
     if (date === undefined) return db.lists.find().sort({ updatedAt: 'desc' })
     else {
@@ -112,34 +119,36 @@ export async function updateList(
 }
 export async function addEntryToList(
   id: string,
-  entryId: string,
+  entry: EntryInput,
   db: MyDatabase
 ) {
+  console.log('addEntryToList ~ entry', entry)
   const list = await db.lists.findOne({ selector: { id } }).exec()
 
   if (list) {
     try {
-      const entryFind = await db.entries
-        .findOne({ selector: { id: entryId } })
-        .exec()
-      console.log('found list,', list)
+      // const entryFind = await db.entries
+      //   .findOne({ selector: { id: entryId } })
+      //   .exec()
+      // console.log('found list,', list)
 
-      const entry: EntryInput = {
-        id: entryFind.id,
-        title: entryFind.title,
-        url: entryFind.url,
-        type: entryFind.type,
-        calendarDate: entryFind.calendarDate,
-        categories: entryFind.categories,
-        hashedKey: entryFind.hashedKey,
-        processing: entryFind.processing,
-        updatedAt: entryFind.updatedAt,
-        deleted: entryFind.deleted,
-        description: entryFind.description,
-        preview: entryFind.preview,
-      }
+      // const entry: EntryInput = {
+      //   id: entryFind.id,
+      //   title: entryFind.title,
+      //   url: entryFind.url,
+      //   type: entryFind.type,
+      //   calendarDate: entryFind.calendarDate,
+      //   categories: entryFind.categories,
+      //   hashedKey: entryFind.hashedKey,
+      //   processing: entryFind.processing,
+      //   updatedAt: entryFind.updatedAt,
+      //   deleted: entryFind.deleted,
+      //   description: entryFind.description,
+      //   preview: entryFind.preview,
+      // }
 
       // BUG: Das besser machen. Bekommen auch fields wie created ein rein...
+
       const editedList: ListInput = {
         id: list.id,
         title: list.title,
@@ -151,7 +160,7 @@ export async function addEntryToList(
         processing: list.processing,
         updatedAt: Date.now().toString(),
       }
-      console.log('editedList', editedList.entries)
+      console.log('editedList', editedList)
       await list.update({ $set: { ...editedList } })
     } catch (err) {
       console.error('could not update list', err)

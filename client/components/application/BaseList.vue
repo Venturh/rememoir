@@ -1,9 +1,12 @@
 <template>
-  <div class="relative flex flex-col px-3 py-2 rounded-lg bg-secondary">
+  <nuxt-link
+    :to="localePath(`/lists/${list.id}`)"
+    class="relative flex flex-col px-3 py-2 rounded-lg bg-secondary"
+  >
     <div class="flex items-start justify-between">
       <div class="space-y-3">
-        <p class="">{{ title }}</p>
-        <p class="">{{ description }}</p>
+        <p class="">{{ list.title }}</p>
+        <p class="">{{ list.description }}</p>
       </div>
       <div class="flex items-center flex-shrink-0">
         <span class="text-sm">{{ timeFrom }}</span>
@@ -17,7 +20,7 @@
       <span />
       <div class="space-x-2">
         <span
-          v-for="category in categories"
+          v-for="category in list.categories"
           :key="category"
           class="px-2 py-1.5 text-xs rounded-lg bg-primary"
         >
@@ -26,16 +29,16 @@
       </div>
     </div>
     <BaseListActions
-      :list-id="id"
+      :list-id="list.id"
       :list="$props"
       :show-menu="showMenu"
       @showMenu="setMenu"
     />
-  </div>
+  </nuxt-link>
 </template>
 
 <script lang="ts">
-import { EntryInput } from '@/generated/graphql'
+import { List } from '@/generated/graphql'
 import {
   computed,
   defineComponent,
@@ -51,41 +54,9 @@ export default defineComponent({
     MoreVerticalIcon,
   },
   props: {
-    id: {
-      type: String,
-      default: '',
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    description: {
-      type: String,
-      default: '',
-    },
-    processing: {
-      type: Boolean,
-      default: false,
-    },
-    updatedAt: {
-      type: String,
-      default: '',
-    },
-    hashedKey: {
-      type: String,
-      default: '',
-    },
-    calendarDate: {
-      type: String,
-      default: '',
-    },
-    categories: {
-      type: Array,
-      default: () => [],
-    },
-    entries: {
-      type: Array as PropType<EntryInput[]>,
-      default: () => [],
+    list: {
+      type: Object as PropType<List>,
+      default: () => {},
     },
   },
   setup(props) {
@@ -97,7 +68,7 @@ export default defineComponent({
     }
 
     const timeFrom = computed(() => {
-      return dayjs(parseInt(props.updatedAt)).fromNow()
+      return dayjs(parseInt(props.list.updatedAt)).fromNow()
     })
 
     return {
