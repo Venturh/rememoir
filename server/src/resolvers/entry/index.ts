@@ -72,25 +72,29 @@ class EntryResolver {
     @Arg('entry') entryInput: EntryInput,
     @Ctx() { em, payload }: MyContext
   ): Promise<Entry> {
-    console.log('EntryResolver ~ entryInput', entryInput)
     const user = await em.findOne(User, { id: payload?.userId })
     const entry = await em.findOne(Entry, { id: entryInput.id })
     if (entry) {
+      console.log('UPDATED ENTRY')
       let preview = entry.preview
       if (entry.url !== entryInput.url) {
         preview = await generateLinkPreview(entryInput.url)
       }
       wrap(entry).assign({ ...entryInput, preview })
       await em.flush()
+      const entry2 = await em.findOne(Entry, { id: entryInput.id })
+      console.log('saved Entry', entry2)
+
       pubsub.publish('changedEntry', entry)
       return entry
     } else {
       const doc = new Entry(entryInput, user!)
+      doc.lists.loadItems()
       if (entryInput.type === 'Link') {
         const linkPreview = await generateLinkPreview(entryInput.url)
         doc.preview = linkPreview
       }
-      em.persistAndFlush(doc)
+      await em.persistAndFlush(doc)
       pubsub.publish('changedEntry', doc)
       return doc
     }
@@ -104,16 +108,6 @@ class EntryResolver {
   async changedEntry(@Arg('token') token: string, @Root() entry: Entry) {
     verifyToken(token)
     return entry
-  }
-
-  @Query(() => Boolean)
-  async preview(
-    @Arg('url')
-    url: string
-  ) {
-    const preview = await generateLinkPreview(url)
-    console.log('EntryResolver ~ preview', preview)
-    return true
   }
 }
 

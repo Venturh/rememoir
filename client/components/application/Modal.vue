@@ -17,7 +17,9 @@
       <slot />
       <div class="flex items-center justify-between">
         <div class="flex items-center flex-shrink-0 space-x-2">
-          <Button variant="1" type="submit">{{ $t(buttonNames[0]) }}</Button>
+          <Button variant="1" type="submit" @click="$emit('confirm')">{{
+            $t(buttonNames[0])
+          }}</Button>
           <Button
             v-if="buttonNames.length > 1"
             variant="secondary"

@@ -30,7 +30,7 @@
         v-model="categories"
         label="Categories"
         type="text"
-        :placeholder="entry.categories.join(' ')"
+        :placeholder="entry.categories ? entry.categories.join(' ') : ''"
       />
     </Modal>
     <Menu

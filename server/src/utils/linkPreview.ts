@@ -28,7 +28,6 @@ export async function generateLinkPreview(url: string) {
       twitterPlayer,
       ogSiteName,
     } = data
-    console.log('generateLinkPreview ~ ogTitle', ogTitle)
     const preview: LinkPreview = {
       ogSiteName: ogSiteName ? ogSiteName.toString() : undefined,
       ogTitle: ogTitle ? ogTitle : undefined,
@@ -47,7 +46,6 @@ export async function generateLinkPreview(url: string) {
 }
 
 function getColor(name: string) {
-  console.log('getColor ~ name', name)
   if (name === undefined) return undefined
   switch (name.toLocaleLowerCase()) {
     case 'spotify':

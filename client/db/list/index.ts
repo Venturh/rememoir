@@ -122,33 +122,10 @@ export async function addEntryToList(
   entry: EntryInput,
   db: MyDatabase
 ) {
-  console.log('addEntryToList ~ entry', entry)
   const list = await db.lists.findOne({ selector: { id } }).exec()
 
   if (list) {
     try {
-      // const entryFind = await db.entries
-      //   .findOne({ selector: { id: entryId } })
-      //   .exec()
-      // console.log('found list,', list)
-
-      // const entry: EntryInput = {
-      //   id: entryFind.id,
-      //   title: entryFind.title,
-      //   url: entryFind.url,
-      //   type: entryFind.type,
-      //   calendarDate: entryFind.calendarDate,
-      //   categories: entryFind.categories,
-      //   hashedKey: entryFind.hashedKey,
-      //   processing: entryFind.processing,
-      //   updatedAt: entryFind.updatedAt,
-      //   deleted: entryFind.deleted,
-      //   description: entryFind.description,
-      //   preview: entryFind.preview,
-      // }
-
-      // BUG: Das besser machen. Bekommen auch fields wie created ein rein...
-
       const editedList: ListInput = {
         id: list.id,
         title: list.title,
@@ -160,7 +137,6 @@ export async function addEntryToList(
         processing: list.processing,
         updatedAt: Date.now().toString(),
       }
-      console.log('editedList', editedList)
       await list.update({ $set: { ...editedList } })
     } catch (err) {
       console.error('could not update list', err)

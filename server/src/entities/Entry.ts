@@ -1,5 +1,12 @@
 import { Field, InputType, ObjectType, registerEnumType } from 'type-graphql'
-import { Entity, ManyToOne, Property } from '@mikro-orm/core'
+import {
+  Cascade,
+  Collection,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  Property,
+} from '@mikro-orm/core'
 import { BaseEntity, List, User } from '.'
 import { EntryInput } from '../resolvers/entry/types'
 
@@ -79,9 +86,9 @@ export default class Entry extends BaseEntity {
   @ManyToOne()
   user: User
 
-  @Field(() => List)
-  @ManyToOne()
-  list: List
+  @Field(() => [List], { nullable: true })
+  @ManyToMany()
+  lists = new Collection<List>(this)
 
   constructor(entryData: EntryInput, user: User) {
     super()

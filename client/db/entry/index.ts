@@ -117,6 +117,23 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
       }
 
       await entry.update({ $set: { ...editedEntry } })
+
+      const allLists = await db.lists.find().exec()
+      // Timeout to get Preview from server. need to find another way...
+      setTimeout(async () => {
+        const lists = allLists.filter((list) =>
+          list.entries.find((e) => e.id === entry.id)
+        )
+        for (const list of lists) {
+          try {
+            await list.update({
+              $set: {},
+            })
+          } catch (error) {
+            console.log('update ~ error', error)
+          }
+        }
+      }, 2000)
     } catch (err) {
       console.error('could not update entry')
     }

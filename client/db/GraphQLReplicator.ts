@@ -70,7 +70,8 @@ export class GraphQLReplicator {
       pull: {
         queryBuilder: entryPullQueryBuilder,
         modifier: (d: EntryInput) => {
-          return decryptEntry(d)
+          console.log('entry from server', d)
+          return d
         },
       },
       push: {
@@ -78,7 +79,7 @@ export class GraphQLReplicator {
         batchSize,
         modifier: (d: EntryInput) => {
           console.log('add Entry ~ d', d)
-          return encryptEntry(d)
+          return d
         },
       },
       deletedFlag: 'deleted',
@@ -94,11 +95,8 @@ export class GraphQLReplicator {
       pull: {
         queryBuilder: listPullQueryBuilder,
         modifier: (list: ListInput) => {
-          console.log(
-            'GraphQLReplicator ~ setupGraphQLReplication ~ list',
-            list
-          )
-          return decryptList(list)
+          console.log('list from server', list.entries)
+          return list
         },
       },
       push: {
@@ -106,7 +104,7 @@ export class GraphQLReplicator {
         batchSize,
         modifier: (list: ListInput) => {
           console.log('add List ~ d', list)
-          return encryptList(list)
+          return list
         },
       },
       deletedFlag: 'deleted',
@@ -160,6 +158,7 @@ export class GraphQLReplicator {
         console.log('subscription emitted => trigger run()')
         console.dir(data)
         await entryReplication.run()
+        await listReplication.run()
         console.log('run() done')
       },
       error(error) {

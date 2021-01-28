@@ -5,7 +5,7 @@
   >
     <div class="flex items-start justify-between">
       <div class="space-y-3">
-        <p class="">{{ list.title }}</p>
+        <p class="text-lg">{{ list.title }}</p>
         <p class="">{{ list.description }}</p>
       </div>
       <div class="flex items-center flex-shrink-0">
@@ -30,7 +30,7 @@
     </div>
     <BaseListActions
       :list-id="list.id"
-      :list="$props"
+      :list="list"
       :show-menu="showMenu"
       @showMenu="setMenu"
     />

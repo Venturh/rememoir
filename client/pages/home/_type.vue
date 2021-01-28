@@ -163,9 +163,9 @@ export default defineComponent({
 
       query.$.subscribe((results: RxDocument[]) => {
         loading.value = true
-        const grouped = groupBy(results, (result: EntryInput | ListInput) =>
-          $dayjs(parseInt(result.updatedAt)).calendar()
-        )
+        const grouped = groupBy(results, (result: EntryInput | ListInput) => {
+          return $dayjs(parseInt(result.updatedAt)).calendar()
+        })
         content.value = grouped
 
         loading.value = false

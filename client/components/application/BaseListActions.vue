@@ -4,20 +4,18 @@
       v-if="showModal"
       v-model="showModal"
       form
-      @confirm="submitEditedEntry"
+      @confirm="submitEditedList"
       @cancel="showModal = false"
     >
       <template v-slot:title>Edit list</template>
       <FormInput
-        v-model="editedEntry.title"
-        label="Text"
+        v-model="editedList.title"
+        label="Title"
         type="text"
         :placeholder="list.title"
-      >
-        Text
-      </FormInput>
+      />
       <FormInput
-        v-model="editedEntry.description"
+        v-model="editedList.description"
         label="Text"
         type="text"
         :placeholder="list.description"
@@ -28,7 +26,7 @@
         v-model="categories"
         label="Text"
         type="text"
-        :placeholder="list.categories.join(' ')"
+        :placeholder="list.categories ? list.categories.join(' ') : ''"
       >
         Categories
       </FormInput>
@@ -76,13 +74,13 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { $db } = useContext().app
-    const editedEntry = ref<EditedList>({})
+    const editedList = ref<EditedList>({})
     const showModal = ref(false)
 
     const categories = computed({
-      get: () => editedEntry.value.categories,
+      get: () => editedList.value.categories,
       set: (val) => {
-        editedEntry.value.categories = val
+        editedList.value.categories = val
       },
     })
 
@@ -102,10 +100,12 @@ export default defineComponent({
       emit('showMenu', false)
     }
 
-    function submitEditedEntry() {
-      if (!isEmpty(editedEntry.value))
-        updateList(props.list.id, editedEntry.value, $db)
-      editedEntry.value = {}
+    function submitEditedList() {
+      console.log('editedList.value', editedList.value)
+
+      if (!isEmpty(editedList.value))
+        updateList(props.list.id, editedList.value, $db)
+      editedList.value = {}
 
       showModal.value = false
     }
@@ -116,8 +116,8 @@ export default defineComponent({
       secondaryMenuItems,
       handleMenu,
       categories,
-      editedEntry,
-      submitEditedEntry,
+      editedList,
+      submitEditedList,
     }
   },
 })

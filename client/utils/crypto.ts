@@ -50,7 +50,6 @@ export function encryptEntry(entry: EntryInput) {
 }
 export function decryptEntry(entry: EntryInput) {
   const secretKey = getSectretKey()
-  console.log('decryptEntry ~ secretKey', secretKey)
   if (secretKey === null) return
   const key = aesDecrypt(entry.hashedKey, secretKey)
   const decrypted: EntryInput = {
@@ -84,7 +83,6 @@ export function decryptList(list: ListInput) {
     description: aesDecrypt(list.description, key),
     entries: list.entries.map((entry) => decryptEntry(entry)),
   }
-  console.log('descrpyted List', decrypted)
 
   return decrypted
 }

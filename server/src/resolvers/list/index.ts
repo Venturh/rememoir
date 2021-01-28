@@ -62,24 +62,21 @@ class ListResolver {
   ): Promise<List> {
     const user = await em.findOne(User, { id: payload?.userId })
     const list = await em.findOne(List, { id: listInput.id })
-    console.log('ListResolver ~ list', list)
     if (list) {
       const ids = listInput.entries.map((e) => e.id)
       const entries = await em.find(Entry, { id: { $in: ids } })
       wrap(list).assign({ ...listInput, entries })
       await em.flush()
-      console.log('liste', await em.findOne(List, { id: listInput.id }))
-
       pubsub.publish('changedList', list)
       return list
     } else {
       const ids = listInput.entries.map((e) => e.id)
       const entries = await em.find(Entry, { id: { $in: ids } })
       const doc = new List(listInput, user!)
+      doc.entries.loadItems()
       doc.entries.add(...entries)
 
       em.persistAndFlush(doc)
-      console.log('ListResolver ~ doc', doc)
       pubsub.publish('changedlist', doc)
       return doc
     }

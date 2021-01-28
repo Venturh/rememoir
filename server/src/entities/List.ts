@@ -2,6 +2,7 @@ import { Field, ObjectType } from 'type-graphql'
 import {
   Collection,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   Property,
@@ -41,7 +42,7 @@ export default class List extends BaseEntity {
   user: User
 
   @Field(() => [Entry])
-  @OneToMany(() => Entry, (entry) => entry.list)
+  @ManyToMany(() => Entry, (entry) => entry.lists)
   entries = new Collection<Entry>(this)
 
   constructor(entryData: ListInput, user: User) {
