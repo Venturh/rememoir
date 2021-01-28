@@ -17,17 +17,21 @@
       <div v-if="list" class="relative space-y-4">
         <BaseList :list="list" />
 
-        <NotFound
-          v-if="!loading && list.entries.length === 0"
-          class="mt-20"
-          target="entries"
-        />
-        <BaseEntry
-          v-for="entry in list.entries"
-          v-else
-          :key="entry.id"
-          :entry="entry"
-        />
+        <NotFound v-if="!loading && !entries" class="mt-20" target="entries" />
+        <div v-else>
+          <div v-for="date in keys(entries)" :key="date" class="space-y-2">
+            <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
+              {{ date }}
+            </div>
+            <BaseEntry
+              v-for="entry in entries[date]"
+              :key="entry.id"
+              :entry="entry"
+              :show-preview="showPreview"
+            />
+          </div>
+        </div>
+
         <BaseListActions
           :list-id="list.id"
           :list="list"
@@ -36,7 +40,7 @@
       </div>
     </div>
     <div class="w-full space-y-2 lg:w-80">
-      <!-- <Filters @filter="setFilters" /> -->
+      <Filters @filter="setFilters" />
     </div>
   </div>
 </template>
@@ -47,33 +51,48 @@ import {
   onMounted,
   ref,
   useContext,
+  watch,
 } from '@nuxtjs/composition-api'
-import { MoreVerticalIcon } from 'vue-feather-icons'
-import { useList } from '@/hooks'
+import { keys } from 'lodash'
+import { useFilter, useList } from '@/hooks'
 
 export default defineComponent({
   middleware: ['authenticated'],
-  components: {
-    MoreVerticalIcon,
-  },
   setup() {
     const { route, error, app } = useContext()
     const { $db } = app
+    const { filters, setFilters } = useFilter()
     const showMenu = ref(false)
+    const showPreview = ref(true)
     const { id } = route.value.params
-    if (!id) redirectOnError()
-    const { list, subscribe, loading } = useList($db, id)
+    const { list, entries, subscribe, loading } = useList($db, id, filters)
+
+    watch(
+      () => [filters.preview, filters.date, filters.categories],
+      (filter) => {
+        showPreview.value = filter[0] as boolean
+      }
+    )
 
     onMounted(async () => {
       await subscribe()
-      if (list.value === null) redirectOnError()
+      if (list.value === null || !id) redirectOnError()
     })
 
     function redirectOnError() {
       return error({ statusCode: 404, message: 'Not found' })
     }
 
-    return { list, showMenu, loading }
+    return {
+      list,
+      entries,
+      showMenu,
+      loading,
+      filters,
+      setFilters,
+      keys,
+      showPreview,
+    }
   },
 })
 </script>

@@ -77,7 +77,6 @@ import {
   defineComponent,
   onMounted,
   onUnmounted,
-  reactive,
   ref,
   useContext,
   watch,
@@ -87,11 +86,11 @@ import { groupBy } from 'lodash'
 import { queryEntries } from '@/db/entry'
 import { EntryInput, ListInput } from '@/generated/graphql'
 import { decryptEntry } from '@/utils/crypto'
-import { Filters } from '@/types'
 import { getLists } from '@/db/list'
 import { RxDocument } from 'rxdb/src/types'
 import BaseList from '@/components/application/BaseList.vue'
 import BaseEntry from '@/components/application/BaseEntry.vue'
+import { useFilter } from '@/hooks'
 
 export default defineComponent({
   props: {
@@ -104,44 +103,19 @@ export default defineComponent({
     const { $db, $dayjs } = useContext().app
     const { route } = useContext()
     let { type } = route.value.params
-
+    const { filters, setFilters } = useFilter()
     if (type !== 'entries' && type !== 'lists') {
       type = 'entries'
     }
+
     const content = ref({})
     const showPreview = ref(true)
-    const filters = reactive<{
-      categories?: string
-      preview: boolean
-      date?: string
-    }>({
-      categories: undefined,
-      preview: true,
-      date: undefined,
-    })
     const loading = ref(true)
-
-    function setFilters({ type, item }: Filters) {
-      switch (type) {
-        case 'categories': {
-          filters.categories = item === 'All' ? undefined : (item as string)
-          break
-        }
-        case 'preview':
-          showPreview.value = item as boolean
-          break
-        case 'date':
-          filters.date = item as string
-          break
-
-        default:
-          break
-      }
-    }
 
     watch(
       () => filters,
       async (filter) => {
+        showPreview.value = filter.preview ?? false
         const query: any =
           type === 'entries'
             ? await queryEntries($db, {

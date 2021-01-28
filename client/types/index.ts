@@ -15,6 +15,12 @@ export type Filters = {
   item: string | boolean
 }
 
+export type Filter = {
+  categories?: string | undefined
+  preview: boolean | undefined
+  date?: string | undefined
+}
+
 export type HeaderInputType = 'list' | 'entry' | 'search'
 
 export type MenuOptionItem = { icon: any; text: string }

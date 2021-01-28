@@ -1,9 +1,11 @@
-import { onBeforeMount, onMounted, ref } from '@nuxtjs/composition-api'
+import { onBeforeMount, onMounted, ref, watch } from '@nuxtjs/composition-api'
+import dayjs from 'dayjs'
+import { Dictionary, groupBy } from 'lodash'
 import { MyDatabase } from '../db'
 import { addEntry } from '../db/entry'
 import { addList, getLists } from '../db/list'
-import { ListInput } from '../generated/graphql'
-import { HeaderInputType } from '../types'
+import { EntryInput, ListInput } from '../generated/graphql'
+import { Filter, HeaderInputType } from '../types'
 
 export function useAddDb({ db }: { db: MyDatabase }) {
   const loading = ref(false)
@@ -91,21 +93,28 @@ export function useQueryLists(db: MyDatabase) {
 
   return { lists, loading, execute }
 }
-export function useList(db: MyDatabase, id: string) {
+export function useList(
+  db: MyDatabase,
+  id: string,
+  { date, categories, preview }: Filter
+) {
   const loading = ref(true)
   const list = ref<ListInput>()
+  const entries = ref<Dictionary<EntryInput[]>>()
   const query = db.lists.findOne({ selector: { id } })
 
+  // TODO: Filter
   async function subscribe() {
     query.$.subscribe((result) => {
       loading.value = true
       list.value = result
-      setTimeout(() => {
-        loading.value = false
-      }, 1000)
+      entries.value = groupBy(result.entries, (result: EntryInput) => {
+        return dayjs(parseInt(result.updatedAt)).calendar()
+      })
+      loading.value = false
     })
     list.value = await query.exec()
-    console.log('subscribe ~ list.value', list.value)
   }
-  return { list, loading, subscribe }
+
+  return { list, entries, loading, subscribe }
 }
