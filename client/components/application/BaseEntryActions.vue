@@ -1,46 +1,37 @@
 <template>
-  <div class="absolute z-50 top-10 right-5">
-    <Modal
-      v-if="showEditModal"
-      v-model="showEditModal"
-      form
-      @confirm="submitEditedEntry"
-      @cancel="showEditModal = false"
-    >
-      <template v-slot:title>Edit Entry</template>
-      <FormInput
-        v-model="editedEntry.title"
-        label="Title"
-        type="text"
-        :placeholder="entry.title"
-      />
-      <FormInput
-        v-model="editedEntry.description"
-        label="Description"
-        type="text"
-        :placeholder="entry.description"
-      />
-      <FormInput
-        v-model="editedEntry.url"
-        label="Link"
-        type="text"
-        :placeholder="entry.url"
-      />
-      <FormInput
-        v-model="categories"
-        label="Categories"
-        type="text"
-        :placeholder="entry.categories ? entry.categories.join(' ') : ''"
-      />
-    </Modal>
-    <Menu
-      v-if="showMenu"
-      :primary-items="primaryMenuItems"
-      :secondary-items="secondaryItems"
-      @mouseleave="$emit('hideMenu', true)"
-      @click="handleMenu"
+  <BaseActions
+    :primary-menu="hoverEntryPrimaryMenu"
+    :secondary-menu="secondaryItems"
+    @edit="submit"
+    @remove="remove"
+    @showLists="toggleLists"
+    @addToList="add"
+  >
+    <FormInput
+      v-model="editedEntry.title"
+      label="Title"
+      type="text"
+      :placeholder="entry.title"
     />
-  </div>
+    <FormInput
+      v-model="editedEntry.description"
+      label="Description"
+      type="text"
+      :placeholder="entry.description"
+    />
+    <FormInput
+      v-model="editedEntry.url"
+      label="Link"
+      type="text"
+      :placeholder="entry.url"
+    />
+    <FormInput
+      v-model="categories"
+      label="Categories"
+      type="text"
+      :placeholder="entry.categories ? entry.categories.join(' ') : ''"
+    />
+  </BaseActions>
 </template>
 
 <script lang="ts">
@@ -54,18 +45,15 @@ import {
 } from '@nuxtjs/composition-api'
 
 import { EditedEntry, HoverMenuItem } from '@/types'
-import { Entry } from '@/generated/graphql'
+import { EntryInput } from '@/generated/graphql'
 
-import {
-  hoverPrimaryMenuItems as primaryMenuItems,
-  hoverSecondaryMenuItems as secondaryMenuItems,
-} from '@/config/data'
+import { hoverEntryPrimaryMenu, hoverSecondaryMenu } from '@/config/data'
 
 import { isEmpty } from 'lodash'
-import { ListIcon, SkipBackIcon } from 'vue-feather-icons'
 
-import { remove, update } from '@/db/entry'
+import { removeEntry, update } from '@/db/entry'
 import { useQueryLists } from '@/hooks/database'
+import { ListIcon, SkipBackIcon } from 'vue-feather-icons'
 import { addEntryToList } from '@/db/list'
 
 export default defineComponent({
@@ -75,11 +63,11 @@ export default defineComponent({
       default: false,
     },
     entry: {
-      type: Object as PropType<Entry>,
+      type: Object as PropType<EntryInput>,
       default: () => {},
     },
   },
-  setup(props, { emit }) {
+  setup(props) {
     const { $db } = useContext().app
     const editedEntry = ref<EditedEntry>({})
     const showEditModal = ref(false)
@@ -102,41 +90,23 @@ export default defineComponent({
         icon: SkipBackIcon,
         goto: 'primary',
       }
-      return showLists.value ? listItems : secondaryMenuItems
+      return showLists.value ? listItems : hoverSecondaryMenu
     })
 
-    function handleMenu({ name, info }: { name: string; info: string }) {
-      switch (name) {
-        case 'delete':
-          remove(props.entry.id, $db)
-          break
-        case 'edit':
-          emit('showMenu', false)
-          showEditModal.value = true
-          break
-        case 'addToList':
-          execute()
-          showLists.value = true
-          return
-        case 'share':
-          return
-        case 'back':
-          showLists.value = false
-          return
-        case 'pin':
-          break
-        case 'archive':
-          break
-
-        default:
-          addEntryToList(info, props.entry, $db)
-      }
-
-      emit('showMenu', false)
+    function toggleLists() {
+      execute()
+      showLists.value = true
     }
 
-    function submitEditedEntry() {
-      console.log('toSend', editedEntry.value)
+    function remove() {
+      removeEntry(props.entry.id, $db)
+    }
+
+    function add(id: string) {
+      addEntryToList(id, props.entry, $db)
+    }
+
+    function submit() {
       if (!isEmpty(editedEntry.value))
         update(props.entry.id, editedEntry.value, $db)
       editedEntry.value = {}
@@ -146,12 +116,15 @@ export default defineComponent({
 
     return {
       showEditModal,
-      primaryMenuItems,
+      showLists,
+      hoverEntryPrimaryMenu,
       secondaryItems,
-      handleMenu,
+      remove,
       categories,
       editedEntry,
-      submitEditedEntry,
+      submit,
+      toggleLists,
+      add,
     }
   },
 })

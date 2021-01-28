@@ -18,7 +18,19 @@ export const sidebarItems = [
   { index: 3, icon: ArchiveIcon, name: 'archive' },
 ]
 
-export const hoverPrimaryMenuItems = [
+export const hoverListPrimaryMenu = [
+  { name: 'pin', icon: BookmarkIcon },
+  { name: 'edit', icon: EditIcon },
+  { name: 'archive', icon: ArchiveIcon },
+  { name: 'delete', icon: DeleteIcon },
+  {
+    name: 'share',
+    icon: Share2Icon,
+    goto: 'secondary',
+  },
+]
+
+export const hoverEntryPrimaryMenu = [
   { name: 'addToList', icon: PlusSquareIcon, goto: 'secondary' },
   { name: 'pin', icon: BookmarkIcon },
   { name: 'edit', icon: EditIcon },
@@ -31,7 +43,7 @@ export const hoverPrimaryMenuItems = [
   },
 ]
 
-export const hoverSecondaryMenuItems = [
+export const hoverSecondaryMenu = [
   { name: 'copylink', icon: BookmarkIcon },
   { name: 'twitter', icon: TwitterIcon },
   { name: 'mail', icon: MailIcon },

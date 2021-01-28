@@ -1,44 +1,29 @@
 <template>
-  <div class="absolute z-50 top-10 right-5">
-    <Modal
-      v-if="showModal"
-      v-model="showModal"
-      form
-      @confirm="submitEditedList"
-      @cancel="showModal = false"
-    >
-      <template v-slot:title>Edit list</template>
-      <FormInput
-        v-model="editedList.title"
-        label="Title"
-        type="text"
-        :placeholder="list.title"
-      />
-      <FormInput
-        v-model="editedList.description"
-        label="Text"
-        type="text"
-        :placeholder="list.description"
-      >
-        Url
-      </FormInput>
-      <FormInput
-        v-model="categories"
-        label="Text"
-        type="text"
-        :placeholder="list.categories ? list.categories.join(' ') : ''"
-      >
-        Categories
-      </FormInput>
-    </Modal>
-    <Menu
-      v-if="showMenu"
-      :primary-items="primaryMenuItems"
-      :secondary-items="secondaryMenuItems"
-      @mouseleave="$emit('hideMenu', true)"
-      @click="handleMenu"
+  <BaseActions
+    :primary-menu="hoverListPrimaryMenu"
+    :secondary-menu="hoverSecondaryMenu"
+    @edit="submit"
+    @remove="remove"
+  >
+    <FormInput
+      v-model="edited.title"
+      label="Title"
+      type="text"
+      :placeholder="list.title"
     />
-  </div>
+    <FormInput
+      v-model="edited.description"
+      label="Description"
+      type="text"
+      :placeholder="list.description"
+    />
+    <FormInput
+      v-model="categories"
+      label="Text"
+      type="text"
+      :placeholder="list.categories ? list.categories.join(' ') : ''"
+    />
+  </BaseActions>
 </template>
 
 <script lang="ts">
@@ -53,10 +38,7 @@ import {
 import { EditedList } from '@/types'
 import { List } from '@/generated/graphql'
 
-import {
-  hoverPrimaryMenuItems as primaryMenuItems,
-  hoverSecondaryMenuItems as secondaryMenuItems,
-} from '@/config/data'
+import { hoverListPrimaryMenu, hoverSecondaryMenu } from '@/config/data'
 
 import { isEmpty } from 'lodash'
 import { removeList, updateList } from '@/db/list'
@@ -72,52 +54,36 @@ export default defineComponent({
       default: () => {},
     },
   },
-  setup(props, { emit }) {
+  setup(props) {
     const { $db } = useContext().app
-    const editedList = ref<EditedList>({})
+    const edited = ref<EditedList>({})
     const showModal = ref(false)
 
     const categories = computed({
-      get: () => editedList.value.categories,
+      get: () => edited.value.categories,
       set: (val) => {
-        editedList.value.categories = val
+        edited.value.categories = val
       },
     })
 
-    function handleMenu({ name, info }: { name: string; info: string }) {
-      switch (name) {
-        case 'delete':
-          removeList(props.list.id, $db)
-          break
-        case 'edit':
-          emit('showMenu', false)
-          showModal.value = true
-          break
-
-        default:
-          break
-      }
-      emit('showMenu', false)
+    function remove() {
+      removeList(props.list.id, $db)
     }
 
-    function submitEditedList() {
-      console.log('editedList.value', editedList.value)
-
-      if (!isEmpty(editedList.value))
-        updateList(props.list.id, editedList.value, $db)
-      editedList.value = {}
-
+    function submit() {
+      if (!isEmpty(edited.value)) updateList(props.list.id, edited.value, $db)
+      edited.value = {}
       showModal.value = false
     }
 
     return {
       showModal,
-      primaryMenuItems,
-      secondaryMenuItems,
-      handleMenu,
+      hoverListPrimaryMenu,
+      hoverSecondaryMenu,
       categories,
-      editedList,
-      submitEditedList,
+      edited,
+      submit,
+      remove,
     }
   },
 })

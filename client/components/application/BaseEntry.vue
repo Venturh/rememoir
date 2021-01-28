@@ -6,9 +6,7 @@
       <span>{{ entry.title }}</span>
       <div class="flex items-center flex-shrink-0">
         <span class="text-sm">{{ timeFrom }}</span>
-        <button @mouseover="showMenu = !showMenu" @click="showMenu = !showMenu">
-          <MoreVerticalIcon size="1.25x" />
-        </button>
+        <BaseEntryActions :entry="entry" />
       </div>
     </div>
     <div class="w-full h-full space-y-3">
@@ -32,11 +30,6 @@
         </span>
       </div>
     </div>
-    <BaseEntryActions
-      :entry="entry"
-      :show-menu="showMenu"
-      @showMenu="setMenu"
-    />
   </div>
 </template>
 
@@ -46,7 +39,6 @@ import {
   computed,
   defineComponent,
   PropType,
-  ref,
   useContext,
 } from '@nuxtjs/composition-api'
 
@@ -67,19 +59,13 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const showMenu = ref(false)
     const dayjs = useContext().app.$dayjs
-    function setMenu(value: boolean) {
-      showMenu.value = value
-    }
 
     const timeFrom = computed(() => {
       return dayjs(parseInt(props.entry.updatedAt)).fromNow()
     })
 
     return {
-      showMenu,
-      setMenu,
       timeFrom,
     }
   },

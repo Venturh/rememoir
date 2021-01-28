@@ -11,12 +11,12 @@ export function getLists(
     category,
     date,
   }: {
-    category?: string | undefined
-    date?: string | undefined
+    category?: string
+    date?: string
   }
 ) {
-  if (category === undefined) {
-    if (date === undefined) return db.lists.find().sort({ updatedAt: 'desc' })
+  if (!category) {
+    if (!date) return db.lists.find().sort({ updatedAt: 'desc' })
     else {
       const calendarDate = dayjs(date).format('DD.MM.YY')
       return db.lists
@@ -29,7 +29,7 @@ export function getLists(
         })
         .sort({ updatedAt: 'desc' })
     }
-  } else if (date === undefined)
+  } else if (!date)
     return db.lists
       .find({
         selector: {

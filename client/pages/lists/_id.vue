@@ -15,7 +15,7 @@
       </div>
 
       <div v-if="list" class="relative space-y-4">
-        <BaseList :list="list" />
+        <BaseList :list="list" primary />
 
         <NotFound v-if="!loading && !entries" class="mt-20" target="entries" />
         <div v-else>
@@ -31,12 +31,6 @@
             />
           </div>
         </div>
-
-        <BaseListActions
-          :list-id="list.id"
-          :list="list"
-          :show-menu="showMenu"
-        />
       </div>
     </div>
     <div class="w-full space-y-2 lg:w-80">
@@ -62,7 +56,6 @@ export default defineComponent({
     const { route, error, app } = useContext()
     const { $db } = app
     const { filters, setFilters } = useFilter()
-    const showMenu = ref(false)
     const showPreview = ref(true)
     const { id } = route.value.params
     const { list, entries, subscribe, loading } = useList($db, id, filters)
@@ -86,7 +79,6 @@ export default defineComponent({
     return {
       list,
       entries,
-      showMenu,
       loading,
       filters,
       setFilters,

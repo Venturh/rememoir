@@ -82,7 +82,7 @@ export async function addEntry(
   await db.entries.insert(entry)
 }
 
-export async function remove(id: string, db: MyDatabase) {
+export async function removeEntry(id: string, db: MyDatabase) {
   const entry = await db.entries.findOne({ selector: { id } }).exec()
   if (entry) {
     try {
