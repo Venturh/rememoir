@@ -13,13 +13,8 @@ export function getLists(
   }: {
     category?: string | undefined
     date?: string | undefined
-    id?: string | undefined
   }
 ) {
-  if (id === undefined) {
-    console.log('id rein', id, db.lists)
-    return db.lists.find({ selector: { id: { $eq: id } } })
-  }
   if (category === undefined) {
     if (date === undefined) return db.lists.find().sort({ updatedAt: 'desc' })
     else {

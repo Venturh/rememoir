@@ -1,4 +1,4 @@
-import { ref } from '@nuxtjs/composition-api'
+import { onBeforeMount, onMounted, ref } from '@nuxtjs/composition-api'
 import { MyDatabase } from '../db'
 import { addEntry } from '../db/entry'
 import { addList, getLists } from '../db/list'
@@ -73,13 +73,12 @@ export function useAddDb({ db }: { db: MyDatabase }) {
   return { result, loading, execute }
 }
 
-export function useQueryLists(db: MyDatabase, id?: string) {
+export function useQueryLists(db: MyDatabase) {
   const loading = ref(false)
   const lists = ref<Array<ListInput>>([])
 
   function execute() {
-    console.log('execute ~ query', id, db)
-    const query = getLists(db, { id })
+    const query = getLists(db, {})
 
     query.$.subscribe((results) => {
       loading.value = true
@@ -93,19 +92,20 @@ export function useQueryLists(db: MyDatabase, id?: string) {
   return { lists, loading, execute }
 }
 export function useList(db: MyDatabase, id: string) {
-  const loading = ref(false)
+  const loading = ref(true)
   const list = ref<ListInput>()
+  const query = db.lists.findOne({ selector: { id } })
 
-  function execute() {
-    const query = getLists(db, { id })
-    query.$.subscribe((results) => {
+  async function subscribe() {
+    query.$.subscribe((result) => {
       loading.value = true
-      list.value = results[0]
+      list.value = result
       setTimeout(() => {
         loading.value = false
       }, 1000)
     })
+    list.value = await query.exec()
+    console.log('subscribe ~ list.value', list.value)
   }
-
-  return { list, loading, execute }
+  return { list, loading, subscribe }
 }

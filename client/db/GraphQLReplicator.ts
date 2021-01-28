@@ -70,16 +70,14 @@ export class GraphQLReplicator {
       pull: {
         queryBuilder: entryPullQueryBuilder,
         modifier: (d: EntryInput) => {
-          console.log('entry from server', d)
-          return d
+          return decryptEntry(d)
         },
       },
       push: {
         queryBuilder: entryPushQueryBuilder,
         batchSize,
         modifier: (d: EntryInput) => {
-          console.log('add Entry ~ d', d)
-          return d
+          return encryptEntry(d)
         },
       },
       deletedFlag: 'deleted',
@@ -95,16 +93,14 @@ export class GraphQLReplicator {
       pull: {
         queryBuilder: listPullQueryBuilder,
         modifier: (list: ListInput) => {
-          console.log('list from server', list.entries)
-          return list
+          return decryptList(list)
         },
       },
       push: {
         queryBuilder: listPushQueryBuilder,
         batchSize,
         modifier: (list: ListInput) => {
-          console.log('add List ~ d', list)
-          return list
+          return encryptList(list)
         },
       },
       deletedFlag: 'deleted',

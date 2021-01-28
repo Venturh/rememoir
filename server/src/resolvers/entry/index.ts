@@ -81,10 +81,8 @@ class EntryResolver {
         preview = await generateLinkPreview(entryInput.url)
       }
       wrap(entry).assign({ ...entryInput, preview })
-      await em.flush()
-      const entry2 = await em.findOne(Entry, { id: entryInput.id })
-      console.log('saved Entry', entry2)
 
+      await em.flush()
       pubsub.publish('changedEntry', entry)
       return entry
     } else {
