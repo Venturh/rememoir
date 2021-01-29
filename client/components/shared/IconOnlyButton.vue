@@ -1,6 +1,6 @@
 <template>
   <ButtonOrLink
-    class="inline-flex items-center justify-center rounded-md stroke-current text-secondary"
+    class="inline-flex items-center justify-center rounded-md stroke-current text-secondary focus:outline-none"
     :class="variants"
     :to="to"
     :out="out"
@@ -39,7 +39,7 @@ export default defineComponent({
       ])
       return (
         allVariants.get(props.variant as Variants) ||
-        'hover:text-brand focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand'
+        'hover:text-brand  focus:ring-2 focus:ring-inset focus:ring-brand'
       )
     })
 

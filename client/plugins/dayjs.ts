@@ -4,8 +4,10 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import updateLocale from 'dayjs/plugin/updateLocale'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import calendar from 'dayjs/plugin/calendar'
+require('dayjs/locale/de')
 
-export default defineNuxtPlugin((ctx, inject) => {
+export default defineNuxtPlugin(({ app }, inject) => {
+  const { i18n } = app
   dayjs.extend(customParseFormat)
   dayjs.extend(updateLocale)
   dayjs.extend(relativeTime)
@@ -58,5 +60,7 @@ export default defineNuxtPlugin((ctx, inject) => {
       yy: '%d j',
     },
   })
+  const currentLocale = i18n.getLocaleCookie()
+  dayjs.locale(currentLocale)
   inject('dayjs', dayjs)
 })

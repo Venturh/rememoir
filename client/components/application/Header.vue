@@ -88,6 +88,7 @@ export default defineComponent({
       } else if (event.key === 'l' && event.ctrlKey) {
         event.preventDefault()
         setInputType('list')
+        if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
       } else if (event.key === 'k' && event.ctrlKey) {
         event.preventDefault()
         inputType.value = 'search'

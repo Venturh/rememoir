@@ -1,6 +1,7 @@
 <template>
-  <a
-    class="relative flex flex-col px-3 py-2 space-y-2 rounded-lg cursor-pointer bg-secondary hover:bg-brand25"
+  <div
+    class="relative flex flex-col px-3 py-2 space-y-2 rounded-lg bg-secondary"
+    :class="{ 'hover:bg-brand25 cursor-pointer ': !primary }"
     @click="navigate"
   >
     <div class="flex items-center justify-between">
@@ -18,7 +19,7 @@
       </div>
       <span class="text-sm">{{ timeFrom }}</span>
     </div>
-  </a>
+  </div>
 </template>
 
 <script lang="ts">
@@ -48,11 +49,13 @@ export default defineComponent({
   },
   setup(props) {
     const { $dayjs, router, localePath } = useContext().app
+
     const timeFrom = computed(() => {
       return $dayjs(parseInt(props.list.updatedAt)).fromNow()
     })
 
     function navigate() {
+      if (props.primary) return
       router?.push(localePath(`/lists/${props.list.id}`))
     }
 

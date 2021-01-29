@@ -31,8 +31,8 @@ export default defineComponent({
   components: { ColumnsIcon, ListIcon },
 
   setup() {
-    const { route } = useContext()
-    const selected = ref(route.value.fullPath.split('/')[2])
+    const { params } = useContext().route.value
+    const selected = ref(params.type ?? 'entries')
 
     return { selected }
   },

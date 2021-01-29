@@ -25,11 +25,12 @@ import {
 } from '@nuxtjs/composition-api'
 
 import { useTheme } from '@/hooks'
+import dayjs from 'dayjs'
 
 export default defineComponent({
   setup() {
     const { theme } = useTheme()
-    const { $db } = useContext().app
+    const { $db, $dayjs } = useContext().app
     const toggle = ref(false)
 
     // TODO: Somhehow watch localstorage if secret key is removed
