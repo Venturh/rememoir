@@ -1,25 +1,22 @@
 <template>
   <div
-    class="relative flex flex-col w-full h-full px-3 py-2 space-y-1 rounded-lg bg-secondary"
+    class="relative flex flex-col w-full h-full px-3 py-3 space-y-3 rounded-lg bg-secondary"
   >
-    <div class="flex items-center justify-between">
-      <span>{{ entry.title }}</span>
-      <div class="flex items-center flex-shrink-0">
-        <span class="text-sm">{{ timeFrom }}</span>
+    <div>
+      <div class="flex items-center justify-between">
+        <span>{{ entry.title }}</span>
         <BaseEntryActions :entry="entry" />
       </div>
+
+      <p v-if="entry.description" class="">{{ entry.description }}</p>
     </div>
-    <div class="w-full h-full space-y-3">
-      <span v-if="entry.description" class="">{{ entry.description }}</span>
-      <LinkEntry
-        v-if="entry.type === 'Link' && showPreview"
-        :url="entry.url"
-        :preview="entry.preview"
-      />
-    </div>
+    <LinkEntry
+      v-if="entry.type === 'Link' && showPreview"
+      :url="entry.url"
+      :preview="entry.preview"
+    />
 
     <div class="flex items-center justify-between">
-      <span />
       <div class="space-x-2">
         <span
           v-for="category in entry.categories"
@@ -29,6 +26,7 @@
           {{ category }}
         </span>
       </div>
+      <span class="text-sm">{{ timeFrom }}</span>
     </div>
   </div>
 </template>

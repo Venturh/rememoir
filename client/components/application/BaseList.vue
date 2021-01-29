@@ -1,34 +1,24 @@
 <template>
-  <nuxt-link
-    :to="localePath(`/lists/${list.id}`)"
-    class="relative flex flex-col px-3 py-2 rounded-lg bg-secondary"
+  <a
+    class="relative flex flex-col px-3 py-2 space-y-2 rounded-lg cursor-pointer bg-secondary hover:bg-brand25"
+    @click="navigate"
   >
-    <div class="flex items-start justify-between">
-      <div class="space-y-3">
-        <p :class="primary ? 'text-xl font-semibold' : 'text-lg'">
-          {{ list.title }}
-        </p>
-        <p class="">{{ list.description }}</p>
-      </div>
-      <div class="flex items-center flex-shrink-0">
-        <span class="text-sm">{{ timeFrom }}</span>
-        <BaseListActions :list-id="list.id" :list="list" />
-      </div>
-    </div>
-
     <div class="flex items-center justify-between">
-      <span />
-      <div class="space-x-2">
-        <span
-          v-for="category in list.categories"
-          :key="category"
-          class="px-2 py-1.5 text-xs rounded-lg bg-primary"
-        >
-          {{ category }}
-        </span>
-      </div>
+      <p :class="{ 'text-xl font-semibold': primary }">
+        {{ list.title }}
+      </p>
+      <BaseListActions :list-id="list.id" :list="list" />
     </div>
-  </nuxt-link>
+    <p class="">{{ list.description }}</p>
+    <div class="flex items-center justify-between">
+      <div class="flex space-x-2">
+        <Label v-for="category in list.categories" :key="category">
+          {{ category }}
+        </Label>
+      </div>
+      <span class="text-sm">{{ timeFrom }}</span>
+    </div>
+  </a>
 </template>
 
 <script lang="ts">
@@ -57,14 +47,18 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const dayjs = useContext().app.$dayjs
-
+    const { $dayjs, router, localePath } = useContext().app
     const timeFrom = computed(() => {
-      return dayjs(parseInt(props.list.updatedAt)).fromNow()
+      return $dayjs(parseInt(props.list.updatedAt)).fromNow()
     })
+
+    function navigate() {
+      router?.push(localePath(`/lists/${props.list.id}`))
+    }
 
     return {
       timeFrom,
+      navigate,
     }
   },
 })

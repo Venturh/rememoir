@@ -1,8 +1,8 @@
 <template>
   <div class="flex items-center">
-    <button @mouseover="showMenu = !showMenu" @click="showMenu = !showMenu">
-      <MoreVerticalIcon size="1.25x" />
-    </button>
+    <IconOnlyButton variant="primary" @click="showMenu = !showMenu">
+      <MoreHorizontalIcon size="1.25x" />
+    </IconOnlyButton>
     <div class="absolute z-50 top-10 right-5">
       <Modal
         v-if="showEditModal"
@@ -18,7 +18,7 @@
         v-if="showMenu"
         :primary-items="primaryMenu"
         :secondary-items="secondaryMenu"
-        @mouseleave="$emit('hideMenu', true)"
+        @mouseleave="showMenu = false"
         @click="handleMenu"
       />
     </div>
@@ -33,12 +33,12 @@ import {
   ref,
 } from '@nuxtjs/composition-api'
 
-import { MoreVerticalIcon } from 'vue-feather-icons'
+import { MoreHorizontalIcon } from 'vue-feather-icons'
 
 type Type = 'entry' | 'list'
 export default defineComponent({
   components: {
-    MoreVerticalIcon,
+    MoreHorizontalIcon,
   },
   props: {
     type: {

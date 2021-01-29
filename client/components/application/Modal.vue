@@ -17,13 +17,13 @@
       <slot />
       <div class="flex items-center justify-between">
         <div class="flex items-center flex-shrink-0 space-x-2">
-          <Button variant="1" type="submit" @click="$emit('confirm')">{{
+          <Button variant="1" type="submit" @click.stop="$emit('confirm')">{{
             $t(buttonNames[0])
           }}</Button>
           <Button
             v-if="buttonNames.length > 1"
             variant="secondary"
-            @click="$emit('cancel')"
+            @click.stop="$emit('cancel')"
           >
             {{ $t(buttonNames[1]) }}
           </Button>
@@ -36,13 +36,13 @@
       <slot />
     </div>
 
-    <button
+    <IconOnlyButton
       v-if="!required"
       class="absolute top-2 right-2"
       @click="$emit('input', false)"
     >
       <XIcon size="1.25x" />
-    </button>
+    </IconOnlyButton>
   </vue-final-modal>
 </template>
 

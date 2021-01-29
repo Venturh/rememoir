@@ -3,7 +3,7 @@
     type="button"
     :class="[buttonVariant(variant), { 'px-4 py-2 ': !padding }]"
     class="flex items-center justify-center font-medium rounded-md shadow-sm focus:outline-none"
-    @click="$emit('click')"
+    @click="$emit('click', $event)"
   >
     <slot />
   </button>

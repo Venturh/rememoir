@@ -10,7 +10,7 @@
     type="button"
     @mouseover="$emit('mouseover')"
     @mouseleave="$emit('mouseleave')"
-    @click="$emit('click')"
+    @click="$emit('click', $event)"
   >
     <slot />
   </button>

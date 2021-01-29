@@ -9,7 +9,7 @@
         v-for="item in primaryItems"
         :key="item.name"
         class="flex items-center w-full px-4 py-2 space-x-2 rounded-md cursor-pointer hover:bg-brand hover:text-white"
-        @click="handleClick(item)"
+        @click.stop="handleClick(item)"
       >
         <component :is="item.icon" size="1.25x" />
         <span class="text-sm">{{ $t(item.name) }}</span>
@@ -21,7 +21,7 @@
         v-for="item in secondaryItems"
         :key="item.name"
         class="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-brand hover:text-white"
-        @click="handleClick(item)"
+        @click.stop="handleClick(item)"
       >
         <component :is="item.icon" size="1.25x" />
         <span class="text-sm">{{ item.name }}</span>
