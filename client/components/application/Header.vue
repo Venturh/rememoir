@@ -1,10 +1,5 @@
 <template>
   <div class="flex items-center justify-between space-x-2 lg:space-x-0">
-    <div v-if="search === true" class="mt-1.5 lg:hidden">
-      <IconOnlyButton @click="$emit('sidebartoggle')">
-        <MenuIcon class="stroke-current text-brand" />
-      </IconOnlyButton>
-    </div>
     <div class="w-full space-x-6 lg:w-screen lg:max-w-lg">
       <HeaderSearch v-if="search === true" />
       <HeaderAdd

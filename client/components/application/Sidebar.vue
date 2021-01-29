@@ -1,46 +1,47 @@
 <template>
-  <div class="flex justify-center bg-primary lg:border-r lg:border-brand25">
-    <transition name="slide-fade">
-      <div
-        v-if="toggled || !isMobile"
-        class="relative flex flex-col justify-between p-4 w-52"
-      >
-        <SidebarMenu :toggled="toggled" />
-
-        <div
-          class="flex flex-row items-center w-full p-2 space-x-2 rounded-lg bg-primary"
-        >
-          <div v-if="userInfo" class="w-2/3 space-y-2">
-            <div class="">{{ userInfo.username }}</div>
-            <span class="text-sm">{{ userInfo.email }}</span>
-          </div>
-
-          <div class="flex space-x-2">
-            <IconOnlyButton @click="logOut">
-              <LogOutIcon size="1.25x" />
-            </IconOnlyButton>
-            <IconOnlyButton @click="logOut">
-              <SettingsIcon size="1.25x" />
-            </IconOnlyButton>
-          </div>
-        </div>
+  <div
+    class="flex flex-col justify-between w-24 border-r lg:w-48 border-brand25"
+  >
+    <div class="space-y-12">
+      <div class="flex items-center justify-center flex-shrink-0 h-12 lg:h-16">
+        <img
+          class="w-auto h-12 lg:h-16"
+          src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+          alt="logo"
+        />
       </div>
-    </transition>
-
-    <IconOnlyButton
-      class="absolute right-1 lg:hidden"
-      :class="{ hidden: !toggled }"
-      @click="$emit('sidebartoggle')"
+      <nav class="space-y-2">
+        <SidebarLink
+          v-for="item in sidebarItems"
+          :key="item.text"
+          :item="item"
+        />
+      </nav>
+    </div>
+    <div
+      class="flex flex-col p-2 mb-4 rounded-lg lg:flex-row lg:items-center lg:space-x-2 bg-primary"
     >
-      <XIcon />
-    </IconOnlyButton>
+      <div v-if="userInfo" class="hidden w-2/3 space-y-2 lg:block">
+        <div class="">{{ userInfo.username }}</div>
+        <span class="text-sm">{{ userInfo.email }}</span>
+      </div>
+
+      <div
+        class="flex flex-col space-y-2 lg:space-y-0 lg:space-x-2 lg:flex-row"
+      >
+        <IconOnlyButton @click="logOut">
+          <LogOutIcon size="1.25x" />
+        </IconOnlyButton>
+        <IconOnlyButton @click="logOut">
+          <SettingsIcon size="1.25x" />
+        </IconOnlyButton>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, useContext } from '@nuxtjs/composition-api'
-import { useBreakpointTailwindCSS } from 'vue-composable'
-
+import { defineComponent, useContext } from '@nuxtjs/composition-api'
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -48,9 +49,11 @@ import {
   LogOutIcon,
   XIcon,
 } from 'vue-feather-icons'
+
 import { useUserInfo } from '@/hooks'
 import { useLogoutMutation } from '@/generated/graphql'
 import { setAccessToken } from '@/utils/auth'
+import { sidebarItems } from '@/config/data'
 
 export default defineComponent({
   props: {
@@ -68,15 +71,10 @@ export default defineComponent({
   },
 
   setup() {
-    const { current } = useBreakpointTailwindCSS()
     const { app } = useContext()
     const { userInfo } = useUserInfo()
-    const { mutate: logout } = useLogoutMutation()
 
-    const isMobile = computed(() => {
-      if (['lg', 'xl'].includes(current.value as string)) return false
-      return true
-    })
+    const { mutate: logout } = useLogoutMutation()
 
     async function logOut() {
       await logout()
@@ -84,7 +82,7 @@ export default defineComponent({
       app.router!.push('/')
     }
 
-    return { current, userInfo, logOut, isMobile }
+    return { userInfo, logOut, sidebarItems }
   },
 })
 </script>

@@ -6,6 +6,7 @@
     @remove="remove"
     @showLists="toggleLists"
     @addToList="add"
+    @back="showLists = false"
   >
     <FormInput
       v-model="editedEntry.title"

@@ -1,46 +1,38 @@
 <template>
   <div class="text-primary bg-primary">
     <div
-      class="flex flex-col min-h-screen mx-auto lg:flex-row lg:justify-between max-w-xsm md:max-w-2xl lg:max-w-6xl"
+      class="flex min-h-screen pt-2 mx-auto max-w-xsm sm:max-w-2xl md:max-w-2xl lg:max-w-6xl"
     >
-      <Sidebar
-        class="fixed z-50 min-h-screen"
-        :toggled="toggle"
-        @sidebartoggle="toggle = !toggle"
-      />
-      <div class="w-full py-2 space-y-2 lg:pl-64">
+      <Sidebar class="hidden sm:flex" />
+      <div class="w-full space-y-4 sm:px-6 md:px-12">
         <Header @sidebartoggle="toggle = !toggle" />
+
         <Nuxt />
       </div>
     </div>
+    <MobileNavigation class="sm:hidden" />
   </div>
 </template>
 
 <script lang="ts">
 import {
   defineComponent,
-  ref,
   onUnmounted,
   useContext,
 } from '@nuxtjs/composition-api'
 
 import { useTheme } from '@/hooks'
-import dayjs from 'dayjs'
 
 export default defineComponent({
   setup() {
     const { theme } = useTheme()
-    const { $db, $dayjs } = useContext().app
-    const toggle = ref(false)
-
-    // TODO: Somhehow watch localstorage if secret key is removed
+    const { $db } = useContext().app
 
     onUnmounted(async () => {
       await $db.remove()
     })
 
     return {
-      toggle,
       theme,
     }
   },

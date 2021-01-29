@@ -1,42 +1,30 @@
 <template>
   <nuxt-link
-    active-class="text-brand bg-secondary"
-    class="relative z-10 flex items-center justify-between p-4 rounded-lg cursor-pointer sidebarlink hover:bg-secondary"
-    :to="localePath(`/${item.name}`)"
+    active-class="text-brand md:bg-secondary"
+    class="flex items-center justify-center p-2 rounded-lg cursor-pointer md:p-4 lg:justify-start hover:bg-secondary"
+    :to="localePath(`/${item.text}`)"
   >
     <div class="flex space-x-4" @click="$emit('click')">
       <component :is="item.icon" />
-      <span>{{ $t(item.name) }}</span>
-    </div>
-
-    <div @click="open = !open">
-      <ChevronDownIcon v-if="!open" size="1.1x" />
-      <ChevronUpIcon v-else size="1.1x" />
+      <span class="hidden lg:block">{{ $t(item.text) }}</span>
     </div>
   </nuxt-link>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { PlusIcon, ChevronDownIcon, ChevronUpIcon } from 'vue-feather-icons'
+import { MenuOptionItem } from '@/types'
+import { defineComponent, PropType } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  components: {
-    PlusIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
-  },
-
   props: {
     item: {
-      type: Object,
+      type: Object as PropType<MenuOptionItem>,
       default: () => {},
     },
-  },
-  setup() {
-    const open = ref(false)
-
-    return { open }
+    expanded: {
+      type: Boolean,
+      default: false,
+    },
   },
 })
 </script>

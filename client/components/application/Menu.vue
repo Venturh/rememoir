@@ -45,7 +45,7 @@ export default defineComponent({
       default: () => [],
     },
   },
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const activeMenu = ref('primary')
 
     function handleClick(item: HoverMenuItem) {

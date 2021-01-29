@@ -13,9 +13,9 @@ import {
 } from 'vue-feather-icons'
 
 export const sidebarItems = [
-  { index: 0, icon: HomeIcon, name: 'home' },
-  { index: 2, icon: HeartIcon, name: 'pinned' },
-  { index: 3, icon: ArchiveIcon, name: 'archive' },
+  { icon: HomeIcon, text: 'home' },
+  { icon: HeartIcon, text: 'pinned' },
+  { icon: ArchiveIcon, text: 'archive' },
 ]
 
 export const hoverListPrimaryMenu = [

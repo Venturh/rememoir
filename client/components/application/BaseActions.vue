@@ -57,8 +57,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const showMenu = ref(false)
     const showEditModal = ref(false)
-    const showLists = ref(false)
-
     const entryTarget = computed(() => props.type === 'entry')
 
     function handleMenu({ name, info }: { name: string; info: string }) {
@@ -70,13 +68,13 @@ export default defineComponent({
           showEditModal.value = true
           break
         case 'addToList':
-          showLists.value = true
           emit('showLists')
           return
         case 'share':
+          emit('back')
           return
         case 'back':
-          showLists.value = false
+          emit('back')
           return
         case 'pin':
           break
@@ -89,8 +87,7 @@ export default defineComponent({
       if (info) {
         emit('addToList', info)
       }
-
-      emit('showMenu', false)
+      showMenu.value = false
     }
 
     function submitModal() {
