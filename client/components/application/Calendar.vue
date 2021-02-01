@@ -57,7 +57,7 @@ export default defineComponent({
     VueTailWindPicker: () => import('vue-tailwind-picker'),
     CalendarIcon,
   },
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const { $dayjs } = useContext().app
     const { current } = useBreakpointTailwindCSS()
     const show = ref(false)

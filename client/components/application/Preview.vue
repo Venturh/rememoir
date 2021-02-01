@@ -7,7 +7,7 @@
         :src="preview.ogImageUrl"
         alt="previewImage"
       />
-      <PlayOverlay :content-url="url" @play="play = true" />
+      <PlayOverlay :url="url" @play="play = true" />
     </div>
     <iframe
       v-else
@@ -61,7 +61,7 @@ export default defineComponent({
 
     const size = computed(() => {
       const map = new Map([
-        ['video.other', 'object-cover h-48'],
+        ['video.other', 'object-cover h-36 md:h-48'],
         ['music.song', 'object-contain bg-brand25  object-left h-20'],
         ['undefined', 'object-contain bg-brand15  h-48'],
       ])

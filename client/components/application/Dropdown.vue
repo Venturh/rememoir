@@ -1,15 +1,15 @@
 <template>
   <div>
     <IconOnlyButton
-      class="relative flex items-center justify-between p-2 space-x-2 bg-secondary focus:outline-none"
+      class="relative flex items-center justify-between w-full px-1 py-2 space-x-2 bg-secondary focus:outline-none"
       @click="onChange"
     >
       <div
         class="flex items-center space-x-2"
         :class="{ 'space-x-0': selected }"
       >
-        <component :is="selected.icon" v-if="selected" size="1.25x" />
-        <component :is="icon" v-else size="1.25x" />
+        <component :is="selected.icon" v-if="selected" size="1x" />
+        <component :is="icon" v-else size="1x" />
         <span v-if="!selected && items.length > 0" class="text-xs">
           {{ selectedItem.text }}
         </span>
@@ -23,6 +23,7 @@
       v-if="items.length > 0"
       :open="open"
       :options="items"
+      :optional-item="optionalItem"
       :selected="selected"
       with-icons
       @selected="handleSelected"
@@ -43,6 +44,10 @@ export default defineComponent({
     items: {
       type: Array as PropType<MenuOption>,
       default: () => [],
+    },
+    optionalItem: {
+      type: Object as PropType<MenuOptionItem>,
+      default: () => {},
     },
     type: {
       type: String,
@@ -79,7 +84,6 @@ export default defineComponent({
 
     function handleSelected(item: MenuOptionItem) {
       selectedItem.value = item
-      console.log('handleSelected ~  selectedItem.value ', selectedItem.value)
       open.value = false
       emit('selected', { item: item.text, type: props.type })
     }

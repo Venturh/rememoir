@@ -30,8 +30,9 @@ export default {
   home: 'Start',
   pinned: 'Angepinnt',
   archive: 'Archiv',
-  addToList: 'Zu Liste hinzufügen',
+  profile: 'Profil',
 
+  addToList: 'Zu Liste hinzufügen',
   pin: 'Pinnen',
   edit: 'Bearbeiten',
   delete: 'Löschen',

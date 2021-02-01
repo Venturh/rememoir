@@ -17,7 +17,7 @@ export type Filters = {
 
 export type Filter = {
   categories?: string | undefined
-  preview: boolean | undefined
+  preview?: boolean | undefined
   date?: string | undefined
 }
 

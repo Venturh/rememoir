@@ -95,13 +95,14 @@ export function useQueryLists(db: MyDatabase) {
 }
 export function useList(
   db: MyDatabase,
-  id: string,
+  id?: string,
   { date, categories, preview }: Filter
 ) {
   const loading = ref(true)
   const list = ref<ListInput>()
   const entries = ref<Dictionary<EntryInput[]>>()
-  const query = db.lists.findOne({ selector: { id } })
+  const selector = id ? { id } : {}
+  const query = db.lists.findOne({ selector })
 
   // TODO: Filter
   async function subscribe() {

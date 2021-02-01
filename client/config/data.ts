@@ -57,6 +57,10 @@ export const categories = [
   { icon: null, text: 'Audio' },
   { icon: null, text: 'Link' },
 ]
+export const shared = [
+  { icon: null, text: 'Shared' },
+  { icon: null, text: 'Unshared' },
+]
 
 export const calendarTheme = (isMobile: boolean) => {
   return {

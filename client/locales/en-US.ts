@@ -30,8 +30,9 @@ export default {
   home: 'Home',
   pinned: 'Pinned',
   archive: 'Archive',
-  addToList: 'Add to list',
+  profile: 'Profile ',
 
+  addToList: 'Add to list',
   pin: 'Pin',
   edit: 'Edit',
   delete: 'Delete',

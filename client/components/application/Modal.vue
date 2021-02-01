@@ -6,6 +6,13 @@
     :esc-to-close="!required"
     v-on="!required ? $listeners : null"
   >
+    <IconOnlyButton
+      v-if="!required"
+      class="absolute top-2 right-2"
+      @click="$emit('input', false)"
+    >
+      <XIcon size="1.25x" />
+    </IconOnlyButton>
     <h1 class="text-xl font-semibold">
       {{ title }}
     </h1>
@@ -35,14 +42,6 @@
     <div v-else class="flex-grow overflow-y-auto">
       <slot />
     </div>
-
-    <IconOnlyButton
-      v-if="!required"
-      class="absolute top-2 right-2"
-      @click="$emit('input', false)"
-    >
-      <XIcon size="1.25x" />
-    </IconOnlyButton>
   </vue-final-modal>
 </template>
 

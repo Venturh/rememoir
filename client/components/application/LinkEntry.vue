@@ -2,7 +2,7 @@
   <div v-if="preview" class="relative pl-4 rounded-lg">
     <div v-if="preview.type === 'Error'">{{ $t('previewError') }}</div>
     <div v-else class="space-y-2">
-      <Preview v-if="preview" :preview="preview" :content-url="url" />
+      <Preview v-if="preview" :preview="preview" :url="url" />
       <div class="space-y-1">
         <p class="text-sm">
           {{ preview.ogSiteName }}

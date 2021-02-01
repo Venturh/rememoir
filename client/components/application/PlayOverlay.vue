@@ -5,7 +5,7 @@
     <IconOnlyButton @click="$emit('play')">
       <PlayIcon class="opacity-100 fill-current text-primary" size="1.5x" />
     </IconOnlyButton>
-    <IconOnlyButton out :to="contentUrl">
+    <IconOnlyButton out :to="url">
       <ExternalLinkIcon
         class="opacity-100 stroke-current text-primary"
         size="1.5x"
@@ -20,7 +20,7 @@ import { PlayIcon, ExternalLinkIcon } from 'vue-feather-icons'
 export default defineComponent({
   components: { PlayIcon, ExternalLinkIcon },
   props: {
-    contentUrl: {
+    url: {
       type: String,
       default: '',
     },

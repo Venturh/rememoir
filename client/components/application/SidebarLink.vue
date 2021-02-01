@@ -1,7 +1,7 @@
 <template>
   <nuxt-link
-    active-class="text-brand md:bg-secondary"
-    class="flex items-center justify-center p-2 rounded-lg cursor-pointer md:p-4 lg:justify-start hover:bg-secondary"
+    active-class="text-brand hover:bg-transparent"
+    class="flex items-center justify-center p-2 rounded-lg cursor-pointer md:p-4 lg:justify-start hover:bg-brand25"
     :to="localePath(`/${item.text}`)"
   >
     <div class="flex space-x-4" @click="$emit('click')">

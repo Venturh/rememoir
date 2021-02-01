@@ -19,7 +19,7 @@
     />
     <FormInput
       v-model="categories"
-      label="Text"
+      label="Categories"
       type="text"
       :placeholder="list.categories ? list.categories.join(' ') : ''"
     />
