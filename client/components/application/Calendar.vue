@@ -1,41 +1,20 @@
 <template>
-  <div
-    class="relative flex space-x-2 -top-2 lg:space-x-0 lg:space-y-2 lg:flex-col"
-  >
-    <VueTailWindPicker
-      v-if="!isMobile"
-      :inline="true"
-      :selected-date="null"
-      :init="false"
-      :date-range="true"
-      class="picker"
-      :theme="calendarTheme(isMobile)"
-      @change="onChange"
-    >
-    </VueTailWindPicker>
-    <Dropdown
-      v-if="isMobile"
-      :show="show"
-      :icon="CalendarIcon"
-      @change="setShow"
-    >
+  <div class="relative flex space-x-2">
+    <Dropdown :show="show" :icon="CalendarIcon" @change="setShow">
+      <span class="text-sm"> {{ displayDate }}</span>
       <template v-slot:menu>
         <VueTailWindPicker
           :inline="true"
-          :start-date="date"
+          :start-date="date ? date : $dayjs().format('YYYY-MM-DD')"
           :init="false"
           :date-range="true"
           class="picker"
-          :theme="calendarTheme(isMobile)"
+          :theme="calendarTheme"
           @change="onChange"
         />
       </template>
     </Dropdown>
-    <Button
-      class="w-full px-4 text-xs md:text-base"
-      variant="1"
-      @click="$emit('change', { type: 'date', item: undefined })"
-    >
+    <Button class="w-1/2 text-sm" variant="1" @click="reset">
       {{ $t('reset') }}
     </Button>
   </div>
@@ -48,7 +27,6 @@ import {
   ref,
   useContext,
 } from '@nuxtjs/composition-api'
-import { useBreakpointTailwindCSS } from 'vue-composable'
 import { CalendarIcon } from 'vue-feather-icons'
 import { calendarTheme } from '@/config/data'
 
@@ -59,19 +37,23 @@ export default defineComponent({
   },
   setup(_, { emit }) {
     const { $dayjs } = useContext().app
-    const { current } = useBreakpointTailwindCSS()
     const show = ref(false)
 
-    const isMobile = computed(() => {
-      if (['lg', 'xl'].includes(current.value as string)) return false
-      return true
-    })
+    const displayDate = computed(() =>
+      date.value ? $dayjs(date.value).format('dd, DD.MM.YY') : 'All Time'
+    )
 
     const date = ref()
     function onChange(value: any) {
-      if (isMobile) show.value = false
+      show.value = false
       date.value = value
       emit('change', { type: 'date', item: $dayjs(value) })
+    }
+
+    function reset() {
+      emit('change', { type: 'date', item: undefined })
+      show.value = false
+      date.value = ''
     }
 
     function setShow(val: boolean) {
@@ -81,10 +63,11 @@ export default defineComponent({
     return {
       calendarTheme,
       date,
+      displayDate,
       onChange,
-      isMobile,
       show,
       setShow,
+      reset,
       CalendarIcon,
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
+    class="relative flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
     <div class="w-full lg:w-screen lg:max-w-lg">
       <div v-if="loading" class="space-y-2">
@@ -65,10 +65,7 @@
       </div>
     </div>
 
-    <div class="w-full space-y-2 lg:w-80">
-      <TabNavigation />
-      <Filters @filter="setFilters" />
-    </div>
+    <Filters @filter="setFilters" />
   </div>
 </template>
 

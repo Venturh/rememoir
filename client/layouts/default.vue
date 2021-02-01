@@ -3,8 +3,8 @@
     <div
       class="flex min-h-screen pt-2 mx-auto max-w-xsm sm:max-w-2xl md:max-w-2xl lg:max-w-6xl"
     >
-      <Sidebar class="hidden sm:flex" />
-      <div class="w-full space-y-4 sm:px-6 md:px-12">
+      <Sidebar />
+      <div class="w-full space-y-4 sm:pl-26 lg:pl-64">
         <Header @sidebartoggle="toggle = !toggle" />
 
         <Nuxt />

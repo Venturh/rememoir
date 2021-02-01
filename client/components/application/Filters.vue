@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col lg:flex-col-reverse">
+  <div class="flex flex-col w-full mb-2 space-y-2 md:mb-0 lg:w-80 bg-primary">
+    <TabNavigation />
     <div class="flex justify-end space-x-2">
       <IconOnlyButton
         tooltip="Toggle preview"
@@ -28,12 +29,12 @@
       <Button
         class="text-xs"
         variant="1"
-        @click="$emit('change', { type: 'date', item: undefined })"
+        @click="$emit('filter', { type: 'reset', item: undefined })"
       >
         {{ $t('reset') }}
       </Button>
     </div>
-    <Calendar class="mt-4 lg:mt-0" @change="onChange" />
+    <Calendar @change="onChange" />
   </div>
 </template>
 

@@ -1,12 +1,10 @@
 import { reactive } from '@nuxtjs/composition-api'
 import { Filter, Filters } from '../types'
+import { filterInitial } from '../config/data'
 
 export function useFilter() {
   const filters = reactive<Filter>({
-    preview: true,
-    categories: undefined,
-    date: undefined,
-    list: undefined,
+    ...filterInitial,
   })
 
   function setFilters({ type, item }: Filters) {
@@ -22,6 +20,9 @@ export function useFilter() {
         break
       case 'list':
         filters.list = item as string
+        break
+      case 'reset':
+        Object.assign(filters, filterInitial)
 
         break
       default:

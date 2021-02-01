@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <IconOnlyButton
       class="relative flex items-center justify-between w-full px-1 py-2 space-x-1 bg-secondary focus:outline-none"
       @click="onChange"
@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { MenuOption, MenuOptionItem } from '@/types'
-import { defineComponent, PropType, ref } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, ref, watch } from '@nuxtjs/composition-api'
 import { FolderIcon, ChevronDownIcon, ChevronUpIcon } from 'vue-feather-icons'
 
 export default defineComponent({
@@ -87,6 +87,13 @@ export default defineComponent({
       open.value = false
       emit('selected', { item: item.text, type: props.type })
     }
+
+    watch(
+      () => props.show,
+      (val) => {
+        open.value = val
+      }
+    )
     return { open, close, selectedItem, handleSelected, onChange }
   },
 })

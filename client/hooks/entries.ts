@@ -41,6 +41,7 @@ export function useEntries(db: MyDatabase) {
       })
       entriesLoading.value = false
       entries.value = grouped
+      console.log('select.$.subscribe ~ entries.value', entries.value)
     })
   }
 

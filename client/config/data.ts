@@ -11,6 +11,7 @@ import {
   HomeIcon,
   PlusSquareIcon,
 } from 'vue-feather-icons'
+import { Filter } from '../types'
 
 export const sidebarItems = [
   { icon: HomeIcon, text: 'home' },
@@ -62,28 +63,26 @@ export const shared = [
   { icon: null, text: 'Unshared' },
 ]
 
-export const calendarTheme = (isMobile: boolean) => {
-  return {
-    background: 'var(--bg-secondary)',
-    text: 'text-primary',
-    border: isMobile ? 'border-borderPrimary' : 'border-none',
-    currentColor: 'bg-secondary',
-    navigation: {
-      hover: 'hover:bg-primary',
-      focus: 'bg-brand25',
+export const calendarTheme = {
+  background: 'var(--bg-secondary)',
+  text: 'text-primary',
+  border: 'border-borderPrimary',
+  currentColor: 'bg-secondary',
+  navigation: {
+    hover: 'hover:bg-primary',
+    focus: 'bg-brand25',
+  },
+  picker: {
+    rounded: 'rounded-full',
+    selected: {
+      background: 'bg-brand ',
+      text: 'text-brandContrast',
+      border: 'border-primaryText ',
     },
-    picker: {
-      rounded: 'rounded-full',
-      selected: {
-        background: 'bg-brand ',
-        text: 'text-brandContrast',
-        border: 'border-primaryText ',
-      },
-    },
-    event: {
-      border: 'border-gray-700',
-    },
-  }
+  },
+  event: {
+    border: 'border-gray-700',
+  },
 }
 
 export const lists = [
@@ -91,3 +90,10 @@ export const lists = [
   { icon: null, text: 'Test' },
   { icon: null, text: 'Liste123' },
 ]
+
+export const filterInitial: Filter = {
+  preview: true,
+  categories: undefined,
+  date: undefined,
+  list: undefined,
+}

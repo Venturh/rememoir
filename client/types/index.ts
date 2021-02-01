@@ -11,7 +11,7 @@ export type EditedList = {
 }
 
 export type Filters = {
-  type: 'categories' | 'preview' | 'date' | 'list'
+  type: 'categories' | 'preview' | 'date' | 'list' | 'reset'
   item: string | boolean
 }
 
