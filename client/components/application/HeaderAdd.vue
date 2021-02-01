@@ -55,11 +55,7 @@
         ref="selectMenuRef"
         name="list"
         :open="listsOpen"
-        :options="
-          lists.map((l) => {
-            return { icon: null, text: l.title }
-          })
-        "
+        :options="avaibleLists"
         @selected="addFromMenu"
       />
       <Error
@@ -74,7 +70,6 @@
 import {
   computed,
   defineComponent,
-  onBeforeMount,
   onMounted,
   PropType,
   ref,
@@ -84,7 +79,7 @@ import {
 import { ColumnsIcon, ListIcon } from 'vue-feather-icons'
 import { categories } from '@/config/data'
 import { HeaderInputType, MenuOptionItem } from '@/types'
-import { useQueryLists } from '@/hooks/database'
+import { useAvaibleLists } from '@/hooks'
 
 export default defineComponent({
   components: {
@@ -117,7 +112,7 @@ export default defineComponent({
     const description = ref('')
 
     const { $db } = useContext().app
-    const { lists, execute } = useQueryLists($db)
+    const { avaibleLists } = useAvaibleLists($db)
 
     const items = [
       { icon: ListIcon, text: '' },
@@ -169,10 +164,6 @@ export default defineComponent({
       inputRef.value?.$el.focus()
     })
 
-    onBeforeMount(() => {
-      execute()
-    })
-
     watch(
       () => input.value,
       (value: string) => {
@@ -203,7 +194,6 @@ export default defineComponent({
       addFromMenu,
       focus,
       categories,
-      lists,
       listsOpen,
       ListIcon,
       ColumnsIcon,
@@ -216,6 +206,7 @@ export default defineComponent({
       description,
       inputDescRef,
       cancelDescription,
+      avaibleLists,
     }
   },
 })

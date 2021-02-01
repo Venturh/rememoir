@@ -14,7 +14,7 @@
         </div>
       </div>
       <NotFound
-        v-if="!loading && Object.keys(content).length === 0"
+        v-if="!loading && Object.keys(entries).length === 0"
         class="mt-20"
         :target="type"
       />
@@ -74,6 +74,7 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
   onMounted,
   onUnmounted,
@@ -82,15 +83,9 @@ import {
   watch,
 } from '@nuxtjs/composition-api'
 
-import { groupBy } from 'lodash'
-import { queryEntries } from '@/db/entry'
-import { EntryInput, ListInput } from '@/generated/graphql'
-import { decryptEntry } from '@/utils/crypto'
-import { getLists } from '@/db/list'
-import { RxDocument } from 'rxdb/src/types'
 import BaseList from '@/components/application/BaseList.vue'
 import BaseEntry from '@/components/application/BaseEntry.vue'
-import { useFilter } from '@/hooks'
+import { useEntries, useFilter, useLists } from '@/hooks'
 
 export default defineComponent({
   props: {
@@ -100,54 +95,51 @@ export default defineComponent({
     },
   },
   setup() {
-    const { $db, $dayjs } = useContext().app
+    const { $db } = useContext().app
     const { route } = useContext()
     let { type } = route.value.params
+
     const { filters, setFilters } = useFilter()
     if (type !== 'entries' && type !== 'lists') {
       type = 'entries'
     }
+    const {
+      entries,
+      subscribeEntries,
+      setEntriesSelector,
+      entriesLoading,
+    } = useEntries($db)
 
-    const content = ref({})
+    const { lists, listsLoading, subscribeList, setListSelector } = useLists(
+      $db
+    )
+
     const showPreview = ref(true)
-    const loading = ref(true)
+    const content = computed(() =>
+      type === 'entries' ? entries.value : lists.value
+    )
+    const loading = computed(() => {
+      return listsLoading.value || entriesLoading.value
+    })
 
     watch(
       () => filters,
-      async (filter) => {
+      (filter) => {
         showPreview.value = filter.preview ?? false
-        const query: any =
-          type === 'entries'
-            ? await queryEntries($db, {
-                category: filter.categories,
-                date: filter.date,
-              }).exec()
-            : await getLists($db, {
-                category: filter.categories,
-                date: filter.date,
-              }).exec()
-        const grouped = groupBy(query, (result: EntryInput) =>
-          $dayjs(parseInt(result.updatedAt)).calendar()
-        )
-        content.value = grouped
+        if (type === 'entries') {
+          setEntriesSelector(filter)
+          subscribeEntries()
+        } else {
+          setListSelector(filter)
+          subscribeList()
+        }
       },
       { deep: true }
     )
 
     onMounted(() => {
-      // as <<RxQuery<EntryInput, RxDocument<EntryInput, EntryDocMethods>[]>, <RxQuery<ListInput, RxDocument<ListInput, ListDocMethods>[]>>
-      const query: any =
-        type === 'entries' ? queryEntries($db, {}) : getLists($db, {})
-
-      query.$.subscribe((results: RxDocument[]) => {
-        loading.value = true
-        const grouped = groupBy(results, (result: EntryInput | ListInput) => {
-          return $dayjs(parseInt(result.updatedAt)).calendar()
-        })
-        content.value = grouped
-
-        loading.value = false
-      })
+      subscribeEntries()
+      subscribeList()
     })
 
     onUnmounted(() => {
@@ -159,13 +151,15 @@ export default defineComponent({
     return {
       type,
       content,
-      loading,
-      decryptEntry,
+      entriesLoading,
       filters,
       setFilters,
       showPreview,
       BaseEntry,
       BaseList,
+      entries,
+      lists,
+      loading,
     }
   },
 })

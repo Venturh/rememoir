@@ -48,7 +48,7 @@ import {
   watch,
 } from '@nuxtjs/composition-api'
 import { keys } from 'lodash'
-import { useFilter, useList } from '@/hooks'
+import { useFilter, useListbyId } from '@/hooks'
 
 export default defineComponent({
   middleware: ['authenticated'],
@@ -58,18 +58,18 @@ export default defineComponent({
     const { filters, setFilters } = useFilter()
     const showPreview = ref(true)
     const { id } = route.value.params
-    const { list, entries, subscribe, loading } = useList($db, id, filters)
+    const { list, entries, loading, filterEntries } = useListbyId($db, id)
 
     watch(
       () => [filters.preview, filters.date, filters.categories],
       (filter) => {
+        filterEntries(filters)
         showPreview.value = filter[0] as boolean
       }
     )
 
-    onMounted(async () => {
-      await subscribe()
-      if (list.value === null || !id) redirectOnError()
+    onMounted(() => {
+      if (!id) redirectOnError()
     })
 
     function redirectOnError() {

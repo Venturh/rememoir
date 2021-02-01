@@ -40,6 +40,7 @@ import {
   computed,
   ComputedRef,
   defineComponent,
+  onMounted,
   PropType,
   ref,
   useContext,
@@ -53,7 +54,7 @@ import { hoverEntryPrimaryMenu, hoverSecondaryMenu } from '@/config/data'
 import { isEmpty } from 'lodash'
 
 import { removeEntry, update } from '@/db/entry'
-import { useQueryLists } from '@/hooks/database'
+import { useAvaibleLists } from '@/hooks'
 import { ListIcon, SkipBackIcon } from 'vue-feather-icons'
 import { addEntryToList } from '@/db/list'
 
@@ -73,7 +74,7 @@ export default defineComponent({
     const editedEntry = ref<EditedEntry>({})
     const showEditModal = ref(false)
     const showLists = ref(false)
-    const { lists, execute } = useQueryLists($db)
+    const { lists } = useAvaibleLists($db)
 
     const categories = computed({
       get: () => editedEntry.value.categories,
@@ -95,7 +96,6 @@ export default defineComponent({
     })
 
     function toggleLists() {
-      execute()
       showLists.value = true
     }
 

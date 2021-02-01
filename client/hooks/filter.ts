@@ -6,6 +6,7 @@ export function useFilter() {
     preview: true,
     categories: undefined,
     date: undefined,
+    list: undefined,
   })
 
   function setFilters({ type, item }: Filters) {
@@ -18,6 +19,10 @@ export function useFilter() {
         break
       case 'date':
         filters.date = item as string
+        break
+      case 'list':
+        filters.list = item as string
+
         break
       default:
         break

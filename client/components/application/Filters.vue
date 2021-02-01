@@ -19,7 +19,7 @@
 
       <Dropdown
         class="w-1/3"
-        type="categories"
+        type="list"
         :items="avaibleLists"
         :optional-item="{ text: 'None' }"
         :icon="LayoutIcon"
@@ -38,17 +38,12 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onBeforeMount,
-  ref,
-  useContext,
-} from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import { categories } from '@/config/data'
 import { FolderIcon, ListIcon, LayoutIcon, SquareIcon } from 'vue-feather-icons'
 import { Filters } from '@/types'
-import { useQueryLists } from '@/hooks/database'
+
+import { useAvaibleLists } from '@/hooks'
 
 export default defineComponent({
   components: {
@@ -58,22 +53,12 @@ export default defineComponent({
   setup(_, { emit }) {
     const previewFilter = ref(true)
     const { $db } = useContext().app
-    const { lists, execute } = useQueryLists($db)
-
-    const avaibleLists = computed(() => {
-      if (lists.value.length > 0) {
-        return lists.value.map((l) => {
-          return { text: l.title }
-        })
-      } else return [{ text: 'No List' }]
-    })
+    const { avaibleLists } = useAvaibleLists($db)
 
     function onChange({ type, item }: Filters) {
       if (type === 'preview') previewFilter.value = !previewFilter.value
       emit('filter', { item, type })
     }
-
-    onBeforeMount(() => execute())
 
     return {
       categories,
