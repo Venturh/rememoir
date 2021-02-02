@@ -1,23 +1,30 @@
 <template>
-  <div class="">
+  <div v-click-outside="handleClickOutside">
     <IconOnlyButton
-      class="relative flex items-center justify-between w-full px-1 py-2 space-x-1 bg-secondary focus:outline-none"
+      class="relative flex items-center justify-between w-full p-3 space-x-1 bg-secondary focus:outline-none"
       @click="onChange"
     >
       <div
-        class="flex items-center space-x-2"
+        class="flex items-center space-x-2 truncate"
         :class="{ 'space-x-0': selected }"
       >
         <component :is="selected.icon" v-if="selected" size="1x" />
         <component :is="icon" v-else size="1x" />
-        <span v-if="!selected && items.length > 0" class="text-xs">
+        <p v-if="!selected && items.length > 0" class="text-xs">
           {{ selectedItem.text }}
-        </span>
+        </p>
         <slot v-else class="text-xs" />
       </div>
 
-      <ChevronDownIcon v-if="!open" class="flex-shrink-0" size="1.25x" />
-      <ChevronUpIcon v-else class="flex-shrink-0" size="1.25x" />
+      <ChevronDownIcon
+        class="flex-shrink-0"
+        :class="
+          open
+            ? 'rotate-180 transform duration-200'
+            : 'rotate-0 transform duration-200'
+        "
+        size="1.25x"
+      />
     </IconOnlyButton>
     <SelectMenu
       v-if="items.length > 0"
@@ -38,8 +45,12 @@
 import { MenuOption, MenuOptionItem } from '@/types'
 import { defineComponent, PropType, ref, watch } from '@nuxtjs/composition-api'
 import { FolderIcon, ChevronDownIcon, ChevronUpIcon } from 'vue-feather-icons'
+import vClickOutside from 'v-click-outside'
 
 export default defineComponent({
+  directives: {
+    clickOutside: vClickOutside.directive,
+  },
   props: {
     items: {
       type: Array as PropType<MenuOption>,
@@ -76,6 +87,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const open = ref(props.show)
     const selectedItem = ref(props.selected || props.items[0])
+    const dropdownRef = ref<HTMLDivElement>()
+    const wrapperRef = ref<HTMLDivElement>()
 
     function onChange() {
       open.value = !open.value
@@ -91,13 +104,37 @@ export default defineComponent({
       })
     }
 
-    watch(
-      () => props.show,
-      (val) => {
-        open.value = val
-      }
-    )
-    return { open, close, selectedItem, handleSelected, onChange }
+    function handleClickOutside() {
+      open.value = false
+    }
+
+    return {
+      open,
+      close,
+      selectedItem,
+      handleSelected,
+      onChange,
+      dropdownRef,
+      wrapperRef,
+      handleClickOutside,
+    }
   },
 })
 </script>
+
+<style lang="postcss" scoped>
+.rotate-enter-active {
+  animation: rotate-in 0.5s;
+}
+.rotate-leave-active {
+  animation: rotate-in 0.5s reverse;
+}
+@keyframes rotate-in {
+  0% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+</style>

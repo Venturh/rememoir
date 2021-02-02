@@ -25,6 +25,7 @@ export default {
     '@/plugins/dayjs',
     '@/plugins/vue-final-modal',
     '@/plugins/vue-calendar',
+    '@/plugins/v-click-outside',
   ],
 
   components: true,
