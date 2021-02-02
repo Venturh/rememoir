@@ -1,11 +1,11 @@
 import { RxJsonSchema, RxCollection, RxDocument, RxDatabase } from 'rxdb'
-import { EntryInput } from '../../generated/graphql'
+import { Entry } from '../../generated/graphql'
 
-export type EntryDocument = RxDocument<EntryInput>
+export type EntryDocument = RxDocument<Entry>
 
-export type EntryCollection = RxCollection<EntryInput>
+export type EntryCollection = RxCollection<Entry>
 
-export const entrySchema: RxJsonSchema<EntryInput> = {
+export const entrySchema: RxJsonSchema<Entry> = {
   title: 'Entry Schema',
   description: 'The Entry',
   version: 0,
@@ -34,6 +34,12 @@ export const entrySchema: RxJsonSchema<EntryInput> = {
       type: ['object', 'null'],
     },
     categories: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+    },
+    lists: {
       type: 'array',
       items: {
         type: 'string',

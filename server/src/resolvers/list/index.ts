@@ -7,12 +7,15 @@ import {
   Arg,
   UseMiddleware,
   Mutation,
+  Subscription,
+  Root,
 } from 'type-graphql'
 
 import { Entry, List, User } from '../../entities'
 
 import { MyContext } from '../../types'
-import { isAuth } from '../../utils/auth'
+import { isAuth, verifyToken } from '../../utils/auth'
+import { filterList, sortByUpdated } from '../../utils/sort'
 import { ListInput } from './types'
 
 const pubsub = new PubSub()
@@ -22,36 +25,20 @@ class ListResolver {
   @UseMiddleware(isAuth)
   async rxListReplication(
     @Arg('lastId') lastId: string,
-    @Arg('minUpdatedAt') minUpdatedAtString: string,
+    @Arg('minUpdatedAt') minUpdatedAt: string,
     @Arg('limit') limit: number,
 
     @Ctx()
     { em, payload }: MyContext
   ) {
-    const minUpdatedAt = parseInt(minUpdatedAtString)
     const lists = await em.find(List, { user: payload?.userId })
     if (!lists) return
 
-    const sorted = lists!.sort((a, b) => {
-      if (a.updatedAt > b.updatedAt) return 1
-      if (a.updatedAt < b.updatedAt) return -1
-      if (a.updatedAt === b.updatedAt) {
-        if (a.id > b.id) return 1
-        if (a.id < b.id) return -1
-        else return 0
-      } else return 0
-    })
-
-    const filterForMinUpdatedAtAndId = sorted.filter((doc) => {
-      if (doc.updatedAt < minUpdatedAt) return false
-      if (doc.updatedAt > minUpdatedAt) return true
-      if (doc.updatedAt === minUpdatedAt) {
-        if (doc.id > lastId) return true
-        else return false
-      } else return false
-    })
-
-    return filterForMinUpdatedAtAndId.slice(0, limit)
+    return filterList(
+      sortByUpdated(lists) as List[],
+      parseInt(minUpdatedAt),
+      lastId
+    ).slice(0, limit)
   }
 
   @Mutation(() => List)
@@ -80,6 +67,16 @@ class ListResolver {
       pubsub.publish('changedlist', doc)
       return doc
     }
+  }
+
+  @Subscription(() => List, {
+    subscribe: () => {
+      return pubsub.asyncIterator('changedList')
+    },
+  })
+  async changedList(@Arg('token') token: string, @Root() list: List) {
+    verifyToken(token)
+    return list
   }
 }
 

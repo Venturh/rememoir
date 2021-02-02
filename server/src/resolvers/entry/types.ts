@@ -1,4 +1,5 @@
 import { InputType, Field } from 'type-graphql'
+import { List } from '../../entities'
 import { ContentPreview } from '../../entities/Entry'
 
 @InputType()

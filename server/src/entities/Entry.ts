@@ -1,6 +1,5 @@
 import { Field, InputType, ObjectType, registerEnumType } from 'type-graphql'
 import {
-  Cascade,
   Collection,
   Entity,
   ManyToMany,
@@ -87,7 +86,7 @@ export default class Entry extends BaseEntity {
   user: User
 
   @Field(() => [List], { nullable: true })
-  @ManyToMany()
+  @ManyToMany(() => List, (l) => l.entries)
   lists = new Collection<List>(this)
 
   constructor(entryData: EntryInput, user: User) {

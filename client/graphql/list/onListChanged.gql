@@ -1,0 +1,5 @@
+subscription changedList($token: String!) {
+  changedList(token: $token) {
+    id
+  }
+}

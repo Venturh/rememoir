@@ -54,7 +54,7 @@ export type Entry = {
   processing: Scalars['Boolean'];
   categories: Array<Scalars['String']>;
   user: User;
-  list: List;
+  lists?: Maybe<Array<List>>;
 };
 
 export type User = {
@@ -139,7 +139,7 @@ export type EntryInput = {
   hashedKey: Scalars['String'];
   processing: Scalars['Boolean'];
   deleted?: Maybe<Scalars['Boolean']>;
-  createdAt?: Maybe<Scalars['Boolean']>;
+  createdAt?: Maybe<Scalars['String']>;
 };
 
 export type ContentPreviewInput = {
@@ -176,7 +176,6 @@ export type Query = {
   __typename?: 'Query';
   allEntriesByUser: Array<Entry>;
   rxEntryReplication: Array<Entry>;
-  preview: Scalars['Boolean'];
   users: Array<User>;
   me: User;
   rxListReplication: Array<List>;
@@ -187,11 +186,6 @@ export type QueryRxEntryReplicationArgs = {
   limit: Scalars['Float'];
   minUpdatedAt: Scalars['String'];
   lastId: Scalars['String'];
-};
-
-
-export type QueryPreviewArgs = {
-  url: Scalars['String'];
 };
 
 
@@ -282,10 +276,16 @@ export type MutationVerifySecretKeyArgs = {
 export type Subscription = {
   __typename?: 'Subscription';
   changedEntry: Entry;
+  changedList: List;
 };
 
 
 export type SubscriptionChangedEntryArgs = {
+  token: Scalars['String'];
+};
+
+
+export type SubscriptionChangedListArgs = {
   token: Scalars['String'];
 };
 
@@ -462,7 +462,10 @@ export type RxEntryReplicationQuery = (
     & { preview?: Maybe<(
       { __typename?: 'ContentPreview' }
       & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
-    )> }
+    )>, lists?: Maybe<Array<(
+      { __typename?: 'List' }
+      & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories'>
+    )>> }
   )> }
 );
 
@@ -489,6 +492,19 @@ export type SetListMutation = (
   & { setList: (
     { __typename?: 'List' }
     & Pick<List, 'id' | 'updatedAt'>
+  ) }
+);
+
+export type ChangedListSubscriptionVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type ChangedListSubscription = (
+  { __typename?: 'Subscription' }
+  & { changedList: (
+    { __typename?: 'List' }
+    & Pick<List, 'id'>
   ) }
 );
 
@@ -871,6 +887,20 @@ export const RxEntryReplicationDocument = gql`
     hashedKey
     deleted
     createdAt
+    lists {
+      id
+      updatedAt
+      deleted
+      title
+      description
+      calendarDate
+      hashedKey
+      processing
+      categories
+      calendarDate
+      categories
+      processing
+    }
   }
 }
     `;
@@ -953,6 +983,33 @@ export function useSetListMutation(options: VueApolloComposable.UseMutationOptio
   return VueApolloComposable.useMutation<SetListMutation, SetListMutationVariables>(SetListDocument, options);
 }
 export type SetListMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<SetListMutation, SetListMutationVariables>;
+export const ChangedListDocument = gql`
+    subscription changedList($token: String!) {
+  changedList(token: $token) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useChangedListSubscription__
+ *
+ * To run a query within a Vue component, call `useChangedListSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useChangedListSubscription` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the subscription
+ * @param options that will be passed into the subscription, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/subscription.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useChangedListSubscription({
+ *   token: // value for 'token'
+ * });
+ */
+export function useChangedListSubscription(variables: ChangedListSubscriptionVariables | VueCompositionApi.Ref<ChangedListSubscriptionVariables> | ReactiveFunction<ChangedListSubscriptionVariables>, options: VueApolloComposable.UseSubscriptionOptions<ChangedListSubscription, ChangedListSubscriptionVariables> | VueCompositionApi.Ref<VueApolloComposable.UseSubscriptionOptions<ChangedListSubscription, ChangedListSubscriptionVariables>> | ReactiveFunction<VueApolloComposable.UseSubscriptionOptions<ChangedListSubscription, ChangedListSubscriptionVariables>> = {}) {
+  return VueApolloComposable.useSubscription<ChangedListSubscription, ChangedListSubscriptionVariables>(ChangedListDocument, variables, options);
+}
+export type ChangedListSubscriptionCompositionFunctionResult = VueApolloComposable.UseSubscriptionReturn<ChangedListSubscription, ChangedListSubscriptionVariables>;
 export const RxListReplicationDocument = gql`
     query rxListReplication($lastId: String!, $minUpdatedAt: String!, $limit: Float!) {
   rxListReplication(lastId: $lastId, minUpdatedAt: $minUpdatedAt, limit: $limit) {

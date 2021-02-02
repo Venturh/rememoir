@@ -15,7 +15,11 @@ import {
   encryptEntry,
   encryptList,
 } from '../utils/crypto'
-import { listPullQueryBuilder, listPushQueryBuilder } from './list/builder'
+import {
+  listPullQueryBuilder,
+  listPushQueryBuilder,
+  listSubscription,
+} from './list/builder'
 import {
   entryPullQueryBuilder,
   entryPushQueryBuilder,
@@ -148,8 +152,28 @@ export class GraphQLReplicator {
         token: getAccessToken(),
       },
     })
+    const listRet = wsClient.request({
+      query: listSubscription,
+      variables: {
+        token: getAccessToken(),
+      },
+    })
 
     entryRet.subscribe({
+      next: async (data) => {
+        console.log('subscription emitted => trigger run()')
+        console.dir(data)
+        await entryReplication.run()
+        await listReplication.run()
+        console.log('run() done')
+      },
+      error(error) {
+        console.log('run() got error:')
+        console.dir(error)
+      },
+    })
+
+    listRet.subscribe({
       next: async (data) => {
         console.log('subscription emitted => trigger run()')
         console.dir(data)

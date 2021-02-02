@@ -15,6 +15,7 @@ import { Entry, User } from '../../entities'
 import { MyContext } from '../../types'
 import { isAuth, verifyToken } from '../../utils/auth'
 import { generateLinkPreview } from '../../utils/linkPreview'
+import { filterEntry, sortByUpdated } from '../../utils/sort'
 import { EntryInput } from './types'
 
 const pubsub = new PubSub()
@@ -34,36 +35,20 @@ class EntryResolver {
   @UseMiddleware(isAuth)
   async rxEntryReplication(
     @Arg('lastId') lastId: string,
-    @Arg('minUpdatedAt') minUpdatedAtString: string,
+    @Arg('minUpdatedAt') minUpdatedAt: string,
     @Arg('limit') limit: number,
 
     @Ctx()
     { em, payload }: MyContext
   ) {
-    const minUpdatedAt = parseInt(minUpdatedAtString)
     const entries = await em.find(Entry, { user: payload?.userId })
     if (!entries) return
 
-    const sorted = entries!.sort((a, b) => {
-      if (a.updatedAt > b.updatedAt) return 1
-      if (a.updatedAt < b.updatedAt) return -1
-      if (a.updatedAt === b.updatedAt) {
-        if (a.id > b.id) return 1
-        if (a.id < b.id) return -1
-        else return 0
-      } else return 0
-    })
-
-    const filterForMinUpdatedAtAndId = sorted.filter((doc) => {
-      if (doc.updatedAt < minUpdatedAt) return false
-      if (doc.updatedAt > minUpdatedAt) return true
-      if (doc.updatedAt === minUpdatedAt) {
-        if (doc.id > lastId) return true
-        else return false
-      } else return false
-    })
-
-    return filterForMinUpdatedAtAndId.slice(0, limit)
+    return filterEntry(
+      sortByUpdated(entries) as Entry[],
+      parseInt(minUpdatedAt),
+      lastId
+    ).slice(0, limit)
   }
 
   @Mutation(() => Entry)

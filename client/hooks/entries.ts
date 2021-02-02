@@ -11,6 +11,7 @@ export function useEntries(db: MyDatabase) {
   const selector = ref({})
 
   function setEntriesSelector({ date, categories, list }: Filter) {
+    console.log('setEntriesSelector ~ list', list)
     selector.value = {}
     if (date) {
       selector.value = {
@@ -26,6 +27,7 @@ export function useEntries(db: MyDatabase) {
       if (list) selector.value = { ...selector.value, lists: { $in: [list] } }
     } else {
       if (categories) selector.value = { categories: { $in: [categories] } }
+      // TODO Make this work
       if (list) selector.value = { ...selector.value, lists: { $in: [list] } }
     }
   }
@@ -36,12 +38,12 @@ export function useEntries(db: MyDatabase) {
       .sort({ updatedAt: 'desc' })
     entriesLoading.value = true
     select.$.subscribe((results) => {
+      console.log('select.$.subscribe ~ results', results)
       const grouped = groupBy(results, (result: EntryInput) => {
         return dayjs(parseInt(result.updatedAt)).calendar()
       })
       entriesLoading.value = false
       entries.value = grouped
-      console.log('select.$.subscribe ~ entries.value', entries.value)
     })
   }
 

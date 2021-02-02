@@ -1,5 +1,6 @@
 import { print } from 'graphql/language/printer'
 import {
+  ChangedListDocument,
   ListInput,
   RxListReplicationDocument,
   SetListDocument,
@@ -40,3 +41,5 @@ export const listPushQueryBuilder = (list: ListInput) => {
     variables,
   }
 }
+
+export const listSubscription = print(ChangedListDocument)

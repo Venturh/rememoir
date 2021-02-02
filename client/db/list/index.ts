@@ -133,6 +133,10 @@ export async function addEntryToList(
         updatedAt: Date.now().toString(),
       }
       await list.update({ $set: { ...editedList } })
+      const editedEntry = await db.entries
+        .findOne({ selector: { id: entry.id } })
+        .exec()
+      editedEntry.update({ $set: { lists: editedList } })
     } catch (err) {
       console.error('could not update list', err)
     }
