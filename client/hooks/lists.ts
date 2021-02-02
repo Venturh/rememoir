@@ -47,7 +47,7 @@ export function useLists(db: MyDatabase) {
   return { lists, listsLoading, subscribeList, setListSelector }
 }
 
-export function useAvaibleLists(db: MyDatabase, entryId: string) {
+export function useAvaibleLists(db: MyDatabase, entryId?: string) {
   const lists = ref<ListInput[]>([])
   const loading = ref()
   db.lists

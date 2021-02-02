@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="w-full space-y-2 lg:w-80">
-      <Filters @filter="setFilters" />
+      <Filters is-list-filter @filter="setFilters" />
     </div>
   </div>
 </template>

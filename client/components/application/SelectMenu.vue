@@ -85,7 +85,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const selectedIndex = ref(0)
+    const selectedIndex = ref(props.optionalItem ? -1 : 0)
     const selectedItem = ref<MenuOptionItem>()
 
     function up() {

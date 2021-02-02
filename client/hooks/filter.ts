@@ -19,7 +19,10 @@ export function useFilter() {
         filters.date = item as string
         break
       case 'list':
-        filters.list = item as string
+        filters.list = item === 'DEFAULT' ? undefined : (item as string)
+        break
+      case 'sort':
+        filters.sort = item as string
         break
       case 'reset':
         Object.assign(filters, filterInitial)

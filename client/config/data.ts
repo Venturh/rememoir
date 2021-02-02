@@ -10,6 +10,8 @@ import {
   HeartIcon,
   HomeIcon,
   PlusSquareIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from 'vue-feather-icons'
 import { Filter } from '../types'
 
@@ -85,10 +87,9 @@ export const calendarTheme = {
   },
 }
 
-export const lists = [
-  { icon: null, text: 'No List' },
-  { icon: null, text: 'Test' },
-  { icon: null, text: 'Liste123' },
+export const sort = [
+  { icon: ArrowDownIcon, text: 'Desc', info: 'desc' },
+  { icon: ArrowUpIcon, text: 'Asc', info: 'asc' },
 ]
 
 export const filterInitial: Filter = {
@@ -96,4 +97,5 @@ export const filterInitial: Filter = {
   categories: undefined,
   date: undefined,
   list: undefined,
+  sort: 'desc',
 }

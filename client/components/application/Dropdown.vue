@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="">
     <IconOnlyButton
       class="relative flex items-center justify-between w-full px-1 py-2 space-x-1 bg-secondary focus:outline-none"
       @click="onChange"
@@ -85,7 +85,10 @@ export default defineComponent({
     function handleSelected(item: MenuOptionItem) {
       selectedItem.value = item
       open.value = false
-      emit('selected', { item: item.text, type: props.type })
+      emit('selected', {
+        item: item.info ? item.info : item.text,
+        type: props.type,
+      })
     }
 
     watch(

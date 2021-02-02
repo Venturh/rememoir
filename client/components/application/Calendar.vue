@@ -1,6 +1,6 @@
 <template>
-  <div class="relative flex space-x-2">
-    <Dropdown :show="show" :icon="CalendarIcon" @change="setShow">
+  <div class="relative flex justify-between w-full space-x-2">
+    <Dropdown class="w-1/2" :show="show" :icon="CalendarIcon" @change="setShow">
       <span class="text-sm"> {{ displayDate }}</span>
       <template v-slot:menu>
         <VueTailWindPicker

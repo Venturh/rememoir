@@ -11,7 +11,7 @@ export type EditedList = {
 }
 
 export type Filters = {
-  type: 'categories' | 'preview' | 'date' | 'list' | 'reset'
+  type: 'categories' | 'preview' | 'date' | 'list' | 'sort' | 'reset'
   item: string | boolean
 }
 
@@ -20,11 +20,12 @@ export type Filter = {
   preview?: boolean | undefined
   date?: string | undefined
   list?: string | undefined
+  sort: 'desc' | 'asc'
 }
 
 export type HeaderInputType = 'list' | 'entry' | 'search'
 
-export type MenuOptionItem = { icon: any; text: string }
+export type MenuOptionItem = { icon: any; text: string; info?: string }
 export type MenuOption = Array<MenuOptionItem>
 
 export type HoverMenuItem = {

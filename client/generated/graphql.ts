@@ -448,6 +448,19 @@ export type CreateEntryMutation = (
   ) }
 );
 
+export type OnEntryChangedSubscriptionVariables = Exact<{
+  token: Scalars['String'];
+}>;
+
+
+export type OnEntryChangedSubscription = (
+  { __typename?: 'Subscription' }
+  & { changedEntry: (
+    { __typename?: 'Entry' }
+    & Pick<Entry, 'id'>
+  ) }
+);
+
 export type RxEntryReplicationQueryVariables = Exact<{
   lastId: Scalars['String'];
   minUpdatedAt: Scalars['String'];
@@ -465,32 +478,6 @@ export type RxEntryReplicationQuery = (
       & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
     )> }
   )> }
-);
-
-export type OnEntryChangedSubscriptionVariables = Exact<{
-  token: Scalars['String'];
-}>;
-
-
-export type OnEntryChangedSubscription = (
-  { __typename?: 'Subscription' }
-  & { changedEntry: (
-    { __typename?: 'Entry' }
-    & Pick<Entry, 'id'>
-  ) }
-);
-
-export type SetListMutationVariables = Exact<{
-  list: ListInput;
-}>;
-
-
-export type SetListMutation = (
-  { __typename?: 'Mutation' }
-  & { setList: (
-    { __typename?: 'List' }
-    & Pick<List, 'id' | 'updatedAt'>
-  ) }
 );
 
 export type ChangedListSubscriptionVariables = Exact<{
@@ -519,6 +506,19 @@ export type RxListReplicationQuery = (
     { __typename?: 'List' }
     & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories' | 'entries'>
   )> }
+);
+
+export type SetListMutationVariables = Exact<{
+  list: ListInput;
+}>;
+
+
+export type SetListMutation = (
+  { __typename?: 'Mutation' }
+  & { setList: (
+    { __typename?: 'List' }
+    & Pick<List, 'id' | 'updatedAt'>
+  ) }
 );
 
 
@@ -851,6 +851,33 @@ export function useCreateEntryMutation(options: VueApolloComposable.UseMutationO
   return VueApolloComposable.useMutation<CreateEntryMutation, CreateEntryMutationVariables>(CreateEntryDocument, options);
 }
 export type CreateEntryMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<CreateEntryMutation, CreateEntryMutationVariables>;
+export const OnEntryChangedDocument = gql`
+    subscription onEntryChanged($token: String!) {
+  changedEntry(token: $token) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useOnEntryChangedSubscription__
+ *
+ * To run a query within a Vue component, call `useOnEntryChangedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnEntryChangedSubscription` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the subscription
+ * @param options that will be passed into the subscription, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/subscription.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useOnEntryChangedSubscription({
+ *   token: // value for 'token'
+ * });
+ */
+export function useOnEntryChangedSubscription(variables: OnEntryChangedSubscriptionVariables | VueCompositionApi.Ref<OnEntryChangedSubscriptionVariables> | ReactiveFunction<OnEntryChangedSubscriptionVariables>, options: VueApolloComposable.UseSubscriptionOptions<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables> | VueCompositionApi.Ref<VueApolloComposable.UseSubscriptionOptions<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>> | ReactiveFunction<VueApolloComposable.UseSubscriptionOptions<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>> = {}) {
+  return VueApolloComposable.useSubscription<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>(OnEntryChangedDocument, variables, options);
+}
+export type OnEntryChangedSubscriptionCompositionFunctionResult = VueApolloComposable.UseSubscriptionReturn<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>;
 export const RxEntryReplicationDocument = gql`
     query rxEntryReplication($lastId: String!, $minUpdatedAt: String!, $limit: Float!) {
   rxEntryReplication(lastId: $lastId, minUpdatedAt: $minUpdatedAt, limit: $limit) {
@@ -903,63 +930,6 @@ export function useRxEntryReplicationQuery(variables: RxEntryReplicationQueryVar
   return VueApolloComposable.useQuery<RxEntryReplicationQuery, RxEntryReplicationQueryVariables>(RxEntryReplicationDocument, variables, options);
 }
 export type RxEntryReplicationQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<RxEntryReplicationQuery, RxEntryReplicationQueryVariables>;
-export const OnEntryChangedDocument = gql`
-    subscription onEntryChanged($token: String!) {
-  changedEntry(token: $token) {
-    id
-  }
-}
-    `;
-
-/**
- * __useOnEntryChangedSubscription__
- *
- * To run a query within a Vue component, call `useOnEntryChangedSubscription` and pass it any options that fit your needs.
- * When your component renders, `useOnEntryChangedSubscription` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param variables that will be passed into the subscription
- * @param options that will be passed into the subscription, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/subscription.html#options;
- *
- * @example
- * const { result, loading, error } = useOnEntryChangedSubscription({
- *   token: // value for 'token'
- * });
- */
-export function useOnEntryChangedSubscription(variables: OnEntryChangedSubscriptionVariables | VueCompositionApi.Ref<OnEntryChangedSubscriptionVariables> | ReactiveFunction<OnEntryChangedSubscriptionVariables>, options: VueApolloComposable.UseSubscriptionOptions<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables> | VueCompositionApi.Ref<VueApolloComposable.UseSubscriptionOptions<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>> | ReactiveFunction<VueApolloComposable.UseSubscriptionOptions<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>> = {}) {
-  return VueApolloComposable.useSubscription<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>(OnEntryChangedDocument, variables, options);
-}
-export type OnEntryChangedSubscriptionCompositionFunctionResult = VueApolloComposable.UseSubscriptionReturn<OnEntryChangedSubscription, OnEntryChangedSubscriptionVariables>;
-export const SetListDocument = gql`
-    mutation setList($list: ListInput!) {
-  setList(list: $list) {
-    id
-    updatedAt
-  }
-}
-    `;
-
-/**
- * __useSetListMutation__
- *
- * To run a mutation, you first call `useSetListMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useSetListMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useSetListMutation({
- *   variables: {
- *     list: // value for 'list'
- *   },
- * });
- */
-export function useSetListMutation(options: VueApolloComposable.UseMutationOptions<SetListMutation, SetListMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<SetListMutation, SetListMutationVariables>>) {
-  return VueApolloComposable.useMutation<SetListMutation, SetListMutationVariables>(SetListDocument, options);
-}
-export type SetListMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<SetListMutation, SetListMutationVariables>;
 export const ChangedListDocument = gql`
     subscription changedList($token: String!) {
   changedList(token: $token) {
@@ -1028,3 +998,33 @@ export function useRxListReplicationQuery(variables: RxListReplicationQueryVaria
   return VueApolloComposable.useQuery<RxListReplicationQuery, RxListReplicationQueryVariables>(RxListReplicationDocument, variables, options);
 }
 export type RxListReplicationQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<RxListReplicationQuery, RxListReplicationQueryVariables>;
+export const SetListDocument = gql`
+    mutation setList($list: ListInput!) {
+  setList(list: $list) {
+    id
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useSetListMutation__
+ *
+ * To run a mutation, you first call `useSetListMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useSetListMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useSetListMutation({
+ *   variables: {
+ *     list: // value for 'list'
+ *   },
+ * });
+ */
+export function useSetListMutation(options: VueApolloComposable.UseMutationOptions<SetListMutation, SetListMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<SetListMutation, SetListMutationVariables>>) {
+  return VueApolloComposable.useMutation<SetListMutation, SetListMutationVariables>(SetListDocument, options);
+}
+export type SetListMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<SetListMutation, SetListMutationVariables>;

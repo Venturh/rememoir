@@ -65,7 +65,7 @@
       </div>
     </div>
 
-    <Filters @filter="setFilters" />
+    <Filters :is-list-filter="type === 'lists'" @filter="setFilters" />
   </div>
 </template>
 
@@ -140,9 +140,7 @@ export default defineComponent({
     })
 
     onUnmounted(() => {
-      filters.categories = 'All'
-      filters.preview = true
-      filters.date = undefined
+      setFilters({ type: 'reset', item: '' })
     })
 
     return {
