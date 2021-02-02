@@ -1,4 +1,4 @@
-import { computed, ref } from '@nuxtjs/composition-api'
+import { computed, ComputedRef, ref } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
 import _, { Dictionary, groupBy } from 'lodash'
 import { MyDatabase } from '../db'
@@ -47,7 +47,7 @@ export function useLists(db: MyDatabase) {
   return { lists, listsLoading, subscribeList, setListSelector }
 }
 
-export function useAvaibleLists(db: MyDatabase) {
+export function useAvaibleLists(db: MyDatabase, entryId: string) {
   const lists = ref<ListInput[]>([])
   const loading = ref()
   db.lists
@@ -61,9 +61,10 @@ export function useAvaibleLists(db: MyDatabase) {
   const avaibleLists = computed(() => {
     if (lists.value.length > 0) {
       return lists.value.map((l: ListInput) => {
-        return { text: l.title }
+        const entryInList = l.entries.includes(entryId)
+        return { text: l.title, info: entryInList ? 'DUPLICATE' : l.id }
       })
-    } else return [{ text: 'No List' }]
+    } else return [{ text: 'No List', info: '' }]
   })
 
   return { avaibleLists, lists }
@@ -81,9 +82,14 @@ export function useListbyId(db: MyDatabase, id?: string) {
     loading.value = false
   })
 
-  function filterEntries({ categories, date }: Filter) {
+  async function filterEntries({ categories, date }: Filter) {
+    const entr = await Promise.all(
+      list.value.entries.map(
+        async (id) => await db.entries.findOne({ selector: { id } }).exec()
+      )
+    )
     entries.value = groupBy(
-      list.value.entries
+      entr
         .filter((e) => {
           if (categories && !date) return e.categories.includes(categories)
           if (date && !categories)

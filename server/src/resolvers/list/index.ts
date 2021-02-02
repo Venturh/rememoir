@@ -47,21 +47,17 @@ class ListResolver {
     @Arg('list') listInput: ListInput,
     @Ctx() { em, payload }: MyContext
   ): Promise<List> {
+    console.log('ListResolver ~ listInput', listInput)
     const user = await em.findOne(User, { id: payload?.userId })
     const list = await em.findOne(List, { id: listInput.id })
     if (list) {
-      const ids = listInput.entries.map((e) => e.id)
-      const entries = await em.find(Entry, { id: { $in: ids } })
-      wrap(list).assign({ ...listInput, entries })
+      wrap(list).assign({ ...listInput })
       await em.flush()
       pubsub.publish('changedList', list)
       return list
     } else {
-      const ids = listInput.entries.map((e) => e.id)
-      const entries = await em.find(Entry, { id: { $in: ids } })
       const doc = new List(listInput, user!)
-      doc.entries.loadItems()
-      doc.entries.add(...entries)
+      doc.entries = listInput.entries
 
       em.persistAndFlush(doc)
       pubsub.publish('changedlist', doc)

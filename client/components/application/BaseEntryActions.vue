@@ -40,7 +40,6 @@ import {
   computed,
   ComputedRef,
   defineComponent,
-  onMounted,
   PropType,
   ref,
   useContext,
@@ -68,13 +67,17 @@ export default defineComponent({
       type: Object as PropType<EntryInput>,
       default: () => {},
     },
+    isListEntry: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const { $db } = useContext().app
     const editedEntry = ref<EditedEntry>({})
     const showEditModal = ref(false)
     const showLists = ref(false)
-    const { lists } = useAvaibleLists($db)
+    const { avaibleLists } = useAvaibleLists($db, props.entry.id)
 
     const categories = computed({
       get: () => editedEntry.value.categories,
@@ -84,8 +87,8 @@ export default defineComponent({
     })
 
     const secondaryItems: ComputedRef<HoverMenuItem[]> = computed(() => {
-      const listItems: HoverMenuItem[] = lists.value.map((l) => {
-        return { icon: ListIcon, name: l.title, goto: '', info: l.id }
+      const listItems: HoverMenuItem[] = avaibleLists.value.map((l) => {
+        return { name: l.text, icon: ListIcon, info: l.info }
       })
       listItems[listItems.length] = {
         name: 'back',
@@ -100,7 +103,7 @@ export default defineComponent({
     }
 
     function remove() {
-      removeEntry(props.entry.id, $db)
+      removeEntry(props.entry.id, $db, props.isListEntry)
     }
 
     function add(id: string) {

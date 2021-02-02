@@ -11,7 +11,6 @@ export function useEntries(db: MyDatabase) {
   const selector = ref({})
 
   function setEntriesSelector({ date, categories, list }: Filter) {
-    console.log('setEntriesSelector ~ list', list)
     selector.value = {}
     if (date) {
       selector.value = {
@@ -38,7 +37,6 @@ export function useEntries(db: MyDatabase) {
       .sort({ updatedAt: 'desc' })
     entriesLoading.value = true
     select.$.subscribe((results) => {
-      console.log('select.$.subscribe ~ results', results)
       const grouped = groupBy(results, (result: EntryInput) => {
         return dayjs(parseInt(result.updatedAt)).calendar()
       })

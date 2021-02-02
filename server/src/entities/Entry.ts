@@ -85,9 +85,9 @@ export default class Entry extends BaseEntity {
   @ManyToOne()
   user: User
 
-  @Field(() => [List], { nullable: true })
-  @ManyToMany(() => List, (l) => l.entries)
-  lists = new Collection<List>(this)
+  @Field(() => [String], { nullable: true })
+  @Property()
+  lists: Array<string> = []
 
   constructor(entryData: EntryInput, user: User) {
     super()

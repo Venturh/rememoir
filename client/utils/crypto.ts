@@ -81,7 +81,6 @@ export function decryptList(list: ListInput) {
     ...list,
     title: aesDecrypt(list.title, key),
     description: aesDecrypt(list.description, key),
-    entries: list.entries.map((entry) => decryptEntry(entry)),
   }
 
   return decrypted

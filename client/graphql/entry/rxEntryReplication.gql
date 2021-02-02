@@ -31,19 +31,6 @@ query rxEntryReplication(
     hashedKey
     deleted
     createdAt
-    lists {
-      id
-      updatedAt
-      deleted
-      title
-      description
-      calendarDate
-      hashedKey
-      processing
-      categories
-      calendarDate
-      categories
-      processing
-    }
+    lists
   }
 }

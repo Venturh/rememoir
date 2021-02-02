@@ -32,6 +32,9 @@ export const listSchema: RxJsonSchema<ListInput> = {
     },
     entries: {
       type: 'array',
+      items: {
+        type: 'string',
+      },
     },
     updatedAt: {
       type: 'string',

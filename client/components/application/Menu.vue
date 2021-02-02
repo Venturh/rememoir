@@ -17,15 +17,22 @@
     </div>
 
     <div v-if="activeMenu === 'secondary'">
-      <div
+      <button
         v-for="item in secondaryItems"
         :key="item.name"
-        class="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-brand hover:text-white"
+        :disabled="item.info === 'DUPLICATE'"
+        class="flex items-center w-full p-2 space-x-2 rounded-md"
+        :class="
+          item.info === 'DUPLICATE'
+            ? 'cursor-not-allowed hover:bg-brand25'
+            : 'hover:bg-brand hover:text-white cursor-pointer'
+        "
+        k
         @click.stop="handleClick(item)"
       >
         <component :is="item.icon" size="1.25x" />
         <span class="text-sm">{{ item.name }}</span>
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -47,7 +54,6 @@ export default defineComponent({
   },
   setup(_, { emit }) {
     const activeMenu = ref('primary')
-
     function handleClick(item: HoverMenuItem) {
       if (item.goto) activeMenu.value = item.goto
       emit('click', { name: item.name, info: item.info })

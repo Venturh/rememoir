@@ -60,7 +60,6 @@ class EntryResolver {
     const user = await em.findOne(User, { id: payload?.userId })
     const entry = await em.findOne(Entry, { id: entryInput.id })
     if (entry) {
-      console.log('UPDATED ENTRY')
       let preview = entry.preview
       if (entry.url !== entryInput.url) {
         preview = await generateLinkPreview(entryInput.url)
@@ -69,10 +68,11 @@ class EntryResolver {
 
       await em.flush()
       pubsub.publish('changedEntry', entry)
+      console.log('UPDATED ENTRY', entry)
       return entry
     } else {
       const doc = new Entry(entryInput, user!)
-      doc.lists.loadItems()
+
       if (entryInput.type === 'Link') {
         const linkPreview = await generateLinkPreview(entryInput.url)
         doc.preview = linkPreview

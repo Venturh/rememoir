@@ -15,8 +15,8 @@ export class ListInput {
   @Field(() => [String])
   categories: [string]
 
-  @Field(() => [EntryInput])
-  entries: [EntryInput]
+  @Field(() => [String])
+  entries: string[]
 
   @Field()
   calendarDate: string

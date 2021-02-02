@@ -41,9 +41,9 @@ export default class List extends BaseEntity {
   @ManyToOne()
   user: User
 
-  @Field(() => [Entry])
-  @ManyToMany(() => Entry)
-  entries = new Collection<Entry>(this)
+  @Field(() => [String])
+  @Property()
+  entries: string[]
 
   constructor(entryData: ListInput, user: User) {
     super()

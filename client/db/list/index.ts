@@ -126,19 +126,33 @@ export async function addEntryToList(
         title: list.title,
         description: list.description,
         categories: list.categories,
-        entries: [...list.entries, entry],
+        entries: [...list.entries, entry.id],
         hashedKey: 'hashed',
         calendarDate: list.calendarDate,
         processing: list.processing,
         updatedAt: Date.now().toString(),
       }
       await list.update({ $set: { ...editedList } })
-      const editedEntry = await db.entries
+      const entryMirror = await db.entries
         .findOne({ selector: { id: entry.id } })
         .exec()
-      editedEntry.update({ $set: { lists: editedList } })
+      await entryMirror.update({
+        $set: { lists: [...entryMirror.lists, list.id] },
+      })
     } catch (err) {
       console.error('could not update list', err)
     }
   }
+}
+
+export async function removeEntryFromList(db: MyDatabase, id: string) {
+  const lists = await db.lists.find().exec()
+  const find = lists.find((l) => l.entries.find((e) => e === id))
+  if (find) {
+    find.update({
+      $set: { entries: find.entries.filter((e) => e !== id) },
+    })
+    return true
+  }
+  return false
 }

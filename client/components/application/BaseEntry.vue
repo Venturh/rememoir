@@ -5,7 +5,7 @@
     <div>
       <div class="flex items-center justify-between">
         <span>{{ entry.title }}</span>
-        <BaseEntryActions :entry="entry" />
+        <BaseEntryActions :entry="entry" :is-list-entry="isListEntry" />
       </div>
 
       <p v-if="entry.description" class="">{{ entry.description }}</p>
@@ -55,10 +55,13 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    isListEntry: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const dayjs = useContext().app.$dayjs
-
     const timeFrom = computed(() => {
       return dayjs(parseInt(props.entry.updatedAt)).fromNow()
     })

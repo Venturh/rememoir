@@ -1,0 +1,25 @@
+query rxListReplication(
+  $lastId: String!
+  $minUpdatedAt: String!
+  $limit: Float!
+) {
+  rxListReplication(
+    lastId: $lastId
+    minUpdatedAt: $minUpdatedAt
+    limit: $limit
+  ) {
+    id
+    updatedAt
+    deleted
+    title
+    description
+    calendarDate
+    hashedKey
+    processing
+    categories
+    entries
+    calendarDate
+    categories
+    processing
+  }
+}

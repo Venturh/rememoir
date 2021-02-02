@@ -54,7 +54,7 @@ export type Entry = {
   processing: Scalars['Boolean'];
   categories: Array<Scalars['String']>;
   user: User;
-  lists?: Maybe<Array<List>>;
+  lists?: Maybe<Array<Scalars['String']>>;
 };
 
 export type User = {
@@ -84,7 +84,7 @@ export type List = {
   processing: Scalars['Boolean'];
   categories: Array<Scalars['String']>;
   user: User;
-  entries: Array<Entry>;
+  entries: Array<Scalars['String']>;
 };
 
 export type FieldError = {
@@ -134,6 +134,7 @@ export type EntryInput = {
   preview?: Maybe<ContentPreviewInput>;
   type: Scalars['String'];
   categories: Array<Scalars['String']>;
+  lists: Array<Scalars['String']>;
   calendarDate: Scalars['String'];
   updatedAt: Scalars['String'];
   hashedKey: Scalars['String'];
@@ -159,7 +160,7 @@ export type ListInput = {
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   categories: Array<Scalars['String']>;
-  entries: Array<EntryInput>;
+  entries: Array<Scalars['String']>;
   calendarDate: Scalars['String'];
   updatedAt: Scalars['String'];
   hashedKey: Scalars['String'];
@@ -458,14 +459,11 @@ export type RxEntryReplicationQuery = (
   { __typename?: 'Query' }
   & { rxEntryReplication: Array<(
     { __typename?: 'Entry' }
-    & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted' | 'createdAt'>
+    & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted' | 'createdAt' | 'lists'>
     & { preview?: Maybe<(
       { __typename?: 'ContentPreview' }
       & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
-    )>, lists?: Maybe<Array<(
-      { __typename?: 'List' }
-      & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories'>
-    )>> }
+    )> }
   )> }
 );
 
@@ -519,15 +517,7 @@ export type RxListReplicationQuery = (
   { __typename?: 'Query' }
   & { rxListReplication: Array<(
     { __typename?: 'List' }
-    & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories'>
-    & { entries: Array<(
-      { __typename?: 'Entry' }
-      & Pick<Entry, 'id' | 'hashedKey' | 'updatedAt' | 'createdAt' | 'deleted' | 'title' | 'description' | 'url' | 'type' | 'calendarDate' | 'categories' | 'processing'>
-      & { preview?: Maybe<(
-        { __typename?: 'ContentPreview' }
-        & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
-      )> }
-    )> }
+    & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories' | 'entries'>
   )> }
 );
 
@@ -887,20 +877,7 @@ export const RxEntryReplicationDocument = gql`
     hashedKey
     deleted
     createdAt
-    lists {
-      id
-      updatedAt
-      deleted
-      title
-      description
-      calendarDate
-      hashedKey
-      processing
-      categories
-      calendarDate
-      categories
-      processing
-    }
+    lists
   }
 }
     `;
@@ -1022,31 +999,10 @@ export const RxListReplicationDocument = gql`
     hashedKey
     processing
     categories
-    entries {
-      id
-      hashedKey
-      updatedAt
-      createdAt
-      deleted
-      title
-      description
-      url
-      type
-      preview {
-        ogSiteName
-        ogTitle
-        ogDescription
-        ogImageUrl
-        ogAudioUrl
-        ogVideoUrl
-        embeddedUrl
-        color
-        type
-      }
-      calendarDate
-      categories
-      processing
-    }
+    entries
+    calendarDate
+    categories
+    processing
   }
 }
     `;

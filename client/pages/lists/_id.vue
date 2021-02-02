@@ -28,6 +28,7 @@
               :key="entry.id"
               :entry="entry"
               :show-preview="showPreview"
+              is-list-entry
             />
           </div>
         </div>

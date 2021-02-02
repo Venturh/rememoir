@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { EntryInput } from '../../generated/graphql'
 import { EditedEntry } from '../../types'
 import { MyDatabase } from '../index'
+import { removeEntryFromList } from '../list'
 const id = require('bson-objectid')
 
 addRxPlugin(RxDBUpdatePlugin)
@@ -78,17 +79,27 @@ export async function addEntry(
     calendarDate: dayjs().format('DD.MM.YY'),
     processing: false,
     updatedAt: Date.now().toString(),
+    lists: [],
   }
   await db.entries.insert(entry)
 }
 
-export async function removeEntry(id: string, db: MyDatabase) {
+export async function removeEntry(
+  id: string,
+  db: MyDatabase,
+  isListEntry: boolean
+) {
+  if (isListEntry) {
+    await removeEntryFromList(db, id)
+    return
+  }
   const entry = await db.entries.findOne({ selector: { id } }).exec()
   if (entry) {
     try {
       await entry.remove()
+      await removeEntryFromList(db, id)
     } catch (err) {
-      console.error('could not remove entry')
+      console.log('err', err)
     }
   }
 }
@@ -114,26 +125,9 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
         calendarDate: entry.calendarDate,
         processing: entry.processing,
         updatedAt: Date.now().toString(),
+        lists: { ...entry.lists },
       }
-
       await entry.update({ $set: { ...editedEntry } })
-
-      const allLists = await db.lists.find().exec()
-      // Timeout to get Preview from server. need to find another way...
-      setTimeout(async () => {
-        const lists = allLists.filter((list) =>
-          list.entries.find((e) => e.id === entry.id)
-        )
-        for (const list of lists) {
-          try {
-            await list.update({
-              $set: {},
-            })
-          } catch (error) {
-            console.log('update ~ error', error)
-          }
-        }
-      }, 2000)
     } catch (err) {
       console.error('could not update entry')
     }

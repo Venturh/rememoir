@@ -14,7 +14,7 @@
         </div>
       </div>
       <NotFound
-        v-if="!loading && Object.keys(entries).length === 0"
+        v-if="!loading && Object.keys(content).length === 0"
         class="mt-20"
         :target="type"
       />
@@ -44,6 +44,7 @@
                   deleted: data.deleted,
                   id: data.id,
                   createdAt: data.createdAt,
+                  lists: data.lists,
                 }"
                 :list="{
                   title: data.title,
@@ -55,7 +56,6 @@
                   updatedAt: data.updatedAt,
                   deleted: data.deleted,
                   id: data.id,
-
                   entries: data.entries,
                 }"
               />
