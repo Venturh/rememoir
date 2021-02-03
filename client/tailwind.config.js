@@ -6,7 +6,7 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
-  purge: [],
+  purge: ['./**/*.{vue}'],
   theme: {
     colors: {
       brand: 'var(--brand)',

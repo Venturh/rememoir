@@ -11,7 +11,14 @@ export type EditedList = {
 }
 
 export type Filters = {
-  type: 'categories' | 'preview' | 'date' | 'list' | 'sort' | 'reset'
+  type:
+    | 'categories'
+    | 'preview'
+    | 'date'
+    | 'list'
+    | 'order'
+    | 'sortBy'
+    | 'reset'
   item: string | boolean
 }
 
@@ -20,7 +27,8 @@ export type Filter = {
   preview?: boolean | undefined
   date?: string | undefined
   list?: string | undefined
-  sort: 'desc' | 'asc'
+  sortBy?: 'title' | 'updatedAt' | 'calendarDate'
+  order?: 'desc' | 'asc'
 }
 
 export type HeaderInputType = 'list' | 'entry' | 'search'

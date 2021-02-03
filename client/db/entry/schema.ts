@@ -1,5 +1,5 @@
 import { RxJsonSchema, RxCollection, RxDocument, RxDatabase } from 'rxdb'
-import { Entry, EntryInput } from '../../generated/graphql'
+import { EntryInput } from '../../generated/graphql'
 
 export type EntryDocument = RxDocument<EntryInput>
 
@@ -11,7 +11,7 @@ export const entrySchema: RxJsonSchema<EntryInput> = {
   version: 0,
   keyCompression: false,
   type: 'object',
-  indexes: ['updatedAt'],
+  indexes: ['updatedAt', 'title', 'calendarDate'],
   properties: {
     id: {
       type: 'string',

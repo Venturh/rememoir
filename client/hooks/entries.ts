@@ -9,11 +9,18 @@ export function useEntries(db: MyDatabase) {
   const entriesLoading = ref(true)
   const entries = ref()
   const selector = ref({})
-  const select = ref(
-    db.entries.find({ selector: selector.value }).sort({ updatedAt: 'desc' })
-  )
+  const select = ref()
+  const sort = ref({})
 
-  function setEntriesSelector({ date, categories, list, sort }: Filter) {
+  setEntriesSelector({})
+
+  function setEntriesSelector({
+    date,
+    categories,
+    list,
+    order = 'desc',
+    sortBy = 'updatedAt',
+  }: Filter) {
     selector.value = {}
     if (date) {
       selector.value = {
@@ -31,13 +38,16 @@ export function useEntries(db: MyDatabase) {
       if (categories) selector.value = { categories: { $in: [categories] } }
       if (list) selector.value = { ...selector.value, lists: { $in: [list] } }
     }
-
-    select.value = db.entries
-      .find({ selector: selector.value })
-      .sort({ updatedAt: sort })
+    sort.value[sortBy] = order
   }
 
-  function subscribeEntries() {
+  function subscribeEntries(ids?: string[]) {
+    if (ids) selector.value = { ...selector.value, id: { $in: ids } }
+    select.value = db.entries
+      .find({
+        selector: selector.value,
+      })
+      .sort(sort.value)
     entriesLoading.value = true
     select.value.$.subscribe((results) => {
       const grouped = groupBy(results, (result: EntryInput) => {

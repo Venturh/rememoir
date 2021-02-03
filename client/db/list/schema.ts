@@ -11,7 +11,7 @@ export const listSchema: RxJsonSchema<ListInput> = {
   version: 0,
   keyCompression: false,
   type: 'object',
-  indexes: ['updatedAt'],
+  indexes: ['updatedAt', 'title', 'calendarDate'],
   properties: {
     id: {
       type: 'string',

@@ -21,8 +21,8 @@ export function useFilter() {
       case 'list':
         filters.list = item === 'DEFAULT' ? undefined : (item as string)
         break
-      case 'sort':
-        filters.sort = item as string
+      case 'order':
+        filters.order = item as 'asc' | 'desc'
         break
       case 'reset':
         Object.assign(filters, filterInitial)

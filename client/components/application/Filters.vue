@@ -4,8 +4,8 @@
     <div class="flex justify-between">
       <Dropdown
         class="w-1/2"
-        type="sort"
-        :items="sort"
+        type="order"
+        :items="order"
         :icon="ClockIcon"
         @selected="onChange"
       />
@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
-import { categories, sort } from '@/config/data'
+import { categories, order } from '@/config/data'
 import {
   FolderIcon,
   ListIcon,
@@ -88,7 +88,7 @@ export default defineComponent({
 
     return {
       categories,
-      sort,
+      order,
       avaibleLists,
       onChange,
       previewFilter,

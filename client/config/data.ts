@@ -87,7 +87,7 @@ export const calendarTheme = {
   },
 }
 
-export const sort = [
+export const order = [
   { icon: ArrowDownIcon, text: 'Desc', info: 'desc' },
   { icon: ArrowUpIcon, text: 'Asc', info: 'asc' },
 ]
@@ -97,5 +97,6 @@ export const filterInitial: Filter = {
   categories: undefined,
   date: undefined,
   list: undefined,
-  sort: 'desc',
+  order: 'desc',
+  sortBy: 'updatedAt',
 }

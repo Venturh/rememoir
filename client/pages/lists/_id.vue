@@ -49,7 +49,7 @@ import {
   watch,
 } from '@nuxtjs/composition-api'
 import { keys } from 'lodash'
-import { useFilter, useListbyId } from '@/hooks'
+import { useEntries, useFilter, useListbyId } from '@/hooks'
 
 export default defineComponent({
   middleware: ['authenticated'],
@@ -59,13 +59,28 @@ export default defineComponent({
     const { filters, setFilters } = useFilter()
     const showPreview = ref(true)
     const { id } = route.value.params
-    const { list, entries, loading, filterEntries } = useListbyId($db, id)
+    const { list, loading } = useListbyId($db, id)
+    const { entries, subscribeEntries, setEntriesSelector } = useEntries($db)
 
     watch(
-      () => [filters.preview, filters.date, filters.categories],
+      () => [
+        filters.preview,
+        filters.date,
+        filters.categories,
+        filters.order,
+        filters.sortBy,
+      ],
       (filter) => {
-        filterEntries(filters)
+        setEntriesSelector(filters)
+        subscribeEntries(list.value?.entries)
         showPreview.value = filter[0] as boolean
+      }
+    )
+
+    watch(
+      () => list.value,
+      (l) => {
+        subscribeEntries(l!.entries)
       }
     )
 
