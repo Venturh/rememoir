@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import {
   BookmarkIcon,
   EditIcon,
@@ -12,6 +13,8 @@ import {
   PlusSquareIcon,
   ArrowUpIcon,
   ArrowDownIcon,
+  ColumnsIcon,
+  ListIcon,
 } from 'vue-feather-icons'
 import { Filter } from '../types'
 
@@ -19,6 +22,11 @@ export const sidebarItems = [
   { icon: HomeIcon, text: 'home' },
   { icon: HeartIcon, text: 'pinned' },
   { icon: ArchiveIcon, text: 'archive' },
+]
+
+export const tabnavItems = [
+  { icon: ColumnsIcon, text: 'entries' },
+  { icon: ListIcon, text: 'lists' },
 ]
 
 export const hoverListPrimaryMenu = [
@@ -86,6 +94,15 @@ export const calendarTheme = {
     border: 'border-gray-700',
   },
 }
+
+export const time = [
+  { icon: null, text: 'All Time', info: 'DEFAULT' },
+  { icon: null, text: 'Today', info: dayjs() },
+  { icon: null, text: 'Yesterday', info: dayjs().subtract(1, 'day') },
+  { icon: null, text: 'This past week', info: dayjs().subtract(1, 'week') },
+  { icon: null, text: 'This past month', info: dayjs().subtract(1, 'month') },
+  { icon: null, text: 'This past year', info: dayjs().subtract(1, 'year') },
+]
 
 export const order = [
   { icon: ArrowDownIcon, text: 'Desc', info: 'desc' },

@@ -1,15 +1,15 @@
 <template>
-  <div class="relative w-full mt-1 rounded-md shadow-sm">
-    <div
-      class="absolute inset-y-0 flex items-center pointer-events-none left-2.5"
-    >
-      <SearchIcon
-        size="1.25x"
-        class="ml-2 stroke-current bg-secondary text-brand"
-      />
+  <button class="flex items-center justify-between w-full mt-1 space-x-4">
+    <div class="flex items-center space-x-4">
+      <SearchIcon size="1.25x" class="stroke-current text-brand" />
+      <span class="text-secondary">{{ $t('searchPlaceholder') }}</span>
     </div>
-    <HeaderInput :search="true" :placeholder="$t('searchPlaceholder')" />
-  </div>
+    <div class="items-center hidden space-x-2 pointer-events-none sm:flex">
+      <Label variant="brand25">Ctrl K</Label>
+      <Label variant="brand25">Ctrl E</Label>
+      <Label variant="brand25">Ctrl L</Label>
+    </div>
+  </button>
 </template>
 
 <script lang="ts">

@@ -16,7 +16,7 @@ export function useFilter() {
         filters.preview = item as boolean
         break
       case 'date':
-        filters.date = item as string
+        filters.date = item === 'DEFAULT' ? undefined : (item as string)
         break
       case 'list':
         filters.list = item === 'DEFAULT' ? undefined : (item as string)

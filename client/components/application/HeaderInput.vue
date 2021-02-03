@@ -7,7 +7,7 @@
     :disabled="disabled"
     name="input"
     :value="inputValue"
-    class="block w-full border border-transparent rounded-lg bg-secondary focus:outline-none focus:ring focus:ring-brand"
+    class="block w-full border border-transparent rounded-lg bg-primary focus:outline-none focus:ring focus:ring-brand"
     :class="search ? 'pl-12' : 'pl-16 sm:pl-20'"
     :placeholder="placeholder"
     @input="$emit('input', $event.target.value)"
@@ -16,7 +16,7 @@
     v-else
     ref="textRef"
     :value="inputValue"
-    class="block w-full border rounded-md bg-primary border-borderPrimary hover:border-primaryText hover:bg-secondary focus:bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
+    class="block w-full border border-transparent rounded-md bg-primary focus:bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
     :placeholder="placeholder"
     @input="$emit('input', $event.target.value)"
     @keydown.prevent.enter="$emit('enter')"

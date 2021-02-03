@@ -44,8 +44,7 @@ export default {
 
   addNewEntry: 'Neuen Eintrag erstellen (# für Kategorien // für mehr Text ',
   addNewList: 'Create a new List (# für Kategorien // für mehr Text ',
-  searchPlaceholder:
-    'Suche nach Einträgen und Listen for entries or lists (drücke Strg K zum Fokusieren)',
+  searchPlaceholder: 'Schnellsuche nach Einträgen und Listen',
 
   reset: 'Zurücksetzen',
 

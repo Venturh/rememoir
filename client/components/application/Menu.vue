@@ -1,6 +1,6 @@
 <template>
   <div
-    class="z-50 w-32 rounded-md bg-primary"
+    class="z-50 w-32 rounded-md shadow-sm bg-primary"
     @mouseover="$emit('mouseover')"
     @mouseleave="$emit('mouseleave')"
   >
@@ -30,8 +30,7 @@
         k
         @click.stop="handleClick(item)"
       >
-        <component :is="item.icon" size="1.25x" />
-        <span class="text-sm">{{ item.name }}</span>
+        <span class="text-sm truncate">{{ item.name }}</span>
       </button>
     </div>
   </div>

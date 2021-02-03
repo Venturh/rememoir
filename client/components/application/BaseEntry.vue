@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative flex flex-col w-full h-full px-3 py-3 space-y-3 rounded-lg bg-secondary"
-  >
+  <div class="relative flex flex-col w-full h-full py-3 space-y-3">
     <div>
       <div class="flex items-center justify-between">
         <span>{{ entry.title }}</span>
@@ -17,17 +15,14 @@
     />
 
     <div class="flex items-center justify-between">
-      <div class="space-x-2">
-        <span
-          v-for="category in entry.categories"
-          :key="category"
-          class="px-2 py-1.5 text-xs rounded-lg bg-primary"
-        >
+      <div class="flex space-x-2">
+        <Label v-for="category in entry.categories" :key="category">
           {{ category }}
-        </span>
+        </Label>
       </div>
       <span class="text-sm">{{ timeFrom }}</span>
     </div>
+    <div class="h-0.5 rounded-full bg-borderPrimary" />
   </div>
 </template>
 

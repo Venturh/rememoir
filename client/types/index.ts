@@ -15,6 +15,7 @@ export type Filters = {
     | 'categories'
     | 'preview'
     | 'date'
+    | 'dateSecondary'
     | 'list'
     | 'order'
     | 'sortBy'

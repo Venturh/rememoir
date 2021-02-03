@@ -26,9 +26,9 @@ input[type='search']::-webkit-search-results-decoration {
   --brandContrast: #1b2439;
   --brand25: rgba(52, 133, 228, 0.15);
   --brand15: rgba(52, 133, 228, 0.25);
-  --border: #696d78;
-  --bg: #1d2333;
-  --bg-secondary: #171d2d;
+  --border: #374151;
+  --bg: #171d2d;
+  --bg-secondary: #1d2333;
   --text-primary: #edf2f7;
   --text-secondary: #cbd5e0;
   --error: #fc8181;
@@ -41,7 +41,7 @@ input[type='search']::-webkit-search-results-decoration {
   --brandContrast: #1b2439;
   --brand25: rgba(52, 133, 228, 0.25);
   --brand15: rgba(52, 133, 228, 0.15);
-  --border: #949494;
+  --border: #f3f3f4;
   --bg: #ffffff;
   --bg-secondary: #f6f6f6;
   --text-primary: #000000;

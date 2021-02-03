@@ -1,29 +1,32 @@
 <template>
-  <div class="flex items-center justify-between space-x-2 lg:space-x-0">
-    <div class="w-full space-x-6 lg:w-screen lg:max-w-lg">
-      <HeaderSearch v-if="search === true" />
-      <HeaderAdd
-        v-else
-        ref="headerAdd"
-        v-model="input"
-        :input-type="inputType"
-        :loading="loading"
-        @cancel="search = true"
-        @action="handleInputAction"
-        @inputTypeChange="setInputType"
-      />
-    </div>
+  <div>
+    <div class="flex items-center justify-between space-x-2 lg:space-x-0">
+      <div class="w-full space-x-6 lg:w-screen lg:max-w-lg">
+        <HeaderSearch v-if="search === true" />
+        <HeaderAdd
+          v-else
+          ref="headerAdd"
+          v-model="input"
+          :input-type="inputType"
+          :loading="loading"
+          @cancel="search = true"
+          @action="handleInputAction"
+          @inputTypeChange="setInputType"
+        />
+      </div>
 
-    <Button
-      variant="1"
-      padding
-      class="p-2 lg:ml-6 lg:px-4 lg:space-x-2 lg:w-80"
-      @click="search = 'entry'"
-    >
-      <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
-      <XIcon v-if="search === false" class="fill-current" size="1.5x" />
-      <PlusIcon v-else class="fill-current" size="1.5x" />
-    </Button>
+      <Button
+        variant="1"
+        padding
+        class="p-2 lg:ml-6 lg:px-4 lg:space-x-2 lg:w-80"
+        @click="search = 'entry'"
+      >
+        <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
+        <XIcon v-if="search === false" class="fill-current" size="1.5x" />
+        <PlusIcon v-else class="fill-current" size="1.5x" />
+      </Button>
+    </div>
+    <div class="h-0.5 mt-2 rounded-full w-full bg-borderPrimary" />
   </div>
 </template>
 

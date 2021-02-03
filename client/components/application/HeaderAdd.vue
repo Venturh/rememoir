@@ -1,10 +1,11 @@
 <template>
-  <div class="relative w-full mt-1 rounded-md shadow-sm">
+  <div class="relative w-full mt-1 rounded-md">
     <div class="absolute inset-y-0 left-0 flex items-center sm:pl-3">
       <Dropdown
-        type="categories"
+        type="inputType"
         :items="items"
         :selected="selected"
+        :border="false"
         @selected="handleInputTypeDropdown"
       />
     </div>

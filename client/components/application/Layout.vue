@@ -7,7 +7,7 @@
         <div
           v-for="i in 4"
           :key="i"
-          class="flex flex-col justify-center h-64 pl-4 space-y-4 bg-secondary"
+          class="flex flex-col justify-center h-64 pl-4 space-y-4"
         >
           <Loading class="w-3/4 h-1/4 bg-primary" type="skeleton" />
           <Loading class="w-3/4 h-1/2 bg-primary" type="skeleton" />
@@ -19,53 +19,60 @@
         :target="type"
       />
       <div v-if="!loading" class="grid gap-4">
+        <TabNavigation
+          class="hidden md:flex"
+          :amount="[entriesAmount, listsAmount]"
+        />
+
         <div v-for="date in Object.keys(content)" :key="date" class="">
-          <div>
-            <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
-              {{ date }}
-            </div>
-            <div class="mt-2 space-y-2">
-              <component
-                :is="type === 'entries' ? BaseEntry : BaseList"
-                v-for="(data, index) in content[date]"
-                :key="index"
-                :show-preview="showPreview"
-                :entry="{
-                  title: data.title,
-                  description: data.description,
-                  url: data.url,
-                  type: data.type,
-                  preview: data.preview,
-                  categories: data.categories,
-                  hashedKey: data.hashedKey,
-                  calendarDate: data.calendarDate,
-                  processing: data.processing,
-                  updatedAt: data.updatedAt,
-                  deleted: data.deleted,
-                  id: data.id,
-                  createdAt: data.createdAt,
-                  lists: data.lists,
-                }"
-                :list="{
-                  title: data.title,
-                  description: data.description,
-                  categories: data.categories,
-                  hashedKey: data.hashedKey,
-                  calendarDate: data.calendarDate,
-                  processing: data.processing,
-                  updatedAt: data.updatedAt,
-                  deleted: data.deleted,
-                  id: data.id,
-                  entries: data.entries,
-                }"
-              />
-            </div>
+          <div class="py-1 text-lg font-medium border-borderPrimary">
+            {{ date }}
+          </div>
+          <div class="">
+            <component
+              :is="type === 'entries' ? BaseEntry : BaseList"
+              v-for="(data, index) in content[date]"
+              :key="index"
+              :show-preview="showPreview"
+              :entry="{
+                title: data.title,
+                description: data.description,
+                url: data.url,
+                type: data.type,
+                preview: data.preview,
+                categories: data.categories,
+                hashedKey: data.hashedKey,
+                calendarDate: data.calendarDate,
+                processing: data.processing,
+                updatedAt: data.updatedAt,
+                deleted: data.deleted,
+                id: data.id,
+                createdAt: data.createdAt,
+                lists: data.lists,
+              }"
+              :list="{
+                title: data.title,
+                description: data.description,
+                categories: data.categories,
+                hashedKey: data.hashedKey,
+                calendarDate: data.calendarDate,
+                processing: data.processing,
+                updatedAt: data.updatedAt,
+                deleted: data.deleted,
+                id: data.id,
+                entries: data.entries,
+              }"
+            />
           </div>
         </div>
       </div>
     </div>
 
-    <Filters :is-list-filter="type === 'lists'" @filter="setFilters" />
+    <Filters
+      :is-list-filter="type === 'lists'"
+      :amount="[entriesAmount, listsAmount]"
+      @filter="setFilters"
+    />
   </div>
 </template>
 
@@ -105,11 +112,16 @@ export default defineComponent({
       subscribeEntries,
       setEntriesSelector,
       entriesLoading,
+      entriesAmount,
     } = useEntries($db)
 
-    const { lists, listsLoading, subscribeList, setListSelector } = useLists(
-      $db
-    )
+    const {
+      lists,
+      listsLoading,
+      subscribeList,
+      setListSelector,
+      listsAmount,
+    } = useLists($db)
 
     const showPreview = ref(true)
     const content = computed(() =>
@@ -147,6 +159,7 @@ export default defineComponent({
       type,
       content,
       entriesLoading,
+      entriesAmount,
       filters,
       setFilters,
       showPreview,
@@ -154,6 +167,7 @@ export default defineComponent({
       BaseList,
       entries,
       lists,
+      listsAmount,
       loading,
     }
   },

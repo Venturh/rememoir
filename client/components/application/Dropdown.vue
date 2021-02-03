@@ -1,7 +1,13 @@
 <template>
   <div v-click-outside="handleClickOutside">
     <IconOnlyButton
-      class="relative flex items-center justify-between w-full p-3 space-x-1 bg-secondary focus:outline-none"
+      class="relative flex items-center w-full h-full py-2 focus:outline-none"
+      :class="[
+        border ? 'px-4 border border-borderPrimary shadow-sm' : 'px-2',
+        !selected && items.length > 0
+          ? 'justify-between'
+          : 'justify-self-end space-x-2',
+      ]"
       @click="onChange"
     >
       <div
@@ -10,10 +16,10 @@
       >
         <component :is="selected.icon" v-if="selected" size="1x" />
         <component :is="icon" v-else size="1x" />
-        <p v-if="!selected && items.length > 0" class="text-xs">
+        <p v-if="!selected && items.length > 0">
           {{ selectedItem.text }}
         </p>
-        <slot v-else class="text-xs" />
+        <slot v-else />
       </div>
 
       <ChevronDownIcon
@@ -76,6 +82,10 @@ export default defineComponent({
       type: Object as PropType<MenuOptionItem>,
       default: () => {},
     },
+    border: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   components: {
@@ -86,7 +96,9 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const open = ref(props.show)
-    const selectedItem = ref(props.selected || props.items[0])
+    const selectedItem = ref(
+      props.selected || props.optionalItem || props.items[0]
+    )
     const dropdownRef = ref<HTMLDivElement>()
     const wrapperRef = ref<HTMLDivElement>()
 
@@ -107,6 +119,13 @@ export default defineComponent({
     function handleClickOutside() {
       open.value = false
     }
+
+    watch(
+      () => props.optionalItem,
+      (item) => {
+        selectedItem.value = item || props.items[0]
+      }
+    )
 
     return {
       open,

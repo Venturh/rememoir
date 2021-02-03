@@ -20,9 +20,10 @@
         <NotFound v-if="!loading && !entries" class="mt-20" target="entries" />
         <div v-else>
           <div v-for="date in keys(entries)" :key="date" class="space-y-2">
-            <div class="px-2 py-1 text-lg font-medium rounded-md bg-secondary">
+            <div class="py-1 text-lg font-medium">
               {{ date }}
             </div>
+
             <BaseEntry
               v-for="entry in entries[date]"
               :key="entry.id"
@@ -35,7 +36,7 @@
       </div>
     </div>
     <div class="w-full space-y-2 lg:w-80">
-      <Filters is-list-filter @filter="setFilters" />
+      <Filters is-list-filter is-list-primary-filter @filter="setFilters" />
     </div>
   </div>
 </template>

@@ -1,7 +1,6 @@
 <template>
   <div class="relative flex justify-between w-full space-x-2">
-    <Dropdown class="w-1/2" :show="show" :icon="CalendarIcon" @change="setShow">
-      <span class="text-sm"> {{ displayDate }}</span>
+    <Dropdown class="w-1/3" :show="show" :icon="CalendarIcon" @change="setShow">
       <template v-slot:menu>
         <VueTailWindPicker
           :inline="true"
@@ -14,7 +13,18 @@
         />
       </template>
     </Dropdown>
-    <Button class="w-1/2 text-sm" variant="1" @click="reset">
+    <Dropdown
+      class="w-1/2"
+      type="date"
+      :items="time"
+      :optional-item="
+        date !== '' ? { text: 'Custom', info: 'DEFAULT' } : undefined
+      "
+      :icon="CalendarIcon"
+      @selected="onSecondaryChange"
+    />
+
+    <Button class="text-sm" variant="1" @click="reset">
       {{ $t('reset') }}
     </Button>
   </div>
@@ -28,7 +38,7 @@ import {
   useContext,
 } from '@nuxtjs/composition-api'
 import { CalendarIcon } from 'vue-feather-icons'
-import { calendarTheme } from '@/config/data'
+import { calendarTheme, time } from '@/config/data'
 
 export default defineComponent({
   components: {
@@ -43,11 +53,16 @@ export default defineComponent({
       date.value ? $dayjs(date.value).format('dd, DD.MM.YY') : 'All Time'
     )
 
-    const date = ref()
-    function onChange(value: any) {
+    const date = ref('')
+    function onChange(value: string) {
       show.value = false
       date.value = value
       emit('change', { type: 'date', item: $dayjs(value) })
+    }
+    function onSecondaryChange({ item, type }: { item: any; type: string }) {
+      show.value = false
+      date.value = ''
+      emit('change', { type, item })
     }
 
     function reset() {
@@ -65,10 +80,12 @@ export default defineComponent({
       date,
       displayDate,
       onChange,
+      onSecondaryChange,
       show,
       setShow,
       reset,
       CalendarIcon,
+      time,
     }
   },
 })

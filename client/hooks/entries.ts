@@ -1,6 +1,7 @@
 import { ref } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
 import { groupBy } from 'lodash'
+import { RxDocument } from 'rxdb'
 import { MyDatabase } from '../db'
 import { EntryInput } from '../generated/graphql'
 import { Filter } from '../types'
@@ -8,6 +9,7 @@ import { Filter } from '../types'
 export function useEntries(db: MyDatabase) {
   const entriesLoading = ref(true)
   const entries = ref()
+  const entriesAmount = ref()
   const selector = ref({})
   const select = ref()
   const sort = ref({})
@@ -49,7 +51,8 @@ export function useEntries(db: MyDatabase) {
       })
       .sort(sort.value)
     entriesLoading.value = true
-    select.value.$.subscribe((results) => {
+    select.value.$.subscribe((results: RxDocument[]) => {
+      entriesAmount.value = results.length
       const grouped = groupBy(results, (result: EntryInput) => {
         return dayjs(parseInt(result.updatedAt)).calendar()
       })
@@ -58,5 +61,11 @@ export function useEntries(db: MyDatabase) {
     })
   }
 
-  return { entries, entriesLoading, subscribeEntries, setEntriesSelector }
+  return {
+    entries,
+    entriesLoading,
+    subscribeEntries,
+    setEntriesSelector,
+    entriesAmount,
+  }
 }

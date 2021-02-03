@@ -1,7 +1,11 @@
 <template>
   <div
-    class="relative flex flex-col px-3 py-2 space-y-2 rounded-lg bg-secondary"
-    :class="{ 'hover:bg-brand25 cursor-pointer ': !primary }"
+    class="relative flex flex-col py-2 space-y-2"
+    :class="
+      primary
+        ? 'border border-borderPrimary shadow-sm rounded-sm px-2'
+        : 'cursor-pointer'
+    "
     @click="navigate"
   >
     <div class="flex items-center justify-between">
@@ -19,6 +23,7 @@
       </div>
       <span class="text-sm">{{ timeFrom }}</span>
     </div>
+    <div v-if="!primary" class="h-0.5 bg-borderPrimary" />
   </div>
 </template>
 

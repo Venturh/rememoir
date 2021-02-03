@@ -1,40 +1,59 @@
 <template>
-  <nav class="relative flex items-center py-2 bg-secondary">
-    <nuxt-link
-      class="flex items-center justify-center w-1/2 space-x-2"
-      :class="selected === 'entries' ? '' : 'hover:text-brand'"
-      :to="localePath('/home/entries')"
-    >
-      <ColumnsIcon size="1.25x" />
-      <span>Entries</span>
-    </nuxt-link>
-    <nuxt-link
-      class="flex items-center justify-center w-1/2 space-x-2"
-      :class="selected === 'lists' ? '' : 'hover:text-brand'"
-      :to="localePath('/home/lists')"
-    >
-      <ListIcon size="1.25x" />
-      <span>Lists</span>
-    </nuxt-link>
+  <nav class="relative">
     <div
-      class="absolute bottom-0 w-1/2 h-0.5 bg-brand"
-      :class="selected === 'lists' ? 'right-0' : 'left-0'"
+      class="absolute bottom-0 hidden sm:block w-full h-0.5 bg-borderPrimary"
     />
+    <div class="relative flex items-center w-full sm:w-1/2">
+      <nuxt-link
+        v-for="(item, index) in tabnavItems"
+        ref="el"
+        :key="item.text"
+        class="flex items-center justify-center w-1/2 px-3 py-2.5 space-x-2 sm:justify-start"
+        :class="selected === item.text ? '' : 'hover:text-brand'"
+        :to="localePath(`/home/${item.text}`)"
+      >
+        <component :is="item.icon" class="flex-shrink-0" size="1.25x" />
+        <span class="text-sm sm:text-base">{{ $t(item.text) }}</span>
+        <div class="px-1 py-0.5 text-xs sm:text-sm rounded-sm bg-brand25">
+          {{ amount[index] || '-' }}
+        </div>
+      </nuxt-link>
+
+      <div
+        class="absolute bottom-0 w-1/2 h-0.5 bg-brand"
+        :class="selected === 'lists' ? 'right-0' : 'left-0'"
+      />
+    </div>
   </nav>
 </template>
 
-<script>
-import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
-import { ListIcon, ColumnsIcon } from 'vue-feather-icons'
+<script lang="ts">
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  useContext,
+} from '@nuxtjs/composition-api'
+import { tabnavItems } from '@/config/data'
 
 export default defineComponent({
-  components: { ColumnsIcon, ListIcon },
-
+  props: {
+    amount: {
+      type: Array,
+      default: () => [],
+    },
+  },
   setup() {
     const { params } = useContext().route.value
     const selected = ref(params.type ?? 'entries')
+    const el = ref<HTMLAnchorElement>()
+    const style = ref({ width: '0px' })
 
-    return { selected }
+    onMounted(() => {
+      style.value = { width: `${el.value[0].$el.clientWidth}px` }
+    })
+
+    return { selected, tabnavItems, el }
   },
 })
 </script>

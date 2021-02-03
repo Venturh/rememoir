@@ -2,7 +2,7 @@
   <button
     type="button"
     :class="[buttonVariant(variant), { 'px-4 py-2 ': !padding }]"
-    class="flex items-center justify-center font-medium rounded-md shadow-sm focus:outline-none"
+    class="flex items-center justify-center text-sm font-medium rounded-md shadow-sm sm:text-base focus:outline-none"
     @click="$emit('click', $event)"
   >
     <slot />
@@ -25,13 +25,16 @@ export default defineComponent({
   setup(props) {
     function buttonVariant(variant: string) {
       const map = new Map([
-        ['1', 'bg-secondary  py-2 text-brand hover:bg-brand hover:text-white'],
+        [
+          '1',
+          'border border-borderPrimary shadow-sm text-brand hover:bg-brand hover:text-white',
+        ],
         ['inherit', 'bg-none text-primary  hover:text-brand'],
         ['secondary', 'bg-brand25 text-brand  py-2  hover:bg-brand15'],
       ])
 
       return (
-        map.get(variant) ||
+        map.get(props.variant) ||
         'bg-brand text-white border-secondary px-4 py-2 hover:bg-brandDarker  focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-brand'
       )
     }
