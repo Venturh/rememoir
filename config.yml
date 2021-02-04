@@ -1,0 +1,10 @@
+schema: ${GRAPHQL_ENDPOINT}
+documents: ./graphql/**/*.gql
+generates:
+ generated/graphql.ts:
+  plugins:
+   - typescript
+   - typescript-operations
+   - typescript-vue-apollo
+  config:
+   withCompositionFunctions: true
