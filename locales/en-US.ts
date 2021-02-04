@@ -43,6 +43,17 @@ export default {
   mail: 'Mail',
   back: 'Zurück',
 
+  all_time: 'All time',
+  all_categories: 'All categories',
+  all_Lists: 'All Lists',
+  no_lists_avaible: 'No lists avaible',
+  updatedAt_desc: 'Newest first',
+  updatedAt_asc: 'Oldest last',
+  title_desc: 'Titel descending',
+  title_asc: 'Titel ascending',
+  calendarDate_desc: 'Calendar descending',
+  calendarDate_asc: 'Calendar ascending',
+
   addNewEntry: 'Create a new Entry (# for categories // for more Text) ',
   addNewList: 'Create a new List (# for categories // for more Text) ',
   searchPlaceholder: 'Quicksearch for entries and lists',

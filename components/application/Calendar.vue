@@ -1,6 +1,12 @@
 <template>
-  <div class="relative flex justify-between w-full space-x-2">
-    <Dropdown class="w-1/3" :show="show" :icon="CalendarIcon" @change="setShow">
+  <div class="relative flex justify-between w-full px-2 space-x-2">
+    <Dropdown
+      class="w-2/12"
+      :show="show"
+      :icon="CalendarIcon"
+      icon-only
+      @change="setShow"
+    >
       <template v-slot:menu>
         <VueTailWindPicker
           :inline="true"

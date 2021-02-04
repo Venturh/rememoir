@@ -1,5 +1,5 @@
 import { reactive } from '@nuxtjs/composition-api'
-import { Filter, Filters } from '../types'
+import { Filter, Filters, Order } from '../types'
 import { filterInitial } from '../config/data'
 
 export function useFilter() {
@@ -22,7 +22,7 @@ export function useFilter() {
         filters.list = item === 'DEFAULT' ? undefined : (item as string)
         break
       case 'order':
-        filters.order = item as 'asc' | 'desc'
+        filters.order = item as Order
         break
       case 'reset':
         Object.assign(filters, filterInitial)

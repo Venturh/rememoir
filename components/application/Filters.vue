@@ -1,44 +1,54 @@
 <template>
   <div class="flex flex-col w-full mb-2 space-y-2 md:mb-0 lg:w-80 bg-primary">
-    <div class="flex justify-between sm:hidden">
-      <TabNavigation v-if="!isListPrimaryFilter" :amount="amount" />
-      <Button class="space-x-2" variant="1" @click="show = !show">
+    <div class="flex justify-between">
+      <TabNavigation
+        v-if="!isListPrimaryFilter"
+        class="sm:hidden"
+        :amount="amount"
+      />
+      <Button class="space-x-2 sm:w-full" variant="1" @click="show = !show">
         <AlignCenterIcon size="1.25x" />
         <span>Filters</span>
       </Button>
     </div>
 
-    <div class="space-y-2 sm:block" :class="!show ? 'hidden' : 'block'">
-      <Calendar @change="onChange" />
-      <div
-        class="flex flex-col justify-between space-y-2 lg:space-y-0 lg:flex-row"
-      >
+    <div class="space-y-2" :class="!show ? 'hidden' : 'block'">
+      <FilterItem title="Order">
         <Dropdown
-          class="lg:w-1/2"
           type="order"
+          class="px-2"
           :items="order"
           :icon="ClockIcon"
           @selected="onChange"
         />
+      </FilterItem>
+
+      <FilterItem title="Categories">
         <Dropdown
-          class="lg:w-1/2 lg:pl-2"
+          class="px-2"
           type="categories"
           :items="categories"
           :icon="FolderIcon"
           @selected="onChange"
         />
-      </div>
+      </FilterItem>
 
-      <div class="space-y-2 lg:flex lg:space-y-0 lg:justify-between">
+      <FilterItem v-if="!isListFilter" title="Lists">
         <Dropdown
-          v-if="!isListFilter"
-          class="lg:w-1/2"
+          class="px-2"
           type="list"
           :items="avaibleLists"
           :icon="LayoutIcon"
           @selected="onChange"
         />
-        <div class="flex justify-between space-x-2 lg:w-1/2 lg:pl-2">
+      </FilterItem>
+
+      <FilterItem title="Calendar">
+        <Calendar @change="onChange" />
+      </FilterItem>
+
+      <FilterItem title="Misc">
+        <div class="flex justify-between w-1/2 pl-2 space-x-2">
           <IconOnlyButton
             tooltip="Toggle preview"
             class="p-2 border border-borderPrimary"
@@ -55,7 +65,7 @@
             {{ $t('reset') }}
           </Button>
         </div>
-      </div>
+      </FilterItem>
     </div>
   </div>
 </template>

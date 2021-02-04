@@ -25,7 +25,9 @@
           @mouseenter="selectedIndex = index"
         >
           <component :is="option.icon" v-if="option.icon" size="1.25x" />
-          <span class="text-sm">{{ option.text }}</span>
+          <span class="text-sm">
+            {{ option.translate ? $t(option.text) : option.text }}
+          </span>
         </li>
       </ul>
     </div>

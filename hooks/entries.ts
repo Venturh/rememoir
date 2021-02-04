@@ -4,7 +4,7 @@ import { groupBy } from 'lodash'
 import { RxDocument } from 'rxdb'
 import { MyDatabase } from '../db'
 import { EntryInput } from '../generated/graphql'
-import { Filter } from '../types'
+import { Filter, Order } from '../types'
 
 export function useEntries(db: MyDatabase) {
   const entriesLoading = ref(true)
@@ -20,10 +20,10 @@ export function useEntries(db: MyDatabase) {
     date,
     categories,
     list,
-    order = 'desc',
-    sortBy = 'updatedAt',
+    order = Order.UPDATED_DESC,
   }: Filter) {
     selector.value = {}
+    sort.value = {}
     if (date) {
       selector.value = {
         calendarDate: {
@@ -40,7 +40,8 @@ export function useEntries(db: MyDatabase) {
       if (categories) selector.value = { categories: { $in: [categories] } }
       if (list) selector.value = { ...selector.value, lists: { $in: [list] } }
     }
-    sort.value[sortBy] = order
+    const sorting = order.split('_')
+    sort.value[sorting[0]] = sorting[1]
   }
 
   function subscribeEntries(ids?: string[]) {

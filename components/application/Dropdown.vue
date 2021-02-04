@@ -3,25 +3,30 @@
     <IconOnlyButton
       class="relative flex items-center w-full h-full py-2 focus:outline-none"
       :class="[
-        border ? 'px-4 border border-borderPrimary shadow-sm' : 'px-2',
-        !selected && items.length > 0
-          ? 'justify-between'
-          : 'justify-self-end space-x-2',
+        { 'border border-borderPrimary shadow-sm': border },
+        iconOnly ? '' : border ? 'px-4' : 'px-2',
+        !selected && items.length > 0 ? 'justify-between' : 'justify-center',
       ]"
       @click="onChange"
     >
       <div
-        class="flex items-center space-x-2 truncate"
-        :class="{ 'space-x-0': selected }"
+        class="flex items-center truncate"
+        :class="iconOnly ? 'space-y-1' : 'space-x-2 '"
       >
-        <component :is="selected.icon" v-if="!icon" size="1x" />
-        <component :is="icon" v-else size="1x" />
-        <p>
-          {{ selectedItem.text }}
+        <component
+          :is="icon || selected.icon"
+          class="flex-shrink-0"
+          size="1x"
+        />
+        <p class="text-sm">
+          {{
+            selectedItem.translate ? $t(selectedItem.text) : selectedItem.text
+          }}
         </p>
       </div>
 
       <ChevronDownIcon
+        v-if="!iconOnly"
         class="flex-shrink-0"
         :class="
           open
@@ -84,6 +89,10 @@ export default defineComponent({
     border: {
       type: Boolean,
       default: true,
+    },
+    iconOnly: {
+      type: Boolean,
+      default: false,
     },
   },
 

@@ -2,7 +2,6 @@ import { RxJsonSchema, RxCollection, RxDocument } from 'rxdb'
 import { ListInput } from '../../generated/graphql'
 
 export type ListDocument = RxDocument<ListInput>
-
 export type ListCollection = RxCollection<ListInput>
 
 export const listSchema: RxJsonSchema<ListInput> = {

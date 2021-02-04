@@ -11,12 +11,10 @@ import {
   HeartIcon,
   HomeIcon,
   PlusSquareIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
   ColumnsIcon,
   ListIcon,
 } from 'vue-feather-icons'
-import { Filter } from '../types'
+import { Filter, Order } from '../types'
 
 export const sidebarItems = [
   { icon: HomeIcon, text: 'home' },
@@ -62,7 +60,7 @@ export const hoverSecondaryMenu = [
 ]
 
 export const categories = [
-  { icon: null, text: 'All', info: 'DEFAULT' },
+  { icon: null, text: 'all_categories', info: 'DEFAULT', translate: true },
   { icon: null, text: 'Videos' },
   { icon: null, text: 'Youtube' },
   { icon: null, text: 'Audio' },
@@ -96,7 +94,7 @@ export const calendarTheme = {
 }
 
 export const time = [
-  { icon: null, text: 'All Time', info: 'DEFAULT' },
+  { icon: null, text: 'all_time', info: 'DEFAULT', translate: true },
   { icon: null, text: 'Today', info: dayjs() },
   { icon: null, text: 'Yesterday', info: dayjs().subtract(1, 'day') },
   { icon: null, text: 'This past week', info: dayjs().subtract(1, 'week') },
@@ -105,8 +103,12 @@ export const time = [
 ]
 
 export const order = [
-  { icon: ArrowDownIcon, text: 'Desc', info: 'desc' },
-  { icon: ArrowUpIcon, text: 'Asc', info: 'asc' },
+  { text: Order.UPDATED_DESC, translate: true },
+  { text: Order.UPDATED_ASC, translate: true },
+  { text: Order.TITLE_DESC, translate: true },
+  { text: Order.TITLE_ASC, translate: true },
+  { text: Order.CALENDER_DESC, translate: true },
+  { text: Order.CALENDER_ASC, translate: true },
 ]
 
 export const filterInitial: Filter = {
@@ -114,6 +116,6 @@ export const filterInitial: Filter = {
   categories: undefined,
   date: undefined,
   list: undefined,
-  order: 'desc',
+  order: Order.UPDATED_DESC,
   sortBy: 'updatedAt',
 }

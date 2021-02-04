@@ -4,7 +4,7 @@ import _, { groupBy } from 'lodash'
 import { RxDocument } from 'rxdb'
 import { MyDatabase } from '../db'
 import { ListInput } from '../generated/graphql'
-import { Filter } from '../types'
+import { Filter, Order } from '../types'
 
 export function useLists(db: MyDatabase) {
   const listsLoading = ref(true)
@@ -18,8 +18,7 @@ export function useLists(db: MyDatabase) {
   function setListSelector({
     date,
     categories,
-    order = 'desc',
-    sortBy = 'updatedAt',
+    order = Order.UPDATED_DESC,
   }: Filter) {
     selector.value = {}
     if (date) {
@@ -38,7 +37,8 @@ export function useLists(db: MyDatabase) {
     }
 
     const sort = {}
-    sort[sortBy] = order
+    const sorting = order.split('_')
+    sort[sorting[0]] = sorting[1]
     select.value = db.lists
       .find({
         selector: selector.value,
@@ -76,11 +76,16 @@ export function useAvaibleLists(db: MyDatabase, entryId?: string) {
     if (lists.value.length > 0) {
       const avaible = lists.value.map((l: ListInput) => {
         const entryInList = l.entries.includes(entryId)
-        return { text: l.title, info: entryInList ? 'DUPLICATE' : l.id }
+        return {
+          text: l.title,
+          info: entryInList ? 'DUPLICATE' : l.id,
+          translate: false,
+        }
       })
-      avaible.unshift({ text: 'All Lists', info: 'DEFAULT' })
+      avaible.unshift({ text: 'all_Lists', info: 'DEFAULT', translate: true })
       return avaible
-    } else return [{ text: 'All List', info: 'DEFAULT' }]
+    } else
+      return [{ text: 'no_lists_avaible', info: 'DEFAULT', translate: true }]
   })
 
   return { avaibleLists, lists }
