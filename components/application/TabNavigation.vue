@@ -7,18 +7,14 @@
       <nuxt-link
         v-for="(item, index) in tabnavItems"
         :key="item.text"
+        class="flex items-center justify-center w-1/2 px-3 py-2.5 space-x-2 sm:justify-start"
+        :class="selected === item.text ? '' : 'hover:text-brand'"
         :to="localePath(`/home/${item.text}`)"
       >
-        <div
-          ref="el"
-          class="flex items-center justify-center w-1/2 px-3 py-2.5 space-x-2 sm:justify-start"
-          :class="selected === item.text ? '' : 'hover:text-brand'"
-        >
-          <component :is="item.icon" class="flex-shrink-0" size="1.25x" />
-          <span class="text-sm sm:text-base">{{ $t(item.text) }}</span>
-          <div class="px-1 py-0.5 text-xs sm:text-sm rounded-sm bg-brand25">
-            {{ amount[index] === undefined ? '-' : amount[index] }}
-          </div>
+        <component :is="item.icon" class="flex-shrink-0" size="1.25x" />
+        <span class="text-sm sm:text-base">{{ $t(item.text) }}</span>
+        <div class="px-1 py-0.5 text-xs sm:text-sm rounded-sm bg-brand25">
+          {{ amount[index] }}
         </div>
       </nuxt-link>
 
@@ -31,12 +27,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  ref,
-  useContext,
-} from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import { tabnavItems } from '@/config/data'
 
 export default defineComponent({
@@ -49,14 +40,8 @@ export default defineComponent({
   setup() {
     const { params } = useContext().route.value
     const selected = ref(params.type ?? 'entries')
-    const el = ref<HTMLDivElement[]>()
-    const style = ref({ width: '0px' })
 
-    onMounted(() => {
-      style.value = { width: `${el.value![0].clientWidth}px` }
-    })
-
-    return { selected, tabnavItems, el }
+    return { selected, tabnavItems }
   },
 })
 </script>

@@ -14,12 +14,11 @@
         class="flex items-center space-x-2 truncate"
         :class="{ 'space-x-0': selected }"
       >
-        <component :is="selected.icon" v-if="selected" size="1x" />
+        <component :is="selected.icon" v-if="!icon" size="1x" />
         <component :is="icon" v-else size="1x" />
-        <p v-if="!selected && items.length > 0">
+        <p>
           {{ selectedItem.text }}
         </p>
-        <slot v-else />
       </div>
 
       <ChevronDownIcon
@@ -97,7 +96,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const open = ref(props.show)
     const selectedItem = ref(
-      props.selected || props.optionalItem || props.items[0]
+      props.selected ||
+        props.optionalItem ||
+        props.items[0] || { text: ' ', icon: null, info: '' }
     )
     const dropdownRef = ref<HTMLDivElement>()
     const wrapperRef = ref<HTMLDivElement>()
@@ -108,8 +109,8 @@ export default defineComponent({
     }
 
     function handleSelected(item: MenuOptionItem) {
-      selectedItem.value = item
       open.value = false
+      selectedItem.value = item
       emit('selected', {
         item: item.info ? item.info : item.text,
         type: props.type,

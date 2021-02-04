@@ -1,12 +1,7 @@
 <template>
   <div class="flex flex-col w-full mb-2 space-y-2 md:mb-0 lg:w-80 bg-primary">
     <div class="flex justify-between sm:hidden">
-      <span v-if="isListPrimaryFilter" />
-      <TabNavigation
-        v-if="!isListPrimaryFilter"
-        class="w-full"
-        :amount="amount"
-      />
+      <TabNavigation v-if="!isListPrimaryFilter" :amount="amount" />
       <Button class="space-x-2" variant="1" @click="show = !show">
         <AlignCenterIcon size="1.25x" />
         <span>Filters</span>
@@ -40,7 +35,6 @@
           class="lg:w-1/2"
           type="list"
           :items="avaibleLists"
-          :optional-item="{ text: 'None', info: 'DEFAULT' }"
           :icon="LayoutIcon"
           @selected="onChange"
         />

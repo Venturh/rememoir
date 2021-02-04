@@ -74,11 +74,13 @@ export function useAvaibleLists(db: MyDatabase, entryId?: string) {
 
   const avaibleLists = computed(() => {
     if (lists.value.length > 0) {
-      return lists.value.map((l: ListInput) => {
+      const avaible = lists.value.map((l: ListInput) => {
         const entryInList = l.entries.includes(entryId)
         return { text: l.title, info: entryInList ? 'DUPLICATE' : l.id }
       })
-    } else return [{ text: 'No List', info: '' }]
+      avaible.unshift({ text: 'All Lists', info: 'DEFAULT' })
+      return avaible
+    } else return [{ text: 'All List', info: 'DEFAULT' }]
   })
 
   return { avaibleLists, lists }

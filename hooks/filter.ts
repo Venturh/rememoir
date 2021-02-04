@@ -10,7 +10,7 @@ export function useFilter() {
   function setFilters({ type, item }: Filters) {
     switch (type) {
       case 'categories':
-        filters.categories = item === 'All' ? undefined : (item as string)
+        filters.categories = item === 'DEFAULT' ? undefined : (item as string)
         break
       case 'preview':
         filters.preview = item as boolean

@@ -62,7 +62,7 @@ export const hoverSecondaryMenu = [
 ]
 
 export const categories = [
-  { icon: null, text: 'All' },
+  { icon: null, text: 'All', info: 'DEFAULT' },
   { icon: null, text: 'Videos' },
   { icon: null, text: 'Youtube' },
   { icon: null, text: 'Audio' },
