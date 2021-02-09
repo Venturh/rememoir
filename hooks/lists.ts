@@ -82,7 +82,6 @@ export function useAvaibleLists(db: MyDatabase, entryId?: string) {
           translate: false,
         }
       })
-      avaible.unshift({ text: 'all_Lists', info: 'DEFAULT', translate: true })
       return avaible
     } else
       return [{ text: 'no_lists_avaible', info: 'DEFAULT', translate: true }]

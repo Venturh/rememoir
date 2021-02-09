@@ -33,7 +33,6 @@ export const entryPushQueryBuilder = (entry: EntryInput) => {
       categories: entry.categories,
       updatedAt: entry.updatedAt,
       deleted: entry.deleted,
-      lists: entry.lists,
     },
   }
 

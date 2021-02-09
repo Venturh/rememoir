@@ -31,6 +31,5 @@ query rxEntryReplication(
     hashedKey
     deleted
     createdAt
-    lists
   }
 }

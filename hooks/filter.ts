@@ -1,4 +1,4 @@
-import { reactive } from '@nuxtjs/composition-api'
+import { reactive, ref } from '@nuxtjs/composition-api'
 import { Filter, Filters, Order } from '../types'
 import { filterInitial } from '../config/data'
 
@@ -6,6 +6,7 @@ export function useFilter() {
   const filters = reactive<Filter>({
     ...filterInitial,
   })
+  const filtersCount = ref(0)
 
   function setFilters({ type, item }: Filters) {
     switch (type) {
@@ -18,11 +19,8 @@ export function useFilter() {
       case 'date':
         filters.date = item === 'DEFAULT' ? undefined : (item as string)
         break
-      case 'list':
-        filters.list = item === 'DEFAULT' ? undefined : (item as string)
-        break
       case 'order':
-        filters.order = item as Order
+        filters.order = item === 'DEFAULT' ? undefined : (item as Order)
         break
       case 'reset':
         Object.assign(filters, filterInitial)
@@ -31,7 +29,9 @@ export function useFilter() {
       default:
         break
     }
+    filtersCount.value =
+      Object.values(filters).filter((f) => f !== undefined).length - 1
   }
 
-  return { filters, setFilters }
+  return { filters, setFilters, filtersCount }
 }

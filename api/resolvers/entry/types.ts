@@ -24,9 +24,6 @@ export class EntryInput {
   @Field(() => [String])
   categories!: [string]
 
-  @Field(() => [String])
-  lists!: [string]
-
   @Field()
   calendarDate!: string
 

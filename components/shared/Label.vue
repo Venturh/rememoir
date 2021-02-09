@@ -1,5 +1,12 @@
 <template>
-  <div class="px-2 py-1.5 text-xs rounded-lg" :class="variants">
+  <div
+    class="text-xs"
+    :class="[
+      variants,
+      rounded ? 'rounded-lg' : '',
+      small ? 'px-1 py-0.5' : 'px-2 py-1.5',
+    ]"
+  >
     <slot />
   </div>
 </template>
@@ -13,6 +20,14 @@ export default defineComponent({
     variant: {
       type: String as PropType<Variants>,
       default: 'primary',
+    },
+    rounded: {
+      type: Boolean,
+      default: true,
+    },
+    small: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props) {

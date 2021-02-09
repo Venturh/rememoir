@@ -133,12 +133,6 @@ export async function addEntryToList(
         updatedAt: Date.now().toString(),
       }
       await list.update({ $set: { ...editedList } })
-      const entryMirror = await db.entries
-        .findOne({ selector: { id: entry.id } })
-        .exec()
-      await entryMirror.update({
-        $set: { lists: [...entryMirror.lists, list.id] },
-      })
     } catch (err) {
       console.error('could not update list', err)
     }

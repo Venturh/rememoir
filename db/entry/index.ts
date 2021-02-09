@@ -125,11 +125,31 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
         calendarDate: entry.calendarDate,
         processing: entry.processing,
         updatedAt: Date.now().toString(),
-        lists: { ...entry.lists },
       }
       await entry.update({ $set: { ...editedEntry } })
     } catch (err) {
       console.error('could not update entry')
     }
   }
+}
+
+export async function seed(db: MyDatabase) {
+  const array = [...Array(30).keys()]
+  const objs = array.map((i) => {
+    return {
+      title: 'foo1 /' + i,
+      calendarDate: dayjs(dayjs()).format('DD.MM.YY'),
+      categories: ['Youtube'],
+      hashedKey: 'yep',
+      id: id().str as string,
+      lists: [],
+      processing: false,
+      type: 'Note',
+      url: '',
+      updatedAt: Date.now().toString(),
+    }
+  })
+  const result = await db.entries.bulkInsert(objs)
+  console.log('seed ~ result', result)
+  return result
 }

@@ -76,6 +76,7 @@ export default defineComponent({
       description: string
     }) {
       await execute({ target: inputType.value, data, description })
+      inputType.value = 'search'
     }
 
     function hotkeyListener(event: KeyboardEvent) {

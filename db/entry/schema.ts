@@ -39,13 +39,6 @@ export const entrySchema: RxJsonSchema<EntryInput> = {
         type: 'string',
       },
     },
-    lists: {
-      type: 'array',
-      items: {
-        type: 'string',
-      },
-    },
-
     updatedAt: {
       type: 'string',
     },

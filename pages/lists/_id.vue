@@ -64,16 +64,10 @@ export default defineComponent({
     const { entries, subscribeEntries, setEntriesSelector } = useEntries($db)
 
     watch(
-      () => [
-        filters.preview,
-        filters.date,
-        filters.categories,
-        filters.order,
-        filters.sortBy,
-      ],
+      () => [filters.preview, filters.date, filters.categories, filters.order],
       (filter) => {
         setEntriesSelector(filters)
-        subscribeEntries(list.value?.entries)
+        subscribeEntries({})
         showPreview.value = filter[0] as boolean
       }
     )
@@ -81,7 +75,7 @@ export default defineComponent({
     watch(
       () => list.value,
       (l) => {
-        subscribeEntries(l!.entries)
+        subscribeEntries({ ids: l!.entries })
       }
     )
 

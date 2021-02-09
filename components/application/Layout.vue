@@ -3,28 +3,22 @@
     class="relative flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
     <div class="w-full lg:w-screen lg:max-w-lg">
-      <div v-if="loading" class="space-y-2">
-        <div
-          v-for="i in 4"
-          :key="i"
-          class="flex flex-col justify-center h-64 pl-4 space-y-4"
-        >
-          <Loading class="w-3/4 h-1/4 bg-primary" type="skeleton" />
-          <Loading class="w-3/4 h-1/2 bg-primary" type="skeleton" />
-        </div>
-      </div>
-
-      <div v-if="!loading" class="grid gap-4">
-        <TabNavigation
-          class="hidden md:flex"
-          :amount="[entriesAmount, listsAmount]"
-        />
-
-        <div v-for="date in Object.keys(content)" :key="date" class="">
+      <TabNavigation
+        class="hidden md:flex"
+        :amount="[entriesAmount, listsAmount]"
+      />
+      <NotFound
+        v-if="!loading && Object.keys(content).length === 0"
+        class="mt-20"
+        :target="type"
+      />
+      <div v-if="content">
+        <div v-for="date in Object.keys(content)" :key="date" v class="">
           <div class="py-1 text-lg font-medium border-borderPrimary">
             {{ date }}
           </div>
-          <div class="">
+
+          <div ref="scrolLRef" class="">
             <component
               :is="type === 'entries' ? BaseEntry : BaseList"
               v-for="(data, index) in content[date]"
@@ -61,17 +55,13 @@
             />
           </div>
         </div>
-        <NotFound
-          v-if="!loading && Object.keys(content).length === 0"
-          class="mt-20"
-          :target="type"
-        />
       </div>
     </div>
 
     <Filters
       :is-list-filter="type === 'lists'"
       :amount="[entriesAmount, listsAmount]"
+      :filters-count="filtersCount"
       @filter="setFilters"
     />
   </div>
@@ -90,7 +80,7 @@ import {
 
 import BaseList from '@/components/application/BaseList.vue'
 import BaseEntry from '@/components/application/BaseEntry.vue'
-import { useEntries, useFilter, useLists } from '@/hooks'
+import { useEntries, useFilter, useLists, useScroll } from '@/hooks'
 
 export default defineComponent({
   props: {
@@ -104,10 +94,11 @@ export default defineComponent({
     const { route } = useContext()
     let { type } = route.value.params
 
-    const { filters, setFilters } = useFilter()
+    const { filters, setFilters, filtersCount } = useFilter()
     if (type !== 'entries' && type !== 'lists') {
       type = 'entries'
     }
+    // const { scrolLRef } = useScroll(() => loadMoreEntries())
     const {
       entries,
       subscribeEntries,
@@ -138,7 +129,7 @@ export default defineComponent({
         showPreview.value = filter.preview ?? false
         if (type === 'entries') {
           setEntriesSelector(filter)
-          subscribeEntries()
+          subscribeEntries({})
         } else {
           setListSelector(filter)
           subscribeList()
@@ -148,7 +139,7 @@ export default defineComponent({
     )
 
     onMounted(() => {
-      subscribeEntries()
+      subscribeEntries({})
       subscribeList()
     })
 
@@ -170,6 +161,7 @@ export default defineComponent({
       lists,
       listsAmount,
       loading,
+      filtersCount,
     }
   },
 })

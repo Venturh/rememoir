@@ -8,7 +8,10 @@
       />
       <Button class="space-x-2 sm:w-full" variant="1" @click="show = !show">
         <AlignCenterIcon size="1.25x" />
-        <span>Filters</span>
+        <span>Filters </span>
+        <Label small :rounded="false" variant="brand25">
+          {{ filtersCount }}
+        </Label>
       </Button>
     </div>
 
@@ -29,16 +32,6 @@
           type="categories"
           :items="categories"
           :icon="FolderIcon"
-          @selected="onChange"
-        />
-      </FilterItem>
-
-      <FilterItem v-if="!isListFilter" title="Lists">
-        <Dropdown
-          class="px-2"
-          type="list"
-          :items="avaibleLists"
-          :icon="LayoutIcon"
           @selected="onChange"
         />
       </FilterItem>
@@ -66,6 +59,7 @@
           </Button>
         </div>
       </FilterItem>
+      <Button @click="seedHandle">Bulk insert</Button>
     </div>
   </div>
 </template>
@@ -84,6 +78,7 @@ import {
 import { Filters } from '@/types'
 
 import { useAvaibleLists } from '@/hooks'
+import { seed } from '@/db/entry'
 
 export default defineComponent({
   props: {
@@ -94,6 +89,10 @@ export default defineComponent({
     isListPrimaryFilter: {
       type: Boolean,
       default: false,
+    },
+    filtersCount: {
+      type: Number,
+      default: 0,
     },
     amount: {
       type: Array,
@@ -116,6 +115,10 @@ export default defineComponent({
       emit('filter', { item, type })
     }
 
+    async function seedHandle() {
+      await seed($db)
+    }
+
     return {
       show,
       categories,
@@ -127,6 +130,7 @@ export default defineComponent({
       ListIcon,
       LayoutIcon,
       ClockIcon,
+      seedHandle,
     }
   },
 })

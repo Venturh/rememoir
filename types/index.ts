@@ -18,7 +18,6 @@ export type Filters = {
     | 'dateSecondary'
     | 'list'
     | 'order'
-    | 'sortBy'
     | 'reset'
   item: string | boolean
 }
@@ -36,9 +35,8 @@ export type Filter = {
   categories?: string | undefined
   preview?: boolean | undefined
   date?: string | undefined
-  list?: string | undefined
-  sortBy?: 'title' | 'updatedAt' | 'calendarDate'
   order?: Order
+  cursor?: string
 }
 
 export type HeaderInputType = 'list' | 'entry' | 'search'

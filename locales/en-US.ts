@@ -48,7 +48,7 @@ export default {
   all_Lists: 'All Lists',
   no_lists_avaible: 'No lists avaible',
   updatedAt_desc: 'Newest first',
-  updatedAt_asc: 'Oldest last',
+  updatedAt_asc: 'Oldest first',
   title_desc: 'Titel descending',
   title_asc: 'Titel ascending',
   calendarDate_desc: 'Calendar descending',

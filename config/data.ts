@@ -103,7 +103,7 @@ export const time = [
 ]
 
 export const order = [
-  { text: Order.UPDATED_DESC, translate: true },
+  { text: Order.UPDATED_DESC, info: 'DEFAULT', translate: true },
   { text: Order.UPDATED_ASC, translate: true },
   { text: Order.TITLE_DESC, translate: true },
   { text: Order.TITLE_ASC, translate: true },
@@ -115,7 +115,5 @@ export const filterInitial: Filter = {
   preview: true,
   categories: undefined,
   date: undefined,
-  list: undefined,
-  order: Order.UPDATED_DESC,
-  sortBy: 'updatedAt',
+  order: undefined,
 }

@@ -6,22 +6,22 @@
     <div class="relative flex items-center w-full sm:w-1/2">
       <nuxt-link
         v-for="(item, index) in tabnavItems"
+        ref="linkRef"
         :key="item.text"
-        class="flex items-center justify-center w-1/2 px-3 py-2.5 space-x-2 sm:justify-start"
-        :class="selected === item.text ? '' : 'hover:text-brand'"
+        class="inline-flex items-center py-2 mr-4 space-x-1 text-sm font-medium border-b-2 text-primary group"
+        :class="
+          selected === item.text
+            ? 'border-brand'
+            : 'border-transparent hover:text-brand hover:border-brand15'
+        "
         :to="localePath(`/home/${item.text}`)"
       >
-        <component :is="item.icon" class="flex-shrink-0" size="1.25x" />
-        <span class="text-sm sm:text-base">{{ $t(item.text) }}</span>
-        <div class="px-1 py-0.5 text-xs sm:text-sm rounded-sm bg-brand25">
+        <component :is="item.icon" class="flex-shrink-0" size="1x" />
+        <span>{{ $t(item.text) }}</span>
+        <Label small :rounded="false" variant="brand25">
           {{ amount[index] }}
-        </div>
+        </Label>
       </nuxt-link>
-
-      <div
-        class="absolute bottom-0 w-1/2 h-0.5 bg-brand"
-        :class="selected === 'lists' ? 'right-0' : 'left-0'"
-      />
     </div>
   </nav>
 </template>
