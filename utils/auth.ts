@@ -21,7 +21,7 @@ export async function requestAccessToken() {
   setAccessToken(accessToken)
 }
 
-export async function tryAccessToken() {
-  if (accessToken === '') await requestAccessToken()
+export async function tryAccessToken(invalid?: boolean) {
+  if (accessToken === '' || invalid === true) await requestAccessToken()
   return accessToken
 }

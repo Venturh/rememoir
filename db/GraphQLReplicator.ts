@@ -49,88 +49,85 @@ export class GraphQLReplicator {
     this.subscriptionClient = null
   }
 
-  async restart() {
-    if (this.replicationState) {
-      this.replicationState.entryReplication.cancel()
-      this.replicationState.listReplication.cancel()
-    }
-
-    if (this.subscriptionClient) {
-      this.subscriptionClient.close()
-    }
-
-    this.replicationState = await this.setupGraphQLReplication()
-    this.subscriptionClient = this.setupGraphQLSubscription(
-      this.replicationState
-    )
+  async refreshTokens() {
+    const accessToken = await tryAccessToken(true)
+    this.replicationState.entryReplication.setHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    })
+    this.replicationState.listReplication.setHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    })
   }
 
   async setupGraphQLReplication() {
-    const entryReplication = this.db.collections.entries.syncGraphQL({
-      url: syncURL,
-      headers: {
-        Authorization: 'Bearer ' + getAccessToken(),
-      },
-      pull: {
-        queryBuilder: entryPullQueryBuilder,
-        modifier: (d: EntryInput) => {
-          return decryptEntry(d)
+    this.replicationState.entryReplication = this.db.collections.entries.syncGraphQL(
+      {
+        url: syncURL,
+        headers: {
+          Authorization: 'Bearer ' + getAccessToken(),
         },
-      },
-      push: {
-        queryBuilder: entryPushQueryBuilder,
-        batchSize,
-        modifier: (d: EntryInput) => {
-          return encryptEntry(d)
+        pull: {
+          queryBuilder: entryPullQueryBuilder,
+          modifier: (d: EntryInput) => {
+            return decryptEntry(d)
+          },
         },
-      },
-      deletedFlag: 'deleted',
-      live: true,
-      liveInterval: 1000 * 60 * 10,
-    })
+        push: {
+          queryBuilder: entryPushQueryBuilder,
+          batchSize,
+          modifier: (d: EntryInput) => {
+            return encryptEntry(d)
+          },
+        },
+        deletedFlag: 'deleted',
+        live: true,
+        liveInterval: 1000 * 60 * 10,
+      }
+    )
 
-    const listReplication = this.db.collections.lists.syncGraphQL({
-      url: syncURL,
-      headers: {
-        Authorization: 'Bearer ' + getAccessToken(),
-      },
-      pull: {
-        queryBuilder: listPullQueryBuilder,
-        modifier: (list: ListInput) => {
-          return decryptList(list)
+    this.replicationState.listReplication = this.db.collections.lists.syncGraphQL(
+      {
+        url: syncURL,
+        headers: {
+          Authorization: 'Bearer ' + getAccessToken(),
         },
-      },
-      push: {
-        queryBuilder: listPushQueryBuilder,
-        batchSize,
-        modifier: (list: ListInput) => {
-          return encryptList(list)
+        pull: {
+          queryBuilder: listPullQueryBuilder,
+          modifier: (list: ListInput) => {
+            return decryptList(list)
+          },
         },
-      },
-      deletedFlag: 'deleted',
-      live: true,
-      liveInterval: 1000 * 60 * 10,
-    })
+        push: {
+          queryBuilder: listPushQueryBuilder,
+          batchSize,
+          modifier: (list: ListInput) => {
+            return encryptList(list)
+          },
+        },
+        deletedFlag: 'deleted',
+        live: true,
+        liveInterval: 1000 * 60 * 10,
+      }
+    )
 
-    listReplication.error$.subscribe(async (err) => {
+    this.replicationState.listReplication.error$.subscribe(async (err) => {
       console.error('Replication Error on Lists:')
       console.dir(err)
-      entryReplication.setHeaders({
-        Authorization: 'Bearer ' + (await tryAccessToken()),
-      })
+      await this.refreshTokens()
     })
-    entryReplication.error$.subscribe(async (err) => {
-      console.error('Replication Error on Lists:')
+    this.replicationState.entryReplication.error$.subscribe(async (err) => {
+      console.error('Replication Error on Entry:')
       console.dir(err)
-      entryReplication.setHeaders({
-        Authorization: 'Bearer ' + (await tryAccessToken()),
-      })
+      await this.refreshTokens()
     })
 
-    await entryReplication.run()
-    await listReplication.run()
+    await this.replicationState.entryReplication.run()
+    await this.replicationState.listReplication.run()
 
-    return { entryReplication, listReplication }
+    return {
+      entryReplication: this.replicationState.entryReplication,
+      listReplication: this.replicationState.listReplication,
+    }
   }
 
   setupGraphQLSubscription({ entryReplication, listReplication }) {

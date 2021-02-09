@@ -1,5 +1,5 @@
 import { onError } from '@apollo/client/link/error'
-import { getAccessToken } from '../utils/auth'
+import { tryAccessToken } from '../utils/auth'
 
 export default function () {
   const httpEndpoint = `http://${process.env.NUXT_ENV_API}/graphql`
@@ -10,13 +10,9 @@ export default function () {
     },
   }
 
-  // TODO: Acces Token refresh
-  // https://github.com/nuxt-community/apollo-module/issues/315
-  // https://github.com/newsiberian/apollo-link-token-refresh
-
-  const link = onError(({ graphQLErrors }) => {
-    graphQLErrors.forEach((err) => {
-      console.log('graphQLErrors', err.name, err.message)
+  const link = onError((error) => {
+    error.graphQLErrors?.forEach((err) => {
+      console.log('graphQLErrors.forEach ~ err', err)
     })
   })
 
@@ -24,8 +20,8 @@ export default function () {
     httpLinkOptions,
     link,
     httpEndpoint,
-    getAuth: () => {
-      return `bearer ${getAccessToken()}`
+    getAuth: async () => {
+      return `bearer ${await tryAccessToken(true)}`
     },
   }
 }
