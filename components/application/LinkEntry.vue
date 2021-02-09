@@ -3,14 +3,14 @@
     <div v-if="preview.type === 'Error'">{{ $t('previewError') }}</div>
     <div v-else class="space-y-2">
       <Preview v-if="preview" :preview="preview" :url="url" />
-      <div class="space-y-1">
-        <p class="text-sm">
+      <div class="space-y-1 text-sm">
+        <p class="text-xs text-secondary">
           {{ preview.ogSiteName }}
         </p>
         <p class="text-sm">
           {{ preview.ogTitle }}
         </p>
-        <p v-if="preview.type === 'website' || preview.type === 'article'">
+        <p>
           {{ preview.ogDescription }}
         </p>
       </div>

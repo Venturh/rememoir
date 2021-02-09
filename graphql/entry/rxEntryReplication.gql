@@ -18,10 +18,7 @@ query rxEntryReplication(
       ogTitle
       ogDescription
       ogImageUrl
-      ogAudioUrl
-      ogVideoUrl
       embeddedUrl
-      color
       type
     }
     categories

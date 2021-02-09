@@ -1,60 +1,37 @@
-import opengraph from 'ts-open-graph-scraper'
+import { unfurl } from 'unfurl.js'
 
 export type LinkPreview = {
   ogSiteName?: string
   ogTitle?: string
   ogDescription?: string
   ogImageUrl?: string
-  ogVideoUrl?: string
-  ogAudioUrl?: string
   embeddedUrl?: string
   type: string
   color?: string
 }
-
 export async function generateLinkPreview(url: string) {
   try {
-    const data = await opengraph({
-      url,
-    })
+    const result = await unfurl(url)
+    console.log('generateLinkPreview ~ result', result)
+    const openGraph = result.open_graph
+    const twitterCard = result.twitter_card
+    const oEmbed = result.oEmbed
 
-    const {
-      ogTitle,
-      ogDescription,
-      ogImage,
-      ogVideo,
-      ogAudio,
-      ogType,
-      twitterPlayer,
-      ogSiteName,
-    } = data
     const preview: LinkPreview = {
-      ogSiteName: ogSiteName ? ogSiteName.toString() : undefined,
-      ogTitle: ogTitle || undefined,
-      ogDescription: ogDescription || undefined,
-      ogImageUrl: ogImage ? ogImage[0].url : url,
-      ogVideoUrl: ogVideo ? ogVideo[0].url : undefined,
-      ogAudioUrl: ogAudio ? (ogAudio as string) : undefined,
-      embeddedUrl: twitterPlayer ? twitterPlayer[0].url : undefined,
-      type: ogType || 'website',
-      color: getColor(ogSiteName as string),
+      ogSiteName: openGraph?.title ? twitterCard.site : result.title,
+      ogTitle: oEmbed?.author_name ?? openGraph?.title ?? undefined,
+      ogDescription:
+        oEmbed?.title ?? openGraph?.description ?? result.description,
+      ogImageUrl: openGraph?.images ? openGraph?.images[0].url : url,
+      embeddedUrl: twitterCard?.players
+        ? twitterCard.players[0].url
+        : undefined,
+      type: openGraph?.type ?? 'website',
     }
+    console.log('gen ~ preview', preview)
     return preview
   } catch (error) {
+    console.log('generateLinkPreview ~ error', error)
     return { type: 'Error' } as LinkPreview
-  }
-}
-
-function getColor(name: string) {
-  if (name === undefined) return undefined
-  switch (name.toLocaleLowerCase()) {
-    case 'spotify':
-      return '#1DB954'
-
-    case 'youtube':
-      return '#FF0000'
-
-    default:
-      return undefined
   }
 }

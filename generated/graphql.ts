@@ -30,10 +30,7 @@ export type ContentPreview = {
   ogTitle?: Maybe<Scalars['String']>;
   ogDescription?: Maybe<Scalars['String']>;
   ogImageUrl?: Maybe<Scalars['String']>;
-  ogVideoUrl?: Maybe<Scalars['String']>;
-  ogAudioUrl?: Maybe<Scalars['String']>;
   embeddedUrl?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -146,10 +143,7 @@ export type ContentPreviewInput = {
   ogTitle?: Maybe<Scalars['String']>;
   ogDescription?: Maybe<Scalars['String']>;
   ogImageUrl?: Maybe<Scalars['String']>;
-  ogVideoUrl?: Maybe<Scalars['String']>;
-  ogAudioUrl?: Maybe<Scalars['String']>;
   embeddedUrl?: Maybe<Scalars['String']>;
-  color?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -175,6 +169,7 @@ export type Query = {
   __typename?: 'Query';
   allEntriesByUser: Array<Entry>;
   rxEntryReplication: Array<Entry>;
+  preview: Scalars['Boolean'];
   users: Array<User>;
   me: User;
   rxListReplication: Array<List>;
@@ -185,6 +180,11 @@ export type QueryRxEntryReplicationArgs = {
   limit: Scalars['Float'];
   minUpdatedAt: Scalars['String'];
   lastId: Scalars['String'];
+};
+
+
+export type QueryPreviewArgs = {
+  url: Scalars['String'];
 };
 
 
@@ -473,7 +473,7 @@ export type RxEntryReplicationQuery = (
     & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted' | 'createdAt'>
     & { preview?: Maybe<(
       { __typename?: 'ContentPreview' }
-      & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'ogAudioUrl' | 'ogVideoUrl' | 'embeddedUrl' | 'color' | 'type'>
+      & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'embeddedUrl' | 'type'>
     )> }
   )> }
 );
@@ -889,10 +889,7 @@ export const RxEntryReplicationDocument = gql`
       ogTitle
       ogDescription
       ogImageUrl
-      ogAudioUrl
-      ogVideoUrl
       embeddedUrl
-      color
       type
     }
     categories
