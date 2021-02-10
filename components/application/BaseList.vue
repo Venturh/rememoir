@@ -1,11 +1,9 @@
 <template>
-  <div
-    class="relative flex flex-col py-2 space-y-2"
-    :class="
-      primary
-        ? 'border border-borderPrimary shadow-sm rounded-sm px-2'
-        : 'cursor-pointer'
-    "
+  <Card
+    :categories="list.categories"
+    :time-from="timeFrom"
+    class="cursor-pointer"
+    :primary="primary"
     @click="navigate"
   >
     <div class="flex items-center justify-between">
@@ -15,16 +13,7 @@
       <BaseListActions :list-id="list.id" :list="list" />
     </div>
     <p class="">{{ list.description }}</p>
-    <div class="flex items-center justify-between">
-      <div class="flex space-x-2">
-        <Label v-for="category in list.categories" :key="category">
-          {{ category }}
-        </Label>
-      </div>
-      <span class="text-sm">{{ timeFrom }}</span>
-    </div>
-    <div v-if="!primary" class="h-0.5 bg-borderPrimary" />
-  </div>
+  </Card>
 </template>
 
 <script lang="ts">

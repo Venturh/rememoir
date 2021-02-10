@@ -11,7 +11,6 @@ module.exports = {
     colors: {
       brand: 'var(--brand)',
       brandDarker: 'var(--brandDarker)',
-      brandContrast: 'var(--brandContrast)',
       brand25: 'var(--brand25)',
       brand15: 'var(--brand15)',
       borderPrimary: 'var(--border)',
@@ -41,6 +40,9 @@ module.exports = {
         xsm: '21rem',
         xxl: '100rem',
       },
+      ringWidth: {
+        '1/2': '1.5px',
+      },
       transitionProperty: {
         height: 'height',
         width: 'width',
@@ -49,8 +51,9 @@ module.exports = {
     },
   },
   variants: {
-    ringColor: ['hover', 'active', 'focus'],
-    ringWidth: ['hover', 'active', 'focus'],
+    ringColor: ['hover', 'active', 'focus', 'dark'],
+    ringWidth: ['hover', 'active', 'focus', 'dark'],
+    shadow: ['hover', 'active', 'focus', 'dark'],
   },
   plugins: [require('@tailwindcss/forms')],
 }

@@ -1,8 +1,8 @@
 <template>
   <button
     type="button"
-    :class="[buttonVariant(variant), { 'px-4 py-2 ': !padding }]"
-    class="flex items-center justify-center text-sm font-medium rounded-md shadow-sm sm:text-base focus:outline-none"
+    :class="[buttonVariant, { 'px-4 py-2 ': !padding }]"
+    class="flex items-center justify-center text-sm font-medium border border-transparent rounded-md shadow-sm sm:text-base focus:outline-none"
     @click="$emit('click', $event)"
   >
     <slot />
@@ -10,12 +10,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent, PropType } from '@nuxtjs/composition-api'
+
+type Variant = 'brand' | 'brand25' | 'brand15' | 'inherit'
 export default defineComponent({
   props: {
     variant: {
-      type: String,
-      default: '',
+      type: String as PropType<Variant>,
+      default: 'brand',
     },
     padding: {
       type: Boolean,
@@ -23,21 +25,29 @@ export default defineComponent({
     },
   },
   setup(props) {
-    function buttonVariant(variant: string) {
+    const buttonVariant = computed(() => {
       const map = new Map([
         [
           '1',
-          'border border-borderPrimary shadow-sm text-brand hover:bg-brand hover:text-white',
+          'ring-1 ring-brand shadow-sm text-brand hover:bg-brand hover:text-white',
         ],
         ['inherit', 'bg-none text-primary  hover:text-brand'],
-        ['secondary', 'bg-brand25 text-brand  py-2  hover:bg-brand15'],
+        [
+          'brand15',
+          'shadow-sm bg-brand15 hover:bg-brand25 text-primary focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand15',
+        ],
+        [
+          'brand25',
+          'shadow-sm bg-brand25 hover:bg-brand15 text-brand focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand25',
+        ],
+        [
+          'brand',
+          'bg-brand text-white border-secondary px-4 py-2 hover:bg-brandDarker focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-brand',
+        ],
       ])
 
-      return (
-        map.get(props.variant) ||
-        'bg-brand text-white border-secondary px-4 py-2 hover:bg-brandDarker  focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-brand'
-      )
-    }
+      return map.get(props.variant)
+    })
     return { buttonVariant }
   },
 })

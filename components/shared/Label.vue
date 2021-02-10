@@ -33,7 +33,7 @@ export default defineComponent({
   setup(props) {
     const variants = computed(() => {
       const map = new Map<Variants, string>([
-        ['primary', ' bg-secondary'],
+        ['primary', ' bg-secondary ring-1/2 ring-borderPrimary'],
         ['secondary', ''],
         ['brand25', 'bg-brand25'],
         ['border', 'border border-borderPrimary shadow-sm'],

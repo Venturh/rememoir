@@ -7,7 +7,7 @@
     :disabled="disabled"
     name="input"
     :value="inputValue"
-    class="block w-full border border-transparent rounded-lg bg-primary focus:outline-none focus:ring focus:ring-brand"
+    class="block w-full border border-transparent rounded-lg bg-primary focus:outline-none focus:ring-1/2 focus:ring-brand"
     :class="search ? 'pl-12' : 'pl-16 sm:pl-20'"
     :placeholder="placeholder"
     @input="$emit('input', $event.target.value)"

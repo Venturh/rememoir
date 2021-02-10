@@ -16,9 +16,9 @@
       </div>
 
       <Button
-        variant="1"
+        variant="brand25"
         padding
-        class="p-2 lg:ml-6 lg:px-4 lg:space-x-2 lg:w-80"
+        class="p-2 lg:ml-6 lg:px-4 lg:space-x-2"
         @click="search = 'entry'"
       >
         <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>

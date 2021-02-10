@@ -72,7 +72,7 @@ export default class Entry extends BaseEntity {
 
   @Field(() => [String])
   @Property()
-  categories!: [string]
+  categories!: string[]
 
   @Field(() => User)
   @ManyToOne()

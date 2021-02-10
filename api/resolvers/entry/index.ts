@@ -14,7 +14,7 @@ import {
 import { Entry, User } from '../../entities'
 import { MyContext } from '../../types'
 import { isAuth, verifyToken } from '../../utils/auth'
-import { generateLinkPreview } from '../../utils/linkPreview'
+import { generateLinkPreview, LinkPreview } from '../../utils/linkPreview'
 import { filterEntry, sortByUpdated } from '../../utils/sort'
 import { EntryInput } from './types'
 
@@ -59,13 +59,18 @@ class EntryResolver {
   ): Promise<Entry> {
     const user = await em.findOne(User, { id: payload?.userId })
     const entry = await em.findOne(Entry, { id: entryInput.id })
-    if (entry) {
-      let preview = entry.preview
-      if (entry.url !== entryInput.url) {
-        preview = await generateLinkPreview(entryInput.url)
-      }
-      wrap(entry).assign({ ...entryInput, preview })
 
+    if (entry) {
+      let existingPreview = entry.preview
+      if (entry.url !== entryInput.url) {
+        const { preview } = await generateLinkPreview(
+          entryInput.url,
+          entryInput.categories
+        )
+        existingPreview = preview
+      }
+
+      wrap(entry).assign({ ...entryInput, preview: existingPreview })
       await em.flush()
       pubsub.publish('changedEntry', entry)
       return entry
@@ -73,9 +78,21 @@ class EntryResolver {
       const doc = new Entry(entryInput, user!)
 
       if (entryInput.type === 'Link') {
-        const linkPreview = await generateLinkPreview(entryInput.url)
-        doc.preview = linkPreview
+        const { preview, type, keywords } = await generateLinkPreview(
+          entryInput.url,
+          entryInput.categories
+        )
+        if (type) doc.preview = { type }
+        else doc.preview = preview
+        if (keywords) {
+          console.log('keywords', keywords)
+          console.log('doc', doc.categories)
+          const test = doc.categories.concat(keywords)
+          console.log('EntryResolver ~ test', test)
+          doc.categories = test
+        }
       }
+
       await em.persistAndFlush(doc)
       pubsub.publish('changedEntry', doc)
       return doc

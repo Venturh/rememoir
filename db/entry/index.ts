@@ -2,74 +2,28 @@ import { RxDBUpdatePlugin } from 'rxdb/plugins/update'
 import { addRxPlugin } from 'rxdb'
 
 import dayjs from 'dayjs'
+import ObjectID from 'bson-objectid'
 import { EntryInput } from '../../generated/graphql'
 import { EditedEntry } from '../../types'
 import { MyDatabase } from '../index'
 import { removeEntryFromList } from '../list'
-const id = require('bson-objectid')
 
 addRxPlugin(RxDBUpdatePlugin)
 
-// TODO: Clean this up
-export function queryEntries(
-  db: MyDatabase,
-  {
-    category,
-    date,
-  }: { category?: string | undefined; date?: string | undefined }
-) {
-  if (category === undefined) {
-    if (date === undefined) return db.entries.find().sort({ updatedAt: 'desc' })
-    else {
-      const calendarDate = dayjs(date).format('DD.MM.YY')
-      return db.entries
-        .find({
-          selector: {
-            calendarDate: {
-              $eq: calendarDate,
-            },
-          },
-        })
-        .sort({ updatedAt: 'desc' })
-    }
-  } else if (date === undefined)
-    return db.entries
-      .find({
-        selector: {
-          categories: { $in: [category] },
-        },
-      })
-      .sort({ updatedAt: 'desc' })
-  else {
-    return db.entries
-      .find({
-        selector: {
-          categories: { $in: [category] },
-          calendarDate: { $eq: dayjs(date).format('DD.MM.YY') },
-        },
-      })
-      .sort({ updatedAt: 'desc' })
-  }
+type NewEntry = {
+  title: string
+  description: string
+  categories: string[]
+  type: string
+  url: string
 }
 
 export async function addEntry(
-  {
-    title,
-    description,
-    type,
-    url,
-    categories,
-  }: {
-    title: string
-    description: string
-    categories: string[]
-    type: string
-    url: string
-  },
+  { title, description, type, url, categories }: NewEntry,
   db: MyDatabase
 ) {
-  const entry = {
-    id: id().str as string,
+  const entry: EntryInput = {
+    id: new ObjectID().str,
     title,
     description,
     type,
@@ -79,7 +33,6 @@ export async function addEntry(
     calendarDate: dayjs().format('DD.MM.YY'),
     processing: false,
     updatedAt: Date.now().toString(),
-    lists: [],
   }
   await db.entries.insert(entry)
 }

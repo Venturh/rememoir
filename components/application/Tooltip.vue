@@ -1,25 +1,35 @@
 <template>
-  <div
-    class="absolute z-50 w-full px-2 py-1 text-sm rounded-md min-w-max -bottom-14 -left-16 text-brand"
-    :class="variant === 'primary' ? 'bg-primary' : ' bg-secondary'"
-  >
-    <slot />
-    <svg
-      class="absolute left-0 w-full h-2 -top-2 text-brand25"
-      x="0px"
-      y="0px"
-      viewBox="0 0 100 100"
-      xml:space="preserve"
+  <div class="relative flex w-full space-x-2">
+    <div
+      class="cursor-pointer"
+      @mouseover="show = true"
+      @mouseleave="show = false"
     >
-      <polygon class="fill-current" points="50 15, 100 100, 0 100" />
-    </svg>
+      <slot />
+    </div>
+    <div>
+      <div
+        v-if="show"
+        :class="positions"
+        class="absolute bottom-0 px-2 py-1 text-sm rounded-md text-primary ring-1/2 ring-borderPrimary bg-primary inset-center"
+      >
+        <span v-if="text">{{ text }}</span>
+        <slot name="content" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@nuxtjs/composition-api'
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+} from '@nuxtjs/composition-api'
 
 type Variant = 'primary' | 'secondary'
+type Position = 'under' | 'right'
 
 export default defineComponent({
   props: {
@@ -27,6 +37,27 @@ export default defineComponent({
       type: String as PropType<Variant>,
       default: 'primary',
     },
+    text: {
+      type: String,
+      default: '',
+    },
+    position: {
+      type: String as PropType<Position>,
+      default: 'right',
+    },
+  },
+
+  setup(props) {
+    const show = ref(false)
+
+    const positions = computed(() => {
+      const map = new Map<Position, string>([
+        ['under', 'left-0 -bottom-12'],
+        ['right', ' bottom-0'],
+      ])
+      return map.get(props.position)
+    })
+    return { show, positions }
   },
 })
 </script>

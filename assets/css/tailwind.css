@@ -23,12 +23,17 @@ input[type='search']::-webkit-search-results-decoration {
 .dark {
   --brand: #3485e4;
   --brandDarker: #2f78cd;
-  --brandContrast: #1b2439;
   --brand25: rgba(52, 133, 228, 0.15);
   --brand15: rgba(52, 133, 228, 0.25);
-  --border: #374151;
+
+  /* --border: #374151;
   --bg: #171d2d;
-  --bg-secondary: #1d2333;
+  --bg-secondary: #1d2333; */
+
+  --border: #232325;
+  --bg: #131313;
+  --bg-secondary: #171719;
+
   --text-primary: #edf2f7;
   --text-secondary: #cbd5e0;
   --error: #fc8181;
@@ -38,7 +43,6 @@ input[type='search']::-webkit-search-results-decoration {
 .light {
   --brand: #3485e4;
   --brandDarker: #2f78cd;
-  --brandContrast: #1b2439;
   --brand25: rgba(52, 133, 228, 0.25);
   --brand15: rgba(52, 133, 228, 0.15);
   --border: #f3f3f4;

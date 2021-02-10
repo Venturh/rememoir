@@ -1,9 +1,8 @@
 import dayjs from 'dayjs'
+import ObjectID from 'bson-objectid'
 import { EntryInput, ListInput } from '../../generated/graphql'
 import { MyDatabase } from '..'
 import { EditedList } from '../../types'
-
-const id = require('bson-objectid')
 
 export function getLists(
   db: MyDatabase,
@@ -56,7 +55,7 @@ export async function addList(
   categories: string[]
 ) {
   const list: ListInput = {
-    id: id().str as string,
+    id: new ObjectID().str,
     title,
     description,
     categories,

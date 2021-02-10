@@ -2,7 +2,7 @@
   <div
     class="relative flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
-    <div class="w-full lg:w-screen lg:max-w-lg">
+    <div class="w-full space-y-2 sm:space-y-4 lg:w-screen lg:max-w-lg">
       <TabNavigation
         class="hidden md:flex"
         :amount="[entriesAmount, listsAmount]"
@@ -13,12 +13,11 @@
         :target="type"
       />
       <div v-if="content">
-        <div v-for="date in Object.keys(content)" :key="date" v class="">
+        <div v-for="date in Object.keys(content)" :key="date" class="space-y-2">
           <div class="py-1 text-lg font-medium border-borderPrimary">
             {{ date }}
           </div>
-
-          <div ref="scrolLRef" class="">
+          <div ref="scrolLRef" class="space-y-4">
             <component
               :is="type === 'entries' ? BaseEntry : BaseList"
               v-for="(data, index) in content[date]"

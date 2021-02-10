@@ -4,26 +4,14 @@
     :class="variants"
     :to="to"
     :out="out"
-    @mouseover="hover(true)"
-    @mouseleave="hover(false)"
     @click.stop="$emit('click')"
   >
     <slot />
-    <div v-if="showTooltip && tooltip" class="relative">
-      <Tooltip :variant="tooltipVariant">
-        {{ tooltip }}
-      </Tooltip>
-    </div>
   </ButtonOrLink>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  PropType,
-  ref,
-} from '@nuxtjs/composition-api'
+import { computed, defineComponent, PropType } from '@nuxtjs/composition-api'
 
 type Variants = 'primary' | 'secondary'
 
@@ -36,22 +24,13 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    tooltip: {
-      type: String,
-      default: '',
-    },
     variant: {
-      type: String as PropType<Variants>,
-      default: '',
-    },
-    tooltipVariant: {
       type: String as PropType<Variants>,
       default: '',
     },
   },
 
-  setup(props, { emit }) {
-    const showTooltip = ref(false)
+  setup(props) {
     const variants = computed(() => {
       const allVariants = new Map<Variants, string>([
         ['primary', 'hover:bg-brand25 p-1 rounded-full hover:text-brand'],
@@ -62,16 +41,7 @@ export default defineComponent({
       )
     })
 
-    function hover(hover: boolean) {
-      if (hover) {
-        showTooltip.value = true
-        emit('mouseover')
-      } else {
-        emit('mouseleave')
-        showTooltip.value = false
-      }
-    }
-    return { variants, hover, showTooltip }
+    return { variants }
   },
 })
 </script>

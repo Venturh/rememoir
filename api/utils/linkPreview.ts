@@ -9,7 +9,7 @@ export type LinkPreview = {
   type: string
   color?: string
 }
-export async function generateLinkPreview(url: string) {
+export async function generateLinkPreview(url: string, categories: string[]) {
   try {
     const result = await unfurl(url)
     console.log('generateLinkPreview ~ result', result)
@@ -28,10 +28,14 @@ export async function generateLinkPreview(url: string) {
         : undefined,
       type: openGraph?.type ?? 'website',
     }
-    console.log('gen ~ preview', preview)
-    return preview
+
+    const keywords =
+      result?.keywords.filter((k, i) => !categories.includes(k) && i < 4) ??
+      undefined
+    console.log('gen ~ preview', preview, keywords)
+    return { preview, keywords }
   } catch (error) {
     console.log('generateLinkPreview ~ error', error)
-    return { type: 'Error' } as LinkPreview
+    return { type: 'Error' }
   }
 }

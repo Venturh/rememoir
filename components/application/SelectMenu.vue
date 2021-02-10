@@ -19,8 +19,8 @@
           v-for="(option, index) in options"
           :key="index"
           role="option"
-          class="relative flex options-center p-2 space-x-2 cursor-default select-none"
-          :class="[{ 'bg-brand text-brandContrast': selectedIndex === index }]"
+          class="relative flex p-2 space-x-2 cursor-default select-none options-center"
+          :class="[{ 'bg-brand text-primary': selectedIndex === index }]"
           @click="setSelected(option)"
           @mouseenter="selectedIndex = index"
         >

@@ -6,7 +6,8 @@
         class="sm:hidden"
         :amount="amount"
       />
-      <Button class="space-x-2 sm:w-full" variant="1" @click="show = !show">
+      <span />
+      <Button class="space-x-2" variant="brand25" @click="show = !show">
         <AlignCenterIcon size="1.25x" />
         <span>Filters </span>
         <Label small :rounded="false" variant="brand25">
@@ -30,7 +31,7 @@
         <Dropdown
           class="px-2"
           type="categories"
-          :items="categories"
+          :items="allCategories"
           :icon="FolderIcon"
           @selected="onChange"
         />
@@ -42,17 +43,18 @@
 
       <FilterItem title="Misc">
         <div class="flex justify-between w-1/2 pl-2 space-x-2">
-          <IconOnlyButton
-            tooltip="Toggle preview"
-            class="p-2 border border-borderPrimary"
-            @click="onChange({ type: 'preview', item: !previewFilter })"
-          >
-            <SquareIcon v-if="previewFilter" size="1.25x" />
-            <LayoutIcon v-else size="1.25x" />
-          </IconOnlyButton>
+          <Tooltip position="under" text="Toggle preview">
+            <IconOnlyButton
+              class="p-2 border border-borderPrimary"
+              @click="onChange({ type: 'preview', item: !previewFilter })"
+            >
+              <SquareIcon v-if="previewFilter" size="1.25x" />
+              <LayoutIcon v-else size="1.25x" />
+            </IconOnlyButton>
+          </Tooltip>
           <Button
             class="w-full text-xs"
-            variant="1"
+            variant="brand15"
             @click="$emit('filter', { type: 'reset', item: undefined })"
           >
             {{ $t('reset') }}
@@ -75,7 +77,7 @@ import {
   ClockIcon,
   AlignCenterIcon,
 } from 'vue-feather-icons'
-import { Filters } from '@/types'
+import { Filters, MenuOption } from '@/types'
 
 import { useAvaibleLists } from '@/hooks'
 import { seed } from '@/db/entry'
@@ -110,6 +112,15 @@ export default defineComponent({
     const { avaibleLists } = useAvaibleLists($db)
     const show = ref(false)
 
+    const allCategories: MenuOption = ([
+      {
+        icon: null,
+        text: 'all_categories',
+        info: 'DEFAULT',
+        translate: true,
+      },
+    ] as MenuOption).concat(categories)
+
     function onChange({ type, item }: Filters) {
       if (type === 'preview') previewFilter.value = !previewFilter.value
       emit('filter', { item, type })
@@ -131,6 +142,7 @@ export default defineComponent({
       LayoutIcon,
       ClockIcon,
       seedHandle,
+      allCategories,
     }
   },
 })

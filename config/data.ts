@@ -14,7 +14,7 @@ import {
   ColumnsIcon,
   ListIcon,
 } from 'vue-feather-icons'
-import { Filter, Order } from '../types'
+import { Filter, MenuOption, Order } from '../types'
 
 export const sidebarItems = [
   { icon: HomeIcon, text: 'home' },
@@ -59,8 +59,7 @@ export const hoverSecondaryMenu = [
   { name: 'back', icon: SkipBackIcon, goto: 'primary' },
 ]
 
-export const categories = [
-  { icon: null, text: 'all_categories', info: 'DEFAULT', translate: true },
+export const categories: MenuOption = [
   { icon: null, text: 'Videos' },
   { icon: null, text: 'Youtube' },
   { icon: null, text: 'Audio' },
@@ -84,7 +83,7 @@ export const calendarTheme = {
     rounded: 'rounded-full',
     selected: {
       background: 'bg-brand ',
-      text: 'text-brandContrast',
+      text: 'text-primary',
       border: 'border-primaryText ',
     },
   },

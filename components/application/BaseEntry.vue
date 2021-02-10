@@ -1,29 +1,16 @@
 <template>
-  <div class="relative flex flex-col w-full h-full py-3 space-y-3">
-    <div>
-      <div class="flex items-center justify-between">
-        <span>{{ entry.title }}</span>
-        <BaseEntryActions :entry="entry" :is-list-entry="isListEntry" />
-      </div>
-
-      <p v-if="entry.description" class="">{{ entry.description }}</p>
+  <Card :categories="entry.categories" :time-from="timeFrom">
+    <div class="flex items-center justify-between">
+      <span>{{ entry.title }}</span>
+      <BaseEntryActions :entry="entry" :is-list-entry="isListEntry" />
     </div>
+    <p v-if="entry.description" class="">{{ entry.description }}</p>
     <LinkEntry
       v-if="entry.type === 'Link' && showPreview"
       :url="entry.url"
       :preview="entry.preview"
     />
-
-    <div class="flex items-center justify-between">
-      <div class="flex space-x-2">
-        <Label v-for="category in entry.categories" :key="category">
-          {{ category }}
-        </Label>
-      </div>
-      <span class="text-sm">{{ timeFrom }}</span>
-    </div>
-    <div class="h-0.5 rounded-full bg-borderPrimary" />
-  </div>
+  </Card>
 </template>
 
 <script lang="ts">

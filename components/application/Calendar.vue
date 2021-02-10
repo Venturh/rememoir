@@ -30,7 +30,7 @@
       @selected="onSecondaryChange"
     />
 
-    <Button class="text-sm" variant="1" @click="reset">
+    <Button class="text-sm" variant="brand15" @click="reset">
       {{ $t('reset') }}
     </Button>
   </div>
