@@ -10,6 +10,15 @@
       />
     </div>
 
+    <div class="absolute inset-y-0 right-0 flex items-center sm:pr-3">
+      <Calendar
+        icon-only
+        :open="calendar.open"
+        :disabled="calendar.disabled"
+        @change="addCalendar"
+      />
+    </div>
+
     <div
       class="flex space-x-2"
       @keydown.esc.prevent="$emit('cancel')"
@@ -111,6 +120,7 @@ export default defineComponent({
     const listsOpen = ref(false)
     const descriptonActive = ref(false)
     const description = ref('')
+    const calendar = ref({ open: false, date: '', disabled: false })
 
     const { $db } = useContext().app
     const { avaibleLists } = useAvaibleLists($db)
@@ -144,6 +154,23 @@ export default defineComponent({
       inputRef.value?.$el.focus()
     }
 
+    function toggleCalendar() {
+      if (input.value.includes('~')) return
+      calendar.value.open = !calendar.value.open
+    }
+
+    function addCalendar(date: string) {
+      calendar.value.open = false
+      const split = input.value.split(' ')
+      const index = split.findIndex((s) => s.includes('~'))
+      if (index !== -1) {
+        split.splice(index, 1)
+        input.value = split.join(' ').replace('~', '')
+      }
+      input.value += ` ${date}`
+      calendar.value.date = date
+    }
+
     function handleEnter(event: Event) {
       if (categoriesOpen.value || listsOpen.value) {
         event.preventDefault()
@@ -156,7 +183,12 @@ export default defineComponent({
     }
 
     function submit() {
-      emit('action', { data: input.value, description: description.value })
+      input.value = input.value.replace(calendar.value.date, '')
+      emit('action', {
+        data: input.value,
+        description: description.value,
+        date: calendar.value.date,
+      })
       input.value = ''
       description.value = ''
     }
@@ -181,6 +213,12 @@ export default defineComponent({
           descriptonActive.value = true
         } else if (descriptonActive && value.slice(-1) !== '//') {
           descriptonActive.value = false
+        }
+        if (value.slice(-1) === '~') {
+          inputRef.value?.$el.blur()
+          calendar.value.open = true
+        } else if (descriptonActive && value.slice(-1) !== '~') {
+          calendar.value.open = false
         }
       }
     )
@@ -208,6 +246,9 @@ export default defineComponent({
       inputDescRef,
       cancelDescription,
       avaibleLists,
+      calendar,
+      toggleCalendar,
+      addCalendar,
     }
   },
 })

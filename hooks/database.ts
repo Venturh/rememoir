@@ -1,4 +1,5 @@
 import { ref } from '@nuxtjs/composition-api'
+import dayjs from 'dayjs'
 import { MyDatabase } from '../db'
 import { addEntry } from '../db/entry'
 import { addList } from '../db/list'
@@ -12,16 +13,20 @@ export function useAddDb({ db }: { db: MyDatabase }) {
     data,
     target,
     description,
+    date,
   }: {
     data: string
     target: HeaderInputType
     description: string
+    date: string
   }) {
     loading.value = true
     let split = data.split(' ')
     let list = split.find((s) => s.includes('@'))
     let categories = split.filter((s) => s.includes('#'))
     let url = ''
+    const calendarDate =
+      date === '' ? dayjs().format('DD.MM.YY') : date.replace('~', '')
 
     if (categories) {
       categories = categories.map((s) => {
@@ -58,6 +63,7 @@ export function useAddDb({ db }: { db: MyDatabase }) {
           title,
           description,
           type,
+          calendarDate,
         },
         db
       )

@@ -16,10 +16,11 @@ type NewEntry = {
   categories: string[]
   type: string
   url: string
+  calendarDate: string
 }
 
 export async function addEntry(
-  { title, description, type, url, categories }: NewEntry,
+  { title, description, type, url, categories, calendarDate }: NewEntry,
   db: MyDatabase
 ) {
   const entry: EntryInput = {
@@ -30,10 +31,11 @@ export async function addEntry(
     url,
     categories,
     hashedKey: 'hashed',
-    calendarDate: dayjs().format('DD.MM.YY'),
+    calendarDate,
     processing: false,
     updatedAt: Date.now().toString(),
   }
+  console.log('entry', entry)
   await db.entries.insert(entry)
 }
 

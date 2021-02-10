@@ -61,7 +61,7 @@
           </Button>
         </div>
       </FilterItem>
-      <Button @click="seedHandle">Bulk insert</Button>
+      <!-- <Button @click="seedHandle">Bulk insert</Button> -->
     </div>
   </div>
 </template>

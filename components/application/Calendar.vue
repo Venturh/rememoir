@@ -1,8 +1,8 @@
 <template>
   <div class="relative flex justify-between w-full px-2 space-x-2">
     <Dropdown
-      class="w-2/12"
-      :show="show"
+      :class="iconOnly ? 'w-full' : 'w-1/2'"
+      :show="show || open"
       :icon="CalendarIcon"
       icon-only
       @change="setShow"
@@ -20,9 +20,11 @@
       </template>
     </Dropdown>
     <Dropdown
+      v-if="!iconOnly"
       class="w-1/2"
       type="date"
       :items="time"
+      :disabled="disabled"
       :optional-item="
         date !== '' ? { text: 'Custom', info: 'DEFAULT' } : undefined
       "
@@ -30,7 +32,7 @@
       @selected="onSecondaryChange"
     />
 
-    <Button class="text-sm" variant="brand15" @click="reset">
+    <Button v-if="!iconOnly" class="text-sm" variant="brand15" @click="reset">
       {{ $t('reset') }}
     </Button>
   </div>
@@ -47,13 +49,27 @@ import { CalendarIcon } from 'vue-feather-icons'
 import { calendarTheme, time } from '@/config/data'
 
 export default defineComponent({
+  props: {
+    iconOnly: {
+      type: Boolean,
+      default: false,
+    },
+    open: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     VueTailWindPicker: () => import('vue-tailwind-picker'),
     CalendarIcon,
   },
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const { $dayjs } = useContext().app
-    const show = ref(false)
+    const show = ref(props.open)
 
     const displayDate = computed(() =>
       date.value ? $dayjs(date.value).format('dd, DD.MM.YY') : 'All Time'
@@ -63,7 +79,8 @@ export default defineComponent({
     function onChange(value: string) {
       show.value = false
       date.value = value
-      emit('change', { type: 'date', item: $dayjs(value) })
+      if (props.iconOnly) emit('change', `~${$dayjs(value).format('DD.MM.YY')}`)
+      else emit('change', { type: 'date', item: $dayjs(value) })
     }
     function onSecondaryChange({ item, type }: { item: any; type: string }) {
       show.value = false

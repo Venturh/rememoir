@@ -26,13 +26,13 @@ input[type='search']::-webkit-search-results-decoration {
   --brand25: rgba(52, 133, 228, 0.15);
   --brand15: rgba(52, 133, 228, 0.25);
 
-  /* --border: #374151;
+  --border: #374151;
   --bg: #171d2d;
-  --bg-secondary: #1d2333; */
+  --bg-secondary: #1d2333;
 
-  --border: #232325;
+  /* --border: #232325;
   --bg: #131313;
-  --bg-secondary: #171719;
+  --bg-secondary: #171719; */
 
   --text-primary: #edf2f7;
   --text-secondary: #cbd5e0;

@@ -51,7 +51,7 @@ export function useLists(db: MyDatabase) {
     select.value.$.subscribe((results: RxDocument[]) => {
       listsAmount.value = results.length
       const grouped = groupBy(results, (result: ListInput) => {
-        return dayjs(parseInt(result.updatedAt)).calendar()
+        return result.calendarDate
       })
       listsLoading.value = false
       lists.value = grouped

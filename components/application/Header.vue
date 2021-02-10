@@ -71,11 +71,18 @@ export default defineComponent({
     async function handleInputAction({
       data,
       description,
+      date,
     }: {
       data: string
       description: string
+      date: string
     }) {
-      await execute({ target: inputType.value, data, description })
+      await execute({
+        target: inputType.value,
+        data,
+        description,
+        date,
+      })
       inputType.value = 'search'
     }
 

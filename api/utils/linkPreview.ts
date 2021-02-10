@@ -18,7 +18,7 @@ export async function generateLinkPreview(url: string, categories: string[]) {
     const oEmbed = result.oEmbed
 
     const preview: LinkPreview = {
-      ogSiteName: openGraph?.title ? twitterCard.site : result.title,
+      ogSiteName: openGraph?.title ?? twitterCard?.site ?? result.title,
       ogTitle: oEmbed?.author_name ?? openGraph?.title ?? undefined,
       ogDescription:
         oEmbed?.title ?? openGraph?.description ?? result.description,
@@ -30,7 +30,7 @@ export async function generateLinkPreview(url: string, categories: string[]) {
     }
 
     const keywords =
-      result?.keywords.filter((k, i) => !categories.includes(k) && i < 4) ??
+      result.keywords?.filter((k, i) => !categories.includes(k) && i < 4) ??
       undefined
     console.log('gen ~ preview', preview, keywords)
     return { preview, keywords }

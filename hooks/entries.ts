@@ -60,7 +60,7 @@ export function useEntries(db: MyDatabase) {
 
       entriesAmount.value = allEntries.value.length
       entries.value = groupBy(allEntries.value, (result: EntryInput) => {
-        return dayjs(parseInt(result.updatedAt)).calendar()
+        return result.calendarDate
       })
     })
   }

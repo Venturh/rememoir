@@ -11,7 +11,7 @@
     >
       <div
         class="flex items-center truncate"
-        :class="iconOnly ? 'space-y-1' : 'space-x-2 '"
+        :class="iconOnly ? 'px-2' : 'space-x-2 '"
       >
         <component
           :is="icon || selected.icon"
@@ -38,14 +38,17 @@
     </IconOnlyButton>
     <SelectMenu
       v-if="items.length > 0"
-      :open="open"
+      :open="open || show"
       :options="items"
       :optional-item="optionalItem"
       :selected="selected"
       with-icons
       @selected="handleSelected"
     />
-    <div v-else-if="items.length === 0 && open" class="absolute z-50 top-8">
+    <div
+      v-else-if="(items.length === 0 && open) || show"
+      class="absolute z-50 top-8"
+    >
       <slot name="menu" />
     </div>
   </div>
@@ -94,6 +97,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   components: {
@@ -113,6 +120,7 @@ export default defineComponent({
     const wrapperRef = ref<HTMLDivElement>()
 
     function onChange() {
+      if (props.disabled) return
       open.value = !open.value
       emit('change', open.value)
     }
