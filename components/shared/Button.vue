@@ -1,8 +1,12 @@
 <template>
   <button
     type="button"
-    :class="[buttonVariant, { 'px-4 py-2 ': !padding }]"
-    class="flex items-center justify-center text-sm font-medium border border-transparent rounded-md shadow-sm sm:text-base focus:outline-none"
+    :class="[
+      buttonVariant,
+      { 'px-2 py-1 sm:py-2 ': !padding },
+      small ? 'text-xs sm:text-sm' : 'text-sm sm:text-base ',
+    ]"
+    class="flex items-center justify-center font-medium border border-transparent rounded-md shadow-sm focus:outline-none"
     @click="$emit('click', $event)"
   >
     <slot />
@@ -20,6 +24,10 @@ export default defineComponent({
       default: 'brand',
     },
     padding: {
+      type: Boolean,
+      default: false,
+    },
+    small: {
       type: Boolean,
       default: false,
     },

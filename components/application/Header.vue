@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="flex items-center justify-between space-x-2 lg:space-x-0">
+    <div class="flex justify-between space-x-2 lg:space-x-0">
       <div class="w-full space-x-6 lg:w-screen lg:max-w-lg">
-        <HeaderSearch v-if="search === true" />
+        <HeaderSearch v-if="search === true" @keyAction="hotkey" />
         <HeaderAdd
           v-else
           ref="headerAdd"
@@ -18,12 +18,12 @@
       <Button
         variant="brand25"
         padding
-        class="p-2 lg:ml-6 lg:px-4 lg:space-x-2"
+        class="p-1 lg:ml-6 lg:px-4 lg:space-x-2"
         @click="search = 'entry'"
       >
         <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
-        <XIcon v-if="search === false" class="fill-current" size="1.5x" />
-        <PlusIcon v-else class="fill-current" size="1.5x" />
+        <XIcon v-if="search === false" class="fill-current" size="1.25x" />
+        <PlusIcon v-else class="fill-current" size="1.25x" />
       </Button>
     </div>
     <div class="h-0.5 mt-2 rounded-full w-full bg-borderPrimary" />
@@ -92,11 +92,22 @@ export default defineComponent({
         setInputType('entry')
         if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
       } else if (event.key === 'l' && event.ctrlKey) {
-        event.preventDefault()
+        if (event.preventDefault) event.preventDefault()
         setInputType('list')
         if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
       } else if (event.key === 'k' && event.ctrlKey) {
-        event.preventDefault()
+        if (event.preventDefault) event.preventDefault()
+        inputType.value = 'search'
+      }
+    }
+    function hotkey(key: string) {
+      if (key === 'e') {
+        setInputType('entry')
+        if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
+      } else if (key === 'l') {
+        setInputType('list')
+        if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
+      } else if (key === 'k') {
         inputType.value = 'search'
       }
     }
@@ -115,6 +126,8 @@ export default defineComponent({
       headerAdd,
       loading,
       result,
+      hotkeyListener,
+      hotkey,
     }
   },
 })

@@ -4,7 +4,7 @@
     :class="[
       variants,
       rounded ? 'rounded-lg' : '',
-      small ? 'px-1 py-0.5' : 'px-2 py-1.5',
+      small ? 'p-1' : 'px-2 py-1.5',
     ]"
   >
     <slot />

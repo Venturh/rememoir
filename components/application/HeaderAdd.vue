@@ -10,11 +10,11 @@
       />
     </div>
 
-    <div class="absolute inset-y-0 right-0 flex items-center sm:pr-3">
+    <div class="absolute inset-y-0 right-0 items-center hidden sm:flex">
       <Calendar
-        icon-only
+        single
         :open="calendar.open"
-        :disabled="calendar.disabled"
+        :indicator="calendar.date !== ''"
         @change="addCalendar"
       />
     </div>
@@ -217,8 +217,11 @@ export default defineComponent({
         if (value.slice(-1) === '~') {
           inputRef.value?.$el.blur()
           calendar.value.open = true
-        } else if (descriptonActive && value.slice(-1) !== '~') {
+        } else if (calendar.value.open && value.slice(-1) !== '~') {
           calendar.value.open = false
+        }
+        if (calendar.value.date !== '' && !input.value.includes('~')) {
+          calendar.value.date = ''
         }
       }
     )

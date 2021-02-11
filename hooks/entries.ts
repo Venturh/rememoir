@@ -1,7 +1,7 @@
 import { ref } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
-import { groupBy, isEqual } from 'lodash'
-import { RxDocument } from 'rxdb'
+import { groupBy } from 'lodash'
+import { Subscriber } from 'rxjs'
 import { MyDatabase } from '../db'
 import { EntryInput } from '../generated/graphql'
 import { Filter, Order } from '../types'
@@ -14,6 +14,7 @@ export function useEntries(db: MyDatabase) {
   const selector = ref({})
   const select = ref()
   const sort = ref({})
+  const subscriber = ref<Subscriber<any>>(null)
 
   setEntriesSelector({})
 
@@ -44,6 +45,9 @@ export function useEntries(db: MyDatabase) {
   }
 
   function subscribeEntries({ ids }: { ids?: string[] }) {
+    if (subscriber.value) {
+      subscriber.value.unsubscribe()
+    }
     if (ids) selector.value = { ...selector.value, id: { $in: ids } }
 
     select.value = db.entries
@@ -53,7 +57,7 @@ export function useEntries(db: MyDatabase) {
       .sort(sort.value)
 
     entriesLoading.value = true
-    select.value.$.subscribe((results: EntryInput[]) => {
+    subscriber.value = select.value.$.subscribe((results: EntryInput[]) => {
       entriesLoading.value = false
 
       allEntries.value = results

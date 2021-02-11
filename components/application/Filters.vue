@@ -5,6 +5,7 @@
         v-if="!isListPrimaryFilter"
         class="sm:hidden"
         :amount="amount"
+        @selected="passTab"
       />
       <span />
       <Button class="space-x-2" variant="brand25" @click="show = !show">
@@ -126,6 +127,10 @@ export default defineComponent({
       emit('filter', { item, type })
     }
 
+    function passTab(val: number) {
+      emit('tabSelected', val)
+    }
+
     async function seedHandle() {
       await seed($db)
     }
@@ -143,6 +148,7 @@ export default defineComponent({
       ClockIcon,
       seedHandle,
       allCategories,
+      passTab,
     }
   },
 })

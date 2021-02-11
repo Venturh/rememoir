@@ -11,11 +11,12 @@
           v-for="category in categories.slice(0, 4)"
           :key="category"
           class="flex-shrink-0"
+          small
         >
           {{ category }}
         </Label>
         <Tooltip>
-          <Label v-if="categories.length > 4" class="flex-shrink-0">
+          <Label v-if="categories.length > 4" class="flex-shrink-0" small>
             +{{ categories.length - 4 }}
           </Label>
           <template v-slot:content>

@@ -6,13 +6,15 @@
       <TabNavigation
         class="hidden md:flex"
         :amount="[entriesAmount, listsAmount]"
+        @selected="setType"
       />
+
       <NotFound
         v-if="!loading && Object.keys(content).length === 0"
         class="mt-20"
         :target="type"
       />
-      <div v-if="content">
+      <div v-if="content" class="space-y-6">
         <div v-for="date in Object.keys(content)" :key="date" class="space-y-2">
           <div class="py-1 text-lg font-medium border-borderPrimary">
             {{ date }}
@@ -23,34 +25,8 @@
               v-for="(data, index) in content[date]"
               :key="index"
               :show-preview="showPreview"
-              :entry="{
-                title: data.title,
-                description: data.description,
-                url: data.url,
-                type: data.type,
-                preview: data.preview,
-                categories: data.categories,
-                hashedKey: data.hashedKey,
-                calendarDate: data.calendarDate,
-                processing: data.processing,
-                updatedAt: data.updatedAt,
-                deleted: data.deleted,
-                id: data.id,
-                createdAt: data.createdAt,
-                lists: data.lists,
-              }"
-              :list="{
-                title: data.title,
-                description: data.description,
-                categories: data.categories,
-                hashedKey: data.hashedKey,
-                calendarDate: data.calendarDate,
-                processing: data.processing,
-                updatedAt: data.updatedAt,
-                deleted: data.deleted,
-                id: data.id,
-                entries: data.entries,
-              }"
+              :entry="data"
+              :list="data"
             />
           </div>
         </div>
@@ -62,6 +38,7 @@
       :amount="[entriesAmount, listsAmount]"
       :filters-count="filtersCount"
       @filter="setFilters"
+      @tabSelected="setType"
     />
   </div>
 </template>
@@ -79,7 +56,7 @@ import {
 
 import BaseList from '@/components/application/BaseList.vue'
 import BaseEntry from '@/components/application/BaseEntry.vue'
-import { useEntries, useFilter, useLists, useScroll } from '@/hooks'
+import { useEntries, useFilter, useLists } from '@/hooks'
 
 export default defineComponent({
   props: {
@@ -90,13 +67,10 @@ export default defineComponent({
   },
   setup() {
     const { $db } = useContext().app
-    const { route } = useContext()
-    let { type } = route.value.params
+    const type = ref('entries')
 
     const { filters, setFilters, filtersCount } = useFilter()
-    if (type !== 'entries' && type !== 'lists') {
-      type = 'entries'
-    }
+
     // const { scrolLRef } = useScroll(() => loadMoreEntries())
     const {
       entries,
@@ -116,8 +90,14 @@ export default defineComponent({
 
     const showPreview = ref(true)
     const content = computed(() =>
-      type === 'entries' ? entries.value : lists.value
+      type.value === 'entries' ? entries.value : lists.value
     )
+
+    function setType(val: number) {
+      console.log('setType ~ val', val)
+      type.value = val === 0 ? 'entries' : 'list'
+    }
+
     const loading = computed(() => {
       return listsLoading.value || entriesLoading.value
     })
@@ -126,7 +106,7 @@ export default defineComponent({
       () => filters,
       (filter) => {
         showPreview.value = filter.preview ?? false
-        if (type === 'entries') {
+        if (type.value === 'entries') {
           setEntriesSelector(filter)
           subscribeEntries({})
         } else {
@@ -148,6 +128,7 @@ export default defineComponent({
 
     return {
       type,
+      setType,
       content,
       entriesLoading,
       entriesAmount,

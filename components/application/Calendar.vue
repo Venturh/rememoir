@@ -1,10 +1,15 @@
 <template>
   <div class="relative flex justify-between w-full px-2 space-x-2">
+    <div
+      v-if="single && indicator"
+      class="absolute w-2 h-2 rounded-full right-2.5 top-0.5 bg-brand"
+    />
     <Dropdown
-      :class="iconOnly ? 'w-full' : 'w-1/2'"
+      :class="single ? 'w-full' : 'w-1/2'"
       :show="show || open"
       :icon="CalendarIcon"
       icon-only
+      :border="!single"
       @change="setShow"
     >
       <template v-slot:menu>
@@ -20,7 +25,7 @@
       </template>
     </Dropdown>
     <Dropdown
-      v-if="!iconOnly"
+      v-if="!single"
       class="w-1/2"
       type="date"
       :items="time"
@@ -32,7 +37,7 @@
       @selected="onSecondaryChange"
     />
 
-    <Button v-if="!iconOnly" class="text-sm" variant="brand15" @click="reset">
+    <Button v-if="!single" class="text-sm" variant="brand15" @click="reset">
       {{ $t('reset') }}
     </Button>
   </div>
@@ -50,7 +55,7 @@ import { calendarTheme, time } from '@/config/data'
 
 export default defineComponent({
   props: {
-    iconOnly: {
+    single: {
       type: Boolean,
       default: false,
     },
@@ -59,6 +64,10 @@ export default defineComponent({
       default: false,
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    indicator: {
       type: Boolean,
       default: false,
     },
@@ -79,7 +88,7 @@ export default defineComponent({
     function onChange(value: string) {
       show.value = false
       date.value = value
-      if (props.iconOnly) emit('change', `~${$dayjs(value).format('DD.MM.YY')}`)
+      if (props.single) emit('change', `~${$dayjs(value).format('DD.MM.YY')}`)
       else emit('change', { type: 'date', item: $dayjs(value) })
     }
     function onSecondaryChange({ item, type }: { item: any; type: string }) {

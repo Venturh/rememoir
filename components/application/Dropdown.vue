@@ -6,6 +6,7 @@
         { 'border border-borderPrimary shadow-sm': border },
         iconOnly ? '' : border ? 'px-4' : 'px-2',
         !selected && items.length > 0 ? 'justify-between' : 'justify-center',
+        { 'bg-primary': bg },
       ]"
       @click="onChange"
     >
@@ -97,7 +98,7 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    disabled: {
+    bg: {
       type: Boolean,
       default: false,
     },

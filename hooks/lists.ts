@@ -2,6 +2,7 @@ import { computed, ref } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
 import _, { groupBy } from 'lodash'
 import { RxDocument } from 'rxdb'
+import { Subscriber } from 'rxjs'
 import { MyDatabase } from '../db'
 import { ListInput } from '../generated/graphql'
 import { Filter, Order } from '../types'
@@ -12,6 +13,7 @@ export function useLists(db: MyDatabase) {
   const listsAmount = ref(0)
   const selector = ref({})
   const select = ref()
+  const subscriber = ref<Subscriber<any>>(null)
 
   setListSelector({})
 
@@ -20,6 +22,9 @@ export function useLists(db: MyDatabase) {
     categories,
     order = Order.UPDATED_DESC,
   }: Filter) {
+    if (subscriber.value) {
+      subscriber.value.unsubscribe()
+    }
     selector.value = {}
     if (date) {
       selector.value = {
@@ -48,7 +53,7 @@ export function useLists(db: MyDatabase) {
 
   function subscribeList() {
     listsLoading.value = true
-    select.value.$.subscribe((results: RxDocument[]) => {
+    subscriber.value = select.value.$.subscribe((results: RxDocument[]) => {
       listsAmount.value = results.length
       const grouped = groupBy(results, (result: ListInput) => {
         return result.calendarDate
@@ -64,6 +69,7 @@ export function useLists(db: MyDatabase) {
 export function useAvaibleLists(db: MyDatabase, entryId?: string) {
   const lists = ref<ListInput[]>([])
   const loading = ref()
+
   db.lists
     .find()
     .sort({ updatedAt: 'desc' })
