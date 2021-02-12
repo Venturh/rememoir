@@ -54,5 +54,11 @@ export const entrySchema: RxJsonSchema<EntryInput> = {
     hashedKey: {
       type: 'string',
     },
+    archieved: {
+      type: 'boolean',
+    },
+    pinned: {
+      type: 'boolean',
+    },
   },
 }

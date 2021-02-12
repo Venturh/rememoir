@@ -35,10 +35,12 @@ export async function addEntry(
     calendarDate,
     processing: false,
     updatedAt: Date.now().toString(),
+    archieved: false,
+    pinned: false,
   }
 
   await db.entries.insert(entry)
-  await addEntryToList(listId, entry, db)
+  if (listId) await addEntryToList(listId, entry, db)
 }
 
 export async function removeEntry(
@@ -77,6 +79,8 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
         description: edited.description || entry.description,
         type: edited.url ? 'Link' : entry.type,
         url: edited.url || entry.url,
+        pinned: edited.pinned || entry.pinned,
+        archieved: edited.archieved || entry.archieved,
         categories,
         hashedKey: 'hashed',
         calendarDate: entry.calendarDate,

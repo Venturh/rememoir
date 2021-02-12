@@ -28,5 +28,7 @@ query rxEntryReplication(
     hashedKey
     deleted
     createdAt
+    pinned
+    archieved
   }
 }

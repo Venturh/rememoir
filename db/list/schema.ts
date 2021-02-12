@@ -47,5 +47,11 @@ export const listSchema: RxJsonSchema<ListInput> = {
     hashedKey: {
       type: 'string',
     },
+    archieved: {
+      type: 'boolean',
+    },
+    pinned: {
+      type: 'boolean',
+    },
   },
 }

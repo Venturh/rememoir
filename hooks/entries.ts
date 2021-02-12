@@ -52,14 +52,23 @@ export function useEntries(db: MyDatabase) {
 
   function subscribeEntries({
     ids,
-    page,
+    page = 1,
     reset,
+    target,
   }: {
     ids?: string[]
     page?: number
+    target?: 'pinned' | 'archieve'
     reset?: boolean
   }) {
     if (ids) selector.value = { ...selector.value, id: { $in: ids } }
+    if (target) {
+      if (target === 'pinned')
+        selector.value = { ...selector.value, pinned: true }
+      else if (target === 'archieve')
+        selector.value = { ...selector.value, archieved: true }
+    }
+
     if (subscriber.value) subs.value.push({ page, subs: subscriber.value })
     if (subscriber.value && reset) {
       pageEntries.value = {}

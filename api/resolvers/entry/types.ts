@@ -41,4 +41,10 @@ export class EntryInput {
 
   @Field({ nullable: true })
   createdAt?: string
+
+  @Field({ nullable: true })
+  pinned!: boolean
+
+  @Field({ nullable: true })
+  archieved!: boolean
 }

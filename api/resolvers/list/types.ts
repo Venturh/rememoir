@@ -31,4 +31,10 @@ export class ListInput {
 
   @Field({ nullable: true })
   deleted?: boolean
+
+  @Field({ nullable: true })
+  pinned!: boolean
+
+  @Field({ nullable: true })
+  archieved!: boolean
 }

@@ -23,16 +23,7 @@ export const listPushQueryBuilder = (list: ListInput) => {
   console.log('listPushQueryBuilder ~ list', list)
   const variables = {
     list: {
-      id: list.id,
-      title: list.title,
-      description: list.description,
-      entries: list.entries,
-      hashedKey: list.hashedKey,
-      processing: list.processing,
-      calendarDate: list.calendarDate,
-      categories: list.categories,
-      updatedAt: list.updatedAt,
-      deleted: list.deleted,
+      ...list,
     },
   }
 

@@ -78,17 +78,19 @@ export default class Entry extends BaseEntity {
   @ManyToOne()
   user: User
 
-  constructor(entryData: EntryInput, user: User) {
+  constructor(entryInput: EntryInput, user: User) {
     super()
-    this.id = entryData.id
-    this.title = entryData.title
-    this.description = entryData.description
-    this.url = entryData.url
-    this.type = entryData.type
-    this.categories = entryData.categories
-    this.calendarDate = entryData.calendarDate
-    this.processing = entryData.processing
-    this.hashedKey = entryData.hashedKey
+    this.id = entryInput.id
+    this.title = entryInput.title
+    this.description = entryInput.description
+    this.url = entryInput.url
+    this.type = entryInput.type
+    this.categories = entryInput.categories
+    this.pinned = entryInput.pinned
+    this.archieved = entryInput.archieved
+    this.calendarDate = entryInput.calendarDate
+    this.processing = entryInput.processing
+    this.hashedKey = entryInput.hashedKey
     this.user = user
   }
 }

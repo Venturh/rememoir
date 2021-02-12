@@ -1,11 +1,12 @@
 <template>
-  <h1>Pinned</h1>
+  <Layout target="pinned" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  middleware: ['authenticated'],
   setup() {},
 })
 </script>

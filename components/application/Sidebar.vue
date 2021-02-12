@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex-col justify-between hidden w-24 h-screen border-r sm:flex sm:fixed lg:w-48 border-borderPrimary"
+    class="flex-col justify-between hidden w-24 h-screen sm:flex sm:fixed lg:w-48"
   >
     <div class="space-y-12">
       <div class="flex items-center justify-center flex-shrink-0 h-12 lg:h-16">

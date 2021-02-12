@@ -38,15 +38,17 @@ export default class List extends BaseEntity {
   @Property()
   entries!: string[]
 
-  constructor(entryData: ListInput, user: User) {
+  constructor(listInput: ListInput, user: User) {
     super()
-    this.id = entryData.id
-    this.title = entryData.title
-    this.description = entryData.description
-    this.categories = entryData.categories
-    this.calendarDate = entryData.calendarDate
-    this.processing = entryData.processing
-    this.hashedKey = entryData.hashedKey
+    this.id = listInput.id
+    this.title = listInput.title
+    this.description = listInput.description
+    this.categories = listInput.categories
+    this.calendarDate = listInput.calendarDate
+    this.processing = listInput.processing
+    this.hashedKey = listInput.hashedKey
+    this.pinned = listInput.pinned
+    this.archieved = listInput.archieved
     this.user = user
   }
 }

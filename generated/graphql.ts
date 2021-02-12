@@ -22,6 +22,8 @@ export type BaseEntity = {
   updatedAt: Scalars['String'];
   createdAt: Scalars['String'];
   deleted?: Maybe<Scalars['Boolean']>;
+  pinned?: Maybe<Scalars['Boolean']>;
+  archieved?: Maybe<Scalars['Boolean']>;
 };
 
 export type ContentPreview = {
@@ -41,6 +43,8 @@ export type Entry = {
   updatedAt: Scalars['String'];
   createdAt: Scalars['String'];
   deleted?: Maybe<Scalars['Boolean']>;
+  pinned?: Maybe<Scalars['Boolean']>;
+  archieved?: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   url: Scalars['String'];
@@ -60,6 +64,8 @@ export type User = {
   updatedAt: Scalars['String'];
   createdAt: Scalars['String'];
   deleted?: Maybe<Scalars['Boolean']>;
+  pinned?: Maybe<Scalars['Boolean']>;
+  archieved?: Maybe<Scalars['Boolean']>;
   email: Scalars['String'];
   username: Scalars['String'];
   verified: Scalars['Boolean'];
@@ -73,6 +79,8 @@ export type List = {
   updatedAt: Scalars['String'];
   createdAt: Scalars['String'];
   deleted?: Maybe<Scalars['Boolean']>;
+  pinned?: Maybe<Scalars['Boolean']>;
+  archieved?: Maybe<Scalars['Boolean']>;
   title: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   calendarDate: Scalars['String'];
@@ -136,6 +144,8 @@ export type EntryInput = {
   processing: Scalars['Boolean'];
   deleted?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['String']>;
+  pinned?: Maybe<Scalars['Boolean']>;
+  archieved?: Maybe<Scalars['Boolean']>;
 };
 
 export type ContentPreviewInput = {
@@ -158,6 +168,8 @@ export type ListInput = {
   hashedKey: Scalars['String'];
   processing: Scalars['Boolean'];
   deleted?: Maybe<Scalars['Boolean']>;
+  pinned?: Maybe<Scalars['Boolean']>;
+  archieved?: Maybe<Scalars['Boolean']>;
 };
 
 export type LoginInput = {
@@ -470,7 +482,7 @@ export type RxEntryReplicationQuery = (
   { __typename?: 'Query' }
   & { rxEntryReplication: Array<(
     { __typename?: 'Entry' }
-    & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted' | 'createdAt'>
+    & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted' | 'createdAt' | 'pinned' | 'archieved'>
     & { preview?: Maybe<(
       { __typename?: 'ContentPreview' }
       & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'embeddedUrl' | 'type'>
@@ -502,7 +514,7 @@ export type RxListReplicationQuery = (
   { __typename?: 'Query' }
   & { rxListReplication: Array<(
     { __typename?: 'List' }
-    & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories' | 'entries'>
+    & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories' | 'entries' | 'pinned' | 'archieved'>
   )> }
 );
 
@@ -899,6 +911,8 @@ export const RxEntryReplicationDocument = gql`
     hashedKey
     deleted
     createdAt
+    pinned
+    archieved
   }
 }
     `;
@@ -967,6 +981,8 @@ export const RxListReplicationDocument = gql`
     calendarDate
     categories
     processing
+    pinned
+    archieved
   }
 }
     `;

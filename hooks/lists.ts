@@ -54,12 +54,20 @@ export function useLists(db: MyDatabase) {
 
   function subscribeList({
     page = 1,
+    target,
     reset,
   }: {
     page?: number
+    target?: 'pinned' | 'archieve'
     reset?: boolean
   }) {
     listsLoading.value = true
+    if (target) {
+      if (target === 'pinned')
+        selector.value = { ...selector.value, pinned: true }
+      else if (target === 'archieve')
+        selector.value = { ...selector.value, archieved: true }
+    }
     if (subscriber.value) subs.value.push({ page, subs: subscriber.value })
     if (subscriber.value && reset) {
       pageLists.value = {}

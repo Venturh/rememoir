@@ -3,6 +3,7 @@
     class="relative flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
     <div class="w-full space-y-2 sm:space-y-4 lg:w-screen lg:max-w-lg">
+      <h1 class="text-lg font-semibold">{{ target }}</h1>
       <TabNavigation
         class="hidden md:flex"
         :amount="[entriesAmount, listsAmount]"
@@ -49,6 +50,7 @@ import {
   defineComponent,
   onMounted,
   onUnmounted,
+  PropType,
   ref,
   useContext,
   watch,
@@ -64,14 +66,16 @@ import {
   useScroll,
 } from '@/hooks'
 
+type Target = 'pinned' | 'archieve'
+
 export default defineComponent({
   props: {
     target: {
-      type: String,
+      type: String as PropType<Target>,
       default: '',
     },
   },
-  setup() {
+  setup(props) {
     const { $db } = useContext().app
     const type = ref('entries')
 
@@ -117,7 +121,7 @@ export default defineComponent({
       if (type.value === 'entries') {
         if (!moreAvaible.value) return
         next()
-        subscribeEntries({ page: currentPage.value })
+        subscribeEntries({ page: currentPage.value, target: props.target })
       } else {
         if (!moreListsAvaible.value) return
         next()
@@ -132,18 +136,18 @@ export default defineComponent({
         resetPage()
         if (type.value === 'entries') {
           setEntriesSelector(filter)
-          subscribeEntries({ page: 1, reset: true })
+          subscribeEntries({ reset: true, target: props.target })
         } else {
           setListSelector(filter)
-          subscribeList({ page: 1, reset: true })
+          subscribeList({ target: props.target, reset: true })
         }
       },
       { deep: true }
     )
 
     onMounted(() => {
-      subscribeEntries({ page: 1 })
-      subscribeList({})
+      subscribeEntries({ target: props.target })
+      subscribeList({ target: props.target })
     })
 
     onUnmounted(() => {

@@ -3,11 +3,15 @@ export type EditedEntry = {
   description?: string
   url?: string
   categories?: string
+  pinned?: boolean
+  archieved?: boolean
 }
 export type EditedList = {
   title?: string
   description?: string
   categories?: string
+  pinned?: boolean
+  archieved?: boolean
 }
 
 export type Filters = {

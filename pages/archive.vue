@@ -1,5 +1,5 @@
 <template>
-  <h1>Archieve</h1>
+  <Layout target="archieve" />
 </template>
 
 <script lang="ts">

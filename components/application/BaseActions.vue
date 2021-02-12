@@ -77,6 +77,7 @@ export default defineComponent({
           emit('back')
           return
         case 'pin':
+          emit('pin')
           break
         case 'archive':
           break

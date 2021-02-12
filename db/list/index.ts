@@ -64,6 +64,8 @@ export async function addList(
     calendarDate: dayjs().format('DD.MM.YY'),
     processing: false,
     updatedAt: Date.now().toString(),
+    archieved: false,
+    pinned: false,
   }
   await db.lists.insert(list)
 }

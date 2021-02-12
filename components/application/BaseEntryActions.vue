@@ -6,6 +6,7 @@
     @remove="remove"
     @showLists="toggleLists"
     @addToList="add"
+    @pin="pin"
     @back="showLists = false"
   >
     <FormInput
@@ -110,9 +111,13 @@ export default defineComponent({
       addEntryToList(id, props.entry, $db)
     }
 
-    function submit() {
+    async function pin() {
+      await update(props.entry.id, { pinned: true }, $db)
+    }
+
+    async function submit() {
       if (!isEmpty(editedEntry.value))
-        update(props.entry.id, editedEntry.value, $db)
+        await update(props.entry.id, editedEntry.value, $db)
       editedEntry.value = {}
 
       showEditModal.value = false
@@ -129,6 +134,7 @@ export default defineComponent({
       submit,
       toggleLists,
       add,
+      pin,
     }
   },
 })
