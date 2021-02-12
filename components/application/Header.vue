@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="flex justify-between space-x-2 lg:space-x-0">
+    <div
+      class="flex justify-between pb-2 space-x-2 border-b border-borderPrimary lg:space-x-0"
+    >
       <div class="w-full space-x-6 lg:w-screen lg:max-w-lg">
         <HeaderSearch v-if="search === true" @keyAction="hotkey" />
         <HeaderAdd
@@ -26,7 +28,6 @@
         <PlusIcon v-else class="fill-current" size="1.25x" />
       </Button>
     </div>
-    <div class="h-0.5 mt-2 rounded-full w-full bg-borderPrimary" />
   </div>
 </template>
 

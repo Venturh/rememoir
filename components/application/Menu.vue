@@ -1,6 +1,8 @@
 <template>
   <div
-    class="z-50 w-32 rounded-md shadow-sm bg-primary"
+    ref="hoverMenu"
+    class="relative z-50 w-32 rounded-md shadow-sm bg-primary"
+    :style="style"
     @mouseover="$emit('mouseover')"
     @mouseleave="$emit('mouseleave')"
   >
@@ -38,7 +40,7 @@
 
 <script lang="ts">
 import { HoverMenuItem } from '@/types'
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -52,12 +54,22 @@ export default defineComponent({
     },
   },
   setup(_, { emit }) {
+    const hoverMenu = ref<HTMLDivElement>()
+    const style = ref({ top: '0' })
+
     const activeMenu = ref('primary')
     function handleClick(item: HoverMenuItem) {
       if (item.goto) activeMenu.value = item.goto
       emit('click', { name: item.name, info: item.info })
     }
-    return { activeMenu, handleClick }
+    onMounted(() => {
+      if (
+        window.innerHeight - hoverMenu.value!.getBoundingClientRect().top <
+        hoverMenu.value!.clientHeight * 2
+      )
+        style.value.top = '-15rem'
+    })
+    return { activeMenu, handleClick, hoverMenu, style }
   },
 })
 </script>

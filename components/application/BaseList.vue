@@ -2,8 +2,7 @@
   <Card
     :categories="list.categories"
     :time-from="timeFrom"
-    class="cursor-pointer"
-    :primary="primary"
+    :class="{ 'cursor-pointer': !primary }"
     @click="navigate"
   >
     <div class="flex items-center justify-between">

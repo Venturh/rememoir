@@ -23,7 +23,7 @@
             <div class="py-1 text-lg font-medium">
               {{ date }}
             </div>
-            <div ref="scrollRef">
+            <div ref="scrollRef" class="space-y-4">
               <BaseEntry
                 v-for="entry in entries[date]"
                 :key="entry.id"

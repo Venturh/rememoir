@@ -1,8 +1,6 @@
 <template>
   <nav class="relative">
-    <div
-      class="absolute bottom-0 hidden sm:block w-full h-0.5 bg-borderPrimary"
-    />
+    <div class="absolute bottom-0 w-full h-0.5 bg-borderPrimary" />
     <div class="relative flex items-center w-full sm:w-1/2">
       <button
         v-for="(item, index) in tabnavItems"

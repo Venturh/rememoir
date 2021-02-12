@@ -1,5 +1,7 @@
 <template>
-  <div class="flex items-center justify-between w-full mt-1 space-x-4">
+  <div
+    class="flex items-center justify-between w-full p-2 mt-1 space-x-4 border rounded-md bg-secondary border-borderPrimary"
+  >
     <div class="flex items-center space-x-4">
       <SearchIcon size="1.25x" class="stroke-current text-brand" />
       <span class="text-secondary">{{ $t('searchPlaceholder') }}</span>

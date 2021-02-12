@@ -1,7 +1,6 @@
 <template>
   <div
-    class="relative flex flex-col w-full h-full p-2 space-y-3 border-b shadow-sm dark:shadow-none border-borderPrimary"
-    :class="{ 'bg-secondary': primary }"
+    class="relative flex flex-col w-full h-full p-3 space-y-3 rounded-md shadow-sm dark:ring-1 dark:shadow-none bg-secondary dark:ring-borderPrimary"
     @click="$emit('click')"
   >
     <slot />
@@ -40,10 +39,6 @@ import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
-    primary: {
-      type: Boolean,
-      default: false,
-    },
     categories: {
       type: Array,
       default: () => [],
