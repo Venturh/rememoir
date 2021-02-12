@@ -6,7 +6,7 @@ import ObjectID from 'bson-objectid'
 import { EntryInput } from '../../generated/graphql'
 import { EditedEntry } from '../../types'
 import { MyDatabase } from '../index'
-import { removeEntryFromList } from '../list'
+import { removeEntryFromList, addEntryToList } from '../list'
 
 addRxPlugin(RxDBUpdatePlugin)
 
@@ -17,10 +17,11 @@ type NewEntry = {
   type: string
   url: string
   calendarDate: string
+  listId?: string
 }
 
 export async function addEntry(
-  { title, description, type, url, categories, calendarDate }: NewEntry,
+  { title, description, type, url, categories, calendarDate, listId }: NewEntry,
   db: MyDatabase
 ) {
   const entry: EntryInput = {
@@ -35,8 +36,9 @@ export async function addEntry(
     processing: false,
     updatedAt: Date.now().toString(),
   }
-  console.log('entry', entry)
+
   await db.entries.insert(entry)
+  await addEntryToList(listId, entry, db)
 }
 
 export async function removeEntry(
@@ -89,14 +91,14 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
 }
 
 export async function seed(db: MyDatabase) {
-  const array = [...Array(30).keys()]
+  const array = [...Array(60).keys()]
   const objs = array.map((i) => {
     return {
-      title: 'foo1 /' + i,
+      title: 'a ' + i,
       calendarDate: dayjs(dayjs()).format('DD.MM.YY'),
       categories: ['Youtube'],
       hashedKey: 'yep',
-      id: id().str as string,
+      id: new ObjectID().str,
       lists: [],
       processing: false,
       type: 'Note',

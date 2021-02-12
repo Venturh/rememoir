@@ -14,30 +14,26 @@ export function useAddDb({ db }: { db: MyDatabase }) {
     target,
     description,
     date,
+    listId,
   }: {
     data: string
     target: HeaderInputType
     description: string
     date: string
+    listId: string
   }) {
     loading.value = true
     let split = data.split(' ')
-    let list = split.find((s) => s.includes('@'))
+
     let categories = split.filter((s) => s.includes('#'))
     let url = ''
     const calendarDate =
       date === '' ? dayjs().format('DD.MM.YY') : date.replace('~', '')
-
     if (categories) {
       categories = categories.map((s) => {
         split = split.filter((w) => w !== s)
         return s.substring(1)
       })
-    }
-
-    if (list) {
-      split = split.filter((w) => w !== list)
-      list = list.substring(1)
     }
 
     const expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
@@ -64,6 +60,7 @@ export function useAddDb({ db }: { db: MyDatabase }) {
           description,
           type,
           calendarDate,
+          listId,
         },
         db
       )

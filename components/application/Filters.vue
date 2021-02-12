@@ -62,7 +62,8 @@
           </Button>
         </div>
       </FilterItem>
-      <!-- <Button @click="seedHandle">Bulk insert</Button> -->
+      <Button @click="seedHandle('e')">Seed Entries</Button>
+      <Button @click="seedHandle('l')">Seed Lists</Button>
     </div>
   </div>
 </template>
@@ -82,6 +83,7 @@ import { Filters, MenuOption } from '@/types'
 
 import { useAvaibleLists } from '@/hooks'
 import { seed } from '@/db/entry'
+import { seedLists } from '@/db/list'
 
 export default defineComponent({
   props: {
@@ -131,8 +133,9 @@ export default defineComponent({
       emit('tabSelected', val)
     }
 
-    async function seedHandle() {
-      await seed($db)
+    async function seedHandle(type: string) {
+      if (type === 'e') await seed($db)
+      else await seedLists($db)
     }
 
     return {

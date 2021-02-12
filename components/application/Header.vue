@@ -72,16 +72,19 @@ export default defineComponent({
       data,
       description,
       date,
+      listId,
     }: {
       data: string
       description: string
       date: string
+      listId: string
     }) {
       await execute({
         target: inputType.value,
         data,
         description,
         date,
+        listId,
       })
       inputType.value = 'search'
     }

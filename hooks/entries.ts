@@ -6,15 +6,20 @@ import { MyDatabase } from '../db'
 import { EntryInput } from '../generated/graphql'
 import { Filter, Order } from '../types'
 
+type Subs = { page?: number; subs?: Subscriber<any> }[]
+
 export function useEntries(db: MyDatabase) {
   const entriesLoading = ref(true)
   const entries = ref()
-  const allEntries = ref<EntryInput[]>([])
+  const pageEntries = ref({})
   const entriesAmount = ref(0)
   const selector = ref({})
   const select = ref()
   const sort = ref({})
   const subscriber = ref<Subscriber<any>>(null)
+  const perPage = 20
+  const subs = ref<Subs>([])
+  const moreAvaible = ref(true)
 
   setEntriesSelector({})
 
@@ -25,6 +30,7 @@ export function useEntries(db: MyDatabase) {
   }: Filter) {
     selector.value = {}
     sort.value = {}
+
     if (date) {
       selector.value = {
         calendarDate: {
@@ -44,29 +50,51 @@ export function useEntries(db: MyDatabase) {
     sort.value[sorting[0]] = sorting[1]
   }
 
-  function subscribeEntries({ ids }: { ids?: string[] }) {
-    if (subscriber.value) {
-      subscriber.value.unsubscribe()
-    }
+  function subscribeEntries({
+    ids,
+    page,
+    reset,
+  }: {
+    ids?: string[]
+    page?: number
+    reset?: boolean
+  }) {
     if (ids) selector.value = { ...selector.value, id: { $in: ids } }
-
+    if (subscriber.value) subs.value.push({ page, subs: subscriber.value })
+    if (subscriber.value && reset) {
+      pageEntries.value = {}
+      subs.value.forEach((e) => e.subs.unsubscribe())
+    }
     select.value = db.entries
       .find({
         selector: selector.value,
       })
       .sort(sort.value)
+      .limit(perPage)
+      .skip(page > 0 ? (page - 1) * perPage : 0)
 
     entriesLoading.value = true
-    subscriber.value = select.value.$.subscribe((results: EntryInput[]) => {
-      entriesLoading.value = false
+    subscriber.value = select.value.$.subscribe(
+      async (results: EntryInput[]) => {
+        entriesLoading.value = false
 
-      allEntries.value = results
-
-      entriesAmount.value = allEntries.value.length
-      entries.value = groupBy(allEntries.value, (result: EntryInput) => {
-        return result.calendarDate
-      })
-    })
+        pageEntries.value[page] = results
+        if (results.length < perPage) moreAvaible.value = false
+        if (!moreAvaible.value) moreAvaible.value = true
+        const all = Object.values(Object.values(pageEntries.value))
+        const allEntries = [].concat.apply([], all)
+        entries.value = groupBy(allEntries, (result: EntryInput) => {
+          return result.calendarDate
+        })
+        entriesAmount.value = (
+          await db.entries
+            .find({
+              selector: selector.value,
+            })
+            .exec()
+        ).length
+      }
+    )
   }
 
   return {
@@ -75,5 +103,6 @@ export function useEntries(db: MyDatabase) {
     subscribeEntries,
     setEntriesSelector,
     entriesAmount,
+    moreAvaible,
   }
 }

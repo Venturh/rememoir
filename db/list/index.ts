@@ -149,3 +149,23 @@ export async function removeEntryFromList(db: MyDatabase, id: string) {
   }
   return false
 }
+
+export async function seedLists(db: MyDatabase) {
+  const array = [...Array(60).keys()]
+  const objs: ListInput[] = array.map((i) => {
+    return {
+      title: 'l ' + i,
+      description: 'das ist die beschreibung von ' + i,
+      calendarDate: dayjs(dayjs()).format('DD.MM.YY'),
+      categories: ['Youtube'],
+      hashedKey: 'yep',
+      entries: [],
+      id: new ObjectID().str,
+      processing: false,
+      updatedAt: Date.now().toString(),
+    }
+  })
+  const result = await db.lists.bulkInsert(objs)
+  console.log('seed ~ result', result)
+  return result
+}

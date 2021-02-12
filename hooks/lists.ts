@@ -1,11 +1,13 @@
 import { computed, ref } from '@nuxtjs/composition-api'
 import dayjs from 'dayjs'
-import _, { groupBy } from 'lodash'
+import { groupBy } from 'lodash'
 import { RxDocument } from 'rxdb'
 import { Subscriber } from 'rxjs'
 import { MyDatabase } from '../db'
 import { ListInput } from '../generated/graphql'
 import { Filter, Order } from '../types'
+
+type Subs = { page?: number; subs?: Subscriber<any> }[]
 
 export function useLists(db: MyDatabase) {
   const listsLoading = ref(true)
@@ -14,6 +16,11 @@ export function useLists(db: MyDatabase) {
   const selector = ref({})
   const select = ref()
   const subscriber = ref<Subscriber<any>>(null)
+  const sort = {}
+  const perPage = 20
+  const subs = ref<Subs>([])
+  const moreListsAvaible = ref(true)
+  const pageLists = ref({})
 
   setListSelector({})
 
@@ -41,29 +48,68 @@ export function useLists(db: MyDatabase) {
       selector.value = { categories: { $in: [categories] } }
     }
 
-    const sort = {}
     const sorting = order.split('_')
     sort[sorting[0]] = sorting[1]
+  }
+
+  function subscribeList({
+    page = 1,
+    reset,
+  }: {
+    page?: number
+    reset?: boolean
+  }) {
+    listsLoading.value = true
+    if (subscriber.value) subs.value.push({ page, subs: subscriber.value })
+    if (subscriber.value && reset) {
+      pageLists.value = {}
+      subs.value.forEach((e) => e.subs.unsubscribe())
+    }
     select.value = db.lists
       .find({
         selector: selector.value,
       })
       .sort(sort)
+      .limit(perPage)
+      .skip(page > 0 ? (page - 1) * perPage : 0)
+    subscriber.value = select.value.$.subscribe(
+      async (results: RxDocument[]) => {
+        listsAmount.value = results.length
+        const grouped = groupBy(results, (result: ListInput) => {
+          return result.calendarDate
+        })
+        listsLoading.value = false
+        lists.value = grouped
+
+        listsLoading.value = false
+
+        pageLists.value[page] = results
+        if (results.length < perPage) moreListsAvaible.value = false
+        if (!moreListsAvaible.value) moreListsAvaible.value = true
+        const all = Object.values(Object.values(pageLists.value))
+        const allLists = [].concat.apply([], all)
+        lists.value = groupBy(allLists, (result: ListInput) => {
+          return result.calendarDate
+        })
+        listsAmount.value = (
+          await db.lists
+            .find({
+              selector: selector.value,
+            })
+            .exec()
+        ).length
+      }
+    )
   }
 
-  function subscribeList() {
-    listsLoading.value = true
-    subscriber.value = select.value.$.subscribe((results: RxDocument[]) => {
-      listsAmount.value = results.length
-      const grouped = groupBy(results, (result: ListInput) => {
-        return result.calendarDate
-      })
-      listsLoading.value = false
-      lists.value = grouped
-    })
+  return {
+    lists,
+    listsLoading,
+    subscribeList,
+    setListSelector,
+    listsAmount,
+    moreListsAvaible,
   }
-
-  return { lists, listsLoading, subscribeList, setListSelector, listsAmount }
 }
 
 export function useAvaibleLists(db: MyDatabase, entryId?: string) {

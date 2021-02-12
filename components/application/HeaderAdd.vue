@@ -64,12 +64,12 @@
         v-if="inputType === 'entry'"
         ref="selectMenuRef"
         name="list"
-        :open="listsOpen"
+        :open="list.open"
         :options="avaibleLists"
-        @selected="addFromMenu"
+        @selected="addList"
       />
       <Error
-        v-if="inputType === 'list' && listsOpen"
+        v-if="inputType === 'list' && list.open"
         message="Cant add a List to List"
       />
     </div>
@@ -117,10 +117,11 @@ export default defineComponent({
     const inputDescRef = ref<any>()
     const inputTypeOpen = ref(false)
     const categoriesOpen = ref(false)
-    const listsOpen = ref(false)
+
     const descriptonActive = ref(false)
     const description = ref('')
     const calendar = ref({ open: false, date: '', disabled: false })
+    const list = ref({ open: false, id: '', text: '' })
 
     const { $db } = useContext().app
     const { avaibleLists } = useAvaibleLists($db)
@@ -135,6 +136,11 @@ export default defineComponent({
     })
 
     function addFromMenu(value: MenuOptionItem) {
+      input.value += value.text
+    }
+    function addList(value: MenuOptionItem) {
+      list.value.id = value.info!
+      list.value.text = value.text
       input.value += value.text
     }
 
@@ -172,7 +178,7 @@ export default defineComponent({
     }
 
     function handleEnter(event: Event) {
-      if (categoriesOpen.value || listsOpen.value) {
+      if (categoriesOpen.value || list.value.open) {
         event.preventDefault()
         selectMenuRef.value.setSelected()
       } else if (descriptonActive.value) {
@@ -183,11 +189,16 @@ export default defineComponent({
     }
 
     function submit() {
-      input.value = input.value.replace(calendar.value.date, '')
+      input.value = input.value
+        .replace(calendar.value.date, '')
+        .replace(list.value.text, '')
+        .replace('@', '')
+      console.log('submit ~ input.value', input.value)
       emit('action', {
         data: input.value,
         description: description.value,
         date: calendar.value.date,
+        listId: list.value.id,
       })
       input.value = ''
       description.value = ''
@@ -206,8 +217,9 @@ export default defineComponent({
           categoriesOpen.value = true
         }
         if (value.slice(-1) === '@') {
-          listsOpen.value = true
-        } else if (listsOpen && value.slice(-1) !== '@') listsOpen.value = false
+          list.value.open = true
+        } else if (list.value.open && value.slice(-1) !== '@')
+          list.value.open = false
         if (value.slice(-2) === '//') {
           inputRef.value?.$el.blur()
           descriptonActive.value = true
@@ -236,7 +248,7 @@ export default defineComponent({
       addFromMenu,
       focus,
       categories,
-      listsOpen,
+      list,
       ListIcon,
       ColumnsIcon,
       items,
@@ -252,6 +264,7 @@ export default defineComponent({
       calendar,
       toggleCalendar,
       addCalendar,
+      addList,
     }
   },
 })

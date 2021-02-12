@@ -23,14 +23,15 @@
             <div class="py-1 text-lg font-medium">
               {{ date }}
             </div>
-
-            <BaseEntry
-              v-for="entry in entries[date]"
-              :key="entry.id"
-              :entry="entry"
-              :show-preview="showPreview"
-              is-list-entry
-            />
+            <div ref="scrollRef">
+              <BaseEntry
+                v-for="entry in entries[date]"
+                :key="entry.id"
+                :entry="entry"
+                :show-preview="showPreview"
+                is-list-entry
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -50,7 +51,13 @@ import {
   watch,
 } from '@nuxtjs/composition-api'
 import { keys } from 'lodash'
-import { useEntries, useFilter, useListbyId } from '@/hooks'
+import {
+  useEntries,
+  useFilter,
+  useListbyId,
+  usePagination,
+  useScroll,
+} from '@/hooks'
 
 export default defineComponent({
   middleware: ['authenticated'],
@@ -60,22 +67,39 @@ export default defineComponent({
     const { filters, setFilters } = useFilter()
     const showPreview = ref(true)
     const { id } = route.value.params
+    const { scrollRef } = useScroll(() => loadMore())
+    const { currentPage, next, resetPage } = usePagination()
     const { list, loading } = useListbyId($db, id)
-    const { entries, subscribeEntries, setEntriesSelector } = useEntries($db)
+    const {
+      entries,
+      subscribeEntries,
+      setEntriesSelector,
+      moreAvaible,
+    } = useEntries($db)
+
+    function loadMore() {
+      if (!moreAvaible.value) return
+      next()
+
+      subscribeEntries({ ids: list.value!.entries, page: currentPage.value })
+    }
 
     watch(
-      () => [filters.preview, filters.date, filters.categories, filters.order],
+      () => filters,
       (filter) => {
-        setEntriesSelector(filters)
-        subscribeEntries({})
-        showPreview.value = filter[0] as boolean
-      }
+        showPreview.value = filter.preview ?? false
+        resetPage()
+        setEntriesSelector(filter)
+        subscribeEntries({ page: 1, reset: true })
+      },
+      { deep: true }
     )
 
     watch(
       () => list.value,
       (l) => {
-        subscribeEntries({ ids: l!.entries })
+        if (l === null) return redirectOnError()
+        subscribeEntries({ ids: l!.entries, page: 1 })
       }
     )
 
@@ -95,6 +119,8 @@ export default defineComponent({
       setFilters,
       keys,
       showPreview,
+      scrollRef,
+      moreAvaible,
     }
   },
 })

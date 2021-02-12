@@ -1,10 +1,10 @@
 import { onMounted, onUnmounted, ref } from '@nuxtjs/composition-api'
 
 export function useScroll(callback: () => void) {
-  const scrolLRef = ref<HTMLElement[]>()
+  const scrollRef = ref<HTMLElement[]>()
 
   function handleScroll() {
-    const element = scrolLRef.value![0]
+    const element = scrollRef.value![0]
     if (
       Math.floor(element.getBoundingClientRect().bottom) <= window.innerHeight
     ) {
@@ -15,5 +15,5 @@ export function useScroll(callback: () => void) {
   onMounted(() => window.addEventListener('scroll', handleScroll))
   onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
-  return { scrolLRef }
+  return { scrollRef }
 }

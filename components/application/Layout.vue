@@ -19,7 +19,7 @@
           <div class="py-1 text-lg font-medium border-borderPrimary">
             {{ date }}
           </div>
-          <div ref="scrolLRef" class="space-y-4">
+          <div ref="scrollRef" class="space-y-4">
             <component
               :is="type === 'entries' ? BaseEntry : BaseList"
               v-for="(data, index) in content[date]"
@@ -56,7 +56,13 @@ import {
 
 import BaseList from '@/components/application/BaseList.vue'
 import BaseEntry from '@/components/application/BaseEntry.vue'
-import { useEntries, useFilter, useLists } from '@/hooks'
+import {
+  useEntries,
+  useFilter,
+  useLists,
+  usePagination,
+  useScroll,
+} from '@/hooks'
 
 export default defineComponent({
   props: {
@@ -71,13 +77,13 @@ export default defineComponent({
 
     const { filters, setFilters, filtersCount } = useFilter()
 
-    // const { scrolLRef } = useScroll(() => loadMoreEntries())
     const {
       entries,
       subscribeEntries,
       setEntriesSelector,
       entriesLoading,
       entriesAmount,
+      moreAvaible,
     } = useEntries($db)
 
     const {
@@ -86,7 +92,11 @@ export default defineComponent({
       subscribeList,
       setListSelector,
       listsAmount,
+      moreListsAvaible,
     } = useLists($db)
+
+    const { scrollRef } = useScroll(() => loadMore())
+    const { currentPage, next, resetPage } = usePagination()
 
     const showPreview = ref(true)
     const content = computed(() =>
@@ -94,32 +104,46 @@ export default defineComponent({
     )
 
     function setType(val: number) {
-      console.log('setType ~ val', val)
       type.value = val === 0 ? 'entries' : 'list'
+      resetPage()
+      setFilters({ type: 'reset', item: '' })
     }
 
     const loading = computed(() => {
       return listsLoading.value || entriesLoading.value
     })
 
+    function loadMore() {
+      if (type.value === 'entries') {
+        if (!moreAvaible.value) return
+        next()
+        subscribeEntries({ page: currentPage.value })
+      } else {
+        if (!moreListsAvaible.value) return
+        next()
+        subscribeList({ page: currentPage.value })
+      }
+    }
+
     watch(
       () => filters,
       (filter) => {
         showPreview.value = filter.preview ?? false
+        resetPage()
         if (type.value === 'entries') {
           setEntriesSelector(filter)
-          subscribeEntries({})
+          subscribeEntries({ page: 1, reset: true })
         } else {
           setListSelector(filter)
-          subscribeList()
+          subscribeList({ page: 1, reset: true })
         }
       },
       { deep: true }
     )
 
     onMounted(() => {
-      subscribeEntries({})
-      subscribeList()
+      subscribeEntries({ page: 1 })
+      subscribeList({})
     })
 
     onUnmounted(() => {
@@ -142,6 +166,11 @@ export default defineComponent({
       listsAmount,
       loading,
       filtersCount,
+      subscribeEntries,
+      loadMore,
+      currentPage,
+      moreAvaible,
+      scrollRef,
     }
   },
 })
