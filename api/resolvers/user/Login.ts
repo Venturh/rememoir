@@ -19,6 +19,7 @@ export class LoginResolver {
     const user = await em.findOne(User, {
       email,
     })
+    console.log('LoginResolver ~ user', user)
 
     if (!user) {
       return {

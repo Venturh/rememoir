@@ -36,7 +36,7 @@ const main = async () => {
   const app = express()
   app.use(
     cors({
-      origin: process.env.CLIENT_URL,
+      origin: 'http://projectm.localhost',
       credentials: true,
     })
   )
@@ -44,6 +44,7 @@ const main = async () => {
 
   app.post('/refresh_token', async (req: Request, res: Response) => {
     const token = req.cookies.jid
+    console.log('app.post ~ req.cookies', req.cookies)
     if (!token) {
       return res.send({ ok: false, accessToken: '' })
     }

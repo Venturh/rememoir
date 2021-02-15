@@ -14,7 +14,7 @@ import {
 import { Entry, User } from '../../entities'
 import { MyContext } from '../../types'
 import { isAuth, verifyToken } from '../../utils/auth'
-import { generateLinkPreview, LinkPreview } from '../../utils/linkPreview'
+import { generateLinkPreview } from '../../utils/linkPreview'
 import { filterEntry, sortByUpdated } from '../../utils/sort'
 import { EntryInput } from './types'
 
@@ -107,15 +107,6 @@ class EntryResolver {
   changedEntry(@Arg('token') token: string, @Root() entry: Entry) {
     verifyToken(token)
     return entry
-  }
-
-  @Query(() => Boolean)
-  async preview(
-    @Arg('url')
-    url: string
-  ) {
-    await generateLinkPreview(url)
-    return true
   }
 }
 
