@@ -14,7 +14,7 @@
         "
         @click="setSelected(index)"
       >
-        <!-- <font-awesome-icon :icon="item.icon" class="flex-shrink-0" size="1x" /> -->
+        <Icon :icon="item.icon" class="flex-shrink-0" />
         <span>{{ t(item.text) }}</span>
         <Label small :rounded="false" variant="brand25">
           {{ amount[index] }}

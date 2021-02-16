@@ -1,12 +1,13 @@
 <template>
   <div class="flex flex-col items-center">
-    <font-awesome-icon icon="search" />
+    <Icon :icon="RiSearch2Line" />
     <p>We couldnt found anything</p>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { RiSearch2Line } from 'vue-remix-icons'
 
 export default defineComponent({
   props: {
@@ -14,6 +15,9 @@ export default defineComponent({
       type: String,
       default: '',
     },
+  },
+  setup() {
+    return { RiSearch2Line }
   },
 })
 </script>

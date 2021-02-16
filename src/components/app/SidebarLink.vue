@@ -5,7 +5,7 @@
     :to="`/${item.text}`"
   >
     <div class="flex space-x-4" @click="$emit('click')">
-      <font-awesome-icon size="lg" :icon="item.icon" />
+      <Icon size="lg" :icon="item.icon" />
       <span class="hidden lg:block">{{ t(item.text) }}</span>
     </div>
   </router-link>

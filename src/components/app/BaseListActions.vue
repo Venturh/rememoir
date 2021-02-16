@@ -12,7 +12,7 @@
       :placeholder="list.title"
     />
     <FormInput
-      v-mode:valuel="edited.description"
+      v-model:valuel="edited.description"
       label="Description"
       type="text"
       :placeholder="list.description"

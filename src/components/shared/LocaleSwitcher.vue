@@ -4,7 +4,7 @@
       class="flex items-center space-x-2 cursor-pointer"
       @click="open = !open"
     >
-      <font-awesome-icon icon="globe-europe" />
+      <Icon :icon="RiEarthLine" />
       <span>{{ locale.toLocaleUpperCase() }}</span>
     </div>
     <div
@@ -27,8 +27,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, ComputedRef } from 'vue'
-
 import { useI18n } from 'vue-i18n'
+import { RiEarthLine } from 'vue-remix-icons'
 
 export default defineComponent({
   setup() {
@@ -49,6 +49,7 @@ export default defineComponent({
     }
 
     return {
+      RiEarthLine,
       locale,
       changeLocale,
       open,

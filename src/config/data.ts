@@ -1,58 +1,70 @@
 import dayjs from 'dayjs'
+import {
+  RiDashboardLine,
+  RiMapPin2Line,
+  RiArchiveLine,
+  RiEdit2Line,
+  RiDeleteBack2Line,
+  RiLink,
+  RiTwitterLine,
+  RiMailLine,
+  RiShareLine,
+  RiAddCircleLine,
+} from 'vue-remix-icons'
 import { Filter, MenuOption, Order } from '../types'
 
 export const sidebarItems = [
-  { icon: 'home', text: 'home' },
-  { icon: 'map-marker', text: 'pinned' },
-  { icon: 'archive', text: 'archive' },
+  { icon: RiDashboardLine, text: 'home' },
+  { icon: RiMapPin2Line, text: 'pinned' },
+  { icon: RiArchiveLine, text: 'archive' },
 ]
 
 export const tabnavItems = [
-  { icon: '', text: 'entries' },
-  { icon: '', text: 'lists' },
+  { icon: null, text: 'entries' },
+  { icon: null, text: 'lists' },
 ]
 
 export const hoverListPrimaryMenu = [
-  { name: 'pin', icon: 'map-marker' },
-  { name: 'edit', icon: 'edit' },
-  { name: 'archive', icon: 'archive' },
-  { name: 'delete', icon: 'backspace' },
+  { name: 'pin', icon: RiMapPin2Line },
+  { name: 'edit', icon: RiEdit2Line },
+  { name: 'archive', icon: RiArchiveLine },
+  { name: 'delete', icon: RiDeleteBack2Line },
   {
     name: 'share',
-    icon: 'share-alt',
+    icon: RiShareLine,
     goto: 'secondary',
   },
 ]
 
 export const hoverEntryPrimaryMenu = [
-  { name: 'addToList', icon: 'plus', goto: 'secondary' },
-  { name: 'pin', icon: 'map-marker' },
-  { name: 'edit', icon: 'edit' },
-  { name: 'archive', icon: 'archive' },
-  { name: 'delete', icon: 'backspace' },
+  { name: 'addToList', icon: RiAddCircleLine, goto: 'secondary' },
+  { name: 'pin', icon: RiMapPin2Line },
+  { name: 'edit', icon: RiEdit2Line },
+  { name: 'archive', icon: RiArchiveLine },
+  { name: 'delete', icon: RiDeleteBack2Line },
   {
     name: 'share',
-    icon: 'share-alt',
+    icon: RiShareLine,
     goto: 'secondary',
   },
 ]
 
 export const hoverSecondaryMenu = [
-  { name: 'copylink', icon: 'link' },
-  { name: 'twitter', icon: 'link' },
-  { name: 'mail', icon: 'link' },
-  { name: 'back', icon: 'backspace', goto: 'primary' },
+  { name: 'copylink', icon: RiLink },
+  { name: 'twitter', icon: RiTwitterLine },
+  { name: 'mail', icon: RiMailLine },
+  { name: 'back', icon: RiDeleteBack2Line, goto: 'primary' },
 ]
 
 export const categories: MenuOption = [
-  { icon: '', text: 'Videos' },
-  { icon: '', text: 'Youtube' },
-  { icon: '', text: 'Audio' },
-  { icon: '', text: 'Link' },
+  { icon: null, text: 'Videos' },
+  { icon: null, text: 'Youtube' },
+  { icon: null, text: 'Audio' },
+  { icon: null, text: 'Link' },
 ]
 export const shared = [
-  { icon: '', text: 'Shared' },
-  { icon: '', text: 'Unshared' },
+  { icon: null, text: 'Shared' },
+  { icon: null, text: 'Unshared' },
 ]
 
 export const calendarTheme = {
@@ -78,12 +90,12 @@ export const calendarTheme = {
 }
 
 export const time = [
-  { icon: '', text: 'all_time', info: 'DEFAULT', translate: true },
-  { icon: '', text: 'Today', info: dayjs() },
-  { icon: '', text: 'Yesterday', info: dayjs().subtract(1, 'day') },
-  { icon: '', text: 'This past week', info: dayjs().subtract(1, 'week') },
-  { icon: '', text: 'This past month', info: dayjs().subtract(1, 'month') },
-  { icon: '', text: 'This past year', info: dayjs().subtract(1, 'year') },
+  { icon: null, text: 'all_time', info: 'DEFAULT', translate: true },
+  { icon: null, text: 'Today', info: dayjs() },
+  { icon: null, text: 'Yesterday', info: dayjs().subtract(1, 'day') },
+  { icon: null, text: 'This past week', info: dayjs().subtract(1, 'week') },
+  { icon: null, text: 'This past month', info: dayjs().subtract(1, 'month') },
+  { icon: null, text: 'This past year', info: dayjs().subtract(1, 'year') },
 ]
 
 export const order = [

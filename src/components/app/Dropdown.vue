@@ -14,9 +14,10 @@
         class="flex items-center truncate"
         :class="iconOnly ? 'px-2' : 'space-x-2 '"
       >
-        <font-awesome-icon
+        <Icon
           v-if="icon || selected.icon"
           :icon="icon || selected.icon"
+          size="sm"
           class="flex-shrink-0"
         />
         <p class="text-sm">
@@ -26,9 +27,9 @@
         </p>
       </div>
 
-      <font-awesome-icon
+      <Icon
         v-if="!iconOnly"
-        icon="chevron-down"
+        :icon="RiArrowDownSLine"
         class="flex-shrink-0"
         :class="
           open
@@ -60,6 +61,7 @@
 import { MenuOption, MenuOptionItem } from '@/types'
 import { defineComponent, PropType, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RiArrowDownSLine } from 'vue-remix-icons'
 
 export default defineComponent({
   props: {
@@ -80,8 +82,8 @@ export default defineComponent({
       default: false,
     },
     icon: {
-      type: String,
-      default: '',
+      type: Object,
+      default: () => {},
     },
     selected: {
       type: Object as PropType<MenuOptionItem>,
@@ -138,6 +140,7 @@ export default defineComponent({
     )
 
     return {
+      RiArrowDownSLine,
       t,
       open,
       close,

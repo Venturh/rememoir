@@ -9,7 +9,7 @@
       />
       <span />
       <Button class="space-x-2" variant="brand25" @click="show = !show">
-        <font-awesome-icon icon="align-center" />
+        <icon :icon="RiAlignCenter" />
         <span>Filters </span>
         <Label small :rounded="false" variant="brand25">
           {{ filtersCount }}
@@ -23,7 +23,7 @@
           type="order"
           class="px-2"
           :items="order"
-          icon="clock"
+          :icon="RiTimeLine"
           @selected="onChange"
         />
       </FilterItem>
@@ -33,7 +33,7 @@
           class="px-2"
           type="categories"
           :items="allCategories"
-          icon="folder"
+          :icon="RiFolderLine"
           @selected="onChange"
         />
       </FilterItem>
@@ -49,8 +49,8 @@
               class="p-2 border border-borderPrimary"
               @click="onChange({ type: 'preview', item: !previewFilter })"
             >
-              <font-awesome-icon v-if="previewFilter" icon="square" />
-              <font-awesome-icon v-else icon="layer-group" />
+              <Icon v-if="previewFilter" :icon="RiLayoutLine" />
+              <Icon v-else :icon="RiLayoutRowLine" />
             </IconOnlyButton>
           </Tooltip>
           <Button
@@ -79,6 +79,13 @@ import { seed } from '@/db/entry'
 import { seedLists } from '@/db/list'
 import { getDb } from '@/db/Database'
 import { useI18n } from 'vue-i18n'
+import {
+  RiAlignCenter,
+  RiLayoutLine,
+  RiLayoutRowLine,
+  RiTimeLine,
+  RiFolderLine,
+} from 'vue-remix-icons'
 
 export default defineComponent({
   props: {
@@ -130,6 +137,11 @@ export default defineComponent({
     }
 
     return {
+      RiAlignCenter,
+      RiLayoutLine,
+      RiLayoutRowLine,
+      RiTimeLine,
+      RiFolderLine,
       t,
       show,
       categories,

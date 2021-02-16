@@ -24,12 +24,12 @@
         @click="search = 'entry'"
       >
         <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
-        <font-awesome-icon
+        <Icon
           v-if="search === false"
-          icon="times"
+          :icon="RiCloseLine"
           class="fill-current"
         />
-        <font-awesome-icon v-else icon="plus" class="fill-current" />
+        <Icon v-else :icon="RiAddLine" class="fill-current" />
       </Button>
     </div>
   </div>
@@ -40,6 +40,7 @@ import { HeaderInputType } from '@/types'
 import { useAddDb } from '@/hooks'
 
 import { computed, defineComponent, onUnmounted, ref } from 'vue'
+import { RiCloseLine, RiAddLine } from 'vue-remix-icons'
 import { getDb } from '@/db/Database'
 export default defineComponent({
   setup() {
@@ -118,6 +119,8 @@ export default defineComponent({
     })
 
     return {
+      RiCloseLine,
+      RiAddLine,
       input,
       inputType,
       setInputType,

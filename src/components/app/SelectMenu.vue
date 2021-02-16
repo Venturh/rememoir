@@ -24,11 +24,7 @@
           @click="setSelected(option)"
           @mouseenter="selectedIndex = index"
         >
-          <font-awesome-icon
-            v-if="option.icon"
-            :icon="option.icon"
-            size="1.25x"
-          />
+          <Icon v-if="option.icon" :icon="option.icon" size="sm" />
           <span class="text-sm">
             {{ option.translate ? t(option.text) : option.text }}
           </span>

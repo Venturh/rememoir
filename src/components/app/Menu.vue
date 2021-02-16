@@ -13,7 +13,7 @@
         class="flex items-center w-full px-4 py-2 space-x-2 rounded-md cursor-pointer hover:bg-brand25 hover:text-primary"
         @click.stop="handleClick(item)"
       >
-        <font-awesome-icon :icon="item.icon" size="sm" />
+        <Icon :icon="item.icon" size="sm" />
         <span class="text-sm">{{ t(item.name) }}</span>
       </div>
     </div>
@@ -32,6 +32,7 @@
         k
         @click.stop="handleClick(item)"
       >
+        <Icon :icon="item.icon" size="sm" />
         <span class="text-sm truncate">{{ item.name }}</span>
       </button>
     </div>
@@ -54,6 +55,7 @@ export default defineComponent({
       default: () => [],
     },
   },
+  emits: ['click', 'mouseleave', 'mouseover'],
   setup(_, { emit }) {
     const { t } = useI18n()
     const hoverMenu = ref<HTMLDivElement>()

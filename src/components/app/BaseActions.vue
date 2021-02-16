@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center">
     <IconOnlyButton variant="primary" @click="showMenu = !showMenu">
-      <font-awesome-icon icon="ellipsis-v" />
+      <Icon :icon="RiMore2Line" />
     </IconOnlyButton>
     <div class="absolute z-50 top-10 right-5">
       <Modal
@@ -11,7 +11,7 @@
         @confirm="submitModal"
         @cancel="showEditModal = false"
       >
-        <template v-slot:title>Edit Entry</template>
+        <template #title>Edit Entry</template>
         <slot />
       </Modal>
       <Menu
@@ -27,6 +27,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue'
+import { RiMore2Line } from 'vue-remix-icons'
 
 type Type = 'entry' | 'list'
 
@@ -88,6 +89,7 @@ export default defineComponent({
     }
 
     return {
+      RiMore2Line,
       showMenu,
       showEditModal,
       handleMenu,

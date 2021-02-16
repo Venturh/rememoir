@@ -78,10 +78,11 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { RiLayoutColumnLine, RiListCheck } from 'vue-remix-icons'
 import { categories } from '@/config/data'
 import { HeaderInputType, MenuOptionItem } from '@/types'
 import { useAvaibleLists } from '@/hooks'
-import { useI18n } from 'vue-i18n'
 import { getDb } from '@/db/Database'
 
 export default defineComponent({
@@ -117,8 +118,8 @@ export default defineComponent({
     const { avaibleLists } = useAvaibleLists(db)
 
     const items = [
-      { icon: 'list-ul', text: '' },
-      { icon: 'columns', text: '' },
+      { icon: RiListCheck, text: '' },
+      { icon: RiLayoutColumnLine, text: '' },
     ]
 
     const selected = computed(() => {
@@ -201,7 +202,7 @@ export default defineComponent({
     watch(
       () => input.value,
       (value: string) => {
-        if (categoriesOpen && value.slice(-1) !== '#') {
+        if (categoriesOpen.value && value.slice(-1) !== '#') {
           categoriesOpen.value = false
         } else if (value.slice(-1) === '#') {
           categoriesOpen.value = true
@@ -213,7 +214,7 @@ export default defineComponent({
         if (value.slice(-2) === '//') {
           inputRef.value?.$el.blur()
           descriptonActive.value = true
-        } else if (descriptonActive && value.slice(-1) !== '//') {
+        } else if (descriptonActive.value && value.slice(-1) !== '//') {
           descriptonActive.value = false
         }
         if (value.slice(-1) === '~') {

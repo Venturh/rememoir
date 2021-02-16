@@ -1,6 +1,6 @@
 <template>
   <ButtonOrLink
-    class="inline-flex items-center justify-center rounded-md stroke-current text-secondary focus:outline-none"
+    class="inline-flex items-center justify-center rounded-md fill-current text-secondary focus:outline-none"
     :class="variants"
     :to="to"
     :out="out"
@@ -18,6 +18,7 @@ export default defineComponent({
   props: {
     to: {
       type: String,
+      default: '',
     },
     out: {
       type: Boolean,

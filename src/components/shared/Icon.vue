@@ -2,14 +2,15 @@
   <component
     :is="icon"
     v-if="icon"
-    :class="sizes"
-    class="fill-current text-brand"
+    :class="[sizes, colors]"
+    class="fill-current"
   />
 </template>
 
 <script lang="ts">
 import { computed, PropType } from 'vue'
 type Size = 'xs' | 'sm' | 'md' | 'lg'
+type Color = 'brand' | 'primary'
 export default {
   props: {
     icon: {
@@ -20,19 +21,30 @@ export default {
       type: String as PropType<Size>,
       default: 'md',
     },
+    color: {
+      type: String as PropType<Color>,
+      default: '',
+    },
   },
 
   setup(props) {
     const sizes = computed(() => {
       const map = new Map<Size, string>([
-        ['xs', 'h-4'],
-        ['sm', 'h-5'],
-        ['md', 'h-6'],
-        ['lg', 'h-7'],
+        ['xs', 'h-3'],
+        ['sm', 'h-4'],
+        ['md', 'h-5'],
+        ['lg', 'h-6'],
       ])
       return map.get(props.size)
     })
-    return { sizes }
+    const colors = computed(() => {
+      const map = new Map<Color, string>([
+        ['primary', 'text-primary'],
+        ['brand', 'text-brand'],
+      ])
+      return map.get(props.color) || ''
+    })
+    return { sizes, colors }
   },
 }
 </script>

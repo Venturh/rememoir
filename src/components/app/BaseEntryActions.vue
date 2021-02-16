@@ -57,6 +57,7 @@ import { removeEntry, update } from '@/db/entry'
 import { useAvaibleLists } from '@/hooks'
 import { addEntryToList } from '@/db/list'
 import { getDb } from '@/db/Database'
+import { RiDeleteBack2Line, RiLayoutColumnLine } from 'vue-remix-icons'
 
 export default defineComponent({
   props: {
@@ -89,11 +90,11 @@ export default defineComponent({
 
     const secondaryItems: ComputedRef<HoverMenuItem[]> = computed(() => {
       const listItems: HoverMenuItem[] = avaibleLists.value.map((l) => {
-        return { name: l.text, icon: 'columns', info: l.info }
+        return { name: l.text, icon: RiLayoutColumnLine, info: l.info }
       })
       listItems[listItems.length] = {
         name: 'back',
-        icon: 'backspace',
+        icon: RiDeleteBack2Line,
         goto: 'primary',
       }
       return showLists.value ? listItems : hoverSecondaryMenu

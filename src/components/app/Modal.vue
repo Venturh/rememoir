@@ -10,7 +10,7 @@
       class="absolute top-2 right-2"
       @click="$emit('input', false)"
     >
-      <font-awesome-icon icon="times" />
+      <Icon :icon="RiCloseLine" />
     </IconOnlyButton>
     <h1 class="text-xl font-semibold">
       {{ title }}
@@ -48,9 +48,10 @@
 </template>
 
 <script lang="ts">
-import { Error } from '@/types'
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RiCloseLine } from 'vue-remix-icons'
+import { Error } from '@/types'
 
 export default defineComponent({
   props: {
@@ -79,7 +80,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
 
-    return { t }
+    return { t, RiCloseLine }
   },
 })
 </script>

@@ -31,10 +31,10 @@
         class="flex flex-col space-y-2 lg:space-y-0 lg:space-x-2 lg:flex-row"
       >
         <IconOnlyButton @click="logOut">
-          <font-awesome-icon icon="sign-out-alt" />
+          <Icon :icon="RiLogoutBoxLine" />
         </IconOnlyButton>
         <IconOnlyButton @click="logOut">
-          <font-awesome-icon icon="cog" />
+          <Icon :icon="RiSettings5Line" />
         </IconOnlyButton>
       </div>
     </div>
@@ -44,14 +44,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-
-// import {
-//   ChevronLeftIcon,
-//   ChevronRightIcon,
-//   SettingsIcon,
-//   LogOutIcon,
-//   XIcon,
-// } from 'vue-feather-icons'
+import { RiSettings5Line, RiLogoutBoxLine } from 'vue-remix-icons'
 
 import useUserInfo from '@/hooks/userInfo'
 import { useLogoutMutation } from '@/generated/graphql'
@@ -82,7 +75,7 @@ export default defineComponent({
       push('/')
     }
 
-    return { userInfo, logOut, sidebarItems }
+    return { RiSettings5Line, RiLogoutBoxLine, userInfo, logOut, sidebarItems }
   },
 })
 </script>

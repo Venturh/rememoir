@@ -12,9 +12,10 @@
 <script>
 import { defineComponent } from 'vue'
 import { sidebarItems } from '@/config/data'
+import { RiUser3Line } from 'vue-remix-icons'
 export default defineComponent({
   setup() {
-    const userItem = { icon: 'user', text: 'profile' }
+    const userItem = { icon: RiUser3Line, text: 'profile' }
     return { sidebarItems, userItem }
   },
 })
