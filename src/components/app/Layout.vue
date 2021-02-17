@@ -3,7 +3,9 @@
     class="relative flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
   >
     <div class="w-full space-y-2 sm:space-y-4 lg:w-screen lg:max-w-lg">
-      <h1 class="text-lg font-semibold">{{ target }}</h1>
+      <h1 class="text-xl font-semibold">
+        {{ target !== 'undefined' ? t(target) : '' }}
+      </h1>
       <TabNavigation
         class="hidden md:flex"
         :amount="[entriesAmount, listsAmount]"
@@ -26,8 +28,37 @@
               v-for="(data, index) in content[date]"
               :key="index"
               :show-preview="showPreview"
-              :entry="data"
-              :list="data"
+              :entry="{
+                title: data.title,
+                description: data.description,
+                url: data.url,
+                type: data.type,
+                preview: data.preview,
+                categories: data.categories,
+                hashedKey: data.hashedKey,
+                calendarDate: data.calendarDate,
+                processing: data.processing,
+                updatedAt: data.updatedAt,
+                deleted: data.deleted,
+                pinned: data.pinned,
+                archived: data.archived,
+                id: data.id,
+                createdAt: data.createdAt,
+              }"
+              :list="{
+                title: data.title,
+                description: data.description,
+                categories: data.categories,
+                hashedKey: data.hashedKey,
+                calendarDate: data.calendarDate,
+                processing: data.processing,
+                updatedAt: data.updatedAt,
+                pinned: data.pinned,
+                archived: data.archived,
+                deleted: data.deleted,
+                id: data.id,
+                entries: data.entries,
+              }"
             />
           </div>
         </div>
@@ -55,6 +86,7 @@ import {
   watch,
 } from 'vue'
 
+import { useI18n } from 'vue-i18n'
 import {
   useEntries,
   useFilter,
@@ -65,17 +97,18 @@ import {
 import { getDb } from '@/db/Database'
 import BaseList from '@/components/app/BaseList.vue'
 import BaseEntry from '@/components/app/BaseEntry.vue'
-type Target = 'pinned' | 'archieve'
+import { LayoutTarget } from '@/types'
 
 export default defineComponent({
   props: {
     target: {
-      type: String as PropType<Target>,
-      default: '',
+      type: String as PropType<LayoutTarget>,
+      default: 'undefined',
     },
   },
   setup(props) {
     const db = getDb()
+    const { t } = useI18n()
     const type = ref('entries')
 
     const { filters, setFilters, filtersCount } = useFilter()
@@ -154,6 +187,7 @@ export default defineComponent({
     })
 
     return {
+      t,
       BaseEntry,
       BaseList,
       type,

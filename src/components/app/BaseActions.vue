@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center">
-    <IconOnlyButton variant="primary" @click="showMenu = !showMenu">
+    <IconOnlyButton variant="primary" @click.stop="showMenu = !showMenu">
       <Icon :icon="RiMore2Line" />
     </IconOnlyButton>
     <div class="absolute z-50 top-10 right-5">
@@ -46,6 +46,7 @@ export default defineComponent({
       default: () => [],
     },
   },
+  emits: ['remove', 'showLists', 'back', 'pin', 'addToList', 'edit', 'archive'],
   setup(props, { emit }) {
     const showMenu = ref(false)
     const showEditModal = ref(false)
@@ -69,9 +70,16 @@ export default defineComponent({
           emit('back')
           return
         case 'pin':
-          emit('pin')
+          emit('pin', true)
+          break
+        case 'unpin':
+          emit('pin', false)
           break
         case 'archive':
+          emit('archive', true)
+          break
+        case 'unarchive':
+          emit('archive', false)
           break
 
         default:

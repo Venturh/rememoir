@@ -69,6 +69,10 @@ export class GraphQLReplicator {
         pull: {
           queryBuilder: entryPullQueryBuilder,
           modifier: (d: EntryInput) => {
+            console.log(
+              'GraphQLReplicator ~ setupGraphQLReplication ~ EntryInput',
+              d
+            )
             return decryptEntry(d)
           },
         },

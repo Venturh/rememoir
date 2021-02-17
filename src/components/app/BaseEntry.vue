@@ -5,6 +5,7 @@
       <BaseEntryActions :entry="entry" :is-list-entry="isListEntry" />
     </div>
     <p v-if="entry.description" class="">{{ entry.description }}</p>
+
     <LinkEntry
       v-if="entry.type === 'Link' && showPreview"
       :url="entry.url"

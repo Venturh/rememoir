@@ -11,12 +11,12 @@
     </div>
 
     <div class="absolute inset-y-0 right-0 items-center hidden sm:flex">
-      <!-- <Calendar
+      <Calendar
         single
         :open="calendar.open"
         :indicator="calendar.date !== ''"
         @change="addCalendar"
-      /> -->
+      />
     </div>
 
     <div

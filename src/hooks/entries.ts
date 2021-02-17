@@ -4,18 +4,18 @@ import { groupBy } from 'lodash'
 import { Subscriber } from 'rxjs'
 import { MyDatabase } from '../db'
 import { EntryInput } from '../generated/graphql'
-import { Filter, Order } from '../types'
+import { Filter, LayoutTarget, Order } from '../types'
 
 type Subs = { page?: number; subs?: Subscriber<any> }[]
 
 export function useEntries(db: MyDatabase) {
   const entriesLoading = ref(true)
   const entries = ref()
-  const pageEntries = ref({})
+  const pageEntries = ref<any>({})
   const entriesAmount = ref(0)
   const selector = ref({})
   const select = ref()
-  const sort = ref({})
+  const sort = ref<any>({})
   const subscriber = ref<Subscriber<any>>()
   const perPage = 20
   const subs = ref<Subs>([])
@@ -26,7 +26,7 @@ export function useEntries(db: MyDatabase) {
   function setEntriesSelector({
     date,
     categories,
-    order = Order.UPDATED_DESC,
+    order = Order.CALENDER_DESC,
   }: Filter) {
     selector.value = {}
     sort.value = {}
@@ -58,15 +58,15 @@ export function useEntries(db: MyDatabase) {
   }: {
     ids?: string[]
     page?: number
-    target?: 'pinned' | 'archieve'
+    target?: LayoutTarget
     reset?: boolean
   }) {
     if (ids) selector.value = { ...selector.value, id: { $in: ids } }
     if (target) {
       if (target === 'pinned')
         selector.value = { ...selector.value, pinned: true }
-      else if (target === 'archieve')
-        selector.value = { ...selector.value, archieved: true }
+      else if (target === 'archive')
+        selector.value = { ...selector.value, archived: true }
     }
 
     if (subscriber.value) subs.value.push({ page, subs: subscriber.value })
@@ -86,7 +86,6 @@ export function useEntries(db: MyDatabase) {
     subscriber.value = select.value.$.subscribe(
       async (results: EntryInput[]) => {
         entriesLoading.value = false
-
         pageEntries.value[page] = results
         if (results.length < perPage) moreAvaible.value = false
         if (!moreAvaible.value) moreAvaible.value = true

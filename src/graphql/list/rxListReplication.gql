@@ -22,6 +22,6 @@ query rxListReplication(
     categories
     processing
     pinned
-    archieved
+    archived
   }
 }

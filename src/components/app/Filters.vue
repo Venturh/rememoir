@@ -38,24 +38,23 @@
         />
       </FilterItem>
 
-      <!-- <FilterItem title="Calendar">
+      <FilterItem title="Calendar">
         <Calendar @change="onChange" />
-      </FilterItem> -->
+      </FilterItem>
 
       <FilterItem title="Misc">
-        <div class="flex justify-between w-1/2 pl-2 space-x-2">
-          <Tooltip position="under" text="Toggle preview">
-            <IconOnlyButton
-              class="p-2 border border-borderPrimary"
-              @click="onChange({ type: 'preview', item: !previewFilter })"
-            >
-              <Icon v-if="previewFilter" :icon="RiLayoutLine" />
-              <Icon v-else :icon="RiLayoutRowLine" />
-            </IconOnlyButton>
-          </Tooltip>
+        <div class="flex pl-2 space-x-4">
+          <IconOnlyButton
+            class="p-2 space-x-2 border border-borderPrimary"
+            @click="onChange({ type: 'preview', item: !previewFilter })"
+          >
+            <Icon v-if="previewFilter" :icon="RiLayoutLine" />
+            <Icon v-else :icon="RiLayoutRowLine" />
+            <span class="text-xs">Toggle Preview</span>
+          </IconOnlyButton>
           <Button
-            class="w-full text-xs"
-            variant="brand15"
+            class="text-xs"
+            variant="brand25"
             @click="$emit('filter', { type: 'reset', item: undefined })"
           >
             {{ t('reset') }}
@@ -106,6 +105,7 @@ export default defineComponent({
       default: () => [],
     },
   },
+  emits: ['filter', 'tabSelected'],
   setup(_, { emit }) {
     const { t } = useI18n()
     const previewFilter = ref(true)

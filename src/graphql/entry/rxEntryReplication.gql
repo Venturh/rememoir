@@ -29,6 +29,6 @@ query rxEntryReplication(
     deleted
     createdAt
     pinned
-    archieved
+    archived
   }
 }

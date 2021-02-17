@@ -33,6 +33,8 @@
 
   "addToList": "Zu Liste hinzufügen",
   "pin": "Pinnen",
+  "unpin": "Ablösen",
+  "unarchive": "Wiederherstellen",
   "edit": "Bearbeiten",
   "delete": "Löschen",
   "share": "Teilen",

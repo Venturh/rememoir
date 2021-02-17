@@ -36,5 +36,5 @@ export class ListInput {
   pinned!: boolean
 
   @Field({ nullable: true })
-  archieved!: boolean
+  archived!: boolean
 }

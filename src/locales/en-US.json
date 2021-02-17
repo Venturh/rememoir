@@ -33,6 +33,8 @@
 
   "addToList": "Add to list",
   "pin": "Pin",
+  "unpin": "Unpin",
+  "unarchive": "Unarchive",
   "edit": "Edit",
   "delete": "Delete",
   "share": "Share",

@@ -53,7 +53,8 @@
     "vue-final-modal": "^1.8.7",
     "vue-i18n": "^9.0.0-rc.6",
     "vue-remix-icons": "^1.1.1",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "vue-tailwind-picker": "^1.1.6"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.20.1",

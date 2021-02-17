@@ -109,7 +109,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'setkey',
         component: () => import('../pages/profile/setkey.vue'),
-        name: 'profile-setkey',
+        name: 'setkey',
       },
     ],
   },
@@ -128,10 +128,10 @@ router.beforeEach(async (to, from, next) => {
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!hasToken) {
-      next({ name: 'auth-login' })
+      next({ name: 'login' })
     } else {
       if (getSectretKey() === null) {
-        return next({ name: 'profile-setkey' })
+        return next({ name: 'setkey' })
       } else {
         const db = getDb()
         if (!db) await createDb()

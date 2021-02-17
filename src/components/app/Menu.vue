@@ -29,7 +29,6 @@
             ? 'cursor-not-allowed hover:bg-brand25'
             : 'hover:bg-brand25 hover:text-white cursor-pointer'
         "
-        k
         @click.stop="handleClick(item)"
       >
         <Icon :icon="item.icon" size="sm" />

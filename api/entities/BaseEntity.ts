@@ -24,11 +24,11 @@ export default abstract class BaseEntity {
   @Property({ onCreate: () => false })
   deleted?: boolean
 
-  @Field(() => Boolean, { nullable: true })
+  @Field()
   @Property()
   pinned?: boolean
 
-  @Field(() => Boolean, { nullable: true })
+  @Field()
   @Property()
-  archieved?: boolean
+  archived?: boolean
 }

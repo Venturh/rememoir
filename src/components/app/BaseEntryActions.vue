@@ -1,12 +1,13 @@
 <template>
   <BaseActions
-    :primary-menu="hoverEntryPrimaryMenu"
+    :primary-menu="primaryMenu"
     :secondary-menu="secondaryItems"
     @edit="submit"
     @remove="remove"
     @showLists="toggleLists"
     @addToList="add"
     @pin="pin"
+    @archive="archive"
     @back="showLists = false"
   >
     <FormInput
@@ -41,20 +42,20 @@ import {
   computed,
   ComputedRef,
   defineComponent,
-  inject,
   PropType,
   ref,
+  toRefs,
 } from 'vue'
 
 import { EditedEntry, HoverMenuItem } from '@/types'
 import { EntryInput } from '@/generated/graphql'
 
-import { hoverEntryPrimaryMenu, hoverSecondaryMenu } from '@/config/data'
+import { hoverSecondaryMenu } from '@/config/data'
 
 import { isEmpty } from 'lodash'
 
 import { removeEntry, update } from '@/db/entry'
-import { useAvaibleLists } from '@/hooks'
+import { useAvaibleLists, usePrimaryMenu } from '@/hooks'
 import { addEntryToList } from '@/db/list'
 import { getDb } from '@/db/Database'
 import { RiDeleteBack2Line, RiLayoutColumnLine } from 'vue-remix-icons'
@@ -80,6 +81,7 @@ export default defineComponent({
     const showEditModal = ref(false)
     const showLists = ref(false)
     const { avaibleLists } = useAvaibleLists(db, props.entry.id)
+    const { primaryMenu } = usePrimaryMenu(toRefs(props).entry, 'entries')
 
     const categories = computed({
       get: () => editedEntry.value.categories,
@@ -112,8 +114,12 @@ export default defineComponent({
       addEntryToList(id, props.entry, db)
     }
 
-    async function pin() {
-      await update(props.entry.id, { pinned: true }, db)
+    async function pin(value: boolean) {
+      await update(props.entry.id, { pinned: value }, db)
+    }
+    async function archive(value: boolean) {
+      console.log('archive ~ value', value)
+      await update(props.entry.id, { archived: value }, db)
     }
 
     async function submit() {
@@ -127,7 +133,7 @@ export default defineComponent({
     return {
       showEditModal,
       showLists,
-      hoverEntryPrimaryMenu,
+      primaryMenu,
       secondaryItems,
       remove,
       categories,
@@ -136,6 +142,7 @@ export default defineComponent({
       toggleLists,
       add,
       pin,
+      archive,
     }
   },
 })

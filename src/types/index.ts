@@ -4,14 +4,14 @@ export type EditedEntry = {
   url?: string
   categories?: string
   pinned?: boolean
-  archieved?: boolean
+  archived?: boolean
 }
 export type EditedList = {
   title?: string
   description?: string
   categories?: string
   pinned?: boolean
-  archieved?: boolean
+  archived?: boolean
 }
 
 export type Filters = {
@@ -61,3 +61,5 @@ export type HoverMenuItem = {
 }
 
 export type Error = { show: boolean; msg: string }
+
+export type LayoutTarget = 'pinned' | 'archive' | 'undefined'

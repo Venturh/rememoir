@@ -48,7 +48,7 @@ export default class List extends BaseEntity {
     this.processing = listInput.processing
     this.hashedKey = listInput.hashedKey
     this.pinned = listInput.pinned
-    this.archieved = listInput.archieved
+    this.archived = listInput.archived
     this.user = user
   }
 }

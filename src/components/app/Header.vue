@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="flex justify-between pb-2 space-x-2 border-b border-borderPrimary lg:space-x-0"
+      class="flex items-center justify-between h-16 pb-2 space-x-2 border-b border-borderPrimary lg:space-x-0"
     >
       <div class="w-full space-x-6 lg:w-screen lg:max-w-lg">
         <HeaderSearch v-if="search === true" @keyAction="hotkey" />
@@ -20,16 +20,12 @@
       <Button
         variant="brand25"
         padding
-        class="p-1 lg:ml-6 lg:px-4 lg:space-x-2"
+        class="p-2.5 lg:ml-6 lg:px-4 lg:space-x-2"
         @click="search = 'entry'"
       >
         <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
-        <Icon
-          v-if="search === false"
-          :icon="RiCloseLine"
-          class="fill-current"
-        />
-        <Icon v-else :icon="RiAddLine" class="fill-current" />
+        <Icon v-if="search === false" :icon="RiCloseLine" />
+        <Icon v-else :icon="RiAddLine" />
       </Button>
     </div>
   </div>
@@ -89,7 +85,6 @@ export default defineComponent({
         event.preventDefault()
         setInputType('entry')
         if (headerAdd.value) {
-          console.log('ref', headerAdd.value)
           headerAdd.value.$refs.inputRef.$el.focus()
         }
       } else if (event.key === 'l' && event.ctrlKey) {

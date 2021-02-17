@@ -1,6 +1,6 @@
 <template>
   <AppLayout>
-    <Layout />
+    <Layout :target="undefined" />
   </AppLayout>
 </template>
 

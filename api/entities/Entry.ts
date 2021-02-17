@@ -87,7 +87,7 @@ export default class Entry extends BaseEntity {
     this.type = entryInput.type
     this.categories = entryInput.categories
     this.pinned = entryInput.pinned
-    this.archieved = entryInput.archieved
+    this.archived = entryInput.archived
     this.calendarDate = entryInput.calendarDate
     this.processing = entryInput.processing
     this.hashedKey = entryInput.hashedKey

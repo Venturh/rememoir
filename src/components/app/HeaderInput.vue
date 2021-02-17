@@ -7,7 +7,7 @@
     :disabled="disabled"
     name="input"
     :value="inputValue"
-    class="block w-full border border-transparent rounded-lg bg-secondary focus:outline-none"
+    class="block w-full border rounded-lg border-borderPrimary bg-secondary sm:text-sm focus:ring-1 focus:ring-brand"
     :class="search ? 'pl-12' : 'pl-16 sm:pl-20 sm:pr-16'"
     :placeholder="placeholder"
     @input="$emit('update:inputValue', $event.target.value)"
@@ -16,8 +16,7 @@
     v-else
     ref="textRef"
     :value="inputValue"
-    class="block w-full border border-transparent rounded-md bg-primary focus:bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
-    :class="search ? 'pl-12' : 'pl-16 sm:pl-32'"
+    class="block w-full p-2 border rounded-lg border-borderPrimary bg-secondary sm:text-sm focus:ring-1 focus:ring-brand"
     :placeholder="placeholder"
     @input="$emit('update:inputValue', $event.target.value)"
     @keydown.prevent.enter="$emit('enter')"
@@ -51,6 +50,7 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ['update:inputValue', 'enter', 'cancel'],
   setup(props) {
     const textRef = ref<HTMLTextAreaElement>()
 

@@ -20,7 +20,7 @@ export const entryPullQueryBuilder = (doc) => {
 }
 
 export const entryPushQueryBuilder = (entry: EntryInput) => {
-  console.log('entryPushQueryBuilder ~ entry', entry)
+  console.log('push', entry)
   const variables: { entry: EntryInput } = {
     entry: {
       ...entry,

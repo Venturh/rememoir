@@ -1,4 +1,4 @@
-schema: ${VITE_API_GRAPHQ}
+schema: 'http://api.projectm.localhost/graphql'
 documents: ./src/graphql/**/*.gql
 generates:
   ./src/generated/graphql.ts:

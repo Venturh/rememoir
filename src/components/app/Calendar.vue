@@ -1,29 +1,15 @@
 <template>
-  <div class="relative flex justify-between w-full px-2 space-x-2">
+  <div class="relative flex justify-between w-full space-x-2">
     <div
       v-if="single && indicator"
       class="absolute w-2 h-2 rounded-full right-2.5 top-0.5 bg-brand"
     />
-    <Dropdown
-      :class="single ? 'w-full' : 'w-1/2'"
-      :show="show || open"
-      :icon="CalendarIcon"
-      icon-only
-      :border="!single"
-      @change="setShow"
-    >
-      <template v-slot:menu>
-        <VueTailWindPicker
-          :inline="true"
-          :start-date="date ? date : $dayjs().format('YYYY-MM-DD')"
-          :init="false"
-          :date-range="true"
-          class="picker"
-          :theme="calendarTheme"
-          @change="onChange"
-        />
-      </template>
-    </Dropdown>
+
+    <input :value="date" type="date" @change="onChange($event.target.value)" />
+    <IconOnlyButton class="p-2 border border-borderPrimary">
+      <Icon :icon="RiCalendarLine" />
+    </IconOnlyButton>
+
     <Dropdown
       v-if="!single"
       class="w-1/2"
@@ -33,11 +19,16 @@
       :optional-item="
         date !== '' ? { text: 'Custom', info: 'DEFAULT' } : undefined
       "
-      :icon="CalendarIcon"
+      :icon="RiCalendarLine"
       @selected="onSecondaryChange"
     />
 
-    <Button v-if="!single" class="text-sm" variant="brand15" @click="reset">
+    <Button
+      v-if="!single"
+      class="w-1/3 text-sm"
+      variant="brand25"
+      @click="reset"
+    >
       {{ t('reset') }}
     </Button>
   </div>
@@ -45,10 +36,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { CalendarIcon } from 'vue-feather-icons'
-import { calendarTheme, time } from '@/config/data'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
+import { RiCalendarLine } from 'vue-remix-icons'
+import { calendarTheme, time } from '@/config/data'
 
 export default defineComponent({
   props: {
@@ -69,25 +60,21 @@ export default defineComponent({
       default: false,
     },
   },
-  components: {
-    VueTailWindPicker: () => import('vue-tailwind-picker'),
-    CalendarIcon,
-  },
+  emits: ['change'],
   setup(props, { emit }) {
     const { t } = useI18n()
-
     const show = ref(props.open)
+    const date = ref('')
 
     const displayDate = computed(() =>
       date.value ? dayjs(date.value).format('dd, DD.MM.YY') : 'All Time'
     )
-
-    const date = ref('')
     function onChange(value: string) {
+      console.log('onChange ~ value', value)
       show.value = false
       date.value = value
-      if (props.single) emit('change', `~${$dayjs(value).format('DD.MM.YY')}`)
-      else emit('change', { type: 'date', item: $dayjs(value) })
+      if (props.single) emit('change', `~${dayjs(value).format('DD.MM.YY')}`)
+      else emit('change', { type: 'date', item: dayjs(value) })
     }
     function onSecondaryChange({ item, type }: { item: any; type: string }) {
       show.value = false
@@ -106,6 +93,7 @@ export default defineComponent({
     }
 
     return {
+      RiCalendarLine,
       t,
       calendarTheme,
       date,
@@ -115,23 +103,29 @@ export default defineComponent({
       show,
       setShow,
       reset,
-      CalendarIcon,
       time,
+      dayjs,
     }
   },
 })
 </script>
 
 <style lang="postcss" scoped>
-/* Hide calendar header */
-.picker >>> * {
-  @apply rounded-lg;
+input[type='date'] {
+  position: absolute;
+  opacity: 0;
+  border: 0;
+  overflow: hidden;
+  cursor: pointer;
+  filter: invert(0.8);
 }
-.picker >>> #v-tailwind-picker-header {
-  display: none;
-}
-.picker >>> *:first {
-  @apply bg-secondary;
-  @apply text-primary;
+input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: -150%;
+  left: -150%;
+  width: 300%;
+  height: 300%;
+  cursor: pointer;
+  background: black;
 }
 </style>

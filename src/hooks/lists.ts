@@ -5,7 +5,7 @@ import { RxDocument } from 'rxdb'
 import { Subscriber } from 'rxjs'
 import { MyDatabase } from '../db'
 import { ListInput } from '../generated/graphql'
-import { Filter, Order } from '../types'
+import { Filter, LayoutTarget, Order } from '../types'
 
 type Subs = { page?: number; subs?: Subscriber<any> }[]
 
@@ -15,7 +15,7 @@ export function useLists(db: MyDatabase) {
   const listsAmount = ref(0)
   const selector = ref({})
   const select = ref()
-  const subscriber = ref<Subscriber<any>>(null)
+  const subscriber = ref<Subscriber<any>>()
   const sort = {}
   const perPage = 20
   const subs = ref<Subs>([])
@@ -58,15 +58,15 @@ export function useLists(db: MyDatabase) {
     reset,
   }: {
     page?: number
-    target?: 'pinned' | 'archieve'
+    target?: LayoutTarget
     reset?: boolean
   }) {
     listsLoading.value = true
     if (target) {
       if (target === 'pinned')
         selector.value = { ...selector.value, pinned: true }
-      else if (target === 'archieve')
-        selector.value = { ...selector.value, archieved: true }
+      else if (target === 'archive')
+        selector.value = { ...selector.value, archived: true }
     }
     if (subscriber.value) subs.value.push({ page, subs: subscriber.value })
     if (subscriber.value && reset) {

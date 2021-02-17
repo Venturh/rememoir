@@ -57,6 +57,7 @@ class EntryResolver {
     @Arg('entry') entryInput: EntryInput,
     @Ctx() { em, payload }: MyContext
   ): Promise<Entry> {
+    console.log('EntryResolver ~ entryInput', entryInput)
     const user = await em.findOne(User, { id: payload?.userId })
     const entry = await em.findOne(Entry, { id: entryInput.id })
 
@@ -85,11 +86,7 @@ class EntryResolver {
         if (type) doc.preview = { type }
         else doc.preview = preview
         if (keywords) {
-          console.log('keywords', keywords)
-          console.log('doc', doc.categories)
-          const test = doc.categories.concat(keywords)
-          console.log('EntryResolver ~ test', test)
-          doc.categories = test
+          doc.categories = doc.categories.concat(keywords)
         }
       }
 

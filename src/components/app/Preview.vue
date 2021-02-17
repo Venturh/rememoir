@@ -13,11 +13,7 @@
       v-else
       class="w-screen max-w-full rounded-md"
       :class="size"
-      :src="
-        preview.ogVideoUrl
-          ? preview.ogVideoUrl + '?autoplay=1'
-          : preview.embeddedUrl
-      "
+      :src="preview.embeddedUrl"
       sandbox="allow-same-origin allow-scripts"
     />
   </div>

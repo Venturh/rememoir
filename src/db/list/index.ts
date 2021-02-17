@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
-import ObjectID from "bson-objectid";
-import { EntryInput, ListInput } from "../../generated/graphql";
-import { MyDatabase } from "..";
-import { EditedList } from "../../types";
+import dayjs from 'dayjs'
+import ObjectID from 'bson-objectid'
+import { EntryInput, ListInput } from '../../generated/graphql'
+import { MyDatabase } from '..'
+import { EditedList } from '../../types'
 
 export function getLists(
   db: MyDatabase,
@@ -10,14 +10,14 @@ export function getLists(
     category,
     date,
   }: {
-    category?: string;
-    date?: string;
+    category?: string
+    date?: string
   }
 ) {
   if (!category) {
-    if (!date) return db.lists.find().sort({ updatedAt: "desc" });
+    if (!date) return db.lists.find().sort({ updatedAt: 'desc' })
     else {
-      const calendarDate = dayjs(date).format("DD.MM.YY");
+      const calendarDate = dayjs(date).format('DD.MM.YY')
       return db.lists
         .find({
           selector: {
@@ -26,7 +26,7 @@ export function getLists(
             },
           },
         })
-        .sort({ updatedAt: "desc" });
+        .sort({ updatedAt: 'desc' })
     }
   } else if (!date)
     return db.lists
@@ -35,16 +35,16 @@ export function getLists(
           categories: { $in: [category] },
         },
       })
-      .sort({ updatedAt: "desc" });
+      .sort({ updatedAt: 'desc' })
   else {
     return db.lists
       .find({
         selector: {
           categories: { $in: [category] },
-          calendarDate: { $eq: dayjs(date).format("DD.MM.YY") },
+          calendarDate: { $eq: dayjs(date).format('DD.MM.YY') },
         },
       })
-      .sort({ updatedAt: "desc" });
+      .sort({ updatedAt: 'desc' })
   }
 }
 
@@ -60,23 +60,23 @@ export async function addList(
     description,
     categories,
     entries: [],
-    hashedKey: "",
-    calendarDate: dayjs().format("DD.MM.YY"),
+    hashedKey: '',
+    calendarDate: dayjs().format('DD.MM.YY'),
     processing: false,
     updatedAt: Date.now().toString(),
-    archieved: false,
+    archived: false,
     pinned: false,
-  };
-  await db.lists.insert(list);
+  }
+  await db.lists.insert(list)
 }
 
 export async function removeList(id: string, db: MyDatabase) {
-  const list = await db.lists.findOne({ selector: { id } }).exec();
+  const list = await db.lists.findOne({ selector: { id } }).exec()
   if (list) {
     try {
-      await list.remove();
+      await list.remove()
     } catch (err) {
-      console.error("could not remove list");
+      console.error('could not remove list')
     }
   }
 }
@@ -86,14 +86,14 @@ export async function updateList(
   edited: EditedList,
   db: MyDatabase
 ) {
-  const list = await db.lists.findOne({ selector: { id } }).exec();
-  let categories: string[];
+  const list = await db.lists.findOne({ selector: { id } }).exec()
+  let categories: string[]
   if (list) {
     try {
       if (edited.categories) {
-        categories = edited.categories.split(" ");
+        categories = edited.categories.split(' ')
       } else {
-        categories = list.categories;
+        categories = list.categories
       }
       const editedList: ListInput = {
         id: list.id,
@@ -101,15 +101,17 @@ export async function updateList(
         description: edited.description || list.description,
         categories,
         entries: list.entries,
-        hashedKey: "hashed",
+        hashedKey: 'hashed',
         calendarDate: list.calendarDate,
         processing: list.processing,
         updatedAt: Date.now().toString(),
-      };
+        pinned: edited.pinned ?? list.pinned,
+        archived: edited.archived ?? list.archived,
+      }
 
-      await list.update({ $set: { ...editedList } });
+      await list.update({ $set: { ...editedList } })
     } catch (err) {
-      console.error("could not update list");
+      console.error('could not update list')
     }
   }
 }
@@ -118,7 +120,7 @@ export async function addEntryToList(
   entry: EntryInput,
   db: MyDatabase
 ) {
-  const list = await db.lists.findOne({ selector: { id } }).exec();
+  const list = await db.lists.findOne({ selector: { id } }).exec()
 
   if (list) {
     try {
@@ -128,48 +130,48 @@ export async function addEntryToList(
         description: list.description,
         categories: list.categories,
         entries: [...list.entries, entry.id],
-        hashedKey: "hashed",
+        hashedKey: 'hashed',
         calendarDate: list.calendarDate,
         processing: list.processing,
         updatedAt: Date.now().toString(),
-      };
-      await list.update({ $set: { ...editedList } });
+      }
+      await list.update({ $set: { ...editedList } })
     } catch (err) {
-      console.error("could not update list", err);
+      console.error('could not update list', err)
     }
   }
 }
 
 export async function removeEntryFromList(db: MyDatabase, id: string) {
-  const lists = await db.lists.find().exec();
-  const find = lists.find((l) => l.entries.find((e) => e === id));
+  const lists = await db.lists.find().exec()
+  const find = lists.find((l) => l.entries.find((e) => e === id))
   if (find) {
     find.update({
       $set: { entries: find.entries.filter((e) => e !== id) },
-    });
-    return true;
+    })
+    return true
   }
-  return false;
+  return false
 }
 
 export async function seedLists(db: MyDatabase) {
-  const array = [...Array(60).keys()];
+  const array = [...Array(60).keys()]
   const objs: ListInput[] = array.map((i) => {
     return {
-      title: "List " + i,
-      description: "das ist die beschreibung von " + i,
-      calendarDate: dayjs(dayjs()).format("DD.MM.YY"),
-      categories: ["Youtube"],
-      hashedKey: "yep",
+      title: 'List ' + i,
+      description: 'das ist die beschreibung von ' + i,
+      calendarDate: dayjs(dayjs()).format('DD.MM.YY'),
+      categories: ['Youtube'],
+      hashedKey: 'yep',
       entries: [],
       id: new ObjectID().str,
       processing: false,
       updatedAt: Date.now().toString(),
-      archieved: false,
+      archived: false,
       pinned: false,
-    };
-  });
-  const result = await db.lists.bulkInsert(objs);
-  console.log("seed ~ result", result);
-  return result;
+    }
+  })
+  const result = await db.lists.bulkInsert(objs)
+  console.log('seed ~ result', result)
+  return result
 }
