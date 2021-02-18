@@ -2,6 +2,7 @@
   <BaseActions
     :primary-menu="primaryMenu"
     :secondary-menu="secondaryItems"
+    type="entry"
     @edit="submit"
     @remove="remove"
     @showLists="toggleLists"
@@ -94,11 +95,11 @@ export default defineComponent({
       const listItems: HoverMenuItem[] = avaibleLists.value.map((l) => {
         return { name: l.text, icon: RiLayoutColumnLine, info: l.info }
       })
-      listItems[listItems.length] = {
+      listItems.unshift({
         name: 'back',
         icon: RiDeleteBack2Line,
         goto: 'primary',
-      }
+      })
       return showLists.value ? listItems : hoverSecondaryMenu
     })
 

@@ -18,8 +18,10 @@
         :target="type"
       />
       <div v-if="content" class="space-y-6">
-        <div v-for="date in Object.keys(content)" :key="date" class="space-y-2">
-          <div class="py-1 text-lg font-medium border-borderPrimary">
+        <div v-for="date in Object.keys(content)" :key="date" class="space-y-4">
+          <div
+            class="p-2 text-lg font-semibold border rounded-md shadow-sm dark:shadow-none bg-secondary border-borderPrimary text-brand"
+          >
             {{ date }}
           </div>
           <div ref="scrollRef" class="space-y-4">

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
 import { groupBy } from 'lodash'
 import { Subscriber } from 'rxjs'
@@ -113,4 +113,17 @@ export function useEntries(db: MyDatabase) {
     entriesAmount,
     moreAvaible,
   }
+}
+
+export function useQueryEntries(db: MyDatabase) {
+  const entries = ref<EntryInput[]>([])
+
+  onMounted(async () => {
+    entries.value = await db.entries
+      .find()
+      .sort({ updatedAt: 'desc' })
+
+      .exec()
+  })
+  return { entries }
 }

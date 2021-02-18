@@ -54,9 +54,9 @@
   "calendarDate_desc": "Kalender absteigend",
   "calendarDate_asc": "Kalendar aufsteigend",
 
-  "addNewEntry": "Neuen Eintrag erstellen (# für Kategorien // für mehr Text ",
-  "addNewList": "Create a new List (# für Kategorien // für mehr Text ",
-  "searchPlaceholder": "Schnellsuche nach Einträgen und Listen",
+  "addNewEntry": "(#Kategorien, at Liste, ~Datum, //Beschreibung )",
+  "addNewList": "(#Kategorien, at Liste, ~Datum, //Beschreibung )",
+  "searchPlaceholder": "Suche nach Einträgen und Listen",
 
   "reset": "Zurücksetzen",
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative flex flex-col w-full h-full p-3 space-y-3 rounded-md shadow-sm dark:ring-1 dark:shadow-none bg-secondary dark:ring-borderPrimary"
+    class="relative flex flex-col w-full h-full p-3 space-y-3 rounded-md shadow-sm dark:shadow-none bg-secondary ring-1 ring-borderPrimary"
     @click="$emit('click')"
   >
     <slot />
@@ -18,7 +18,7 @@
           <Label v-if="categories.length > 4" class="flex-shrink-0" small>
             +{{ categories.length - 4 }}
           </Label>
-          <template v-slot:content>
+          <template #content>
             <p
               v-for="category in categories.slice(4)"
               :key="category"
@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -48,5 +48,6 @@ export default defineComponent({
       default: '',
     },
   },
+  emits: ['click'],
 })
 </script>

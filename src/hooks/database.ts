@@ -47,7 +47,7 @@ export function useAddDb({ db }: { db: MyDatabase }) {
     const title = split.join(' ')
 
     if (target === 'list') {
-      await addList(db, title, description, categories)
+      await addList(db, title, description, categories, calendarDate)
       setTimeout(() => {
         loading.value = false
       }, 1000)

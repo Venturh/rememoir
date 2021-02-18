@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
 import { groupBy } from 'lodash'
 import { RxDocument } from 'rxdb'
@@ -27,7 +27,7 @@ export function useLists(db: MyDatabase) {
   function setListSelector({
     date,
     categories,
-    order = Order.UPDATED_DESC,
+    order = Order.CALENDER_DESC,
   }: Filter) {
     if (subscriber.value) {
       subscriber.value.unsubscribe()
@@ -124,18 +124,18 @@ export function useAvaibleLists(db: MyDatabase, entryId?: string) {
   const lists = ref<ListInput[]>([])
   const loading = ref()
 
-  db.lists
-    .find()
-    .sort({ updatedAt: 'desc' })
-    .$.subscribe((results) => {
-      lists.value = results
-      loading.value = true
-    })
+  onMounted(async () => {
+    lists.value = await db.lists
+      .find()
+      .sort({ updatedAt: 'desc' })
+
+      .exec()
+  })
 
   const avaibleLists = computed(() => {
     if (lists.value.length > 0) {
       const avaible = lists.value.map((l: ListInput) => {
-        const entryInList = l.entries.includes(entryId)
+        const entryInList = entryId ? l.entries.includes(entryId) : undefined
         return {
           text: l.title,
           info: entryInList ? 'DUPLICATE' : l.id,
@@ -153,11 +153,18 @@ export function useAvaibleLists(db: MyDatabase, entryId?: string) {
 export function useListbyId(db: MyDatabase, id?: string) {
   const loading = ref(true)
   const list = ref<ListInput>()
-  db.lists.findOne({ selector: { id } }).$.subscribe((result) => {
-    loading.value = true
-    list.value = result
-    loading.value = false
-  })
+  const subs = ref()
 
-  return { list, loading }
+  function execute(id: string) {
+    if (subs.value) subs.value.unsubscribe()
+    subs.value = db.lists
+      .findOne({ selector: { id } })
+      .$.subscribe((result) => {
+        loading.value = true
+        list.value = result as ListInput
+        loading.value = false
+      })
+  }
+
+  return { list, loading, execute }
 }

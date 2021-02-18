@@ -4,7 +4,12 @@
       class="flex items-center justify-between h-16 pb-2 space-x-2 border-b border-borderPrimary lg:space-x-0"
     >
       <div class="w-full space-x-6 lg:w-screen lg:max-w-lg">
-        <HeaderSearch v-if="search === true" @keyAction="hotkey" />
+        <HeaderSearch
+          v-if="search === true"
+          :show-modal="showSearchModal"
+          @update="setShowSearchModal"
+          @keyAction="hotkey"
+        />
         <HeaderAdd
           v-else
           ref="headerAdd"
@@ -21,7 +26,7 @@
         variant="brand25"
         padding
         class="p-2.5 lg:ml-6 lg:px-4 lg:space-x-2"
-        @click="search = 'entry'"
+        @click="search = false"
       >
         <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
         <Icon v-if="search === false" :icon="RiCloseLine" />
@@ -43,6 +48,7 @@ export default defineComponent({
     const input = ref('')
     const inputType = ref<HeaderInputType>('search')
     const headerAdd = ref()
+    const showSearchModal = ref(false)
     const db = getDb()
     const { loading, execute, result } = useAddDb({
       db,
@@ -82,18 +88,22 @@ export default defineComponent({
 
     function hotkeyListener(event: KeyboardEvent) {
       if (event.key === 'e' && event.ctrlKey) {
+        showSearchModal.value = false
         event.preventDefault()
         setInputType('entry')
         if (headerAdd.value) {
           headerAdd.value.$refs.inputRef.$el.focus()
         }
       } else if (event.key === 'l' && event.ctrlKey) {
-        if (event.preventDefault) event.preventDefault()
+        showSearchModal.value = false
+        event.preventDefault()
         setInputType('list')
         if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
       } else if (event.key === 'k' && event.ctrlKey) {
-        if (event.preventDefault) event.preventDefault()
-        inputType.value = 'search'
+        showSearchModal.value = false
+        event.preventDefault()
+        setInputType('search')
+        showSearchModal.value = true
       }
     }
     function hotkey(key: string) {
@@ -103,8 +113,6 @@ export default defineComponent({
       } else if (key === 'l') {
         setInputType('list')
         if (headerAdd.value) headerAdd.value.$refs.inputRef.$el.focus()
-      } else if (key === 'k') {
-        inputType.value = 'search'
       }
     }
 
@@ -126,6 +134,8 @@ export default defineComponent({
       result,
       hotkeyListener,
       hotkey,
+      showSearchModal,
+      setShowSearchModal: (val: boolean) => (showSearchModal.value = val),
     }
   },
 })

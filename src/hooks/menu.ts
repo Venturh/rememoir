@@ -11,27 +11,29 @@ import {
 } from 'vue-remix-icons'
 
 export function usePrimaryMenu(data: any, target: 'entries' | 'lists') {
-  const primaryMenu = computed(() => [
-    { name: data.value.pinned ? 'unpin' : 'pin', icon: RiMapPin2Line },
-    { name: 'edit', icon: RiEdit2Line },
-    {
-      name: data.value.archived ? 'unarchive' : 'archive',
-      icon: RiArchiveLine,
-    },
-    { name: 'delete', icon: RiDeleteBack2Line },
-    {
-      name: 'share',
-      icon: RiShareLine,
-      goto: 'secondary',
-    },
-  ])
-  if (target === 'entries')
-    primaryMenu.value.unshift({
-      name: 'addToList',
-      icon: RiAddCircleLine,
-      goto: 'secondary',
-    })
+  const primaryMenu = computed(() => {
+    const menu = [
+      { name: data.value.pinned ? 'unpin' : 'pin', icon: RiMapPin2Line },
+      { name: 'edit', icon: RiEdit2Line },
+      {
+        name: data.value.archived ? 'unarchive' : 'archive',
+        icon: RiArchiveLine,
+      },
+      { name: 'delete', icon: RiDeleteBack2Line },
+      {
+        name: 'share',
+        icon: RiShareLine,
+        goto: 'secondary',
+      },
+    ]
+    if (target === 'entries')
+      menu.unshift({
+        name: 'addToList',
+        icon: RiAddCircleLine,
+        goto: 'secondary',
+      })
+    return menu
+  })
+
   return { primaryMenu }
 }
-
-export function useHandleMenu() {}

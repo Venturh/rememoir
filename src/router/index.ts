@@ -89,13 +89,33 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '',
         component: () => import('../pages/lists/[id].vue'),
-        name: 'auth-register',
+        name: 'lists',
         meta: { requiresAuth: true },
       },
       {
         path: ':id',
         component: () => import('../pages/lists/[id].vue'),
-        name: 'auth-register',
+        name: 'listsid',
+        meta: { requiresAuth: true },
+      },
+    ],
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/entries',
+    name: 'entries',
+    component: RouterView,
+    children: [
+      {
+        path: '',
+        component: () => import('../pages/entries/[id].vue'),
+        name: 'entries',
+        meta: { requiresAuth: true },
+      },
+      {
+        path: ':id',
+        component: () => import('../pages/entries/[id].vue'),
+        name: 'entriesid',
         meta: { requiresAuth: true },
       },
     ],

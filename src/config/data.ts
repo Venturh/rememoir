@@ -10,6 +10,8 @@ import {
   RiMailLine,
   RiShareLine,
   RiAddCircleLine,
+  RiFileListLine,
+  RiListUnordered,
 } from 'vue-remix-icons'
 import { Filter, MenuOption, Order } from '../types'
 
@@ -17,11 +19,6 @@ export const sidebarItems = [
   { icon: RiDashboardLine, text: 'home' },
   { icon: RiMapPin2Line, text: 'pinned' },
   { icon: RiArchiveLine, text: 'archive' },
-]
-
-export const tabnavItems = [
-  { icon: null, text: 'entries' },
-  { icon: null, text: 'lists' },
 ]
 
 export const hoverListPrimaryMenu = [
@@ -99,12 +96,12 @@ export const time = [
 ]
 
 export const order = [
-  { text: Order.UPDATED_DESC, info: 'DEFAULT', translate: true },
-  { text: Order.UPDATED_ASC, translate: true },
+  { text: Order.CALENDER_DESC, info: 'DEFAULT', translate: true },
+  { text: Order.CALENDER_ASC, translate: true },
   { text: Order.TITLE_DESC, translate: true },
   { text: Order.TITLE_ASC, translate: true },
-  { text: Order.CALENDER_DESC, translate: true },
-  { text: Order.CALENDER_ASC, translate: true },
+  { text: Order.UPDATED_DESC, info: 'DEFAULT', translate: true },
+  { text: Order.UPDATED_ASC, translate: true },
 ]
 
 export const filterInitial: Filter = {

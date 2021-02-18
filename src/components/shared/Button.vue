@@ -6,7 +6,7 @@
       { 'px-2 py-1 sm:py-2 ': !padding },
       small ? 'text-xs sm:text-sm' : 'text-sm sm:text-base ',
     ]"
-    class="flex items-center justify-center font-medium border border-transparent rounded-md shadow-sm focus:outline-none"
+    class="flex items-center justify-center font-medium border border-transparent rounded-md shadow-sm dark:shadow-none focus:outline-none"
   >
     <slot />
   </button>
@@ -34,18 +34,15 @@ export default defineComponent({
   setup(props) {
     const buttonVariant = computed(() => {
       const map = new Map([
-        [
-          '1',
-          'ring-1 ring-brand shadow-sm text-brand hover:bg-brand hover:text-white',
-        ],
+        ['1', 'ring-1 ring-brand text-brand hover:bg-brand hover:text-white'],
         ['inherit', 'bg-none text-primary  hover:text-brand'],
         [
           'brand15',
-          'shadow-sm bg-brand15 hover:bg-brand25 text-primary focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand15',
+          'bg-brand15 hover:bg-brand25 text-primary focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand15',
         ],
         [
           'brand25',
-          'shadow-sm bg-brand25 hover:bg-brand15 text-brand focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand25',
+          'bg-brand25 hover:bg-brand15 text-brand focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand25',
         ],
         [
           'brand',

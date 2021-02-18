@@ -52,7 +52,8 @@ export async function addList(
   db: MyDatabase,
   title: string,
   description: string,
-  categories: string[]
+  categories: string[],
+  calendarDate: string
 ) {
   const list: ListInput = {
     id: new ObjectID().str,
@@ -61,7 +62,7 @@ export async function addList(
     categories,
     entries: [],
     hashedKey: '',
-    calendarDate: dayjs().format('DD.MM.YY'),
+    calendarDate,
     processing: false,
     updatedAt: Date.now().toString(),
     archived: false,

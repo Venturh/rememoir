@@ -55,9 +55,9 @@
   "calendarDate_desc": "Calendar descending",
   "calendarDate_asc": "Calendar ascending",
 
-  "addNewEntry": "Create a new Entry (# for categories // for more Text) ",
-  "addNewList": "Create a new List (# for categories // for more Text) ",
-  "searchPlaceholder": "Quicksearch for entries and lists",
+  "addNewEntry": "(#categories, at lists, ~date, //description )",
+  "addNewList": "(#categories, at lists, ~date, //description )",
+  "searchPlaceholder": "Search for entries and lists",
   "reset": "Reset",
 
   "previewError": "There was an error, loading the preview"

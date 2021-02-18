@@ -61,8 +61,8 @@
           </Button>
         </div>
       </FilterItem>
-      <Button @click="seedHandle('e')">Seed Entries</Button>
-      <Button @click="seedHandle('l')">Seed Lists</Button>
+      <!-- <Button @click="seedHandle('e')">Seed Entries</Button>
+      <Button @click="seedHandle('l')">Seed Lists</Button> -->
     </div>
   </div>
 </template>

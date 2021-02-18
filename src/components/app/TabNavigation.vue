@@ -1,11 +1,11 @@
 <template>
-  <nav class="relative">
+  <nav class="relative w-full">
     <div class="absolute bottom-0 w-full h-0.5 bg-borderPrimary" />
     <div class="relative flex items-center w-full sm:w-1/2">
       <button
-        v-for="(item, index) in tabnavItems"
+        v-for="(item, index) in ['entries', 'lists']"
         ref="linkRef"
-        :key="item.text"
+        :key="item"
         class="inline-flex items-center py-2 mr-4 space-x-1 text-sm font-medium border-b-2 focus:outline-none text-primary group"
         :class="
           selected === index
@@ -14,8 +14,7 @@
         "
         @click="setSelected(index)"
       >
-        <Icon :icon="item.icon" class="flex-shrink-0" />
-        <span>{{ t(item.text) }}</span>
+        <span>{{ t(item) }}</span>
         <Label small :rounded="false" variant="brand25">
           {{ amount[index] }}
         </Label>
@@ -26,7 +25,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { tabnavItems } from '@/config/data'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
@@ -36,6 +34,7 @@ export default defineComponent({
       default: () => [],
     },
   },
+  emits: ['selected'],
   setup(_, { emit }) {
     const { t } = useI18n()
     const selected = ref(0)
@@ -45,7 +44,7 @@ export default defineComponent({
       emit('selected', val)
     }
 
-    return { t, selected, setSelected, tabnavItems }
+    return { t, selected, setSelected }
   },
 })
 </script>

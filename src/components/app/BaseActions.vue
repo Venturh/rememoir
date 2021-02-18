@@ -50,7 +50,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const showMenu = ref(false)
     const showEditModal = ref(false)
-    const entryTarget = computed(() => props.type === 'entry')
 
     function handleMenu({ name, info }: { name: string; info: string }) {
       switch (name) {
@@ -102,7 +101,6 @@ export default defineComponent({
       showEditModal,
       handleMenu,
       submitModal,
-      entryTarget,
     }
   },
 })

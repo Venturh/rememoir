@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { defineComponent, inject, onMounted, ref, watch } from 'vue'
 import { keys } from 'lodash'
 import {
   useEntries,
@@ -59,18 +59,19 @@ import {
   useScroll,
 } from '@/hooks'
 import { getDb } from '@/db/Database'
-import { useRouter } from 'vue-router'
+import { onBeforeRouteUpdate, useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
+    const vfm: any = inject('$vfm')
     const { push, currentRoute } = useRouter()
     const db = getDb()
     const { filters, setFilters } = useFilter()
     const showPreview = ref(true)
-    const { id } = currentRoute.value.params
+    const id = ref(currentRoute.value.params.id)
     const { scrollRef } = useScroll(() => loadMore())
     const { currentPage, next, resetPage } = usePagination()
-    const { list, loading } = useListbyId(db, id as string)
+    const { list, loading, execute } = useListbyId(db, id.value as string)
     const {
       entries,
       subscribeEntries,
@@ -105,12 +106,22 @@ export default defineComponent({
     )
 
     onMounted(() => {
-      if (!id) redirectOnError()
+      if (!id.value) redirectOnError()
+      else execute(id.value)
     })
 
     function redirectOnError() {
       push('home')
     }
+
+    onBeforeRouteUpdate((to, from, next) => {
+      vfm.hide('search')
+      if (to !== from) {
+        id.value = to.params.id
+        execute(id.value)
+        next()
+      }
+    })
 
     return {
       list,

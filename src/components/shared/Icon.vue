@@ -10,7 +10,7 @@
 <script lang="ts">
 import { computed, PropType } from 'vue'
 type Size = 'xs' | 'sm' | 'md' | 'lg'
-type Color = 'brand' | 'primary'
+type Color = 'brand' | 'primary' | 'secondary'
 export default {
   props: {
     icon: {
@@ -40,6 +40,7 @@ export default {
     const colors = computed(() => {
       const map = new Map<Color, string>([
         ['primary', 'text-primary'],
+        ['secondary', 'text-secondary'],
         ['brand', 'text-brand'],
       ])
       return map.get(props.color) || ''
