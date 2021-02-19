@@ -63,15 +63,14 @@ import { onBeforeRouteUpdate, useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
-    const vfm: any = inject('$vfm')
     const { push, currentRoute } = useRouter()
     const db = getDb()
     const { filters, setFilters } = useFilter()
     const showPreview = ref(true)
-    const id = ref(currentRoute.value.params.id)
+    const id = ref(currentRoute.value.params.id as string)
     const { scrollRef } = useScroll(() => loadMore())
     const { currentPage, next, resetPage } = usePagination()
-    const { list, loading, execute } = useListbyId(db, id.value as string)
+    const { list, loading, execute } = useListbyId(db, id.value)
     const {
       entries,
       subscribeEntries,
@@ -115,9 +114,8 @@ export default defineComponent({
     }
 
     onBeforeRouteUpdate((to, from, next) => {
-      vfm.hide('search')
       if (to !== from) {
-        id.value = to.params.id
+        id.value = to.params.id as string
         execute(id.value)
         next()
       }

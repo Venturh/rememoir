@@ -1,5 +1,9 @@
 <template>
-  <Card :categories="entry.categories" :time-from="timeFrom">
+  <Card
+    :to="`/entries/${entry.id}`"
+    :categories="entry.categories"
+    :time-from="timeFrom"
+  >
     <div class="flex items-center justify-between">
       <span>{{ entry.title }}</span>
       <BaseEntryActions :entry="entry" :is-list-entry="isListEntry" />
@@ -14,34 +18,16 @@
   </Card>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script setup lang="ts">
+import { defineProps } from 'vue'
 import { useTimeFromDate } from '@/hooks/date'
-import { Entry } from '@/generated/graphql'
+import type { Entry } from '@/generated/graphql'
 
-export default defineComponent({
-  props: {
-    entry: {
-      type: Object as PropType<Entry>,
-      default: () => {},
-    },
-    showPreview: {
-      type: Boolean,
-      default: true,
-    },
-    isListEntry: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const timeFrom = computed(() => {
-      return useTimeFromDate(props.entry.updatedAt)
-    })
+const props = defineProps<{
+  entry: Entry
+  showPreview: boolean
+  isListEntry: boolean
+}>()
 
-    return {
-      timeFrom,
-    }
-  },
-})
+const timeFrom = useTimeFromDate(props.entry.updatedAt)
 </script>

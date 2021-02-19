@@ -5,6 +5,7 @@ import { Subscriber } from 'rxjs'
 import { MyDatabase } from '../db'
 import { EntryInput } from '../generated/graphql'
 import { Filter, LayoutTarget, Order } from '../types'
+import { RxDocument } from 'rxdb'
 
 type Subs = { page?: number; subs?: Subscriber<any> }[]
 
@@ -126,4 +127,20 @@ export function useQueryEntries(db: MyDatabase) {
       .exec()
   })
   return { entries }
+}
+
+export function useEntryById(id: string, db: MyDatabase) {
+  const entry = ref<RxDocument<EntryInput, {}> | null>()
+  const loading = ref(true)
+
+  async function execute(id: string) {
+    loading.value = true
+    entry.value = await db.entries.findOne({ selector: { id } }).exec()
+    loading.value = false
+  }
+
+  onMounted(async () => {
+    await execute(id)
+  })
+  return { entry, execute, loading }
 }

@@ -24,11 +24,8 @@
         </Button>
       </div>
     </button>
-
-    <div class="absolute">
-      <Search v-if="show" v-model="show" />
-    </div>
   </div>
+  <Search v-if="show" v-model="show" />
 </template>
 
 <script lang="ts">

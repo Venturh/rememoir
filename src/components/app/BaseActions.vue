@@ -8,6 +8,7 @@
         v-if="showEditModal"
         v-model="showEditModal"
         form
+        name="baseactions"
         @confirm="submitModal"
         @cancel="showEditModal = false"
       >
@@ -25,83 +26,70 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, ref } from 'vue'
+<script setup lang="ts">
+import { ref, defineEmit, defineProps } from 'vue'
 import { RiMore2Line } from 'vue-remix-icons'
 
-type Type = 'entry' | 'list'
+defineProps<{
+  type: any
+  primaryMenu: []
+  secondaryMenu: []
+}>()
 
-export default defineComponent({
-  props: {
-    type: {
-      type: String as PropType<Type>,
-      default: '',
-    },
-    primaryMenu: {
-      type: Array,
-      default: () => [],
-    },
-    secondaryMenu: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  emits: ['remove', 'showLists', 'back', 'pin', 'addToList', 'edit', 'archive'],
-  setup(props, { emit }) {
-    const showMenu = ref(false)
-    const showEditModal = ref(false)
+const emit = defineEmit([
+  'remove',
+  'showLists',
+  'back',
+  'pin',
+  'addToList',
+  'edit',
+  'archive',
+])
 
-    function handleMenu({ name, info }: { name: string; info: string }) {
-      switch (name) {
-        case 'delete':
-          emit('remove')
-          break
-        case 'edit':
-          showEditModal.value = true
-          break
-        case 'addToList':
-          emit('showLists')
-          return
-        case 'share':
-          emit('back')
-          return
-        case 'back':
-          emit('back')
-          return
-        case 'pin':
-          emit('pin', true)
-          break
-        case 'unpin':
-          emit('pin', false)
-          break
-        case 'archive':
-          emit('archive', true)
-          break
-        case 'unarchive':
-          emit('archive', false)
-          break
+const showMenu = ref(false)
+const showEditModal = ref(false)
 
-        default:
-          break
-      }
-      if (info) {
-        emit('addToList', info)
-      }
-      showMenu.value = false
-    }
+function handleMenu({ name, info }: { name: string; info: string }) {
+  switch (name) {
+    case 'delete':
+      emit('remove')
+      break
+    case 'edit':
+      showEditModal.value = true
+      break
+    case 'addToList':
+      emit('showLists')
+      return
+    case 'share':
+      emit('back')
+      return
+    case 'back':
+      emit('back')
+      return
+    case 'pin':
+      emit('pin', true)
+      break
+    case 'unpin':
+      emit('pin', false)
+      break
+    case 'archive':
+      emit('archive', true)
+      break
+    case 'unarchive':
+      emit('archive', false)
+      break
 
-    function submitModal() {
-      showEditModal.value = false
-      emit('edit')
-    }
+    default:
+      break
+  }
+  if (info) {
+    emit('addToList', info)
+  }
+  showMenu.value = false
+}
 
-    return {
-      RiMore2Line,
-      showMenu,
-      showEditModal,
-      handleMenu,
-      submitModal,
-    }
-  },
-})
+function submitModal() {
+  showEditModal.value = false
+  emit('edit')
+}
 </script>

@@ -9,7 +9,7 @@
     </div>
     <div>
       <div
-        v-if="show"
+        v-if="show && !disabled"
         :class="positions"
         class="absolute bottom-0 px-2 py-1 text-sm rounded-md text-primary ring-1/2 ring-borderPrimary bg-primary inset-center"
       >
@@ -40,6 +40,7 @@ export default defineComponent({
       type: String as PropType<Position>,
       default: 'right',
     },
+    disabled: Boolean,
   },
 
   setup(props) {

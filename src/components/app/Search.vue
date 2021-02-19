@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="show" name="search">
+  <Modal v-model="show" name="search" fixed>
     <template #header>
       <div class="relative flex flex-col items-start">
         <div class="relative w-full mt-1 rounded-md">
@@ -20,7 +20,7 @@
             @input="search"
             @keydown.down.prevent="keydown(true)"
             @keydown.up.prevent="keydown(false)"
-            @keydown.enter.prevent="getLink()"
+            @keydown.enter.prevent="navigate()"
           />
           <div class="absolute inset-y-0 right-0 flex items-center pr-3">
             <Button
@@ -28,7 +28,7 @@
               variant="brand25"
               padding
               small
-              @click="show = false"
+              @click="vfm.hide('search')"
             >
               esc
             </Button>
@@ -37,18 +37,25 @@
       </div>
     </template>
     <div v-if="results.length > 0" ref="resultsRef" class="w-full space-y-2">
-      <router-link
+      <button
         v-for="(result, index) in results"
         :key="result.item.id"
-        :to="getLink(result.item)"
-        class="flex items-center p-2 space-x-3 rounded-md"
+        class="flex items-center justify-between w-full p-2 rounded-md"
         :class="selectedItem === index ? 'bg-brand25' : 'bg-secondary'"
         @mouseover="selectedItem = index"
+        @click="navigate()"
       >
-        <Icon :icon="result.item.entries ? RiListCheck : RiLayoutColumnLine" />
-        <span class="text-lg">{{ result.item.title }}</span>
-        <span class="truncate">{{ result.item.description }}</span>
-      </router-link>
+        <div class="flex items-center w-2/3 space-x-3">
+          <Icon
+            :icon="result.item.entries ? RiListCheck : RiLayoutColumnLine"
+          />
+          <span class="text-lg">{{ result.item.title }}</span>
+          <span class="hidden truncate sm:block">{{
+            result.item.description
+          }}</span>
+        </div>
+        <Labels :items="result.item.categories" :tooltip="false" />
+      </button>
     </div>
   </Modal>
 </template>
@@ -63,7 +70,7 @@ import { RiSearch2Line, RiListCheck, RiLayoutColumnLine } from 'vue-remix-icons'
 import { getDb } from '@/db/Database'
 import { useAvaibleLists, useQueryEntries } from '@/hooks'
 
-const props = defineProps({ showModal: Boolean })
+const props = defineProps<{ showModal: boolean }>()
 
 const db = getDb()
 const vfm: any = inject('$vfm')
@@ -109,12 +116,9 @@ function keydown(down: boolean) {
   })
 }
 
-function getLink(item?: any) {
-  if (item) return `/${item.entries ? 'lists' : 'entries'}/${item.id}`
+function navigate() {
+  vfm.hide('search')
   const selected = results.value[selectedItem.value]
-  console.log('getLink ~ it', selected.item)
-  console.log('getLink ~ selectedItem.value', selectedItem.value)
-  show.value = false
   push(`/${selected.item.entries ? 'lists' : 'entries'}/${selected.item.id}`)
 }
 </script>

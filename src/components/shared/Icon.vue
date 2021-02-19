@@ -3,7 +3,7 @@
     :is="icon"
     v-if="icon"
     :class="[sizes, colors]"
-    class="fill-current"
+    class="flex-shrink-0 fill-current"
   />
 </template>
 
