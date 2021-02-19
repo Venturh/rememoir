@@ -31,7 +31,6 @@ import { ref, defineEmit, defineProps } from 'vue'
 import { RiMore2Line } from 'vue-remix-icons'
 
 defineProps<{
-  type: any
   primaryMenu: []
   secondaryMenu: []
 }>()
@@ -44,12 +43,15 @@ const emit = defineEmit([
   'addToList',
   'edit',
   'archive',
+  'share',
 ])
 
 const showMenu = ref(false)
 const showEditModal = ref(false)
 
 function handleMenu({ name, info }: { name: string; info: string }) {
+  console.log('handleMenu ~ info', info)
+  console.log('handleMenu ~ name', name)
   switch (name) {
     case 'delete':
       emit('remove')
@@ -77,6 +79,9 @@ function handleMenu({ name, info }: { name: string; info: string }) {
       break
     case 'unarchive':
       emit('archive', false)
+      break
+    case 'copylink':
+      emit('share', 'link')
       break
 
     default:

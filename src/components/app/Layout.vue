@@ -30,6 +30,7 @@
               v-for="(data, index) in content[date]"
               :key="index"
               :show-preview="showPreview"
+              :public="false"
               :entry="{
                 title: data.title,
                 description: data.description,

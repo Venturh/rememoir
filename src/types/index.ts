@@ -56,6 +56,7 @@ export type MenuOption = Array<MenuOptionItem>
 export type HoverMenuItem = {
   name: string
   icon: any
+  translate?: boolean
   goto?: string
   info?: string
 }

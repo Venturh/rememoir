@@ -1,6 +1,4 @@
-import { EntryInput } from '@api/resolvers/entry/types'
-import { ListInput } from '@api/resolvers/list/types'
-import { computed } from 'vue-demi'
+import { computed } from 'vue'
 import {
   RiAddCircleLine,
   RiArchiveLine,
@@ -9,21 +7,32 @@ import {
   RiMapPin2Line,
   RiShareLine,
 } from 'vue-remix-icons'
+import { HoverMenuItem } from '@/types'
 
-export function usePrimaryMenu(data: any, target: 'entries' | 'lists') {
+export function usePrimaryMenu(
+  data: any,
+  target: 'entries' | 'lists' | 'public'
+) {
   const primaryMenu = computed(() => {
-    const menu = [
-      { name: data.value.pinned ? 'unpin' : 'pin', icon: RiMapPin2Line },
-      { name: 'edit', icon: RiEdit2Line },
+    if (target === 'public') return []
+    const menu: HoverMenuItem[] = [
+      {
+        name: data.value.pinned ? 'unpin' : 'pin',
+        icon: RiMapPin2Line,
+        translate: true,
+      },
+      { name: 'edit', icon: RiEdit2Line, translate: true },
       {
         name: data.value.archived ? 'unarchive' : 'archive',
         icon: RiArchiveLine,
+        translate: true,
       },
-      { name: 'delete', icon: RiDeleteBack2Line },
+      { name: 'delete', icon: RiDeleteBack2Line, translate: true },
       {
         name: 'share',
         icon: RiShareLine,
         goto: 'secondary',
+        translate: true,
       },
     ]
     if (target === 'entries')
@@ -31,6 +40,7 @@ export function usePrimaryMenu(data: any, target: 'entries' | 'lists') {
         name: 'addToList',
         icon: RiAddCircleLine,
         goto: 'secondary',
+        translate: true,
       })
     return menu
   })

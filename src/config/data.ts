@@ -21,36 +21,11 @@ export const sidebarItems = [
   { icon: RiArchiveLine, text: 'archive' },
 ]
 
-export const hoverListPrimaryMenu = [
-  { name: 'pin', icon: RiMapPin2Line },
-  { name: 'edit', icon: RiEdit2Line },
-  { name: 'archive', icon: RiArchiveLine },
-  { name: 'delete', icon: RiDeleteBack2Line },
-  {
-    name: 'share',
-    icon: RiShareLine,
-    goto: 'secondary',
-  },
-]
-
-export const hoverEntryPrimaryMenu = [
-  { name: 'addToList', icon: RiAddCircleLine, goto: 'secondary' },
-  { name: 'pin', icon: RiMapPin2Line },
-  { name: 'edit', icon: RiEdit2Line },
-  { name: 'archive', icon: RiArchiveLine },
-  { name: 'delete', icon: RiDeleteBack2Line },
-  {
-    name: 'share',
-    icon: RiShareLine,
-    goto: 'secondary',
-  },
-]
-
 export const hoverSecondaryMenu = [
-  { name: 'copylink', icon: RiLink },
-  { name: 'twitter', icon: RiTwitterLine },
-  { name: 'mail', icon: RiMailLine },
-  { name: 'back', icon: RiDeleteBack2Line, goto: 'primary' },
+  { name: 'copylink', icon: RiLink, translate: true },
+  { name: 'twitter', icon: RiTwitterLine, translate: true },
+  { name: 'mail', icon: RiMailLine, translate: true },
+  { name: 'back', icon: RiDeleteBack2Line, goto: 'primary', translate: true },
 ]
 
 export const categories: MenuOption = [

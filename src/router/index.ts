@@ -133,6 +133,18 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: '/shared/entry',
+    name: 'sharedentry',
+    component: RouterView,
+    children: [
+      {
+        path: ':id',
+        component: () => import('../pages/shared/entry/[id].vue'),
+        name: 'sharedentry',
+      },
+    ],
+  },
 ]
 
 const router = createRouter({

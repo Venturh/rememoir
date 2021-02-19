@@ -6,7 +6,7 @@
   >
     <div class="flex items-center justify-between">
       <span>{{ entry.title }}</span>
-      <BaseEntryActions :entry="entry" :is-list-entry="isListEntry" />
+      <BaseEntryActions v-if="!public" :entry="entry" :public="public" />
     </div>
     <p v-if="entry.description" class="">{{ entry.description }}</p>
 
@@ -26,8 +26,7 @@ import type { Entry } from '@/generated/graphql'
 const props = defineProps<{
   entry: Entry
   showPreview: boolean
-  isListEntry: boolean
+  public: boolean
 }>()
-
 const timeFrom = useTimeFromDate(props.entry.updatedAt)
 </script>

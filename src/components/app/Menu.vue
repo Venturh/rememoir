@@ -14,7 +14,9 @@
         @click.stop="handleClick(item)"
       >
         <Icon :icon="item.icon" size="sm" />
-        <span class="text-sm">{{ t(item.name) }}</span>
+        <span class="text-sm truncate">
+          {{ item.translate ? t(item.name) : item.name }}
+        </span>
       </div>
     </div>
 
@@ -32,7 +34,9 @@
         @click.stop="handleClick(item)"
       >
         <Icon :icon="item.icon" size="sm" />
-        <span class="text-sm truncate">{{ item.name }}</span>
+        <span class="text-sm truncate">
+          {{ item.translate ? t(item.name) : item.name }}
+        </span>
       </button>
     </div>
   </div>

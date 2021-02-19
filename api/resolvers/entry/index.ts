@@ -23,16 +23,6 @@ const pubsub = new PubSub()
 class EntryResolver {
   @Query(() => [Entry])
   @UseMiddleware(isAuth)
-  async allEntriesByUser(
-    @Ctx()
-    { em, payload }: MyContext
-  ) {
-    const entries = await em.find(Entry, { user: payload?.userId })
-    return entries
-  }
-
-  @Query(() => [Entry])
-  @UseMiddleware(isAuth)
   async rxEntryReplication(
     @Arg('lastId') lastId: string,
     @Arg('minUpdatedAt') minUpdatedAt: string,
@@ -104,6 +94,16 @@ class EntryResolver {
   changedEntry(@Arg('token') token: string, @Root() entry: Entry) {
     verifyToken(token)
     return entry
+  }
+
+  @Query(() => Entry)
+  async getSharedEntry(
+    @Arg('id') id: string,
+    @Ctx()
+    { em }: MyContext
+  ) {
+    const entries = await em.findOne(Entry, { id: id })
+    return entries
   }
 }
 

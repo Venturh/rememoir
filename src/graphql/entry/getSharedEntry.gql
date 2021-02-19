@@ -1,0 +1,26 @@
+query getSharedEntry($id: String!) {
+  getSharedEntry(id: $id) {
+    id
+    title
+    description
+    url
+    type
+    preview {
+      ogSiteName
+      ogTitle
+      ogDescription
+      ogImageUrl
+      embeddedUrl
+      type
+    }
+    categories
+    calendarDate
+    processing
+    updatedAt
+    hashedKey
+    deleted
+    createdAt
+    pinned
+    archived
+  }
+}

@@ -2,7 +2,6 @@
   <BaseActions
     :primary-menu="primaryMenu"
     :secondary-menu="secondaryItems"
-    type="entry"
     @edit="submit"
     @remove="remove"
     @showLists="toggleLists"
@@ -10,6 +9,7 @@
     @pin="pin"
     @archive="archive"
     @back="showLists = false"
+    @share="share"
   >
     <FormInput
       v-model:value="editedEntry.title"
@@ -38,113 +38,95 @@
   </BaseActions>
 </template>
 
-<script lang="ts">
-import {
-  computed,
-  ComputedRef,
-  defineComponent,
-  PropType,
-  ref,
-  toRefs,
-} from 'vue'
-
-import { EditedEntry, HoverMenuItem } from '@/types'
-import { EntryInput } from '@/generated/graphql'
-
-import { hoverSecondaryMenu } from '@/config/data'
-
+<script setup lang="ts">
+import { computed, ref, toRefs, defineProps } from 'vue'
+import { RiDeleteBack2Line, RiLayoutColumnLine } from 'vue-remix-icons'
 import { isEmpty } from 'lodash'
 
+import { hoverSecondaryMenu } from '@/config/data'
 import { removeEntry, update } from '@/db/entry'
 import { useAvaibleLists, usePrimaryMenu } from '@/hooks'
 import { addEntryToList } from '@/db/list'
 import { getDb } from '@/db/Database'
-import { RiDeleteBack2Line, RiLayoutColumnLine } from 'vue-remix-icons'
 
-export default defineComponent({
-  props: {
-    showMenu: {
-      type: Boolean,
-      default: false,
-    },
-    entry: {
-      type: Object as PropType<EntryInput>,
-      default: () => {},
-    },
-    isListEntry: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const db = getDb()
-    const editedEntry = ref<EditedEntry>({})
-    const showEditModal = ref(false)
-    const showLists = ref(false)
-    const { avaibleLists } = useAvaibleLists(db, props.entry.id)
-    const { primaryMenu } = usePrimaryMenu(toRefs(props).entry, 'entries')
+import type { EditedEntry, HoverMenuItem } from '@/types'
+import type { EntryInput } from '@/generated/graphql'
+import { decryptDataKey } from '@/utils/crypto'
 
-    const categories = computed({
-      get: () => editedEntry.value.categories,
-      set: (val) => {
-        editedEntry.value.categories = val
-      },
-    })
+const props = defineProps<{
+  showMenu: false
+  entry: EntryInput
+  public: boolean
+}>()
 
-    const secondaryItems: ComputedRef<HoverMenuItem[]> = computed(() => {
-      const listItems: HoverMenuItem[] = avaibleLists.value.map((l) => {
-        return { name: l.text, icon: RiLayoutColumnLine, info: l.info }
-      })
-      listItems.unshift({
-        name: 'back',
-        icon: RiDeleteBack2Line,
-        goto: 'primary',
-      })
-      return showLists.value ? listItems : hoverSecondaryMenu
-    })
+const db = getDb()
+const editedEntry = ref<EditedEntry>({})
+const showEditModal = ref(false)
+const showLists = ref(false)
+const { avaibleLists } = useAvaibleLists(db, props.entry.id)
+const { primaryMenu } = usePrimaryMenu(
+  toRefs(props).entry,
+  props.public ? 'public' : 'entries'
+)
 
-    function toggleLists() {
-      showLists.value = true
-    }
-
-    function remove() {
-      removeEntry(props.entry.id, db, props.isListEntry)
-    }
-
-    function add(id: string) {
-      addEntryToList(id, props.entry, db)
-    }
-
-    async function pin(value: boolean) {
-      await update(props.entry.id, { pinned: value }, db)
-    }
-    async function archive(value: boolean) {
-      console.log('archive ~ value', value)
-      await update(props.entry.id, { archived: value }, db)
-    }
-
-    async function submit() {
-      if (!isEmpty(editedEntry.value))
-        await update(props.entry.id, editedEntry.value, db)
-      editedEntry.value = {}
-
-      showEditModal.value = false
-    }
-
-    return {
-      showEditModal,
-      showLists,
-      primaryMenu,
-      secondaryItems,
-      remove,
-      categories,
-      editedEntry,
-      submit,
-      toggleLists,
-      add,
-      pin,
-      archive,
-    }
+const categories = computed({
+  get: () => editedEntry.value.categories,
+  set: (val) => {
+    editedEntry.value.categories = val
   },
 })
+
+const secondaryItems = computed(() => {
+  const listItems: HoverMenuItem[] = avaibleLists.value.map((l) => {
+    return { name: l.text, icon: RiLayoutColumnLine, info: l.info }
+  })
+  listItems.unshift({
+    name: 'back',
+    icon: RiDeleteBack2Line,
+    goto: 'primary',
+    translate: true,
+  })
+  return showLists.value ? listItems : hoverSecondaryMenu
+})
+
+function toggleLists() {
+  showLists.value = true
+}
+
+function remove() {
+  removeEntry(props.entry.id, db)
+}
+
+function add(id: string) {
+  addEntryToList(id, props.entry, db)
+}
+
+async function pin(value: boolean) {
+  await update(props.entry.id, { pinned: value }, db)
+}
+async function archive(value: boolean) {
+  console.log('archive ~ value', value)
+  await update(props.entry.id, { archived: value }, db)
+}
+
+async function share(value: string) {
+  console.log('share', value, props.entry.id)
+  const key = decryptDataKey(props.entry.hashedKey)
+  console.log('share ~ key', key)
+
+  const el = document.createElement('textarea')
+  el.value = `http://projectm.localhost/shared/entry/${props.entry.id}?code=${key}`
+  document.body.appendChild(el)
+  el.select()
+  document.execCommand('copy')
+  document.body.removeChild(el)
+}
+
+async function submit() {
+  if (!isEmpty(editedEntry.value))
+    await update(props.entry.id, editedEntry.value, db)
+  editedEntry.value = {}
+
+  showEditModal.value = false
+}
 </script>

@@ -3,7 +3,7 @@
     v-bind="$attrs"
     :name="name"
     classes=" flex items-center  justify-center"
-    :content-class="`relative flex flex-col w-full max-w-xl p-4 rounded-md bg-primary ${
+    :content-class="`relative flex flex-col w-full max-w-xl  rounded-md bg-primary ${
       fixed ? 'h-96 max-h-96' : ''
     }`"
     :esc-to-close="!required"
@@ -17,7 +17,7 @@
       </h1>
       <slot name="header" />
     </div>
-    <div class="overflow-y-auto">
+    <div class="p-4 overflow-y-auto">
       <form
         v-if="form"
         class="flex-grow space-y-2"

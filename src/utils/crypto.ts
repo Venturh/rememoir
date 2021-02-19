@@ -46,10 +46,10 @@ export function encryptEntry(entry: EntryInput) {
 
   return encrypted
 }
-export function decryptEntry(entry: EntryInput) {
+export function decryptEntry(entry: EntryInput, publicKey?: any) {
   const secretKey = getSectretKey()
-  if (secretKey === null) return
-  const key = aesDecrypt(entry.hashedKey, secretKey)
+  if (secretKey === null && !publicKey) return
+  const key = publicKey || aesDecrypt(entry.hashedKey, secretKey)
   const decrypted: EntryInput = {
     ...entry,
     title: aesDecrypt(entry.title, key),

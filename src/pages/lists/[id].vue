@@ -33,6 +33,7 @@
                   v-for="entry in entries[date]"
                   :key="entry.id"
                   :entry="entry"
+                  :public="false"
                   :show-preview="showPreview"
                   is-list-entry
                 />
