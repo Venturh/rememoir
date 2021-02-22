@@ -3,6 +3,7 @@
   "signUp": "Sign up",
   "about": "About",
   "pricing": "Pricing",
+  "email": "Email",
   "password": "Password",
   "username": "Username",
   "confirm": "Confirm",
@@ -61,5 +62,9 @@
   "searchPlaceholder": "Search for entries and lists",
   "reset": "Reset",
 
-  "previewError": "There was an error, loading the preview"
+  "previewError": "There was an error, loading the preview",
+  "field_required": "Field required",
+  "field_email": "Email must be valid",
+  "field_too_short": "Too short, at least:",
+  "nicetomeet": "Nice to meet you"
 }

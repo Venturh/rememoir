@@ -5,72 +5,60 @@
         <h1>{{ t('login') }}.</h1>
         <h2>{{ t('loginSubheader') }}</h2>
       </div>
-      <AuthForm :error="error" type="login" @submit="login()">
-        <FormInput
-          v-model:value="email"
-          type="email"
-          class="block w-full form-input"
-        >
-          Email
-        </FormInput>
-        <FormInput v-model:value="password" type="password">
-          {{ t('password') }}
-        </FormInput>
-        <!-- <Links to="/auth/resetPassword">{{ t('forgottenPassword') }} </Links> -->
+      <AuthForm type="signIn" :validation-schema="schema" @submit="login">
+        <FormInput name="email" type="email" label="email" />
+        <FormInput name="password" type="password" label="password" />
+        <template #error>
+          <Error v-if="infos.error" :message="infos.error" />
+        </template>
       </AuthForm>
     </div>
   </AuthLayout>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { setAccessToken } from '@/utils/auth'
-import useUserInfo from '@/hooks/userInfo'
-import { useLoginMutation } from '@/generated/graphql'
+<script setup lang="ts">
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-export default defineComponent({
-  setup() {
-    const { t } = useI18n()
-    const { push } = useRouter()
+import { setAccessToken } from '@/utils/auth'
+import useUserInfo from '@/hooks/userInfo'
+import { useLoginMutation } from '@/generated/graphql'
+import { object, string } from 'yup'
 
-    const email = ref('')
-    const password = ref('')
-    const error = ref('')
-    const { setUserInfo } = useUserInfo()
-    const { mutate: sendLogin } = useLoginMutation(() => ({
-      variables: { email: email.value, password: password.value },
-    }))
+const { t } = useI18n()
+const { push } = useRouter()
 
-    async function login() {
-      const { data } = await sendLogin()
-      const { errors, accessToken, user } = data!.login
-      console.log('login ~ user', user)
-      if (errors) {
-        error.value = errors.message
-        if (errors.message === 'USER_NOT_VERIIFIED') {
-          push(`/auth/accountVerification/?id=${user?.id}`)
-        }
-      } else {
-        setUserInfo({
-          email: user!.email,
-          uid: user!.id,
-          username: user!.username,
-        })
-        setAccessToken(accessToken!)
-        push('/home')
-      }
-    }
-
-    return {
-      t,
-      login,
-      sendLogin,
-      email,
-      password,
-      error,
-    }
-  },
+const infos = reactive({ email: '', password: '', error: '' })
+const schema = object().shape({
+  email: string().email().required(),
+  password: string().min(3).required(),
 })
+
+const { setUserInfo } = useUserInfo()
+const { mutate: sendLogin } = useLoginMutation(() => ({
+  variables: { email: infos.email, password: infos.password },
+}))
+
+async function login(values: { email: string; password: string }) {
+  Object.assign(infos, values)
+  infos.error = ''
+  const { data } = await sendLogin()
+  const { errors, accessToken, user } = data!.login
+  if (errors) {
+    if (errors.message === 'USER_NOT_VERIIFIED') {
+      push(`/auth/accountVerification/?id=${user?.id}`)
+    }
+
+    infos.error = errors.message
+  } else {
+    setUserInfo({
+      email: user!.email,
+      uid: user!.id,
+      username: user!.username,
+    })
+    setAccessToken(accessToken!)
+    push('/home')
+  }
+}
 </script>

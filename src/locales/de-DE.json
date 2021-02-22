@@ -3,6 +3,7 @@
   "signUp": "Registrieren",
   "about": "Über",
   "pricing": "Preis",
+  "email": "Email",
   "password": "Passwort",
   "username": "Username",
   "confirm": "Bestätigen",
@@ -61,5 +62,9 @@
 
   "reset": "Zurücksetzen",
 
-  "previewError": "Die Vorschau konnte nicht geladen werden"
+  "previewError": "Die Vorschau konnte nicht geladen werden",
+  "field_required": "Das Feld wird benötigt",
+  "field_email": "Bitte eine gültige Mail angeben",
+  "field_too_short": "Zu kurz, mindestens: ",
+  "nicetomeet": "Schön dich Kennenzulernen"
 }

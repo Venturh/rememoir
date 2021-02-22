@@ -45,7 +45,6 @@ export function usePrimaryMenu(data: any, target: 'entries' | 'lists') {
 }
 
 export function useMenuNavigation(max: number, callback: () => void) {
-  console.log('useMenuNavigation ~ max', max)
   const menuRef = ref<HTMLDivElement>()
   const selectedIndex = ref(0)
   const maxLength = ref(max)

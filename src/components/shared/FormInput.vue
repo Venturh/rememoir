@@ -1,41 +1,78 @@
 <template>
-  <div>
-    <label class="text-secondary"><slot /> {{ label }}</label>
-    <div class="mt-1">
-      <input
-        :value="value"
-        autocomplete="new-password"
-        class="block w-full border rounded-md bg-primary border-borderPrimary hover:border-primaryText hover:bg-secondary focus:bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
-        :type="type"
-        :placeholder="placeholder"
-        @input="$emit('update:value', $event.target.value)"
-      />
-    </div>
+  <div class="space-y-2">
+    <label v-if="label" class="flex items-center justify-between" :for="name"
+      >{{ t(label.toString()) }}
+      <div v-if="errorMessage" class="flex items-center space-x-2 text-error">
+        <Icon :icon="RiErrorWarningLine" size="sm" />
+        <p>
+          {{ t(`${errorMessage?.key}`) }}
+          <span v-show="errorMessage?.values !== undefined">
+            {{ errorMessage?.values }}
+          </span>
+        </p>
+      </div>
+
+      <div
+        v-if="successMessage && meta.valid"
+        class="flex items-center space-x-2 text-success"
+      >
+        <Icon :icon="RiCheckboxCircleLine" size="sm" />
+        <p>
+          {{ t(`${successMessage}`) }}
+        </p>
+      </div>
+    </label>
+    <input
+      :id="name"
+      class="block w-full border rounded-md bg-primary border-borderPrimary hover:border-primaryText hover:bg-secondary focus:bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
+      :name="name"
+      :type="type"
+      :value="inputValue"
+      autocomplete="off"
+      v-on="validationListeners"
+    />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { computed, defineProps } from 'vue'
+import { useField } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
+import { RiCheckboxCircleLine, RiErrorWarningLine } from 'vue-remix-icons'
 
-export default defineComponent({
-  props: {
-    value: {
-      type: String,
-      default: '',
-    },
-    type: {
-      type: String,
-      default: 'email',
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-  },
-  emits: ['update:value'],
+const props = defineProps<{
+  name: string
+  inputValue?: string
+  type: string
+  label?: string
+  placeholder?: string
+  successMessage?: string
+}>()
+
+const { t } = useI18n()
+const {
+  value: inputValue,
+  errorMessage,
+  handleInput,
+  handleChange,
+  meta,
+} = useField(props.name, undefined, {
+  validateOnValueUpdate: false,
+})
+
+const validationListeners = computed(() => {
+  if (!errorMessage.value) {
+    return {
+      blur: handleChange,
+      change: handleChange,
+      input: handleInput,
+    }
+  }
+
+  return {
+    blur: handleChange,
+    change: handleChange,
+    input: handleChange,
+  }
 })
 </script>

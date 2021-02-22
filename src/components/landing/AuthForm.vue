@@ -1,45 +1,45 @@
-//Todo: Switch auf Vee Validate wenn supported
 <template>
-  <form class="space-y-6" @submit.prevent="$emit('submit')">
-    <Error v-if="error" :message="error">{{ error }}</Error>
-
-    <div class="space-y-2">
+  <Form
+    class="space-y-6"
+    :validation-schema="validationSchema"
+    @submit="submit"
+  >
+    <div class="space-y-3">
       <slot />
       <div class="flex items-center justify-between">
         <p v-if="type === 'login'" class="font-medium">
-          {{ t('loginSub')
-          }}<Links to="/auth/register">{{ t('signUp') }}</Links>
+          {{ t('loginSub') }}
+          <Links to="/auth/register">{{ t('signUp') }}</Links>
         </p>
         <p v-if="type === 'register'" class="font-medium">
-          {{ t('registerSub')
-          }}<Links to="/auth/login">{{ t('signIn') }}</Links>
+          {{ t('registerSub') }}
+          <Links to="/auth/login">{{ t('signIn') }}</Links>
         </p>
-        <Button type="submit">
-          {{ t(type) }}
-        </Button>
+        <div v-else />
+        <div class="flex items-center space-x-4">
+          <Button variant="brand25" type="submit">
+            {{ t(type) }}
+          </Button>
+          <slot name="error" />
+        </div>
       </div>
     </div>
-  </form>
+  </Form>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineEmit, defineProps } from 'vue'
+import { Form } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
 
-export default defineComponent({
-  props: {
-    error: {
-      type: String,
-      default: '',
-    },
-    type: {
-      type: String,
-      default: 'register',
-    },
-  },
-  setup() {
-    const { t } = useI18n()
-    return { t }
-  },
-})
+const emit = defineEmit(['submit'])
+defineProps<{
+  type: string
+  validationSchema: Object
+}>()
+
+const { t } = useI18n()
+function submit(data: Object) {
+  emit('submit', data)
+}
 </script>
