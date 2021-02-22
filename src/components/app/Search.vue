@@ -18,8 +18,8 @@
             spellcheck="false"
             :placeholder="t('searchPlaceholder')"
             @input="search"
-            @keydown.down.prevent="keydown(true)"
-            @keydown.up.prevent="keydown(false)"
+            @keydown.down.prevent="keydown('down')"
+            @keydown.up.prevent="keydown('up')"
             @keydown.enter.prevent="navigate()"
           />
           <div class="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -36,13 +36,13 @@
         </div>
       </div>
     </template>
-    <div v-if="results.length > 0" ref="resultsRef" class="w-full space-y-2">
+    <div v-if="results.length > 0" ref="menuRef" class="w-full space-y-2">
       <button
         v-for="(result, index) in results"
         :key="result.item.id"
         class="flex items-center justify-between w-full p-2 rounded-md"
-        :class="selectedItem === index ? 'bg-brand25' : 'bg-secondary'"
-        @mouseover="selectedItem = index"
+        :class="selectedIndex === index ? 'bg-brand25' : 'bg-secondary'"
+        @mouseover="setSelectedIndex(index)"
         @click="navigate()"
       >
         <div class="flex items-center w-2/3 space-x-3">
@@ -68,7 +68,7 @@ import Fuse from 'fuse.js'
 import { RiSearch2Line, RiListCheck, RiLayoutColumnLine } from 'vue-remix-icons'
 
 import { getDb } from '@/db/Database'
-import { useAvaibleLists, useQueryEntries } from '@/hooks'
+import { useAvaibleLists, useMenuNavigation, useQueryEntries } from '@/hooks'
 
 const props = defineProps<{ showModal: boolean }>()
 
@@ -83,8 +83,14 @@ const input = ref('')
 const results = ref<Array<any>>([])
 const show = ref(props.showModal)
 const inputRef = ref<HTMLInputElement>()
-const resultsRef = ref<HTMLDivElement>()
-const selectedItem = ref(0)
+
+const {
+  menuRef,
+  keydown,
+  selectedIndex,
+  setSelectedIndex,
+  setMaxLength,
+} = useMenuNavigation(results.value.length)
 
 onMounted(() => {
   //Timeout to wait after modal focus  improve this somehow
@@ -102,23 +108,12 @@ function search() {
   const all = [...entries.value, ...lists.value]
   const fuse = new Fuse(all, options)
   results.value = fuse.search(input.value)
-}
-
-function keydown(down: boolean) {
-  if (selectedItem.value > 0 && !down) selectedItem.value -= 1
-  else if (selectedItem.value < results.value.length && down)
-    selectedItem.value += 1
-
-  resultsRef.value?.children[selectedItem.value].scrollIntoView({
-    behavior: 'smooth',
-    block: 'nearest',
-    inline: 'start',
-  })
+  setMaxLength(results.value.length)
 }
 
 function navigate() {
   vfm.hide('search')
-  const selected = results.value[selectedItem.value]
+  const selected = results.value[selectedIndex.value]
   push(`/${selected.item.entries ? 'lists' : 'entries'}/${selected.item.id}`)
 }
 </script>

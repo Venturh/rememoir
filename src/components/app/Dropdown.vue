@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    @keydown.down.prevent="navigate('down')"
+    @keydown.up.prevent="navigate('up')"
+  >
     <IconOnlyButton
       class="relative flex items-center w-full h-full py-2 focus:outline-none"
       :class="[
@@ -41,6 +44,7 @@
     </IconOnlyButton>
     <SelectMenu
       v-if="items.length > 0"
+      ref="selectMenuRef"
       :open="open || show"
       :options="items"
       :optional-item="optionalItem"
@@ -102,6 +106,7 @@ export default defineComponent({
       default: false,
     },
   },
+  emits: ['change', 'selected'],
 
   setup(props, { emit }) {
     const { t } = useI18n()
@@ -113,10 +118,15 @@ export default defineComponent({
     )
     const dropdownRef = ref<HTMLDivElement>()
     const wrapperRef = ref<HTMLDivElement>()
+    const selectMenuRef = ref()
 
     function onChange() {
       open.value = !open.value
       emit('change', open.value)
+    }
+
+    function navigate(direction: string) {
+      selectMenuRef.value.keydown(direction)
     }
 
     function handleSelected(item: MenuOptionItem) {
@@ -150,24 +160,9 @@ export default defineComponent({
       dropdownRef,
       wrapperRef,
       handleClickOutside,
+      selectMenuRef,
+      navigate,
     }
   },
 })
 </script>
-
-<style lang="postcss" scoped>
-.rotate-enter-active {
-  animation: rotate-in 0.5s;
-}
-.rotate-leave-active {
-  animation: rotate-in 0.5s reverse;
-}
-@keyframes rotate-in {
-  0% {
-    transform: rotate(180deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-</style>

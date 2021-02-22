@@ -6,6 +6,7 @@
     @remove="remove"
     @pin="pin"
     @archive="archive"
+    @share="share"
   >
     <FormInput
       v-model:value="edited.title"
@@ -40,6 +41,7 @@ import { isEmpty } from 'lodash'
 import { removeList, updateList } from '@/db/list'
 import { getDb } from '@/db/Database'
 import { usePrimaryMenu } from '@/hooks'
+import { decryptDataKey } from '@/utils/crypto'
 
 export default defineComponent({
   props: {
@@ -77,6 +79,21 @@ export default defineComponent({
       await updateList(props.list.id, { archived: value }, db)
     }
 
+    async function share(value: string) {
+      const key = decryptDataKey(props.list.hashedKey)
+
+      const entries = await db.entries
+        .find({ selector: { id: { $in: props.list.entries } } })
+        .exec()
+      const keys = entries.map((e) => decryptDataKey(e.hashedKey))
+
+      const el = document.createElement('textarea')
+      el.value = `http://projectm.localhost/shared/${props.list.id}?code=${key}&target=list&keys=${keys}`
+      document.body.appendChild(el)
+      el.select()
+      document.execCommand('copy')
+    }
+
     function submit() {
       if (!isEmpty(edited.value)) updateList(props.list.id, edited.value, db)
       edited.value = {}
@@ -93,6 +110,7 @@ export default defineComponent({
       remove,
       pin,
       archive,
+      share,
     }
   },
 })

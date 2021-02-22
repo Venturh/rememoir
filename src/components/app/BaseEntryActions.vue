@@ -56,7 +56,7 @@ import { decryptDataKey } from '@/utils/crypto'
 const props = defineProps<{
   showMenu: false
   entry: EntryInput
-  public: boolean
+  isListEntry: boolean
 }>()
 
 const db = getDb()
@@ -64,10 +64,7 @@ const editedEntry = ref<EditedEntry>({})
 const showEditModal = ref(false)
 const showLists = ref(false)
 const { avaibleLists } = useAvaibleLists(db, props.entry.id)
-const { primaryMenu } = usePrimaryMenu(
-  toRefs(props).entry,
-  props.public ? 'public' : 'entries'
-)
+const { primaryMenu } = usePrimaryMenu(toRefs(props).entry, 'entries')
 
 const categories = computed({
   get: () => editedEntry.value.categories,
@@ -94,7 +91,7 @@ function toggleLists() {
 }
 
 function remove() {
-  removeEntry(props.entry.id, db)
+  removeEntry(props.entry.id, db, props.isListEntry)
 }
 
 function add(id: string) {
@@ -115,7 +112,7 @@ async function share(value: string) {
   console.log('share ~ key', key)
 
   const el = document.createElement('textarea')
-  el.value = `http://projectm.localhost/shared/entry/${props.entry.id}?code=${key}`
+  el.value = `http://projectm.localhost/shared/${props.entry.id}?code=${key}&target=entry`
   document.body.appendChild(el)
   el.select()
   document.execCommand('copy')

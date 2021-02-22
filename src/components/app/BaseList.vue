@@ -9,7 +9,7 @@
       <p :class="{ 'text-xl font-semibold': primary }">
         {{ list.title }}
       </p>
-      <BaseListActions :list-id="list.id" :list="list" />
+      <BaseListActions v-if="!public" :list-id="list.id" :list="list" />
     </div>
     <p>{{ list.description }}</p>
   </Card>
@@ -23,6 +23,7 @@ import { useTimeFromDate } from '@/hooks/date'
 const props = defineProps<{
   list: List
   primary?: boolean
+  public: boolean
 }>()
 
 const timeFrom = useTimeFromDate(props.list.updatedAt)

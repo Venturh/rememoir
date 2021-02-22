@@ -1,6 +1,6 @@
 //TODO Keyboard Navigation scroll
 <template>
-  <div v-if="open" class="relative">
+  <div v-show="open" class="relative">
     <div
       class="absolute z-50 w-full mt-1 rounded-md shadow-lg bg-primary"
       aria-haspopup="listbox"
@@ -8,12 +8,13 @@
       aria-labelledby="listbox-label"
     >
       <ul
-        ref="dropdown"
-        tabindex="-1"
+        ref="menuRef"
+        :tabindex="-1"
         role="listbox"
         aria-labelledby="listbox-label"
         aria-activedescendant="listbox-item-3"
         class="overflow-auto text-base rounded-md bg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        @keydown.down.prevent="keydown('down')"
       >
         <li
           v-for="(option, index) in options"
@@ -21,8 +22,8 @@
           role="option"
           class="relative flex p-2 space-x-2 cursor-default select-none options-center"
           :class="[{ 'bg-brand text-primary': selectedIndex === index }]"
-          @click="setSelected(option)"
-          @mouseenter="selectedIndex = index"
+          @click="setSelected()"
+          @mouseenter="setSelectedIndex(index)"
         >
           <Icon v-if="option.icon" :icon="option.icon" size="sm" />
           <span class="text-sm">
@@ -35,8 +36,9 @@
 </template>
 
 <script lang="ts">
+import { useMenuNavigation } from '@/hooks'
 import { MenuOption, MenuOptionItem } from '@/types'
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
@@ -62,23 +64,41 @@ export default defineComponent({
       default: () => {},
     },
   },
+  emits: ['selected'],
   setup(props, { emit }) {
     const { t } = useI18n()
-    const selectedIndex = ref(0)
     const selectedItem = ref<MenuOptionItem>()
+    const {
+      menuRef,
+      keydown,
+      enter,
+      selectedIndex,
+      setSelectedIndex,
+      setMaxLength,
+    } = useMenuNavigation(props.options.length, () => setSelected())
 
-    function up() {
-      if (selectedIndex.value > 0) selectedIndex.value -= 1
-    }
-    function down() {
-      if (selectedIndex.value < props.options.length) selectedIndex.value += 1
-    }
-
-    function setSelected(item: MenuOptionItem) {
-      selectedItem.value = item
+    function setSelected() {
+      selectedItem.value = props.options[selectedIndex.value]
       emit('selected', props.options[selectedIndex.value])
     }
-    return { t, selectedIndex, selectedItem, up, down, setSelected }
+
+    watch(
+      () => props.options,
+      (options) => {
+        setMaxLength(options.length)
+      }
+    )
+
+    return {
+      t,
+      selectedIndex,
+      selectedItem,
+      keydown,
+      enter,
+      menuRef,
+      setSelectedIndex,
+      setSelected,
+    }
   },
 })
 </script>

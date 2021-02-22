@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import {
   RiAddCircleLine,
   RiArchiveLine,
@@ -9,12 +9,8 @@ import {
 } from 'vue-remix-icons'
 import { HoverMenuItem } from '@/types'
 
-export function usePrimaryMenu(
-  data: any,
-  target: 'entries' | 'lists' | 'public'
-) {
+export function usePrimaryMenu(data: any, target: 'entries' | 'lists') {
   const primaryMenu = computed(() => {
-    if (target === 'public') return []
     const menu: HoverMenuItem[] = [
       {
         name: data.value.pinned ? 'unpin' : 'pin',
@@ -46,4 +42,43 @@ export function usePrimaryMenu(
   })
 
   return { primaryMenu }
+}
+
+export function useMenuNavigation(max: number, callback: () => void) {
+  console.log('useMenuNavigation ~ max', max)
+  const menuRef = ref<HTMLDivElement>()
+  const selectedIndex = ref(0)
+  const maxLength = ref(max)
+
+  function keydown(direction: 'up' | 'down') {
+    if (selectedIndex.value > 0 && direction === 'up') selectedIndex.value -= 1
+    else if (selectedIndex.value < maxLength.value - 1 && direction === 'down')
+      selectedIndex.value += 1
+
+    if (selectedIndex.value < maxLength.value && selectedIndex.value > 0)
+      menuRef.value?.children[selectedIndex.value].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'start',
+      })
+  }
+
+  function enter() {
+    callback()
+  }
+
+  function setSelectedIndex(index: number) {
+    selectedIndex.value = index
+  }
+  function setMaxLength(val: number) {
+    maxLength.value = val
+  }
+  return {
+    menuRef,
+    selectedIndex,
+    setSelectedIndex,
+    setMaxLength,
+    keydown,
+    enter,
+  }
 }

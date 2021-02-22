@@ -2,8 +2,8 @@
   <vue-final-modal
     v-bind="$attrs"
     :name="name"
-    classes=" flex items-center  justify-center"
-    :content-class="`relative flex flex-col w-full max-w-xl  rounded-md bg-primary ${
+    classes="flex items-center justify-center"
+    :content-class="`relative flex flex-col w-full max-w-xl rounded-md bg-primary ${
       fixed ? 'h-96 max-h-96' : ''
     }`"
     :esc-to-close="!required"
@@ -11,13 +11,13 @@
     :focus-retain="false"
     @click.stop=""
   >
-    <div class="">
+    <div class="px-2 py-4">
       <h1 v-if="title" class="text-xl font-semibold">
         {{ title }}
       </h1>
       <slot name="header" />
     </div>
-    <div class="p-4 overflow-y-auto">
+    <div class="px-4 py-2 overflow-y-auto">
       <form
         v-if="form"
         class="flex-grow space-y-2"
@@ -44,7 +44,7 @@
         </div>
       </form>
 
-      <div v-else class="flex-grow mt-6">
+      <div v-else class="flex-grow">
         <slot />
       </div>
     </div>

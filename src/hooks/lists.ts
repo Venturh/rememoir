@@ -62,11 +62,12 @@ export function useLists(db: MyDatabase) {
     reset?: boolean
   }) {
     listsLoading.value = true
-    if (target) {
-      if (target === 'pinned')
-        selector.value = { ...selector.value, pinned: true }
-      else if (target === 'archive')
-        selector.value = { ...selector.value, archived: true }
+    if (target === 'pinned')
+      selector.value = { ...selector.value, pinned: true, archived: false }
+    else if (target === 'archive')
+      selector.value = { ...selector.value, archived: true }
+    else if (target === 'undefined') {
+      selector.value = { ...selector.value, archived: false }
     }
     if (subscriber.value) subs.value.push({ page, subs: subscriber.value })
     if (subscriber.value && reset) {

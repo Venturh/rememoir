@@ -11,12 +11,12 @@ import {
   Root,
 } from 'type-graphql'
 
-import { List, User } from '../../entities'
+import { Entry, List, User } from '../../entities'
 
 import { MyContext } from '../../types'
 import { isAuth, verifyToken } from '../../utils/auth'
 import { filterList, sortByUpdated } from '../../utils/sort'
-import { ListInput } from './types'
+import { ListInput, SharedList } from './types'
 
 const pubsub = new PubSub()
 @Resolver()
@@ -72,6 +72,20 @@ class ListResolver {
   changedList(@Arg('token') token: string, @Root() list: List) {
     verifyToken(token)
     return list
+  }
+
+  @Query(() => SharedList)
+  async getSharedList(
+    @Arg('id') id: string,
+    @Ctx()
+    { em }: MyContext
+  ) {
+    const list = await em.findOne(List, { id })
+    const entries = await em.find(Entry, {
+      id: { $in: list?.entries },
+      deleted: false,
+    })
+    return { list, entries }
   }
 }
 

@@ -50,8 +50,6 @@ const showMenu = ref(false)
 const showEditModal = ref(false)
 
 function handleMenu({ name, info }: { name: string; info: string }) {
-  console.log('handleMenu ~ info', info)
-  console.log('handleMenu ~ name', name)
   switch (name) {
     case 'delete':
       emit('remove')

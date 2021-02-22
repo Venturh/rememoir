@@ -45,13 +45,13 @@ export async function addEntry(
 
 export async function removeEntry(
   id: string,
-  db: MyDatabase
-  // isListEntry: boolean
+  db: MyDatabase,
+  isListEntry: boolean
 ) {
-  // if (isListEntry) {
-  //   await removeEntryFromList(db, id)
-  //   return
-  // }
+  if (isListEntry) {
+    await removeEntryFromList(db, id)
+    return
+  }
   const entry = await db.entries.findOne({ selector: { id } }).exec()
   if (entry) {
     try {

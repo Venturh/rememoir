@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import { keys } from 'lodash'
 import {
   useEntries,

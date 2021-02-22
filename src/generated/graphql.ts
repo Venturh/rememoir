@@ -72,6 +72,12 @@ export type User = {
   entries: User;
 };
 
+export type SharedList = {
+  __typename?: 'SharedList';
+  list: List;
+  entries: Array<Entry>;
+};
+
 export type List = {
   __typename?: 'List';
   _id: Scalars['String'];
@@ -184,6 +190,7 @@ export type Query = {
   users: Array<User>;
   me: User;
   rxListReplication: Array<List>;
+  getSharedList: SharedList;
 };
 
 
@@ -203,6 +210,11 @@ export type QueryRxListReplicationArgs = {
   limit: Scalars['Float'];
   minUpdatedAt: Scalars['String'];
   lastId: Scalars['String'];
+};
+
+
+export type QueryGetSharedListArgs = {
+  id: Scalars['String'];
 };
 
 export type Mutation = {
@@ -504,6 +516,29 @@ export type RxEntryReplicationQuery = (
       & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'embeddedUrl' | 'type'>
     )> }
   )> }
+);
+
+export type GetSharedListQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetSharedListQuery = (
+  { __typename?: 'Query' }
+  & { getSharedList: (
+    { __typename?: 'SharedList' }
+    & { list: (
+      { __typename?: 'List' }
+      & Pick<List, 'id' | 'updatedAt' | 'deleted' | 'title' | 'description' | 'calendarDate' | 'hashedKey' | 'processing' | 'categories' | 'entries' | 'pinned' | 'archived'>
+    ), entries: Array<(
+      { __typename?: 'Entry' }
+      & Pick<Entry, 'id' | 'title' | 'description' | 'url' | 'type' | 'categories' | 'calendarDate' | 'processing' | 'updatedAt' | 'hashedKey' | 'deleted' | 'createdAt' | 'pinned' | 'archived'>
+      & { preview?: Maybe<(
+        { __typename?: 'ContentPreview' }
+        & Pick<ContentPreview, 'ogSiteName' | 'ogTitle' | 'ogDescription' | 'ogImageUrl' | 'embeddedUrl' | 'type'>
+      )> }
+    )> }
+  ) }
 );
 
 export type ChangedListSubscriptionVariables = Exact<{
@@ -1002,6 +1037,73 @@ export function useRxEntryReplicationQuery(variables: RxEntryReplicationQueryVar
   return VueApolloComposable.useQuery<RxEntryReplicationQuery, RxEntryReplicationQueryVariables>(RxEntryReplicationDocument, variables, options);
 }
 export type RxEntryReplicationQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<RxEntryReplicationQuery, RxEntryReplicationQueryVariables>;
+export const GetSharedListDocument = gql`
+    query getSharedList($id: String!) {
+  getSharedList(id: $id) {
+    list {
+      id
+      updatedAt
+      deleted
+      title
+      description
+      calendarDate
+      hashedKey
+      processing
+      categories
+      entries
+      calendarDate
+      categories
+      processing
+      pinned
+      archived
+    }
+    entries {
+      id
+      title
+      description
+      url
+      type
+      preview {
+        ogSiteName
+        ogTitle
+        ogDescription
+        ogImageUrl
+        embeddedUrl
+        type
+      }
+      categories
+      calendarDate
+      processing
+      updatedAt
+      hashedKey
+      deleted
+      createdAt
+      pinned
+      archived
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSharedListQuery__
+ *
+ * To run a query within a Vue component, call `useGetSharedListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSharedListQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetSharedListQuery({
+ *   id: // value for 'id'
+ * });
+ */
+export function useGetSharedListQuery(variables: GetSharedListQueryVariables | VueCompositionApi.Ref<GetSharedListQueryVariables> | ReactiveFunction<GetSharedListQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetSharedListQuery, GetSharedListQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetSharedListQuery, GetSharedListQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetSharedListQuery, GetSharedListQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetSharedListQuery, GetSharedListQueryVariables>(GetSharedListDocument, variables, options);
+}
+export type GetSharedListQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetSharedListQuery, GetSharedListQueryVariables>;
 export const ChangedListDocument = gql`
     subscription changedList($token: String!) {
   changedList(token: $token) {

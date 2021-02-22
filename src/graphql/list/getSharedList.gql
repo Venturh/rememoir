@@ -1,0 +1,45 @@
+query getSharedList($id: String!) {
+  getSharedList(id: $id) {
+    list {
+      id
+      updatedAt
+      deleted
+      title
+      description
+      calendarDate
+      hashedKey
+      processing
+      categories
+      entries
+      calendarDate
+      categories
+      processing
+      pinned
+      archived
+    }
+    entries {
+      id
+      title
+      description
+      url
+      type
+      preview {
+        ogSiteName
+        ogTitle
+        ogDescription
+        ogImageUrl
+        embeddedUrl
+        type
+      }
+      categories
+      calendarDate
+      processing
+      updatedAt
+      hashedKey
+      deleted
+      createdAt
+      pinned
+      archived
+    }
+  }
+}

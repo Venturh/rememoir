@@ -6,7 +6,11 @@
   >
     <div class="flex items-center justify-between">
       <span>{{ entry.title }}</span>
-      <BaseEntryActions v-if="!public" :entry="entry" :public="public" />
+      <BaseEntryActions
+        v-if="!public"
+        :entry="entry"
+        :is-list-entry="isListEntry"
+      />
     </div>
     <p v-if="entry.description" class="">{{ entry.description }}</p>
 
@@ -27,6 +31,7 @@ const props = defineProps<{
   entry: Entry
   showPreview: boolean
   public: boolean
+  isListEntry: boolean
 }>()
 const timeFrom = useTimeFromDate(props.entry.updatedAt)
 </script>

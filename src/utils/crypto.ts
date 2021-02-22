@@ -71,10 +71,10 @@ export function encryptList(list: ListInput) {
   return encrypted
 }
 
-export function decryptList(list: ListInput) {
+export function decryptList(list: ListInput, publicKey?: any) {
   const secretKey = getSectretKey()
-  if (secretKey === null) return
-  const key = aesDecrypt(list.hashedKey, secretKey)
+  if (secretKey === null && !publicKey) return
+  const key = publicKey || aesDecrypt(list.hashedKey, secretKey)
   const decrypted: ListInput = {
     ...list,
     title: aesDecrypt(list.title, key),

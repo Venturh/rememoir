@@ -102,8 +102,8 @@ class EntryResolver {
     @Ctx()
     { em }: MyContext
   ) {
-    const entries = await em.findOne(Entry, { id: id })
-    return entries
+    const entry = await em.findOne(Entry, { id: id })
+    return entry
   }
 }
 

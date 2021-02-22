@@ -1,4 +1,5 @@
-import { InputType, Field } from 'type-graphql'
+import { List, Entry } from '../../entities'
+import { InputType, Field, ObjectType } from 'type-graphql'
 
 @InputType()
 export class ListInput {
@@ -37,4 +38,13 @@ export class ListInput {
 
   @Field({ nullable: true })
   archived!: boolean
+}
+
+@ObjectType()
+export class SharedList {
+  @Field(() => List)
+  list!: List
+
+  @Field(() => [Entry])
+  entries!: Entry[]
 }

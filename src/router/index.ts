@@ -134,14 +134,14 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/shared/entry',
-    name: 'sharedentry',
+    path: '/shared',
+    name: 'shared',
     component: RouterView,
     children: [
       {
         path: ':id',
-        component: () => import('../pages/shared/entry/[id].vue'),
-        name: 'sharedentry',
+        component: () => import('../pages/shared/[id].vue'),
+        name: 'sharedId',
       },
     ],
   },

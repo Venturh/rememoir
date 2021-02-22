@@ -22,8 +22,8 @@
     <div
       class="flex space-x-2"
       @keydown.esc.prevent="$emit('cancel')"
-      @keydown.up.prevent="$refs.selectMenuRef.up()"
-      @keydown.down.prevent="$refs.selectMenuRef.down()"
+      @keydown.up.prevent="navigateMenu('up')"
+      @keydown.down.prevent="navigateMenu('down')"
       @keydown.exact.enter="handleEnter($event)"
     >
       <HeaderInput
@@ -52,17 +52,17 @@
         @cancel="cancelDescription"
       />
     </div>
-    <select-menu
-      ref="selectMenuRef"
+    <SelectMenu
+      ref="categoriesMenuRef"
       name="categories"
       :open="categoriesOpen"
       :options="categories"
       @selected="addFromMenu"
     />
     <div>
-      <select-menu
+      <SelectMenu
         v-if="inputType === 'entry'"
-        ref="selectMenuRef"
+        ref="listMenuRef"
         name="list"
         :open="list.open"
         :options="avaibleLists"
@@ -104,7 +104,8 @@ export default defineComponent({
     const { t } = useI18n()
     const input = ref('')
     const inputRef = ref<any>()
-    const selectMenuRef = ref<any>()
+    const categoriesMenuRef = ref<any>()
+    const listMenuRef = ref<any>()
     const inputDescRef = ref<any>()
     const inputTypeOpen = ref(false)
     const categoriesOpen = ref(false)
@@ -169,14 +170,25 @@ export default defineComponent({
     }
 
     function handleEnter(event: Event) {
-      if (categoriesOpen.value || list.value.open) {
+      if (categoriesOpen.value) {
         event.preventDefault()
-        selectMenuRef.value.setSelected()
+        categoriesMenuRef.value.setSelected()
+      } else if (list.value.open) {
+        event.preventDefault()
+        listMenuRef.value.setSelected()
       } else if (descriptonActive.value) {
         descriptonActive.value = false
         input.value = input.value.slice(0, -2)
         inputRef.value?.$el.focus()
       } else submit()
+    }
+
+    function navigateMenu(direction: string) {
+      if (categoriesOpen.value) {
+        categoriesMenuRef.value.keydown(direction)
+      } else {
+        listMenuRef.value.keydown(direction)
+      }
     }
 
     function submit() {
@@ -245,7 +257,8 @@ export default defineComponent({
       selected,
       submit,
       descriptonActive,
-      selectMenuRef,
+      categoriesMenuRef,
+      listMenuRef,
       handleEnter,
       description,
       inputDescRef,
@@ -255,6 +268,7 @@ export default defineComponent({
       toggleCalendar,
       addCalendar,
       addList,
+      navigateMenu,
     }
   },
 })

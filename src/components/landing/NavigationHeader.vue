@@ -11,30 +11,29 @@
 
       <span class="hidden lg:block"> Brandname</span>
     </router-link>
-    <div class="flex items-center lg:space-x-4">
+    <div class="flex items-center lg:space-x-2">
       <Links to="/about"> {{ t('about') }}</Links>
       <Links to="/pricing"> {{ t('pricing') }}</Links>
       <span class="p-2"> | </span>
-      <Links to="/auth/login">{{ t('signIn') }} </Links>
-      <Links class="hidden lg:block" to="/auth/register">
-        {{ t('signUp') }}
-      </Links>
-      <ThemeToggle />
+
+      <div v-if="!isAuth" class="flex space-x-2">
+        <Links to="/auth/login">{{ t('signIn') }} </Links>
+        <Links class="hidden lg:block" to="/auth/register">
+          {{ t('signUp') }}
+        </Links>
+      </div>
+      <Links v-else to="/home">{{ t('continue') }} </Links>
+
       <LocaleSwitcher />
     </div>
   </nav>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import useTheme from '../../hooks/useTheme'
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-export default defineComponent({
-  setup() {
-    const { t } = useI18n()
-    const { toggleTheme } = useTheme()
+import { getAccessToken } from '@/utils/auth'
 
-    return { t, toggleTheme }
-  },
-})
+const { t } = useI18n()
+
+const isAuth = getAccessToken()
 </script>
