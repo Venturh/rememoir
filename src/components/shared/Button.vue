@@ -6,7 +6,7 @@
       { 'px-2 py-1 sm:py-2 ': !padding },
       small ? 'text-xs sm:text-sm' : 'text-sm sm:text-base ',
     ]"
-    class="flex items-center justify-center font-medium border border-transparent rounded-md shadow-sm dark:shadow-none focus:outline-none"
+    class="flex items-center justify-center font-medium border border-transparent rounded-md focus:outline-none"
   >
     <slot />
   </button>
@@ -38,15 +38,15 @@ export default defineComponent({
         ['inherit', 'bg-none text-primary  hover:text-brand'],
         [
           'brand15',
-          'bg-brand15 hover:bg-brand25 text-primary focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand15',
+          'bg-brand15 hover:bg-brand25 text-primary shadow-sm dark:shadow-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand15',
         ],
         [
           'brand25',
-          'bg-brand25 hover:bg-brand15 text-brand focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand25',
+          'bg-brand25 hover:bg-brand15 text-brand shadow-sm dark:shadow-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primaryBg focus:ring-brand25',
         ],
         [
           'brand',
-          'bg-brand text-white border-secondary px-4 py-2 hover:bg-brandDarker focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-brand',
+          'bg-brand text-white border-secondary shadow-sm dark:shadow-none px-4 py-2 hover:bg-brandDarker focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-brand',
         ],
       ])
 

@@ -2,7 +2,7 @@
   <AuthLayout>
     <div class="flex flex-col space-y-4">
       <div class="space-y-2">
-        <h1>{{ t('register') }}.</h1>
+        <h1>{{ t('signUp') }}.</h1>
         <h2>{{ t('registerSubheader') }}</h2>
       </div>
       <AuthForm type="signUp" :validation-schema="schema" @submit="register">

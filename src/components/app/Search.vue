@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="show" name="search" fixed>
+  <Modal v-model="show" name="search" title=" " fixed>
     <template #header>
       <div class="relative flex flex-col items-start">
         <div class="relative w-full mt-1 rounded-md">

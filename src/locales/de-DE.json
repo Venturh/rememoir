@@ -62,6 +62,11 @@
 
   "reset": "Zurücksetzen",
 
+  "title": "Titel",
+  "description": "Beschreibung",
+  "url": "Url",
+  "categories": "Kategorien",
+
   "previewError": "Die Vorschau konnte nicht geladen werden",
   "field_required": "Das Feld wird benötigt",
   "field_email": "Bitte eine gültige Mail angeben",

@@ -36,7 +36,7 @@ export class PasswordManagement {
       }
     )
 
-    const url = `${process.env.CLIENT_URL}/auth/resetPassword?token=${token}`
+    const url = `${process.env.VITE_CLIENT_URL}/auth/resetPassword?token=${token}`
     sendPasswordReset(email, url)
     return { message: SuccessMessage.RESET_PASSWORD_STARTED }
   }

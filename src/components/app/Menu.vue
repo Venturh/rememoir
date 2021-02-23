@@ -1,7 +1,7 @@
 <template>
   <div
     ref="hoverMenu"
-    class="relative z-50 w-32 overflow-y-auto rounded-md shadow-sm max-h-96 bg-primary"
+    class="relative z-50 w-32 overflow-y-auto rounded-md shadow-sm max-h-96 bg-primary ring-1 ring-borderPrimary"
     :style="style"
     @mouseover="$emit('mouseover')"
     @mouseleave="$emit('mouseleave')"

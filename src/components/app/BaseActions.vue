@@ -9,10 +9,11 @@
         v-model="showEditModal"
         form
         name="baseactions"
+        :validation-schema="validationSchema"
         @confirm="submitModal"
+        @submit="submitModal"
         @cancel="showEditModal = false"
       >
-        <template #title>Edit Entry</template>
         <slot />
       </Modal>
       <Menu
@@ -33,6 +34,7 @@ import { RiMore2Line } from 'vue-remix-icons'
 defineProps<{
   primaryMenu: []
   secondaryMenu: []
+  validationSchema?: Object
 }>()
 
 const emit = defineEmit([
@@ -44,6 +46,7 @@ const emit = defineEmit([
   'edit',
   'archive',
   'share',
+  'submit',
 ])
 
 const showMenu = ref(false)
@@ -91,8 +94,8 @@ function handleMenu({ name, info }: { name: string; info: string }) {
   showMenu.value = false
 }
 
-function submitModal() {
+function submitModal(values: any) {
   showEditModal.value = false
-  emit('edit')
+  emit('edit', values)
 }
 </script>

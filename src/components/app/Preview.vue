@@ -2,6 +2,7 @@
   <div v-if="preview.type.includes('music') || preview.type.includes('video')">
     <div v-if="!play" class="relative">
       <img
+        v-if="preview.ogImageUrl"
         class="w-screen max-w-full rounded-md"
         :class="size"
         :src="preview.ogImageUrl"
@@ -9,18 +10,20 @@
       />
       <PlayOverlay :url="url" @play="play = true" />
     </div>
-    <iframe
-      v-else
-      class="w-screen max-w-full rounded-md"
-      :class="size"
-      :src="preview.embeddedUrl"
-      sandbox="allow-same-origin allow-scripts"
-    />
+    <div v-else>
+      <iframe
+        v-if="preview.embeddedUrl"
+        class="w-screen max-w-full rounded-md"
+        :class="size"
+        :src="preview.embeddedUrl"
+        sandbox="allow-same-origin allow-scripts"
+      />
+    </div>
   </div>
   <div v-else>
     <ButtonOrLink out :to="url">
       <img
-        v-if="imageLoaded"
+        v-if="imageLoaded && preview.ogImageUrl"
         class="w-screen max-w-full rounded-md"
         :class="size"
         :src="preview.ogImageUrl"
@@ -31,35 +34,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, ref } from 'vue'
-import { ContentPreview } from '@/generated/graphql'
+<script setup lang="ts">
+import { computed, defineProps, ref } from 'vue'
+import type { ContentPreview } from '@/generated/graphql'
 
-export default defineComponent({
-  props: {
-    url: {
-      type: String,
-      default: '',
-    },
-    preview: {
-      type: Object as PropType<ContentPreview>,
-      default: () => {},
-    },
-  },
-  setup(props) {
-    const imageLoaded = ref(true)
-    const play = ref(false)
+const props = defineProps<{ url: string; preview: ContentPreview }>()
 
-    const size = computed(() => {
-      const map = new Map([
-        ['video.other', 'object-cover h-36 md:h-48'],
-        ['music.song', 'object-contain bg-brand25  object-left h-20'],
-        ['undefined', 'object-contain bg-brand15  h-48'],
-      ])
+const imageLoaded = ref(true)
+const play = ref(false)
 
-      return map.get(props.preview.type) || 'object-cover h-48'
-    })
-    return { play, size, imageLoaded }
-  },
+const size = computed(() => {
+  const map = new Map([
+    ['video.other', 'object-cover h-36 md:h-48'],
+    ['music.song', 'object-contain bg-brand25  object-left h-20'],
+    ['undefined', 'object-contain bg-brand15  h-48'],
+  ])
+
+  return map.get(props.preview.type) || 'object-cover h-48'
 })
 </script>
