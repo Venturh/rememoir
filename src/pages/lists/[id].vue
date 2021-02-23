@@ -1,9 +1,7 @@
 <template>
   <AppLayout>
-    <div
-      class="flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
-    >
-      <div class="w-full lg:w-screen lg:max-w-lg">
+    <SplitLayout>
+      <template #first>
         <div v-if="loading" class="space-y-2">
           <div
             v-for="i in 4"
@@ -41,11 +39,11 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="w-full space-y-2 lg:w-80">
+      </template>
+      <template #second>
         <Filters is-list-filter is-list-primary-filter @filter="setFilters" />
-      </div>
-    </div>
+      </template>
+    </SplitLayout>
   </AppLayout>
 </template>
 
@@ -92,7 +90,7 @@ export default defineComponent({
         showPreview.value = filter.preview ?? false
         resetPage()
         setEntriesSelector(filter)
-        subscribeEntries({ page: 1, reset: true })
+        subscribeEntries({ ids: list.value!.entries, page: 1, reset: true })
       },
       { deep: true }
     )

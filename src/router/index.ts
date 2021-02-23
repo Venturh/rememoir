@@ -122,14 +122,24 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/profile',
-    name: 'profile',
+    path: '/settings',
+    name: 'settings',
     component: RouterView,
     children: [
       {
         path: 'setkey',
-        component: () => import('../pages/profile/setkey.vue'),
+        component: () => import('../pages/settings/setkey.vue'),
         name: 'setkey',
+      },
+      {
+        path: 'general',
+        component: () => import('../pages/settings/general.vue'),
+        name: 'general',
+      },
+      {
+        path: 'payment',
+        component: () => import('../pages/settings/payment.vue'),
+        name: 'payment',
       },
     ],
   },

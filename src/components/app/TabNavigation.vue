@@ -1,9 +1,12 @@
 <template>
   <nav class="relative w-full">
-    <div class="absolute bottom-0 w-full h-0.5 bg-borderPrimary" />
-    <div class="relative flex items-center w-full sm:w-1/2">
+    <div v-if="!col" class="absolute bottom-0 w-full h-0.5 bg-borderPrimary" />
+    <div
+      class="relative flex"
+      :class="col ? 'flex-col' : ' w-full sm:w-1/2 items-center'"
+    >
       <button
-        v-for="(item, index) in ['entries', 'lists']"
+        v-for="(item, index) in items"
         ref="linkRef"
         :key="item"
         class="inline-flex items-center py-2 mr-4 space-x-1 text-sm font-medium border-b-2 focus:outline-none text-primary group"
@@ -15,7 +18,7 @@
         @click="setSelected(index)"
       >
         <span>{{ t(item) }}</span>
-        <Label small :rounded="false" variant="brand25">
+        <Label v-if="amount" small :rounded="false" variant="brand25">
           {{ amount[index] }}
         </Label>
       </button>
@@ -23,28 +26,18 @@
   </nav>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref, defineEmit, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-export default defineComponent({
-  props: {
-    amount: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  emits: ['selected'],
-  setup(_, { emit }) {
-    const { t } = useI18n()
-    const selected = ref(0)
+defineProps<{ items: string[]; amount?: string[]; col?: boolean }>()
+const emit = defineEmit(['selected'])
 
-    function setSelected(val: number) {
-      selected.value = val
-      emit('selected', val)
-    }
+const { t } = useI18n()
+const selected = ref(0)
 
-    return { t, selected, setSelected }
-  },
-})
+function setSelected(val: number) {
+  selected.value = val
+  emit('selected', val)
+}
 </script>

@@ -27,6 +27,7 @@
   "continue": "Weiter",
   "verify": "Überprüfen",
   "code": "Code",
+  "settings": "Einstellungen",
 
   "entries": "Einträge",
   "lists": "Listen",
@@ -34,6 +35,8 @@
   "pinned": "Angepinnt",
   "archive": "Archiv",
   "profile": "Profil",
+  "general": "Allgemein",
+  "payment": "Zahlung",
 
   "addToList": "Zu Liste hinzufügen",
   "pin": "Pinnen",
@@ -68,6 +71,8 @@
   "description": "Beschreibung",
   "url": "Url",
   "categories": "Kategorien",
+
+  "generalDescription": "Anpassungen, wie sich die App verhält",
 
   "previewError": "Die Vorschau konnte nicht geladen werden",
   "field_required": "Das Feld wird benötigt",

@@ -8,17 +8,29 @@ import {
   RiLink,
   RiTwitterLine,
   RiMailLine,
-  RiShareLine,
-  RiAddCircleLine,
-  RiFileListLine,
-  RiListUnordered,
+  RiBankCard2Line,
+  RiSettings2Line,
 } from 'vue-remix-icons'
 import { Filter, MenuOption, Order } from '../types'
 
 export const sidebarItems = [
-  { icon: RiDashboardLine, text: 'home' },
-  { icon: RiMapPin2Line, text: 'pinned' },
-  { icon: RiArchiveLine, text: 'archive' },
+  { icon: RiDashboardLine, text: 'home', info: '/home' },
+  { icon: RiMapPin2Line, text: 'pinned', info: '/pinned' },
+  { icon: RiArchiveLine, text: 'archive', info: '/archive' },
+]
+export const settingsItems = [
+  {
+    icon: RiSettings2Line,
+    text: 'general',
+    translate: true,
+    info: '/settings/general',
+  },
+  {
+    icon: RiBankCard2Line,
+    text: 'payment',
+    translate: true,
+    info: '/settings/payment',
+  },
 ]
 
 export const hoverSecondaryMenu = [

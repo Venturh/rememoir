@@ -1,13 +1,12 @@
 <template>
-  <div
-    class="relative flex flex-col-reverse items-start lg:space-x-6 lg:flex-row lg:justify-between lg:items-start"
-  >
-    <div class="w-full space-y-2 sm:space-y-4 lg:w-screen lg:max-w-lg">
+  <SplitLayout>
+    <template #first>
       <h1 class="text-xl font-semibold">
         {{ target !== 'undefined' ? t(target) : '' }}
       </h1>
       <TabNavigation
         class="hidden md:flex"
+        :items="['entries', 'lists']"
         :amount="[entriesAmount, listsAmount]"
         @selected="setType"
       />
@@ -66,28 +65,21 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <Filters
-      :is-list-filter="type === 'lists'"
-      :amount="[entriesAmount, listsAmount]"
-      :filters-count="filtersCount"
-      @filter="setFilters"
-      @tabSelected="setType"
-    />
-  </div>
+    </template>
+    <template #second>
+      <Filters
+        :is-list-filter="type === 'lists'"
+        :amount="[entriesAmount, listsAmount]"
+        :filters-count="filtersCount"
+        @filter="setFilters"
+        @tabSelected="setType"
+      />
+    </template>
+  </SplitLayout>
 </template>
 
-<script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  PropType,
-  ref,
-  watch,
-} from 'vue'
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted, defineProps, ref, watch } from 'vue'
 
 import { useI18n } from 'vue-i18n'
 import {
@@ -100,118 +92,85 @@ import {
 import { getDb } from '@/db/Database'
 import BaseList from '@/components/app/BaseList.vue'
 import BaseEntry from '@/components/app/BaseEntry.vue'
-import { LayoutTarget } from '@/types'
+import type { LayoutTarget } from '@/types'
 
-export default defineComponent({
-  props: {
-    target: {
-      type: String as PropType<LayoutTarget>,
-      default: 'undefined',
-    },
-  },
-  setup(props) {
-    const db = getDb()
-    const { t } = useI18n()
-    const type = ref('entries')
+const props = defineProps<{ target: LayoutTarget }>()
+const db = getDb()
+const { t } = useI18n()
+const type = ref('entries')
 
-    const { filters, setFilters, filtersCount } = useFilter()
+const { filters, setFilters, filtersCount } = useFilter()
 
-    const {
-      entries,
-      subscribeEntries,
-      setEntriesSelector,
-      entriesLoading,
-      entriesAmount,
-      moreAvaible,
-    } = useEntries(db)
+const {
+  entries,
+  subscribeEntries,
+  setEntriesSelector,
+  entriesLoading,
+  entriesAmount,
+  moreAvaible,
+} = useEntries(db)
 
-    const {
-      lists,
-      listsLoading,
-      subscribeList,
-      setListSelector,
-      listsAmount,
-      moreListsAvaible,
-    } = useLists(db)
+const {
+  lists,
+  listsLoading,
+  subscribeList,
+  setListSelector,
+  listsAmount,
+  moreListsAvaible,
+} = useLists(db)
 
-    const { scrollRef } = useScroll(() => loadMore())
-    const { currentPage, next, resetPage } = usePagination()
+const { scrollRef } = useScroll(() => loadMore())
+const { currentPage, next, resetPage } = usePagination()
 
-    const showPreview = ref(true)
-    const content = computed(() =>
-      type.value === 'entries' ? entries.value : lists.value
-    )
+const showPreview = ref(true)
+const content = computed(() =>
+  type.value === 'entries' ? entries.value : lists.value
+)
 
-    function setType(val: number) {
-      type.value = val === 0 ? 'entries' : 'list'
-      resetPage()
-      setFilters({ type: 'reset', item: '' })
-    }
+function setType(val: number) {
+  type.value = val === 0 ? 'entries' : 'list'
+  resetPage()
+  setFilters({ type: 'reset', item: '' })
+}
 
-    const loading = computed(() => {
-      return listsLoading.value || entriesLoading.value
-    })
+const loading = computed(() => {
+  return listsLoading.value || entriesLoading.value
+})
 
-    function loadMore() {
-      if (type.value === 'entries') {
-        if (!moreAvaible.value) return
-        next()
-        subscribeEntries({ page: currentPage.value, target: props.target })
-      } else {
-        if (!moreListsAvaible.value) return
-        next()
-        subscribeList({ page: currentPage.value })
-      }
-    }
+function loadMore() {
+  if (type.value === 'entries') {
+    if (!moreAvaible.value) return
+    next()
+    subscribeEntries({ page: currentPage.value, target: props.target })
+  } else {
+    if (!moreListsAvaible.value) return
+    next()
+    subscribeList({ page: currentPage.value })
+  }
+}
 
-    watch(
-      () => filters,
-      (filter) => {
-        showPreview.value = filter.preview ?? false
-        resetPage()
-        if (type.value === 'entries') {
-          setEntriesSelector(filter)
-          subscribeEntries({ reset: true, target: props.target })
-        } else {
-          setListSelector(filter)
-          subscribeList({ target: props.target, reset: true })
-        }
-      },
-      { deep: true }
-    )
-
-    onMounted(() => {
-      subscribeEntries({ target: props.target })
-      subscribeList({ target: props.target })
-    })
-
-    onUnmounted(() => {
-      setFilters({ type: 'reset', item: '' })
-    })
-
-    return {
-      t,
-      BaseEntry,
-      BaseList,
-      type,
-      setType,
-      content,
-      entriesLoading,
-      entriesAmount,
-      filters,
-      setFilters,
-      showPreview,
-      entries,
-      lists,
-      listsAmount,
-      loading,
-      filtersCount,
-      subscribeEntries,
-      loadMore,
-      currentPage,
-      moreAvaible,
-      scrollRef,
+watch(
+  () => filters,
+  (filter) => {
+    showPreview.value = filter.preview ?? false
+    resetPage()
+    if (type.value === 'entries') {
+      setEntriesSelector(filter)
+      subscribeEntries({ reset: true, target: props.target })
+    } else {
+      setListSelector(filter)
+      subscribeList({ target: props.target, reset: true })
     }
   },
+  { deep: true }
+)
+
+onMounted(() => {
+  subscribeEntries({ target: props.target })
+  subscribeList({ target: props.target })
+})
+
+onUnmounted(() => {
+  setFilters({ type: 'reset', item: '' })
 })
 </script>

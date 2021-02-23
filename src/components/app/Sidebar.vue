@@ -10,13 +10,7 @@
           alt="logo"
         />
       </div>
-      <nav class="space-y-2">
-        <SidebarLink
-          v-for="item in sidebarItems"
-          :key="item.text"
-          :item="item"
-        />
-      </nav>
+      <VerticalNavigation :items="sidebarItems" />
     </div>
     <div
       class="flex flex-col p-2 mb-4 rounded-lg lg:flex-row lg:items-center lg:space-x-2 bg-primary"
@@ -32,7 +26,7 @@
         <IconOnlyButton @click="logOut">
           <Icon :icon="RiLogoutBoxLine" />
         </IconOnlyButton>
-        <IconOnlyButton @click="logOut">
+        <IconOnlyButton to="/settings/general">
           <Icon :icon="RiSettings5Line" />
         </IconOnlyButton>
       </div>
@@ -40,8 +34,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 import { RiSettings5Line, RiLogoutBoxLine } from 'vue-remix-icons'
 
@@ -49,32 +43,17 @@ import useUserInfo from '@/hooks/userInfo'
 import { useLogoutMutation } from '@/generated/graphql'
 import { setAccessToken } from '@/utils/auth'
 import { sidebarItems } from '@/config/data'
-import { getDb } from '@/db/Database'
 
-export default defineComponent({
-  props: {
-    toggled: {
-      type: Boolean,
-      default: false,
-    },
-  },
+defineProps<{ toggled?: boolean }>()
 
-  setup() {
-    const db = getDb()
-    const { push } = useRouter()
-    const { userInfo } = useUserInfo()
+const { push } = useRouter()
+const { userInfo } = useUserInfo()
 
-    const { mutate: logout } = useLogoutMutation()
+const { mutate: logout } = useLogoutMutation()
 
-    async function logOut() {
-      await logout()
-
-      console.log('logOut ~ db', db)
-      setAccessToken('')
-      push('/')
-    }
-
-    return { RiSettings5Line, RiLogoutBoxLine, userInfo, logOut, sidebarItems }
-  },
-})
+async function logOut() {
+  await logout()
+  setAccessToken('')
+  push('/')
+}
 </script>

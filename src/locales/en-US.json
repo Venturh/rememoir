@@ -27,6 +27,7 @@
   "continue": "Continue",
   "verify": "Verify",
   "code": "Code",
+  "settings": "Settings",
 
   "entries": "Entries",
   "lists": "Lists",
@@ -34,6 +35,8 @@
   "pinned": "Pinned",
   "archive": "Archive",
   "profile": "Profile ",
+  "general": "General",
+  "payment": "Payment",
 
   "addToList": "Add to list",
   "pin": "Pin",
@@ -68,6 +71,8 @@
   "description": "Description",
   "url": "Url",
   "categories": "Categories",
+
+  "generalDescription": "Manage how the app look and feels",
 
   "previewError": "There was an error, loading the preview",
   "field_required": "Field required",

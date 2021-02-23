@@ -4,6 +4,7 @@
       <TabNavigation
         v-if="!isListPrimaryFilter"
         class="sm:hidden"
+        :items="['entries', 'lists']"
         :amount="amount"
         @selected="passTab"
       />
