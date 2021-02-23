@@ -11,25 +11,12 @@
   </router-link>
 </template>
 
-<script lang="ts">
-import { MenuOptionItem } from '@/types'
-import { defineComponent, PropType } from 'vue'
+<script setup lang="ts">
+import { defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
+import type { MenuOptionItem } from '@/types'
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as PropType<MenuOptionItem>,
-      default: () => {},
-    },
-    expanded: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup() {
-    const { t } = useI18n()
-    return { t }
-  },
-})
+defineProps<{ item: MenuOptionItem; expanded?: boolean }>()
+
+const { t } = useI18n()
 </script>

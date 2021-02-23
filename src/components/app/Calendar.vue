@@ -5,8 +5,12 @@
       class="absolute w-2 h-2 rounded-full right-2.5 top-0.5 bg-brand"
     />
 
-    <input :value="date" type="date" @change="onChange($event.target.value)" />
-    <IconOnlyButton class="p-2 border border-borderPrimary">
+    <input :value="date" type="date" @change="onChange($event)" />
+    <IconOnlyButton
+      variant="primary"
+      class="p-2"
+      :class="{ 'shadow-sm  border border-borderPrimary': !single }"
+    >
       <Icon :icon="RiCalendarLine" />
     </IconOnlyButton>
 
@@ -34,80 +38,45 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref, computed, defineProps, defineEmit } from 'vue'
 import { useI18n } from 'vue-i18n'
 import dayjs from 'dayjs'
 import { RiCalendarLine } from 'vue-remix-icons'
 import { calendarTheme, time } from '@/config/data'
 
-export default defineComponent({
-  props: {
-    single: {
-      type: Boolean,
-      default: false,
-    },
-    open: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    indicator: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['change'],
-  setup(props, { emit }) {
-    const { t } = useI18n()
-    const show = ref(props.open)
-    const date = ref('')
+const props = defineProps<{
+  single?: boolean
+  open?: boolean
+  disabled?: boolean
+  indicator?: boolean
+}>()
 
-    const displayDate = computed(() =>
-      date.value ? dayjs(date.value).format('dd, DD.MM.YY') : 'All Time'
-    )
-    function onChange(value: string) {
-      console.log('onChange ~ value', value)
-      show.value = false
-      date.value = value
-      if (props.single) emit('change', `~${dayjs(value).format('DD.MM.YY')}`)
-      else emit('change', { type: 'date', item: dayjs(value) })
-    }
-    function onSecondaryChange({ item, type }: { item: any; type: string }) {
-      show.value = false
-      date.value = ''
-      emit('change', { type, item })
-    }
+const emit = defineEmit(['change'])
 
-    function reset() {
-      emit('change', { type: 'date', item: undefined })
-      show.value = false
-      date.value = ''
-    }
+const { t } = useI18n()
+const show = ref(props.open)
+const date = ref('')
 
-    function setShow(val: boolean) {
-      show.value = val
-    }
+function onChange(e: Event) {
+  const value = (e.target as HTMLInputElement).value
+  console.log('onChange ~ value', value)
+  show.value = false
+  date.value = value
+  if (props.single) emit('change', `~${dayjs(value).format('DD.MM.YY')}`)
+  else emit('change', { type: 'date', item: dayjs(value) })
+}
+function onSecondaryChange({ item, type }: { item: any; type: string }) {
+  show.value = false
+  date.value = ''
+  emit('change', { type, item })
+}
 
-    return {
-      RiCalendarLine,
-      t,
-      calendarTheme,
-      date,
-      displayDate,
-      onChange,
-      onSecondaryChange,
-      show,
-      setShow,
-      reset,
-      time,
-      dayjs,
-    }
-  },
-})
+function reset() {
+  emit('change', { type: 'date', item: undefined })
+  show.value = false
+  date.value = ''
+}
 </script>
 
 <style lang="postcss" scoped>

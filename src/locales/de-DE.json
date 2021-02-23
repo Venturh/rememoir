@@ -25,6 +25,8 @@
   "resetPasswordSub": "Passwort zurücksetzen",
   "resetPasswordSubheader": "Gib deine Email an",
   "continue": "Weiter",
+  "verify": "Überprüfen",
+  "code": "Code",
 
   "entries": "Einträge",
   "lists": "Listen",

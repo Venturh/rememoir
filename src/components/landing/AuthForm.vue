@@ -7,11 +7,11 @@
     <div class="space-y-3">
       <slot />
       <div class="flex items-center justify-between">
-        <p v-if="type === 'login'" class="font-medium">
+        <p v-if="type === 'signIn'" class="font-medium">
           {{ t('loginSub') }}
           <Links to="/auth/register">{{ t('signUp') }}</Links>
         </p>
-        <p v-if="type === 'register'" class="font-medium">
+        <p v-if="type === 'signUp'" class="font-medium">
           {{ t('registerSub') }}
           <Links to="/auth/login">{{ t('signIn') }}</Links>
         </p>
@@ -40,6 +40,7 @@ defineProps<{
 
 const { t } = useI18n()
 function submit(data: Object) {
+  console.log('submit ~ data', data)
   emit('submit', data)
 }
 </script>

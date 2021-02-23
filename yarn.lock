@@ -3166,6 +3166,11 @@ date-fns@^1.27.2:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
+date-fns@^2.16.1:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.17.0.tgz#afa55daea539239db0a64e236ce716ef3d681ba1"
+  integrity sha512-ZEhqxUtEZeGgg9eHNSOAJ8O9xqSgiJdrL0lzSSfMF54x6KXWJiOH/xntSJ9YomJPrYH/p08t6gWjGWq1SDJlSA==
+
 dateformat@~1.0.4-1.2.3:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-1.0.12.tgz#9f124b67594c937ff706932e4a642cca8dbbfee9"
@@ -8120,6 +8125,13 @@ vue-tailwind-picker@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/vue-tailwind-picker/-/vue-tailwind-picker-1.1.6.tgz#1643b41f250945de463d627cf327b2c16a5a8411"
   integrity sha512-jfXDNfyyuGAteSLNPO46qe+KwHSUN4J1QN7otRJCVJiZQsxFHBuFQ9n4+vVKsnqGz8b7CzbEPrVhsm0AR/v1vg==
+
+vue3-datepicker@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/vue3-datepicker/-/vue3-datepicker-0.2.4.tgz#c55f2daf3c81ccb376c893b40a16b0127581c897"
+  integrity sha512-KV+GnP3+pWyWk9YUWC1BkYaiXhDS4C4jIekTrLAGQsuUARMzUYq0WlRAnzHfv5n2Vgt1j/X2hkPkl+xKwKZRUw==
+  dependencies:
+    date-fns "^2.16.1"
 
 vue@^3.0.5:
   version "3.0.5"

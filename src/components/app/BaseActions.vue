@@ -1,6 +1,10 @@
 <template>
   <div class="flex items-center">
-    <IconOnlyButton variant="primary" @click.stop="showMenu = !showMenu">
+    <IconOnlyButton
+      variant="primary"
+      rounded
+      @click.stop="showMenu = !showMenu"
+    >
       <Icon :icon="RiMore2Line" />
     </IconOnlyButton>
     <div class="absolute z-50 top-10 right-5">

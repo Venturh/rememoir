@@ -5,12 +5,8 @@
         <h1>{{ t('confirm') }}</h1>
         <h2>{{ t('checkInbox') }}</h2>
       </div>
-      <AuthForm
-        type="verificate"
-        :validation-schema="schema"
-        @submit="verificate"
-      >
-        <FormInput name="verification" type="text" />
+      <AuthForm type="verify" :validation-schema="schema" @submit="verificate">
+        <FormInput name="verification" type="text" label="code" />
         <template #error>
           <Error v-if="error" :message="error" />
         </template>
@@ -39,6 +35,7 @@ onMounted(() => {
 })
 
 const schema = object().shape({
+  email: string().email().required(),
   verification: string().min(6).required(),
 })
 
@@ -49,6 +46,7 @@ const { mutate: sendVerification } = useVerifyAccountByEmailMutation(() => ({
 }))
 
 async function verificate(values: { verification: string }) {
+  console.log('verificate ~ values', values)
   verificationCode.value = values.verification
   const { data } = await sendVerification()
   const { errors, accessToken, user } = data!.verifyEmailCode

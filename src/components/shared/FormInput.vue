@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-2">
-    <label v-if="label" class="flex items-center justify-between" :for="name"
-      >{{ t(label.toString()) }}
+    <label class="flex items-center justify-between" :for="name">
+      <span>{{ label ? t(label.toString()) : '' }}</span>
       <div v-if="errorMessage" class="flex items-center space-x-2 text-error">
         <Icon :icon="RiErrorWarningLine" size="sm" />
         <p>
