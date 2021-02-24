@@ -4,6 +4,7 @@ import VueFinalModal from 'vue-final-modal'
 
 import App from './App.vue'
 
+import vClickOutside from './config/clickoutside'
 import { apolloClient } from '@/config/apollo'
 import Router from './router'
 import { i18n } from './config/i18n'
@@ -35,6 +36,8 @@ setLocale({
 
 createApp(App)
   .provide(DefaultApolloClient, apolloClient)
+  .directive('clickOutside', vClickOutside)
+
   .use(i18n)
   .use(Router)
   .use(VueFinalModal())

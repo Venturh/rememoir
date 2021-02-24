@@ -22,6 +22,7 @@
       </Modal>
       <Menu
         v-if="showMenu"
+        v-model="showMenu"
         :primary-items="primaryMenu"
         :secondary-items="secondaryMenu"
         @mouseleave="showMenu = false"
@@ -32,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import type { MenuOptionItem } from '@/types'
 import { ref, defineEmit, defineProps } from 'vue'
 import { RiMore2Line } from 'vue-remix-icons'
 
@@ -53,11 +55,15 @@ const emit = defineEmit([
   'submit',
 ])
 
+function test() {
+  console.log('t')
+}
+
 const showMenu = ref(false)
 const showEditModal = ref(false)
 
-function handleMenu({ name, info }: { name: string; info: string }) {
-  switch (name) {
+function handleMenu({ text, info }: MenuOptionItem) {
+  switch (text) {
     case 'delete':
       emit('remove')
       break

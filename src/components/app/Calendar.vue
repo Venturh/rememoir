@@ -19,7 +19,7 @@
       class="w-1/2"
       type="date"
       :items="time"
-      :disabled="disabled"
+      :border="true"
       :optional-item="
         date !== '' ? { text: 'Custom', info: 'DEFAULT' } : undefined
       "

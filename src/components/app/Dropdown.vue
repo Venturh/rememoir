@@ -1,37 +1,23 @@
 <template>
-  <div
-    @keydown.down.prevent="navigate('down')"
-    @keydown.up.prevent="navigate('up')"
-  >
+  <div>
     <IconOnlyButton
-      class="relative flex items-center w-full h-full py-2 focus:outline-none"
+      class="relative flex items-center w-full h-full p-2 focus:outline-none"
       :class="[
-        { 'border border-borderPrimary shadow-sm': border },
-        iconOnly ? '' : border ? 'px-4' : 'px-2',
+        border ? 'border border-borderPrimary shadow-sm' : '',
         !selected && items.length > 0 ? 'justify-between' : 'justify-center',
-        { 'bg-primary': bg },
       ]"
-      @click="onChange"
+      @click="open = !open"
     >
-      <div
-        class="flex items-center truncate"
-        :class="iconOnly ? 'px-2' : 'space-x-2 '"
-      >
+      <div class="flex items-center space-x-2 truncate">
         <Icon
-          v-if="icon || selected.icon"
-          :icon="icon || selected.icon"
+          v-if="icon || selected?.icon"
+          :icon="icon || selected?.icon"
           size="sm"
-          class="flex-shrink-0"
         />
-        <p class="text-sm">
-          {{
-            selectedItem.translate ? t(selectedItem.text) : selectedItem.text
-          }}
-        </p>
+        <p class="text-sm">{{ text }}</p>
       </div>
 
       <Icon
-        v-if="!iconOnly"
         :icon="RiArrowDownSLine"
         class="flex-shrink-0"
         :class="
@@ -44,125 +30,57 @@
     </IconOnlyButton>
     <SelectMenu
       v-if="items.length > 0"
-      ref="selectMenuRef"
-      :open="open || show"
+      v-model:open="open"
       :options="items"
       :optional-item="optionalItem"
       :selected="selected"
-      with-icons
       @selected="handleSelected"
     />
-    <div
-      v-else-if="(items.length === 0 && open) || show"
-      class="absolute z-50 top-8"
-    >
-      <slot name="menu" />
-    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { MenuOption, MenuOptionItem } from '@/types'
-import { defineComponent, PropType, ref, watch } from 'vue'
+<script setup lang="ts">
+import { ref, watch, defineEmit, defineProps, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiArrowDownSLine } from 'vue-remix-icons'
 
-export default defineComponent({
-  props: {
-    items: {
-      type: Array as PropType<MenuOption>,
-      default: () => [],
-    },
-    optionalItem: {
-      type: Object as PropType<MenuOptionItem>,
-      default: () => {},
-    },
-    type: {
-      type: String,
-      default: '',
-    },
-    show: {
-      type: Boolean,
-      default: false,
-    },
-    icon: {
-      type: Object,
-      default: () => {},
-    },
-    selected: {
-      type: Object as PropType<MenuOptionItem>,
-      default: () => {},
-    },
-    border: {
-      type: Boolean,
-      default: true,
-    },
-    iconOnly: {
-      type: Boolean,
-      default: false,
-    },
-    bg: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ['change', 'selected'],
+import type { MenuOption, MenuOptionItem } from '@/types'
 
-  setup(props, { emit }) {
-    const { t } = useI18n()
-    const open = ref(props.show)
-    const selectedItem = ref(
-      props.selected ||
-        props.optionalItem ||
-        props.items[0] || { text: ' ', icon: null, info: '' }
-    )
-    const dropdownRef = ref<HTMLDivElement>()
-    const wrapperRef = ref<HTMLDivElement>()
-    const selectMenuRef = ref()
+const props = defineProps<{
+  items: MenuOption
+  optionalItem?: MenuOptionItem
+  type?: string
+  icon?: Object
+  selected?: MenuOptionItem
+  border?: boolean
+}>()
 
-    function onChange() {
-      open.value = !open.value
-      emit('change', open.value)
-    }
+const emit = defineEmit(['change', 'selected'])
 
-    function navigate(direction: string) {
-      selectMenuRef.value.keydown(direction)
-    }
+const { t } = useI18n()
+const open = ref(false)
+const selectedItem = ref(
+  props.selected || props.optionalItem || props.items[0] || undefined
+)
 
-    function handleSelected(item: MenuOptionItem) {
-      open.value = false
-      selectedItem.value = item
-      emit('selected', {
-        item: item.info ? item.info : item.text,
-        type: props.type,
-      })
-    }
+const text = computed(() =>
+  selectedItem.value.translate
+    ? t(selectedItem.value.text)
+    : selectedItem.value.text
+)
 
-    function handleClickOutside() {
-      open.value = false
-    }
+function handleSelected(item: MenuOptionItem) {
+  selectedItem.value = item
+  emit('selected', {
+    item: item.info ? item.info : item.text,
+    type: props.type,
+  })
+}
 
-    watch(
-      () => props.optionalItem,
-      (item) => {
-        selectedItem.value = item || props.items[0]
-      }
-    )
-
-    return {
-      RiArrowDownSLine,
-      t,
-      open,
-      close,
-      selectedItem,
-      handleSelected,
-      onChange,
-      dropdownRef,
-      wrapperRef,
-      handleClickOutside,
-      selectMenuRef,
-      navigate,
-    }
-  },
-})
+watch(
+  () => props.optionalItem,
+  (item) => {
+    selectedItem.value = item || props.items[0]
+  }
+)
 </script>

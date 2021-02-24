@@ -1,21 +1,22 @@
 <template>
   <div
     ref="hoverMenu"
-    class="relative z-50 w-32 overflow-y-auto rounded-md shadow-sm max-h-96 bg-primary ring-1 ring-borderPrimary"
+    v-click-outside="onClickOutside"
+    class="relative z-50 w-48 overflow-y-auto rounded-md shadow-sm max-h-96 bg-primary ring-1 ring-borderPrimary"
     :style="style"
     @mouseover="$emit('mouseover')"
     @mouseleave="$emit('mouseleave')"
   >
-    <div v-if="activeMenu === 'primary'" class="">
+    <div v-if="activeMenu === 'primary'">
       <div
         v-for="item in primaryItems"
-        :key="item.name"
+        :key="item.text"
         class="flex items-center w-full px-4 py-2 space-x-2 rounded-md cursor-pointer hover:bg-brand25 hover:text-primary"
         @click.stop="handleClick(item)"
       >
         <Icon :icon="item.icon" size="sm" />
         <span class="text-sm truncate">
-          {{ item.translate ? t(item.name) : item.name }}
+          {{ item.translate ? t(item.text) : item.text }}
         </span>
       </div>
     </div>
@@ -23,7 +24,7 @@
     <div v-if="activeMenu === 'secondary'">
       <button
         v-for="item in secondaryItems"
-        :key="item.name"
+        :key="item.text"
         :disabled="item.info === 'DUPLICATE'"
         class="flex items-center w-full p-2 space-x-2 rounded-md"
         :class="
@@ -35,48 +36,48 @@
       >
         <Icon :icon="item.icon" size="sm" />
         <span class="text-sm truncate">
-          {{ item.translate ? t(item.name) : item.name }}
+          {{ item.translate ? t(item.text) : item.text }}
         </span>
       </button>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { HoverMenuItem } from '@/types'
-import { defineComponent, onMounted, ref } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref, defineEmit, defineProps, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-export default defineComponent({
-  props: {
-    primaryItems: {
-      type: Array as () => HoverMenuItem[],
-      default: () => [],
-    },
-    secondaryItems: {
-      type: Array as () => HoverMenuItem[],
-      default: () => [],
-    },
-  },
-  emits: ['click', 'mouseleave', 'mouseover'],
-  setup(_, { emit }) {
-    const { t } = useI18n()
-    const hoverMenu = ref<HTMLDivElement>()
-    const style = ref({ top: '0' })
+import type { MenuOption, MenuOptionItem } from '@/types'
 
-    const activeMenu = ref('primary')
-    function handleClick(item: HoverMenuItem) {
-      if (item.goto) activeMenu.value = item.goto
-      emit('click', { name: item.name, info: item.info })
-    }
-    onMounted(() => {
-      if (
-        window.innerHeight - hoverMenu.value!.getBoundingClientRect().top <
-        hoverMenu.value!.clientHeight
-      )
-        style.value.top = '-15rem'
-    })
-    return { t, activeMenu, handleClick, hoverMenu, style }
-  },
+defineProps<{
+  primaryItems: MenuOption
+  secondaryItems: MenuOption
+}>()
+const emit = defineEmit([
+  'click',
+  'mouseleave',
+  'mouseover',
+  'update:modelValue',
+])
+
+const { t } = useI18n()
+const hoverMenu = ref<HTMLDivElement>()
+const style = ref({ top: '0' })
+const activeMenu = ref('primary')
+
+function onClickOutside() {
+  emit('update:modelValue', false)
+}
+
+function handleClick(item: MenuOptionItem) {
+  if (item.goto) activeMenu.value = item.goto
+  emit('click', { text: item.text, info: item.info })
+}
+onMounted(() => {
+  if (
+    window.innerHeight - hoverMenu.value!.getBoundingClientRect().top <
+    hoverMenu.value!.clientHeight
+  )
+    style.value.top = '-15rem'
 })
 </script>

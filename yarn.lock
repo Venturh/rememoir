@@ -1952,6 +1952,21 @@
     vscode-languageserver-textdocument "^1.0.1"
     vscode-uri "^2.1.2"
 
+"@vueuse/core@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-4.2.2.tgz#ecbba4ba05e0360e9c9079b32e149fac803a1020"
+  integrity sha512-NMU3Vr4eBiNrPzCoUH5ptNj+DETg85Vtww0OJjaQEXobDTH28gzbLJseqCh4m3NYR92C5qlXRnzhSvWOoR/uLg==
+  dependencies:
+    "@vueuse/shared" "4.2.2"
+    vue-demi latest
+
+"@vueuse/shared@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-4.2.2.tgz#e52ee278b929f028117c0ca1792b24df462bff80"
+  integrity sha512-yudh4jt0SxaW0i3j2iumI8GTloA8aUpLwGaBw9Xv2rQCdZvOZpXpvpGEz8EsMK793ySs+d5S4/opItlxuzjtSg==
+  dependencies:
+    vue-demi latest
+
 "@wry/context@^0.5.2":
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/@wry/context/-/context-0.5.4.tgz#b6c28038872e0a0e1ff14eb40b5bf4cab2ab4e06"
@@ -3165,11 +3180,6 @@ date-fns@^1.27.2:
   version "1.30.1"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
-
-date-fns@^2.16.1:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.17.0.tgz#afa55daea539239db0a64e236ce716ef3d681ba1"
-  integrity sha512-ZEhqxUtEZeGgg9eHNSOAJ8O9xqSgiJdrL0lzSSfMF54x6KXWJiOH/xntSJ9YomJPrYH/p08t6gWjGWq1SDJlSA==
 
 dateformat@~1.0.4-1.2.3:
   version "1.0.12"
@@ -8085,6 +8095,11 @@ vue-demi@^0.4.0:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.4.5.tgz#ea422a4468cb6321a746826a368a770607f87791"
   integrity sha512-51xf1B6hV2PfjnzYHO/yUForFCRQ49KS8ngQb5T6l1HDEmfghTFtsxtRa5tbx4eqQsH76ll/0gIxuf1gei0ubw==
 
+vue-demi@latest:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.6.0.tgz#e314282f704cb449119b9fd002cbbc0e39f591fe"
+  integrity sha512-8GEJa0mHJpYJeGeq5fD1pJct2kfdl30PHfmL1NaJ97mgKPyKojlIRt/3inGBK4Y0ylCI6T5vOo3chwpqDOq/Hw==
+
 vue-eslint-parser@^7.5.0:
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.5.0.tgz#b68221c55fee061899afcfb4441ec74c1495285e"
@@ -8125,13 +8140,6 @@ vue-tailwind-picker@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/vue-tailwind-picker/-/vue-tailwind-picker-1.1.6.tgz#1643b41f250945de463d627cf327b2c16a5a8411"
   integrity sha512-jfXDNfyyuGAteSLNPO46qe+KwHSUN4J1QN7otRJCVJiZQsxFHBuFQ9n4+vVKsnqGz8b7CzbEPrVhsm0AR/v1vg==
-
-vue3-datepicker@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/vue3-datepicker/-/vue3-datepicker-0.2.4.tgz#c55f2daf3c81ccb376c893b40a16b0127581c897"
-  integrity sha512-KV+GnP3+pWyWk9YUWC1BkYaiXhDS4C4jIekTrLAGQsuUARMzUYq0WlRAnzHfv5n2Vgt1j/X2hkPkl+xKwKZRUw==
-  dependencies:
-    date-fns "^2.16.1"
 
 vue@^3.0.5:
   version "3.0.5"

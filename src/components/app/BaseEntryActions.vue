@@ -46,7 +46,7 @@ import { useAvaibleLists, usePrimaryMenu } from '@/hooks'
 import { addEntryToList } from '@/db/list'
 import { getDb } from '@/db/Database'
 
-import type { HoverMenuItem } from '@/types'
+import type { MenuOption } from '@/types'
 import type { EntryInput } from '@/generated/graphql'
 import { decryptDataKey } from '@/utils/crypto'
 import { shareLink } from '@/utils/share'
@@ -71,11 +71,11 @@ const schema = object().shape({
 })
 
 const secondaryItems = computed(() => {
-  const listItems: HoverMenuItem[] = avaibleLists.value.map((l) => {
-    return { name: l.text, icon: RiLayoutColumnLine, info: l.info }
+  const listItems: MenuOption = avaibleLists.value.map((l) => {
+    return { text: l.text, icon: RiLayoutColumnLine, info: l.info }
   })
   listItems.unshift({
-    name: 'back',
+    text: 'back',
     icon: RiDeleteBack2Line,
     goto: 'primary',
     translate: true,

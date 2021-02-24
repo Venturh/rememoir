@@ -24,14 +24,15 @@
         </div>
       </div>
     </div>
-    <div v-else>
+    <button v-else @click.stop="open = !open">
       <SelectMenu
+        v-model:open="open"
         :options="avaibleLanguages"
         :selected="avaibleLanguages[0]"
         display
         @selected="changeLocale"
       />
-    </div>
+    </button>
   </div>
 </template>
 
@@ -55,12 +56,7 @@ const avaibleLanguages = computed(() => {
 }) as any
 
 function changeLocale({ info }: MenuOptionItem) {
-  console.log('changeLocale ~ code', info)
   dayjs.locale(info)
-  locale.value = info
-}
-
-function handleClickOutside() {
-  open.value = false
+  locale.value = info!
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="hidden space-y-2 sm:block">
+    <nav class="hidden space-y-2" :class="expanded ? 'lg:block ' : 'sm:block'">
       <SidebarLink
         v-for="item in items"
         :key="item.text"
@@ -9,19 +9,24 @@
       />
     </nav>
 
-    <div class="sm:hidden">
+    <button
+      class="w-full"
+      :class="expanded ? 'xl:hidden' : 'sm:hidden'"
+      @click="open = !open"
+    >
       <SelectMenu
+        v-model:open="open"
         :options="items"
         :selected="items[0]"
         display
         @selected="handleSelected"
       />
-    </div>
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { ref, defineProps } from 'vue'
 import type { MenuOption, MenuOptionItem } from '@/types'
 import { useRouter } from 'vue-router'
 
@@ -30,7 +35,8 @@ defineProps<{
   expanded?: boolean
 }>()
 const { push } = useRouter()
+const open = ref(false)
 function handleSelected({ info }: MenuOptionItem) {
-  push(info)
+  push(info!)
 }
 </script>

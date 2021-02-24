@@ -22,8 +22,6 @@
     <div
       class="flex space-x-2"
       @keydown.esc.prevent="$emit('cancel')"
-      @keydown.up.prevent="navigateMenu('up')"
-      @keydown.down.prevent="navigateMenu('down')"
       @keydown.exact.enter="handleEnter($event)"
     >
       <HeaderInput
@@ -54,10 +52,11 @@
     </div>
     <SelectMenu
       ref="categoriesMenuRef"
+      v-model:open="categoriesOpen"
       name="categories"
-      :open="categoriesOpen"
       :options="categories"
       @selected="addFromMenu"
+      @cancel="inputRef.$el.focus()"
     />
     <div>
       <SelectMenu
@@ -66,7 +65,8 @@
         name="list"
         :open="list.open"
         :options="avaibleLists"
-        @selected="addList"
+        @selected="addFromMenu"
+        @cancel="inputRef.$el.focus()"
       />
       <Error
         v-if="inputType === 'list' && list.open"
@@ -127,13 +127,14 @@ export default defineComponent({
       return props.inputType === 'list' ? items[0] : items[1]
     })
 
-    function addFromMenu(value: MenuOptionItem) {
-      input.value += value.text
-    }
-    function addList(value: MenuOptionItem) {
-      list.value.id = value.info!
-      list.value.text = value.text
-      input.value += value.text
+    function addFromMenu({ text, info }: MenuOptionItem) {
+      //from menu list
+      if (info) {
+        list.value.id = info
+        list.value.text = text
+      }
+      input.value += text
+      inputRef.value?.$el.focus()
     }
 
     function setInputType() {
@@ -170,25 +171,11 @@ export default defineComponent({
     }
 
     function handleEnter(event: Event) {
-      if (categoriesOpen.value) {
-        event.preventDefault()
-        categoriesMenuRef.value.setSelected()
-      } else if (list.value.open) {
-        event.preventDefault()
-        listMenuRef.value.setSelected()
-      } else if (descriptonActive.value) {
+      if (descriptonActive.value) {
         descriptonActive.value = false
         input.value = input.value.slice(0, -2)
         inputRef.value?.$el.focus()
       } else submit()
-    }
-
-    function navigateMenu(direction: string) {
-      if (categoriesOpen.value) {
-        categoriesMenuRef.value.keydown(direction)
-      } else {
-        listMenuRef.value.keydown(direction)
-      }
     }
 
     function submit() {
@@ -267,8 +254,6 @@ export default defineComponent({
       calendar,
       toggleCalendar,
       addCalendar,
-      addList,
-      navigateMenu,
     }
   },
 })

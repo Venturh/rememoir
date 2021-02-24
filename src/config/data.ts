@@ -34,10 +34,10 @@ export const settingsItems = [
 ]
 
 export const hoverSecondaryMenu = [
-  { name: 'copylink', icon: RiLink, translate: true },
-  { name: 'twitter', icon: RiTwitterLine, translate: true },
-  { name: 'mail', icon: RiMailLine, translate: true },
-  { name: 'back', icon: RiDeleteBack2Line, goto: 'primary', translate: true },
+  { text: 'copylink', icon: RiLink, translate: true },
+  { text: 'twitter', icon: RiTwitterLine, translate: true },
+  { text: 'mail', icon: RiMailLine, translate: true },
+  { text: 'back', icon: RiDeleteBack2Line, goto: 'primary', translate: true },
 ]
 
 export const categories: MenuOption = [

@@ -2,12 +2,13 @@
   <AppLayout>
     <SplitLayout>
       <template #first>
-        <slot />
+        <div class="sm:mt-2 lg:mt-0">
+          <slot />
+        </div>
       </template>
 
       <template #second>
         <VerticalNavigation
-          class="w-1/2"
           :items="settingsItems"
           :selected="settingsItems[value]"
           expanded

@@ -4,7 +4,7 @@ import { addRxPlugin } from 'rxdb'
 import dayjs from 'dayjs'
 import ObjectID from 'bson-objectid'
 import { EntryInput } from '../../generated/graphql'
-import { EditedEntry } from '../../types'
+import { Edited } from '../../types'
 import { MyDatabase } from '../index'
 import { removeEntryFromList, addEntryToList } from '../list'
 
@@ -63,7 +63,7 @@ export async function removeEntry(
   }
 }
 
-export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
+export async function update(id: string, edited: Edited, db: MyDatabase) {
   const entry = await db.entries.findOne({ selector: { id } }).exec()
   let categories: string[]
   if (entry) {
@@ -73,7 +73,7 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
       } else {
         categories = entry.categories
       }
-      const editedEntry: EntryInput = {
+      const Edited: EntryInput = {
         id: entry.id,
         title: edited.title || entry.title,
         description: edited.description || entry.description,
@@ -87,8 +87,8 @@ export async function update(id: string, edited: EditedEntry, db: MyDatabase) {
         processing: entry.processing,
         updatedAt: Date.now().toString(),
       }
-      console.log('update ~ editedEntry', editedEntry)
-      await entry.update({ $set: { ...editedEntry } })
+      console.log('update ~ Edited', Edited)
+      await entry.update({ $set: { ...Edited } })
     } catch (err) {
       console.error('could not update entry')
     }

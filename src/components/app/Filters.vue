@@ -25,6 +25,7 @@
           class="px-2"
           :items="order"
           :icon="RiTimeLine"
+          :border="true"
           @selected="onChange"
         />
       </FilterItem>
@@ -35,6 +36,7 @@
           type="categories"
           :items="allCategories"
           :icon="RiFolderLine"
+          :border="true"
           @selected="onChange"
         />
       </FilterItem>

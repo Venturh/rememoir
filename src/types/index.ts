@@ -1,14 +1,7 @@
-export type EditedEntry = {
+export type Edited = {
   title?: string
   description?: string
   url?: string
-  categories?: string
-  pinned?: boolean
-  archived?: boolean
-}
-export type EditedList = {
-  title?: string
-  description?: string
   categories?: string
   pinned?: boolean
   archived?: boolean
@@ -46,20 +39,13 @@ export type Filter = {
 export type HeaderInputType = 'list' | 'entry' | 'search'
 
 export type MenuOptionItem = {
-  icon: any
   text: string
-  info?: string
-  translate?: boolean
-}
-export type MenuOption = Array<MenuOptionItem>
-
-export type HoverMenuItem = {
-  name: string
   icon: any
+  info?: string
   translate?: boolean
   goto?: string
-  info?: string
 }
+export type MenuOption = Array<MenuOptionItem>
 
 export type Error = { show: boolean; msg: string }
 

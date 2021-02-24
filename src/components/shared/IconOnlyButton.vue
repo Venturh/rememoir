@@ -1,6 +1,6 @@
 <template>
   <ButtonOrLink
-    class="inline-flex items-center justify-center rounded-md fill-current text-secondary focus:outline-none"
+    class="inline-flex items-center justify-center rounded-md fill-current text-secondary focus:outline-none focus:ring-1 focus:ring-brand25"
     :class="[variants, { 'rounded-full': rounded }]"
     :to="to"
     :out="out"

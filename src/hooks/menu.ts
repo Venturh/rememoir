@@ -7,25 +7,25 @@ import {
   RiMapPin2Line,
   RiShareLine,
 } from 'vue-remix-icons'
-import { HoverMenuItem } from '@/types'
+import { MenuOption } from '@/types'
 
 export function usePrimaryMenu(data: any, target: 'entries' | 'lists') {
   const primaryMenu = computed(() => {
-    const menu: HoverMenuItem[] = [
+    const menu: MenuOption = [
       {
-        name: data.value.pinned ? 'unpin' : 'pin',
+        text: data.value.pinned ? 'unpin' : 'pin',
         icon: RiMapPin2Line,
         translate: true,
       },
-      { name: 'edit', icon: RiEdit2Line, translate: true },
+      { text: 'edit', icon: RiEdit2Line, translate: true },
       {
-        name: data.value.archived ? 'unarchive' : 'archive',
+        text: data.value.archived ? 'unarchive' : 'archive',
         icon: RiArchiveLine,
         translate: true,
       },
-      { name: 'delete', icon: RiDeleteBack2Line, translate: true },
+      { text: 'delete', icon: RiDeleteBack2Line, translate: true },
       {
-        name: 'share',
+        text: 'share',
         icon: RiShareLine,
         goto: 'secondary',
         translate: true,
@@ -33,7 +33,7 @@ export function usePrimaryMenu(data: any, target: 'entries' | 'lists') {
     ]
     if (target === 'entries')
       menu.unshift({
-        name: 'addToList',
+        text: 'addToList',
         icon: RiAddCircleLine,
         goto: 'secondary',
         translate: true,
@@ -50,6 +50,7 @@ export function useMenuNavigation(max: number, callback: () => void) {
   const maxLength = ref(max)
 
   function keydown(direction: 'up' | 'down') {
+    console.log('keydown ~ direction', direction)
     if (selectedIndex.value > 0 && direction === 'up') selectedIndex.value -= 1
     else if (selectedIndex.value < maxLength.value - 1 && direction === 'down')
       selectedIndex.value += 1

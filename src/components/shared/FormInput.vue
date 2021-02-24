@@ -24,7 +24,7 @@
     </label>
     <input
       :id="name"
-      class="block w-full border rounded-md bg-secondary border-borderPrimary hover:ring-primaryText hover:bg-primary focus:bg-secondary focus:ring-brand focus:border-brand sm:text-sm"
+      class="block w-full border rounded-md bg-primary border-borderPrimary hover:ring-primaryText focus:ring-brand focus:border-brand sm:text-sm"
       :name="name"
       :type="type"
       :value="inputValue"

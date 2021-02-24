@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import ObjectID from 'bson-objectid'
 import { EntryInput, ListInput } from '../../generated/graphql'
 import { MyDatabase } from '..'
-import { EditedList } from '../../types'
+import { Edited } from '../../types'
 
 export function getLists(
   db: MyDatabase,
@@ -82,11 +82,7 @@ export async function removeList(id: string, db: MyDatabase) {
   }
 }
 
-export async function updateList(
-  id: string,
-  edited: EditedList,
-  db: MyDatabase
-) {
+export async function updateList(id: string, edited: Edited, db: MyDatabase) {
   const list = await db.lists.findOne({ selector: { id } }).exec()
   let categories: string[]
   if (list) {
@@ -96,7 +92,7 @@ export async function updateList(
       } else {
         categories = list.categories
       }
-      const editedList: ListInput = {
+      const Edited: ListInput = {
         id: list.id,
         title: edited.title || list.title,
         description: edited.description || list.description,
@@ -110,7 +106,7 @@ export async function updateList(
         archived: edited.archived ?? list.archived,
       }
 
-      await list.update({ $set: { ...editedList } })
+      await list.update({ $set: { ...Edited } })
     } catch (err) {
       console.error('could not update list')
     }
@@ -125,7 +121,7 @@ export async function addEntryToList(
 
   if (list) {
     try {
-      const editedList: ListInput = {
+      const Edited: ListInput = {
         id: list.id,
         title: list.title,
         description: list.description,
@@ -136,7 +132,7 @@ export async function addEntryToList(
         processing: list.processing,
         updatedAt: Date.now().toString(),
       }
-      await list.update({ $set: { ...editedList } })
+      await list.update({ $set: { ...Edited } })
     } catch (err) {
       console.error('could not update list', err)
     }
