@@ -7,6 +7,7 @@
       aria-expanded="true"
       aria-labelledby="listbox-label"
       class="relative inline-flex w-full py-2 pl-3 pr-10 space-x-2 text-left border rounded-md shadow-sm cursor-default bg-primary border-borderPrimary focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand sm:text-sm"
+      @keydown.enter.prevent="$emit('update:open', true)"
     >
       <span class="text-sm">
         {{ selectedItem.translate ? t(selectedItem.text) : selectedItem.text }}
@@ -42,7 +43,7 @@
           role="listbox"
           aria-labelledby="listbox-label"
           aria-activedescendant="listbox-item-3"
-          class="overflow-auto text-base rounded-md bg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+          class="overflow-auto text-base rounded-md bg max-h-60 ring-1 ring-borderPrimary ring-opacity-5 focus:outline-none sm:text-sm"
           @keydown.down.prevent="keydown('down')"
           @keydown.up.prevent="keydown('up')"
           @keydown.enter.prevent="enter"
@@ -52,8 +53,8 @@
             v-for="(option, index) in options"
             :key="index"
             role="option"
-            class="relative flex p-2 space-x-2 cursor-default select-none options-center"
-            :class="[{ 'bg-brand text-primary': selectedIndex === index }]"
+            class="relative flex px-4 py-2 space-x-2 cursor-default select-none options-center"
+            :class="[{ 'bg-brand25 text-primary': selectedIndex === index }]"
             @click.stop="setSelected()"
             @mouseenter="setSelectedIndex(index)"
           >
@@ -69,15 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  watch,
-  defineEmit,
-  defineProps,
-  onMounted,
-  nextTick,
-  onUpdated,
-} from 'vue'
+import { ref, watch, defineEmit, defineProps, nextTick, onUpdated } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useMenuNavigation } from '@/hooks'
 import type { MenuOption, MenuOptionItem } from '@/types'

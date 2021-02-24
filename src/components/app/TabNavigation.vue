@@ -1,10 +1,7 @@
 <template>
-  <nav class="relative w-full">
-    <div v-if="!col" class="absolute bottom-0 w-full h-0.5 bg-borderPrimary" />
-    <div
-      class="relative flex"
-      :class="col ? 'flex-col' : ' w-full sm:w-1/2 items-center'"
-    >
+  <nav class="relative">
+    <div class="absolute bottom-0 w-full h-0.5 bg-borderPrimary" />
+    <div class="relative flex items-center w-full sm:w-1/2">
       <button
         v-for="(item, index) in items"
         ref="linkRef"
@@ -30,7 +27,7 @@
 import { ref, defineEmit, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-defineProps<{ items: string[]; amount?: string[]; col?: boolean }>()
+defineProps<{ items: string[]; amount?: string[] }>()
 const emit = defineEmit(['selected'])
 
 const { t } = useI18n()

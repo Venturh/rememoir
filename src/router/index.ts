@@ -125,6 +125,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/settings',
     name: 'settings',
     component: RouterView,
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'setkey',

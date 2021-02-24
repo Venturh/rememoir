@@ -28,7 +28,7 @@
       <SelectMenu
         v-model:open="open"
         :options="avaibleLanguages"
-        :selected="avaibleLanguages[0]"
+        :selected="selected"
         display
         @selected="changeLocale"
       />
@@ -53,9 +53,17 @@ const avaibleLanguages = computed(() => {
     { text: 'English', info: 'en', icon: null },
     { text: 'Deutsch', info: 'de', icon: null },
   ]
-}) as any
+})
+const selected = computed(() => {
+  return {
+    text: locale.value === 'de' ? 'Deutsch' : 'English',
+    info: locale.value,
+    icon: null,
+  }
+})
 
 function changeLocale({ info }: MenuOptionItem) {
+  localStorage.setItem('locale', info!)
   dayjs.locale(info)
   locale.value = info!
 }

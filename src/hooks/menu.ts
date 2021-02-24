@@ -44,13 +44,12 @@ export function usePrimaryMenu(data: any, target: 'entries' | 'lists') {
   return { primaryMenu }
 }
 
-export function useMenuNavigation(max: number, callback: () => void) {
+export function useMenuNavigation(max: number, callback?: () => void) {
   const menuRef = ref<HTMLDivElement>()
   const selectedIndex = ref(0)
   const maxLength = ref(max)
 
   function keydown(direction: 'up' | 'down') {
-    console.log('keydown ~ direction', direction)
     if (selectedIndex.value > 0 && direction === 'up') selectedIndex.value -= 1
     else if (selectedIndex.value < maxLength.value - 1 && direction === 'down')
       selectedIndex.value += 1
@@ -64,7 +63,7 @@ export function useMenuNavigation(max: number, callback: () => void) {
   }
 
   function enter() {
-    callback()
+    if (callback) callback()
   }
 
   function setSelectedIndex(index: number) {
