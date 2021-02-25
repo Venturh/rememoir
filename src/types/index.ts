@@ -49,4 +49,11 @@ export type MenuOption = Array<MenuOptionItem>
 
 export type Error = { show: boolean; msg: string }
 
+export type Notification = {
+  show: boolean
+  text?: string
+  type?: NotificationType
+}
+export type NotificationType = 'info' | 'success'
+
 export type LayoutTarget = 'pinned' | 'archive' | 'undefined'

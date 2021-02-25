@@ -64,8 +64,10 @@
   "addNewEntry": "(#Kategorien, at Liste, ~Datum, //Beschreibung )",
   "addNewList": "(#Kategorien, at Liste, ~Datum, //Beschreibung )",
   "searchPlaceholder": "Suche nach Einträgen und Listen",
-
   "reset": "Zurücksetzen",
+
+  "shareSuccess": "Link in die Zwischenablage kopiert.",
+  "shareError": "Es gab einen Fehler beim Kopieren, bitte erneut versuchen",
 
   "title": "Titel",
   "description": "Beschreibung",

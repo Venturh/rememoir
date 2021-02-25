@@ -7,8 +7,8 @@
     @mouseover="$emit('mouseover')"
     @mouseleave="$emit('mouseleave')"
   >
-    <div v-if="activeMenu === 'primary'">
-      <div
+    <div v-if="activeMenu === 'primary'" class="">
+      <button
         v-for="item in primaryItems"
         :key="item.text"
         class="flex items-center w-full px-4 py-2 space-x-2 rounded-md cursor-pointer hover:bg-brand25 hover:text-primary"
@@ -18,7 +18,7 @@
         <span class="text-sm truncate">
           {{ item.translate ? t(item.text) : item.text }}
         </span>
-      </div>
+      </button>
     </div>
 
     <div v-if="activeMenu === 'secondary'">
@@ -30,7 +30,7 @@
         :class="
           item.info === 'DUPLICATE'
             ? 'cursor-not-allowed hover:bg-brand25'
-            : 'hover:bg-brand25 hover:text-white cursor-pointer'
+            : 'hover:bg-brand25 hover:text-primary cursor-pointer'
         "
         @click.stop="handleClick(item)"
       >
@@ -44,15 +44,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, defineEmit, defineProps, computed } from 'vue'
+import { onMounted, ref, defineEmit, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import type { MenuOption, MenuOptionItem } from '@/types'
 
-defineProps<{
-  primaryItems: MenuOption
-  secondaryItems: MenuOption
-}>()
+defineProps<{ primaryItems: MenuOption; secondaryItems: MenuOption }>()
 const emit = defineEmit([
   'click',
   'mouseleave',

@@ -23,7 +23,7 @@ input[type='search']::-webkit-search-results-decoration {
 .dark {
   --brand: #3485e4;
   --brandDarker: #2f78cd;
-  --brand25: rgba(52, 133, 228, 0.15);
+  --brand25: #172432;
   --brand15: rgba(52, 133, 228, 0.25);
 
   /* --border: #374151;

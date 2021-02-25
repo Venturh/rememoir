@@ -30,7 +30,7 @@
     <Button
       v-if="!single"
       class="w-1/3 text-sm"
-      variant="brand25"
+      :variant="date !== '' ? 'brand25' : 'disabled'"
       @click="reset"
     >
       {{ t('reset') }}

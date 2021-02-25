@@ -67,6 +67,9 @@
   "searchPlaceholder": "Search for entries and lists",
   "reset": "Reset",
 
+  "shareSuccess": "Copied link to clipboard",
+  "shareError": "There was an error copying, please try it again",
+
   "title": "Title",
   "description": "Description",
   "url": "Url",

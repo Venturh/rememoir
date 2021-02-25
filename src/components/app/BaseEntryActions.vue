@@ -3,6 +3,7 @@
     :primary-menu="primaryMenu"
     :secondary-menu="secondaryItems"
     :validation-schema="schema"
+    :notification="notification"
     @edit="submit"
     @remove="remove"
     @showLists="toggleLists"
@@ -35,21 +36,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRefs, defineProps } from 'vue'
+import { computed, ref, toRefs, defineProps, reactive } from 'vue'
 import { RiDeleteBack2Line, RiLayoutColumnLine } from 'vue-remix-icons'
 
 import { object, string } from 'yup'
 
 import { hoverSecondaryMenu } from '@/config/data'
 import { removeEntry, update } from '@/db/entry'
-import { useAvaibleLists, usePrimaryMenu } from '@/hooks'
+import { useAvaibleLists, useNotification, usePrimaryMenu } from '@/hooks'
 import { addEntryToList } from '@/db/list'
 import { getDb } from '@/db/Database'
-
-import type { MenuOption } from '@/types'
 import type { EntryInput } from '@/generated/graphql'
 import { decryptDataKey } from '@/utils/crypto'
 import { shareLink } from '@/utils/share'
+
+import type { MenuOption } from '@/types'
 
 const props = defineProps<{
   showMenu: false
@@ -62,6 +63,7 @@ const showEditModal = ref(false)
 const showLists = ref(false)
 const { avaibleLists } = useAvaibleLists(db, props.entry.id)
 const { primaryMenu } = usePrimaryMenu(toRefs(props).entry, 'entries')
+const { notification, setNotification } = useNotification()
 
 const schema = object().shape({
   title: string().min(3).nullable(),
@@ -105,6 +107,7 @@ async function archive(value: boolean) {
 async function share() {
   const key = decryptDataKey(props.entry.hashedKey)
   shareLink(props.entry.id, key, 'entry')
+  setNotification({ show: true, type: 'success', text: 'shareSuccess' })
 }
 
 async function submit(values: {

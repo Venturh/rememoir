@@ -3,6 +3,7 @@
     :primary-menu="primaryMenu"
     :secondary-menu="hoverSecondaryMenu"
     :validation-schema="schema"
+    :notification="notification"
     @edit="submit"
     @remove="remove"
     @pin="pin"
@@ -40,7 +41,7 @@ import { hoverSecondaryMenu } from '@/config/data'
 
 import { removeList, updateList } from '@/db/list'
 import { getDb } from '@/db/Database'
-import { usePrimaryMenu } from '@/hooks'
+import { useNotification, usePrimaryMenu } from '@/hooks'
 import { decryptDataKey } from '@/utils/crypto'
 import { shareLink } from '@/utils/share'
 
@@ -49,6 +50,7 @@ const props = defineProps<{ shwoMenu: boolean; list: List }>()
 const db = getDb()
 const showModal = ref(false)
 const { primaryMenu } = usePrimaryMenu(toRefs(props).list, 'lists')
+const { notification, setNotification } = useNotification()
 
 const schema = object().shape({
   title: string().min(3).nullable(),
@@ -64,7 +66,6 @@ async function pin(value: boolean) {
   await updateList(props.list.id, { pinned: value }, db)
 }
 async function archive(value: boolean) {
-  console.log('archive ~ value', value)
   await updateList(props.list.id, { archived: value }, db)
 }
 
@@ -76,6 +77,7 @@ async function share() {
     .exec()
   const keys = entries.map((e) => decryptDataKey(e.hashedKey))
   shareLink(props.list.id, key, 'list', keys)
+  setNotification({ show: true, type: 'success', text: 'shareSuccess' })
 }
 
 async function submit(values: {

@@ -53,11 +53,10 @@
           >
             <Icon v-if="previewFilter" :icon="RiLayoutLine" />
             <Icon v-else :icon="RiLayoutRowLine" />
-            <span class="text-xs">Toggle Preview</span>
           </IconOnlyButton>
           <Button
             class="text-xs"
-            variant="brand25"
+            :variant="filtersCount === 0 ? 'disabled' : 'brand25'"
             @click="$emit('filter', { type: 'reset', item: undefined })"
           >
             {{ t('reset') }}

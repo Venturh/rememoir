@@ -29,18 +29,23 @@
         @click="handleMenu"
       />
     </div>
+    <Teleport to="#notification">
+      <Notification :notification="notification" />
+    </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { MenuOptionItem } from '@/types'
-import { ref, defineEmit, defineProps } from 'vue'
+import { ref, defineEmit, defineProps, Teleport } from 'vue'
 import { RiMore2Line } from 'vue-remix-icons'
+
+import type { MenuOptionItem, Notification } from '@/types'
 
 defineProps<{
   primaryMenu: []
   secondaryMenu: []
   validationSchema?: Object
+  notification?: Notification
 }>()
 
 const emit = defineEmit([
@@ -54,10 +59,6 @@ const emit = defineEmit([
   'share',
   'submit',
 ])
-
-function test() {
-  console.log('t')
-}
 
 const showMenu = ref(false)
 const showEditModal = ref(false)

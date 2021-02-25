@@ -9,11 +9,7 @@
         <slot />
       </div>
     </div>
+    <div id="notification" />
     <MobileNavigation class="sm:hidden" />
   </Root>
 </template>
-
-<script setup lang="ts">
-import useTheme from '@/hooks/useTheme'
-const { theme } = useTheme()
-</script>
