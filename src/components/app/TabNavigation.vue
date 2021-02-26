@@ -30,7 +30,7 @@ import { useI18n } from 'vue-i18n'
 defineProps<{ items: string[]; amount?: string[] }>()
 const emit = defineEmit(['selected'])
 
-const { t } = useI18n()
+const { t } = useI18n({ useScope: 'global' })
 const selected = ref(0)
 
 function setSelected(val: number) {

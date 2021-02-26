@@ -1,37 +1,39 @@
 <template>
-  <AuthLayout :notification="notification">
-    <div class="flex flex-col space-y-4">
-      <div class="space-y-2">
-        <h1>{{ t('signUp') }}.</h1>
-        <h2>{{ t('registerSubheader') }}</h2>
-      </div>
-      <AuthForm type="signUp" :validation-schema="schema" @submit="register">
-        <FormInput
-          name="username"
-          type="text"
-          label="username"
-          success-message="nicetomeet"
-        />
-        <FormInput name="email" type="email" label="email" />
-        <FormInput name="password" type="password" label="password" />
-      </AuthForm>
-    </div>
+  <AuthLayout
+    title="signUp"
+    subtitle="registerSubheader"
+    :notification="notification"
+  >
+    <AuthForm
+      type="signUp"
+      :validation-schema="schema"
+      :loading="loading"
+      @submit="register"
+    >
+      <FormInput
+        name="username"
+        type="text"
+        label="username"
+        success-message="nicetomeet"
+      />
+      <FormInput name="email" type="email" label="email" />
+      <FormInput name="password" type="password" label="password" />
+    </AuthForm>
   </AuthLayout>
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { object, string } from 'yup'
 
 import { generateSecretKey, hash } from '@/utils/crypto'
 import { useRegisterMutation } from '@/generated/graphql'
-import { useNotification } from '@/hooks'
+import { useLoading, useNotification } from '@/hooks'
 
-const { t } = useI18n()
 const { push } = useRouter()
 const { notification, setNotification } = useNotification()
+const { loading, setLoading } = useLoading()
 
 const infos = reactive({
   email: 'a@a.de',
@@ -59,12 +61,12 @@ async function register(values: {
   password: string
   username: string
 }) {
+  setLoading(true)
   Object.assign(infos, values)
-
   const { data } = await sendRegistration()
-
   if (data) {
     const { errors, user } = data.register
+    setLoading(false)
     if (errors) {
       setNotification({ show: true, text: errors.message, type: 'error' })
       return

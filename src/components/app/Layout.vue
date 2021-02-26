@@ -4,6 +4,7 @@
       <h1 class="text-xl font-semibold">
         {{ target !== 'undefined' ? t(target) : '' }}
       </h1>
+
       <TabNavigation
         class="hidden md:flex"
         :items="['entries', 'lists']"

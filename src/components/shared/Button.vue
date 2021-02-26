@@ -9,6 +9,7 @@
     class="flex items-center justify-center rounded-md focus:outline-none"
   >
     <slot />
+    <Loading v-if="loading" class="ml-2" />
   </button>
 </template>
 
@@ -20,6 +21,7 @@ const props = defineProps<{
   variant: Variant
   padding?: boolean
   small?: boolean
+  loading?: boolean
 }>()
 
 const buttonVariant = computed(() => {

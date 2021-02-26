@@ -1,30 +1,20 @@
 <template>
-  <AuthLayout>
+  <AuthLayout title="resetPasswordSub" subtitle="resetPasswordSubheader">
     <main v-if="!verified">
-      <div class="flex flex-col space-y-4">
-        <div class="space-y-2">
-          <h1>{{ t('resetPasswordSub') }}.</h1>
-          <h2>{{ t('resetPasswordSubheader') }}</h2>
-        </div>
-        <AuthForm
-          :error="error"
-          type="resetPasswordButton"
-          @submit="requestResetPassword()"
-        >
-          <FormInput
-            v-model="input"
-            type="email"
-            class="block w-full form-input"
-          >
-            Email
-          </FormInput>
-        </AuthForm>
-        <div
-          v-if="success"
-          class="inline-flex items-center w-full p-2 space-x-2 border rounded-lg text-primary border-error"
-        >
-          An reset link was send to your mail
-        </div>
+      <AuthForm
+        :error="error"
+        type="resetPasswordButton"
+        @submit="requestResetPassword()"
+      >
+        <FormInput v-model="input" type="email" class="block w-full form-input">
+          Email
+        </FormInput>
+      </AuthForm>
+      <div
+        v-if="success"
+        class="inline-flex items-center w-full p-2 space-x-2 border rounded-lg text-primary border-error"
+      >
+        An reset link was send to your mail
       </div>
     </main>
     <main v-else>

@@ -27,7 +27,9 @@
         class="p-2.5 lg:ml-6 lg:px-4 lg:space-x-2"
         @click="search = false"
       >
-        <span class="hidden sm:block">{{ search ? 'Add' : 'Remove' }} </span>
+        <span class="hidden sm:block"
+          >{{ search ? t('add') : t('cancel') }}
+        </span>
         <Icon v-if="search === false" :icon="RiCloseLine" />
         <Icon v-else :icon="RiAddLine" />
       </Button>
@@ -43,15 +45,19 @@ import { useAddDb } from '@/hooks'
 import { getDb } from '@/db/Database'
 
 import type { HeaderInputType } from '@/types'
+import { useI18n } from 'vue-i18n'
+
+const db = getDb()
+
+const { loading, execute } = useAddDb({
+  db,
+})
+const { t } = useI18n()
 
 const input = ref('')
 const inputType = ref<HeaderInputType>('search')
 const headerAdd = ref()
 const showSearchModal = ref(false)
-const db = getDb()
-const { loading, execute, result } = useAddDb({
-  db,
-})
 
 const search = computed({
   get: () => inputType.value === 'search',
@@ -82,6 +88,8 @@ async function handleInputAction({
     date,
     listId,
   })
+  console.log('yep')
+
   inputType.value = 'search'
 }
 

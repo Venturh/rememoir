@@ -6,7 +6,7 @@
   <svg
     v-else
     class="fill-current animate-spin"
-    :class="{ 'w-5 h-5 sm:w-6 sm:h-6 text-primary ': !custom }"
+    :class="{ 'w-5 h-5  text-primary ': !custom }"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
   >
@@ -15,21 +15,10 @@
   </svg>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script setup lang="ts">
+import { defineProps } from 'vue'
 
 type LoadingType = 'spinner' | 'skeleton'
 
-export default defineComponent({
-  props: {
-    custom: {
-      type: Boolean,
-      default: false,
-    },
-    type: {
-      type: String as PropType<LoadingType>,
-      default: 'spinner',
-    },
-  },
-})
+defineProps<{ custom: boolean; type?: LoadingType }>()
 </script>

@@ -1,6 +1,5 @@
 import { createI18n } from 'vue-i18n'
-import de from '../locales/de-DE.json'
-import en from '../locales/en-US.json'
+import messages from '@intlify/vite-plugin-vue-i18n/messages'
 
 if (localStorage.getItem('locale') === null)
   localStorage.setItem('locale', navigator.language.split('-')[0])
@@ -8,9 +7,5 @@ if (localStorage.getItem('locale') === null)
 export const i18n = createI18n({
   legacy: false,
   locale: localStorage.getItem('locale') || navigator.language.split('-')[0],
-  messages: {
-    en,
-    de,
-  },
-  global: true,
+  messages,
 })

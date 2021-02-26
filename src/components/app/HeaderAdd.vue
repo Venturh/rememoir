@@ -38,7 +38,7 @@
           :disabled="loading"
         />
 
-        <Loading v-if="loading" class="absolute w-6 h-6 right-4 top-2" />
+        <Loading v-if="loading" class="absolute w-6 h-6 right-8 top-1.5" />
       </div>
 
       <div v-if="descriptonActive" class="relative">

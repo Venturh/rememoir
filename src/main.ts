@@ -37,7 +37,6 @@ setLocale({
 createApp(App)
   .provide(DefaultApolloClient, apolloClient)
   .directive('clickOutside', vClickOutside)
-
   .use(i18n)
   .use(Router)
   .use(VueFinalModal())

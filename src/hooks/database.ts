@@ -48,9 +48,6 @@ export function useAddDb({ db }: { db: MyDatabase }) {
 
     if (target === 'list') {
       await addList(db, title, description, categories, calendarDate)
-      setTimeout(() => {
-        loading.value = false
-      }, 1000)
     } else {
       await addEntry(
         {
@@ -64,11 +61,12 @@ export function useAddDb({ db }: { db: MyDatabase }) {
         },
         db
       )
-      setTimeout(() => {
-        loading.value = false
-      }, 1000)
     }
+
     result.value = { title, description, url, type, categories }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    loading.value = false
   }
 
   return { result, loading, execute }

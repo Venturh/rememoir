@@ -17,7 +17,7 @@
         </div>
         <div v-else />
         <div class="flex items-center space-x-4">
-          <Button variant="brand25" type="submit">
+          <Button variant="brand25" type="submit" :loading="loading">
             {{ t(type) }}
           </Button>
           <slot name="error" />
@@ -36,6 +36,7 @@ const emit = defineEmit(['submit'])
 defineProps<{
   type: string
   validationSchema: Object
+  loading: boolean
 }>()
 
 const { t } = useI18n()

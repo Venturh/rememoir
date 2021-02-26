@@ -8,12 +8,13 @@
     }`"
     :esc-to-close="!required"
     :focus-trap="true"
+    :click-to-close="!required"
     :focus-retain="false"
     @click.stop=""
   >
     <div v-if="title" class="px-2 py-4">
       <h1 class="text-xl font-semibold">
-        {{ title }}
+        {{ t(title) }}
       </h1>
       <slot name="header" />
     </div>
@@ -27,7 +28,7 @@
           <slot />
           <div class="flex items-center justify-between">
             <div class="flex items-center flex-shrink-0 space-x-2">
-              <Button variant="brand25" type="submit">
+              <Button variant="brand25" type="submit" :loading="loading">
                 {{ t(buttons[0]) }}
               </Button>
               <Button
@@ -66,6 +67,7 @@ const props = defineProps<{
   required?: boolean
   fixed?: boolean
   validationSchema?: Object
+  loading?: boolean
 }>()
 
 const emit = defineEmit(['submit', 'cancel'])

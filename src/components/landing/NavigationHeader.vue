@@ -36,5 +36,7 @@ import { getAccessToken } from '@/utils/auth'
 
 const { t } = useI18n()
 
-const isAuth = computed(() => getAccessToken())
+const isAuth = computed(() => {
+  return getAccessToken()
+})
 </script>

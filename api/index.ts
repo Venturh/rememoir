@@ -58,11 +58,7 @@ const main = async () => {
 
     const user = await orm.em.findOne(User, { id: payload.userId })
 
-    if (!user) {
-      return res.send({ ok: false, accessToken: '' })
-    }
-
-    if (user.tokenVersion !== payload.tokenVersion) {
+    if (!user || !user.verified || user.tokenVersion !== payload.tokenVersion) {
       return res.send({ ok: false, accessToken: '' })
     }
 

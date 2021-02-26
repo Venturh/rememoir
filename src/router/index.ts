@@ -1,185 +1,27 @@
-import {
-  createRouter,
-  createWebHistory,
-  RouteRecordRaw,
-  RouterView,
-} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+import routes from 'voie-pages'
 import { getAccessToken, tryAccessToken } from '@/utils/auth'
 import { createDb, getDb } from '@/db/Database'
 import { getSectretKey } from '@/utils/crypto'
-
-import Landing from '../pages/index.vue'
-
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: '',
-    component: Landing,
-  },
-  {
-    path: '/about',
-    component: () => import('../pages/about.vue'),
-    name: 'about',
-  },
-  {
-    path: '/pricing',
-    component: () => import('../pages/pricing.vue'),
-    name: 'pricing',
-  },
-  {
-    path: '/auth',
-    name: 'auth',
-    component: RouterView,
-    children: [
-      {
-        path: 'register',
-        component: () => import('../pages/auth/register.vue'),
-        name: 'register',
-      },
-      {
-        path: 'login',
-        component: () => import('../pages/auth/login.vue'),
-        name: 'login',
-      },
-      {
-        path: 'code',
-        component: () => import('../pages/auth/code.vue'),
-        name: 'code',
-      },
-      {
-        path: 'accountVerification',
-        component: () => import('../pages/auth/accountVerification.vue'),
-        name: 'accountVerification',
-      },
-      {
-        path: 'resetPassword',
-        component: () => import('../pages/auth/resetPassword.vue'),
-        name: 'resetPassword',
-      },
-      {
-        path: '',
-        component: () => import('../pages/index.vue'),
-        name: 'auth',
-      },
-    ],
-  },
-  {
-    path: '/home',
-    name: 'home',
-    component: () => import('../pages/home.vue'),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/pinned',
-    name: 'pinned',
-    component: () => import('../pages/pinned.vue'),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/archive',
-    name: 'archive',
-    component: () => import('../pages/archive.vue'),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/lists',
-    name: 'lists',
-    component: RouterView,
-    children: [
-      {
-        path: '',
-        component: () => import('../pages/lists/[id].vue'),
-        name: 'lists',
-        meta: { requiresAuth: true },
-      },
-      {
-        path: ':id',
-        component: () => import('../pages/lists/[id].vue'),
-        name: 'listsid',
-        meta: { requiresAuth: true },
-      },
-    ],
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/entries',
-    name: 'entries',
-    component: RouterView,
-    children: [
-      {
-        path: '',
-        component: () => import('../pages/entries/[id].vue'),
-        name: 'entries',
-        meta: { requiresAuth: true },
-      },
-      {
-        path: ':id',
-        component: () => import('../pages/entries/[id].vue'),
-        name: 'entriesid',
-        meta: { requiresAuth: true },
-      },
-    ],
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/settings',
-    name: 'settings',
-    component: RouterView,
-    meta: { requiresAuth: true },
-    children: [
-      {
-        path: 'setkey',
-        component: () => import('../pages/settings/setkey.vue'),
-        name: 'setkey',
-      },
-      {
-        path: 'general',
-        component: () => import('../pages/settings/general.vue'),
-        name: 'general',
-      },
-      {
-        path: 'account',
-        component: () => import('../pages/settings/account.vue'),
-        name: 'account',
-      },
-      {
-        path: 'payment',
-        component: () => import('../pages/settings/payment.vue'),
-        name: 'payment',
-      },
-    ],
-  },
-  {
-    path: '/shared',
-    name: 'shared',
-    component: RouterView,
-    children: [
-      {
-        path: ':id',
-        component: () => import('../pages/shared/[id].vue'),
-        name: 'sharedId',
-      },
-    ],
-  },
-]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   let hasToken = getAccessToken()
 
   if (!hasToken) {
     hasToken = await tryAccessToken()
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    console.log('router.beforeEach ~ hasToken', hasToken)
     if (!hasToken) {
-      next({ name: 'login' })
+      next({ name: 'auth-login' })
     } else {
       if (getSectretKey() === null) {
-        return next({ name: 'setkey' })
+        return next({ name: 'auth-setkey' })
       } else {
         const db = getDb()
         if (!db) await createDb()
@@ -190,13 +32,14 @@ router.beforeEach(async (to, from, next) => {
       }
     }
   } else if (
-    to.name!.toString().includes('login') ||
-    to.name!.toString().includes('register')
+    to.name!.toString().includes('auth-login') ||
+    to.name!.toString().includes('auth-register')
   ) {
     if (hasToken && getSectretKey()) next('home')
     else next()
   } else if (to.name!.toString().includes('profile-setkey')) {
     console.log('key', !hasToken)
+    hasToken = await tryAccessToken()
     if (!hasToken) next({ name: '' })
     else next()
   } else {

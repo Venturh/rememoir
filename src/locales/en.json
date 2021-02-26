@@ -27,14 +27,17 @@
   "continue": "Continue",
   "verify": "Verify",
   "code": "Code",
+  "secretKey": "SecretKey",
   "settings": "Settings",
   "language": "Language",
+  "enterSecretKey": "Please enter secretkey to proceed",
   "darkMode": "Dark Mode",
   "oldPassword": "Old Password",
   "newPassword": "New Password",
   "newEmail": "New Email",
   "save": "Save",
   "update": "Update",
+  "logout": "Logout",
 
   "entries": "Entries",
   "lists": "Lists",
@@ -45,6 +48,8 @@
   "general": "General",
   "account": "Account",
   "payment": "Payment",
+
+  "add": "Add",
 
   "addToList": "Add to list",
   "pin": "Pin",
@@ -98,6 +103,8 @@
 
   "INFO_INVALID": "Incorrect email or password",
   "EMAIL_EXISTS": "Email is already taken",
+  "ACCOUNT_NOT_FOUND": "Account not found",
+  "VERIFICATION_INVALID": "Invalid Code",
   "PASSWORD_INVALID": "Das Passwort ist nicht korrekt",
   "previewError": "There was an error, loading the preview",
   "field_required": "Field required",

@@ -2,7 +2,7 @@ import { Resolver, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql'
 import { User } from '../../entities'
 import { MyContext, ErrorMessage } from '../../types'
 import { createAccessToken, isAuth } from '../../utils/auth'
-import { LoginResponse } from './types'
+import { LoginResponse, ValidResponse } from './types'
 
 @Resolver()
 export class VerifyUser {
@@ -32,18 +32,20 @@ export class VerifyUser {
     return { user, accessToken: createAccessToken(user) }
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => ValidResponse)
   @UseMiddleware(isAuth)
   async verifySecretKey(
     @Arg('key') key: string,
     @Ctx() { em, payload }: MyContext
-  ): Promise<boolean> {
+  ) {
     const user = await em.findOne(User, { id: payload?.userId })
     const verify = key === user!.secret
     if (verify) {
-      return true
+      return { message: '' }
     } else {
-      return false
+      return {
+        errors: { field: 'verify', message: ErrorMessage.CODE_INVALID },
+      }
     }
   }
 }
