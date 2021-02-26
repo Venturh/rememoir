@@ -1,23 +1,23 @@
 <template>
-  <div class="flex flex-col items-center">
-    <Icon :icon="RiSearch2Line" />
-    <p>We couldnt found anything</p>
+  <div>
+    <div
+      v-if="search === true"
+      class="flex flex-col items-center justify-center"
+    >
+      <Icon :icon="RiSearch2Line" />
+      <p>{{ t('searchEmpty') }}</p>
+    </div>
+    <div v-else class="">
+      <p>{{ `${t('noResult:0')} ${t(target)} ${t('noResult:1')}` }}</p>
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { RiSearch2Line } from 'vue-remix-icons'
+<script setup lang="ts">
+import { defineProps } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { RiSearch2Line, RiAddCircleLine } from 'vue-remix-icons'
 
-export default defineComponent({
-  props: {
-    target: {
-      type: String,
-      default: '',
-    },
-  },
-  setup() {
-    return { RiSearch2Line }
-  },
-})
+defineProps<{ target: string; search?: boolean }>()
+const { t } = useI18n()
 </script>

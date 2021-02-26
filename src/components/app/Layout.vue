@@ -14,8 +14,8 @@
 
       <NotFound
         v-if="!loading && Object.keys(content).length === 0"
-        class="mt-20"
         :target="type"
+        :search="filtersCount > 0 && Object.keys(content).length === 0"
       />
       <div v-if="content" class="space-y-6">
         <div v-for="date in Object.keys(content)" :key="date" class="space-y-4">
@@ -129,7 +129,7 @@ const content = computed(() =>
 )
 
 function setType(val: number) {
-  type.value = val === 0 ? 'entries' : 'list'
+  type.value = val === 0 ? 'entries' : 'lists'
   resetPage()
   setFilters({ type: 'reset', item: '' })
 }

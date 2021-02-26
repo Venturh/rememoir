@@ -86,6 +86,10 @@
   "url": "Url",
   "categories": "Kategorien",
 
+  "searchEmpty": "Die Filterung ergab keine Treffer",
+  "noResult:0": "Keine",
+  "noResult:1": "vorhanden",
+
   "settings:generalDescription": "Anpassungen, wie sich die App verhält",
   "settings:accountDescription": "Passe deine Accountinformationen an",
   "settings:passwordChange": "Ändere dein Passwort",
@@ -107,5 +111,6 @@
   "field_required": "Das Feld wird benötigt",
   "field_email": "Bitte eine gültige Mail angeben",
   "field_too_short": "Zu kurz, mindestens: ",
-  "addListtoList": "Nur Listen können Einträge enthalten"
+  "addListtoList": "Nur Listen können Einträge enthalten",
+  "404": "Seite nicht gefunden"
 }

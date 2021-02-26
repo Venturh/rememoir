@@ -11,16 +11,18 @@ export default defineConfig({
     vue(),
     ViteComponents(),
     voie({
+      importMode(path) {
+        // Load index synchronously, all other pages are async.
+        return path.includes('index') ? 'sync' : 'async'
+      },
       extendRoute(route) {
         const authRoutes = ['home', 'pinned', 'archive', 'lists', 'settings']
-
         if (authRoutes.includes(route.name.split('-')[0])) {
           return {
             ...route,
             meta: { requiresAuth: true },
           }
         }
-
         return route
       },
     }),

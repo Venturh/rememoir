@@ -11,12 +11,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, _, next) => {
   let hasToken = getAccessToken()
-
   if (!hasToken) {
     hasToken = await tryAccessToken()
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    console.log('router.beforeEach ~ hasToken', hasToken)
     if (!hasToken) {
       next({ name: 'auth-login' })
     } else {
@@ -38,7 +36,6 @@ router.beforeEach(async (to, _, next) => {
     if (hasToken && getSectretKey()) next('home')
     else next()
   } else if (to.name!.toString().includes('profile-setkey')) {
-    console.log('key', !hasToken)
     hasToken = await tryAccessToken()
     if (!hasToken) next({ name: '' })
     else next()

@@ -15,9 +15,9 @@
 
         <div v-if="list" class="relative space-y-4">
           <BaseList :list="list" primary />
-
           <NotFound
-            v-if="!loading && !entries"
+            v-if="!loading && Object.keys(entries).length === 0"
+            :search="filtersCount > 0 && Object.keys(entries).length === 0"
             class="mt-20"
             target="entries"
           />
@@ -47,8 +47,8 @@
   </AppLayout>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue'
 import { keys } from 'lodash'
 import {
   useEntries,
@@ -60,77 +60,61 @@ import {
 import { getDb } from '@/db/Database'
 import { onBeforeRouteUpdate, useRouter } from 'vue-router'
 
-export default defineComponent({
-  setup() {
-    const { push, currentRoute } = useRouter()
-    const db = getDb()
-    const { filters, setFilters } = useFilter()
-    const showPreview = ref(true)
-    const id = ref(currentRoute.value.params.id as string)
-    const { scrollRef } = useScroll(() => loadMore())
-    const { currentPage, next, resetPage } = usePagination()
-    const { list, loading, execute } = useListbyId(db, id.value)
-    const {
-      entries,
-      subscribeEntries,
-      setEntriesSelector,
-      moreAvaible,
-    } = useEntries(db)
+const { push, currentRoute } = useRouter()
+const db = getDb()
+const { filters, setFilters, filtersCount } = useFilter()
+const showPreview = ref(true)
+const id = ref(currentRoute.value.params.id as string)
+const { scrollRef } = useScroll(() => loadMore())
+const { currentPage, next, resetPage } = usePagination()
+const { list, loading, execute } = useListbyId(db, id.value)
+const {
+  entries,
+  subscribeEntries,
+  setEntriesSelector,
+  moreAvaible,
+} = useEntries(db)
 
-    function loadMore() {
-      if (!moreAvaible.value) return
-      next()
+function loadMore() {
+  if (!moreAvaible.value) return
+  next()
 
-      subscribeEntries({ ids: list.value!.entries, page: currentPage.value })
-    }
+  subscribeEntries({ ids: list.value!.entries, page: currentPage.value })
+}
 
-    watch(
-      () => filters,
-      (filter) => {
-        showPreview.value = filter.preview ?? false
-        resetPage()
-        setEntriesSelector(filter)
-        subscribeEntries({ ids: list.value!.entries, page: 1, reset: true })
-      },
-      { deep: true }
-    )
-
-    watch(
-      () => list.value,
-      (l) => {
-        if (l === null) return redirectOnError()
-        subscribeEntries({ ids: l!.entries, page: 1 })
-      }
-    )
-
-    onMounted(() => {
-      if (!id.value) redirectOnError()
-      else execute(id.value)
-    })
-
-    function redirectOnError() {
-      push('home')
-    }
-
-    onBeforeRouteUpdate((to, from, next) => {
-      if (to !== from) {
-        id.value = to.params.id as string
-        execute(id.value)
-        next()
-      }
-    })
-
-    return {
-      list,
-      entries,
-      loading,
-      filters,
-      setFilters,
-      keys,
-      showPreview,
-      scrollRef,
-      moreAvaible,
-    }
+watch(
+  () => filters,
+  (filter) => {
+    showPreview.value = filter.preview ?? false
+    resetPage()
+    setEntriesSelector(filter)
+    subscribeEntries({ ids: list.value!.entries, page: 1, reset: true })
   },
+  { deep: true }
+)
+
+watch(
+  () => list.value,
+  (l) => {
+    if (l === null) return redirectOnError()
+    subscribeEntries({ ids: l!.entries, page: 1 })
+  }
+)
+
+onMounted(() => {
+  if (!id.value) redirectOnError()
+  else execute(id.value)
+})
+
+function redirectOnError() {
+  push('home')
+}
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to !== from) {
+    id.value = to.params.id as string
+    execute(id.value)
+    next()
+  }
 })
 </script>

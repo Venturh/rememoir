@@ -88,6 +88,10 @@
   "url": "Url",
   "categories": "Categories",
 
+  "searchEmpty": "No matching results for selected filters",
+  "noResult:0": "No ",
+  "noResult:1": "avaible",
+
   "settings:generalDescription": "Manage how the app look and feels",
   "settings:accountDescription": "Manage your account information",
   "settings:passwordChange": "Change your Password",
@@ -110,5 +114,6 @@
   "field_required": "Field required",
   "field_email": "Email must be valid",
   "field_too_short": "Too short, at least:",
-  "addListtoList": "Cant add List to List"
+  "addListtoList": "Cant add List to List",
+  "404": "Page not found"
 }
