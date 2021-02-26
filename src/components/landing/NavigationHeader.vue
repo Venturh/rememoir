@@ -30,10 +30,11 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { getAccessToken } from '@/utils/auth'
 
 const { t } = useI18n()
 
-const isAuth = getAccessToken()
+const isAuth = computed(() => getAccessToken())
 </script>

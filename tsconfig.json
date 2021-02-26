@@ -23,8 +23,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "@api/*": ["./api/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [

@@ -1,3 +1,5 @@
+import { getDb } from '@/db/Database'
+
 let accessToken = ''
 
 export function setAccessToken(s: string) {
@@ -25,4 +27,9 @@ export async function requestAccessToken() {
 export async function tryAccessToken(invalid?: boolean) {
   if (accessToken === '' || invalid === true) await requestAccessToken()
   return accessToken
+}
+
+export async function clearStorage() {
+  localStorage.clear()
+  await getDb().remove()
 }

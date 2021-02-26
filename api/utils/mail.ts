@@ -27,3 +27,12 @@ export const sendPasswordReset = async (email: string, link: string) => {
     html: `<div><a href="${link}">Reset Password</a></div>`,
   })
 }
+
+export const sendEmailChange = async (email: string, link: string) => {
+  await emailService.sendMail({
+    from: process.env.EMAIL_PROVIDER_USERNAME,
+    to: email,
+    subject: 'Change Email',
+    html: `<div><a href="${link}">Cofirm change Password</a></div>`,
+  })
+}

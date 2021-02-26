@@ -1,5 +1,6 @@
 import { Field, ObjectType } from 'type-graphql'
 import {
+  Cascade,
   Collection,
   Entity,
   OneToMany,
@@ -54,6 +55,7 @@ export default class User extends BaseEntity {
   tokenVersion = 0
 
   @Field(() => User)
-  @OneToMany(() => Entry, (entry) => entry.user)
+  // @OneToMany(() => Entry, (entry) => entry.user)
+  @OneToMany({ entity: () => Entry, mappedBy: 'user', cascade: [Cascade.ALL] })
   entries = new Collection<Entry>(this)
 }

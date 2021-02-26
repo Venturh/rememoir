@@ -1,16 +1,19 @@
-import { Resolver, Mutation, Arg, Ctx, ObjectType, Field } from 'type-graphql'
+import {
+  Resolver,
+  Mutation,
+  Arg,
+  Ctx,
+  ObjectType,
+  Field,
+  UseMiddleware,
+} from 'type-graphql'
 import { decode, sign, verify } from 'jsonwebtoken'
 import * as argon2 from 'argon2'
 import { User } from '../../entities'
 import { ErrorMessage, SuccessMessage, MyContext } from '../../types'
 import { sendPasswordReset } from '../../utils/mail'
-import { BasicResponse } from './types'
-
-@ObjectType()
-export class ValidResponse extends BasicResponse {
-  @Field({ nullable: true })
-  message?: string
-}
+import { ValidResponse } from './types'
+import { isAuth } from '../../utils/auth'
 
 @Resolver()
 export class PasswordManagement {
@@ -100,7 +103,7 @@ export class PasswordManagement {
       verify(token, user.password)
       user.password = await argon2.hash(password)
       await em.persistAndFlush(user)
-      return { message: 'Success' }
+      return { message: SuccessMessage.PW_CHANGE_SUCCESS }
     } catch (err) {
       return {
         errors: { field: 'token', message: ErrorMessage.VERIFICATION_INVALID },
@@ -109,13 +112,14 @@ export class PasswordManagement {
   }
 
   @Mutation(() => ValidResponse)
+  @UseMiddleware(isAuth)
   async changePassword(
-    @Arg('email') email: string,
     @Arg('oldPassword') oldPassword: string,
     @Arg('newPassword') newPassword: string,
-    @Ctx() { em }: MyContext
+    @Ctx() { em, payload }: MyContext
   ) {
-    const user = await em.findOne(User, { email })
+    console.log('PasswordManagement ~ payload', payload)
+    const user = await em.findOne(User, { id: payload!.userId })
     if (!user) {
       return {
         errors: { field: 'id', message: ErrorMessage.EMAIL_NOT_FOUND },
@@ -134,7 +138,7 @@ export class PasswordManagement {
       user.password = await argon2.hash(newPassword)
       user.tokenVersion += 1
       await em.persistAndFlush(user)
-      return { message: 'Success' }
+      return { message: SuccessMessage.PW_CHANGE_SUCCESS }
     } catch (err) {
       return {
         errors: { field: 'token', message: ErrorMessage.VERIFICATION_INVALID },

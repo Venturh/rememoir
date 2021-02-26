@@ -1,80 +1,82 @@
 <template>
-  <div
-    v-click-outside="() => $emit('cancel')"
-    class="relative w-full mt-1 rounded-md"
-  >
-    <div class="absolute inset-y-0 left-0 flex items-center sm:pl-3">
-      <Dropdown
-        type="inputType"
-        :items="items"
-        :selected="selected"
-        :border="false"
-        @selected="handleInputTypeDropdown"
-      />
-    </div>
-
-    <div class="absolute inset-y-0 right-0 items-center hidden sm:flex">
-      <Calendar
-        single
-        :open="calendar.open"
-        :indicator="calendar.date !== ''"
-        @change="addCalendar"
-      />
-    </div>
-
+  <div>
     <div
-      class="flex space-x-2"
-      @keydown.esc.prevent="$emit('cancel')"
-      @keydown.exact.enter="handleEnter($event)"
+      v-click-outside="() => $emit('cancel')"
+      class="relative w-full mt-1 rounded-md"
     >
-      <HeaderInput
-        ref="inputRef"
-        v-model:inputValue="input"
-        :placeholder="
-          inputType === 'entry' ? t('addNewEntry') : t('addNewList')
-        "
-        :search="false"
-        :disabled="loading"
-      />
+      <div class="absolute inset-y-0 left-0 flex items-center sm:pl-3">
+        <Dropdown
+          type="inputType"
+          :items="items"
+          :selected="selected"
+          :border="false"
+          @selected="handleInputTypeDropdown"
+        />
+      </div>
 
-      <Loading v-if="loading" class="absolute w-6 h-6 right-4 top-2" />
-    </div>
+      <div class="absolute inset-y-0 right-0 items-center hidden sm:flex">
+        <Calendar
+          single
+          :open="calendar.open"
+          :indicator="calendar.date !== ''"
+          @change="addCalendar"
+        />
+      </div>
 
-    <div v-if="descriptonActive" class="relative">
-      <HeaderInput
-        ref="inputDescRef"
-        v-model:inputValue="description"
-        class="absolute z-50 w-full top-1.5 border"
-        type="text"
-        placeholder="Add a Description"
-        :expanded="descriptonActive"
-        @enter="handleEnter"
-        @cancel="cancelDescription"
-      />
-    </div>
-    <SelectMenu
-      ref="categoriesMenuRef"
-      v-model:open="categoriesOpen"
-      name="categories"
-      :options="categories"
-      @selected="addFromMenu"
-      @cancel="inputRef.$el.focus()"
-    />
-    <div>
+      <div
+        class="flex space-x-2"
+        @keydown.esc.prevent="$emit('cancel')"
+        @keydown.exact.enter="handleEnter($event)"
+      >
+        <HeaderInput
+          ref="inputRef"
+          v-model:inputValue="input"
+          :placeholder="
+            inputType === 'entry' ? t('addNewEntry') : t('addNewList')
+          "
+          :search="false"
+          :disabled="loading"
+        />
+
+        <Loading v-if="loading" class="absolute w-6 h-6 right-4 top-2" />
+      </div>
+
+      <div v-if="descriptonActive" class="relative">
+        <HeaderInput
+          ref="inputDescRef"
+          v-model:inputValue="description"
+          class="absolute z-50 w-full top-1.5 border"
+          type="text"
+          placeholder="Add a Description"
+          :expanded="descriptonActive"
+          @enter="handleEnter"
+          @cancel="cancelDescription"
+        />
+      </div>
       <SelectMenu
-        v-if="inputType === 'entry'"
-        ref="listMenuRef"
-        name="list"
-        :open="list.open"
-        :options="avaibleLists"
+        ref="categoriesMenuRef"
+        v-model:open="categoriesOpen"
+        name="categories"
+        :options="categories"
         @selected="addFromMenu"
         @cancel="inputRef.$el.focus()"
       />
-      <Error
-        v-if="inputType === 'list' && list.open"
-        message="Cant add a List to List"
-      />
+      <div>
+        <SelectMenu
+          v-if="inputType === 'entry'"
+          ref="listMenuRef"
+          name="list"
+          :open="list.open"
+          :options="avaibleLists"
+          @selected="addFromMenu"
+          @cancel="inputRef.$el.focus()"
+        />
+      </div>
     </div>
+    <Notification
+      v-if="inputType === 'list' && list.open"
+      :notification="{ show: true, type: 'error', text: 'addListtoList' }"
+    />
   </div>
 </template>
 

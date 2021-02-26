@@ -17,12 +17,14 @@ module.exports = {
       error: 'var(--error)',
       success: 'var(--success)',
       gray: colors.coolGray,
+
       primaryText: 'var(--text-primary)',
       secondaryText: 'var(--text-secondary)',
       primaryBg: 'var(--bg)',
       secondaryBg: 'var(--bg-secondary)',
       transparent: 'transparent',
       white: '#ffffff',
+      black: '#000000',
     },
 
     extend: {

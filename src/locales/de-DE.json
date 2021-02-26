@@ -28,6 +28,13 @@
   "verify": "Überprüfen",
   "code": "Code",
   "settings": "Einstellungen",
+  "language": "Sprache",
+  "darkMode": "Licht aus",
+  "oldPassword": "Altes Passwort",
+  "newPassword": "Neues Passwort",
+  "newEmail": "Aktualisiere Email",
+  "save": "Speichern",
+  "update": "Aktualisieren",
 
   "entries": "Einträge",
   "lists": "Listen",
@@ -36,6 +43,7 @@
   "archive": "Archiv",
   "profile": "Profil",
   "general": "Allgemein",
+  "account": "Account",
   "payment": "Zahlung",
 
   "addToList": "Zu Liste hinzufügen",
@@ -74,11 +82,24 @@
   "url": "Url",
   "categories": "Kategorien",
 
-  "generalDescription": "Anpassungen, wie sich die App verhält",
+  "settings:generalDescription": "Anpassungen, wie sich die App verhält",
+  "settings:accountDescription": "Passe deine Accountinformationen an",
+  "settings:passwordChange": "Ändere dein Passwort",
+  "settings:passwordChangeDescription": "Du kannst dein Passwort jederzeit ändern.",
+  "settings:emailChange": "Ändere deine Email",
+  "settings:emailChangeDescription": "Du kannst deine Email jederzeit ändern.",
+  "settings:deleteAccount": "Account löschen",
+  "settings:deleteAccountDescription": "Wenn der Account gelöscht wurde, ist es nicht möglich ihn wiederherzustellen.",
 
+  "nicetomeet": "Schön dich Kennenzulernen",
+  "PW_CHANGE_SUCCESS": "Passwort wurde aktualisiert",
+
+  "INFO_INVALID": "Falsche Email oder falsches Passwort",
+  "PASSWORD_INVALID": "Das Passwort ist nicht korrekt",
+  "EMAIL_EXISTS": "Email schon vergeben",
   "previewError": "Die Vorschau konnte nicht geladen werden",
   "field_required": "Das Feld wird benötigt",
   "field_email": "Bitte eine gültige Mail angeben",
   "field_too_short": "Zu kurz, mindestens: ",
-  "nicetomeet": "Schön dich Kennenzulernen"
+  "addListtoList": "Nur Listen können Einträge enthalten"
 }

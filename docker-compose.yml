@@ -1,21 +1,21 @@
-version: "3"
+version: '3'
 
 services:
   reverse-proxy:
     image: traefik:v2.3
     command: --api.insecure=true --providers.docker
     ports:
-      - "80:80"
-      - "8080:8080"
+      - '80:80'
+      - '8080:8080'
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
 
   api:
-    container_name: "projectm-api"
+    container_name: 'projectm-api'
     image: node:14
     ports:
-      - "1337:1337"
+      - '1337:1337'
     volumes:
       - ./:/srv/api:rw
     command: yarn api:docker
@@ -25,13 +25,13 @@ services:
     depends_on:
       - mongo
     labels:
-      - "traefik.http.routers.backend.rule=Host(`api.projectm.localhost`)"
+      - 'traefik.http.routers.backend.rule=Host(`api.projectm.localhost`)'
 
   web:
-    container_name: "projectm-web"
+    container_name: 'projectm-web'
     image: node:14
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - .:/srv/client:rw
     working_dir: /srv/client
@@ -41,15 +41,16 @@ services:
     depends_on:
       - api
     labels:
-      - "traefik.http.routers.frontend.rule=Host(`projectm.localhost`)"
+      - 'traefik.http.routers.frontend.rule=Host(`projectm.localhost`)'
 
   mongo:
-    container_name: "projectm-mongo"
+    container_name: 'projectm-mongo'
     image: mongo
     ports:
-      - "27018:27017"
+      - '27018:27017'
     volumes:
       - mongo-data:/data/db
+    command: mongod --quiet --logpath /dev/null
 
 volumes:
   mongo-data:

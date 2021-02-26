@@ -4,7 +4,17 @@
       <slot />
     </div>
   </LandingLayout>
+  <Teleport to="#notification">
+    <Notification :notification="notification" />
+  </Teleport>
 </template>
+
+<script setup lang="ts">
+import { defineProps } from 'vue'
+import type { Notification } from '@/types'
+
+defineProps<{ notification?: Notification }>()
+</script>
 
 <style lang="postcss" scoped>
 * >>> h1 {

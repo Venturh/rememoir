@@ -2,6 +2,7 @@
   <div class="text-primary bg-primary">
     <slot />
   </div>
+  <div id="notification" />
 </template>
 
 <script setup lang="ts">

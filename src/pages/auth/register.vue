@@ -1,5 +1,5 @@
 <template>
-  <AuthLayout>
+  <AuthLayout :notification="notification">
     <div class="flex flex-col space-y-4">
       <div class="space-y-2">
         <h1>{{ t('signUp') }}.</h1>
@@ -14,9 +14,6 @@
         />
         <FormInput name="email" type="email" label="email" />
         <FormInput name="password" type="password" label="password" />
-        <template #error>
-          <Error v-if="infos.error" :message="infos.error" />
-        </template>
       </AuthForm>
     </div>
   </AuthLayout>
@@ -24,21 +21,22 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { generateSecretKey, hash } from '@/utils/crypto'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { object, string } from 'yup'
 
+import { generateSecretKey, hash } from '@/utils/crypto'
 import { useRegisterMutation } from '@/generated/graphql'
+import { useNotification } from '@/hooks'
 
 const { t } = useI18n()
 const { push } = useRouter()
+const { notification, setNotification } = useNotification()
 
 const infos = reactive({
   email: 'a@a.de',
   password: 'aaa',
   username: 'aaa',
-  error: '',
 })
 
 const schema = object().shape({
@@ -62,13 +60,13 @@ async function register(values: {
   username: string
 }) {
   Object.assign(infos, values)
-  infos.error = ''
+
   const { data } = await sendRegistration()
 
   if (data) {
     const { errors, user } = data.register
     if (errors) {
-      infos.error = errors.message
+      setNotification({ show: true, text: errors.message, type: 'error' })
       return
     }
 

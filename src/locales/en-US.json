@@ -28,6 +28,13 @@
   "verify": "Verify",
   "code": "Code",
   "settings": "Settings",
+  "language": "Language",
+  "darkMode": "Dark Mode",
+  "oldPassword": "Old Password",
+  "newPassword": "New Password",
+  "newEmail": "New Email",
+  "save": "Save",
+  "update": "Update",
 
   "entries": "Entries",
   "lists": "Lists",
@@ -36,6 +43,7 @@
   "archive": "Archive",
   "profile": "Profile ",
   "general": "General",
+  "account": "Account",
   "payment": "Payment",
 
   "addToList": "Add to list",
@@ -75,11 +83,25 @@
   "url": "Url",
   "categories": "Categories",
 
-  "generalDescription": "Manage how the app look and feels",
+  "settings:generalDescription": "Manage how the app look and feels",
+  "settings:accountDescription": "Manage your account information",
+  "settings:passwordChange": "Change your Password",
+  "settings:passwordChangeDescription": "You can change your password anytime.",
+  "settings:emailChange": "Change your email",
+  "settings:emailChangeDescription": "You can change your email anytime.",
+  "settings:deleteAccount": "Delete Account",
+  "settings:deleteAccountDescription": "Once you delete your account, there is no going back. Please be certain.",
+  "deletedesc": "Delete.",
 
+  "PW_CHANGE_SUCCESS": "Passwort wurde aktualisiert",
+  "nicetomeet": "Nice to meet you",
+
+  "INFO_INVALID": "Incorrect email or password",
+  "EMAIL_EXISTS": "Email is already taken",
+  "PASSWORD_INVALID": "Das Passwort ist nicht korrekt",
   "previewError": "There was an error, loading the preview",
   "field_required": "Field required",
   "field_email": "Email must be valid",
   "field_too_short": "Too short, at least:",
-  "nicetomeet": "Nice to meet you"
+  "addListtoList": "Cant add List to List"
 }

@@ -10,6 +10,7 @@ import {
   RiMailLine,
   RiBankCard2Line,
   RiSettings2Line,
+  RiAccountBoxLine,
 } from 'vue-remix-icons'
 import { Filter, MenuOption, Order } from '../types'
 
@@ -24,6 +25,12 @@ export const settingsItems = [
     text: 'general',
     translate: true,
     info: '/settings/general',
+  },
+  {
+    icon: RiAccountBoxLine,
+    text: 'account',
+    translate: true,
+    info: '/settings/account',
   },
   {
     icon: RiBankCard2Line,

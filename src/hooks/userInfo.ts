@@ -5,7 +5,10 @@ type UserInfo = {
 }
 
 export default function useUserInfo() {
-  const userInfo: UserInfo = JSON.parse(localStorage.getItem('user'))
+  const info = localStorage.getItem('user')
+  const userInfo: UserInfo | null = info
+    ? JSON.parse(info)
+    : { email: '', uid: '', username: '' }
 
   function setUserInfo(info: UserInfo) {
     localStorage.setItem('user', JSON.stringify(info))

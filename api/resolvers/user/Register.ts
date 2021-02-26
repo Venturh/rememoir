@@ -35,6 +35,7 @@ export class UserResolver {
       await em.persistAndFlush(user)
     } catch (err) {
       if (err.code === 11000) {
+        console.log('UserResolver ~ err', err)
         return {
           errors: { field: 'email', message: ErrorMessage.EMAIL_EXISTS },
         }

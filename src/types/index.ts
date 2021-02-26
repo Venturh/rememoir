@@ -54,6 +54,6 @@ export type Notification = {
   text?: string
   type?: NotificationType
 }
-export type NotificationType = 'info' | 'success'
+export type NotificationType = 'info' | 'success' | 'error'
 
 export type LayoutTarget = 'pinned' | 'archive' | 'undefined'

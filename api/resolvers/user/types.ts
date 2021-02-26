@@ -44,3 +44,9 @@ export class LoginResponse extends BasicResponse {
   @Field(() => User, { nullable: true })
   user?: User
 }
+
+@ObjectType()
+export class ValidResponse extends BasicResponse {
+  @Field({ nullable: true })
+  message?: string
+}

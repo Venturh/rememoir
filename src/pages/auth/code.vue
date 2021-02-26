@@ -11,8 +11,8 @@
           <p class="text-xl font-semibold">{{ secretKey }}</p>
         </div>
         <div class="flex justify-between">
-          <Button @click="download">Download</Button>
-          <Button @click="forward">Continue</Button>
+          <Button variant="brand25" @click="download">Download</Button>
+          <Button variant="brand25" @click="forward">Continue</Button>
         </div>
       </div>
     </div>

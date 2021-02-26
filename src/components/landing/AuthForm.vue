@@ -7,14 +7,14 @@
     <div class="space-y-3">
       <slot />
       <div class="flex items-center justify-between">
-        <p v-if="type === 'signIn'" class="font-medium">
-          {{ t('loginSub') }}
-          <Links to="/auth/register">{{ t('signUp') }}</Links>
-        </p>
-        <p v-if="type === 'signUp'" class="font-medium">
-          {{ t('registerSub') }}
-          <Links to="/auth/login">{{ t('signIn') }}</Links>
-        </p>
+        <div v-if="type === 'signIn'" class="">
+          <p>{{ t('loginSub') }}</p>
+          <router-link to="/auth/register">{{ t('signUp') }}</router-link>
+        </div>
+        <div v-if="type === 'signUp'" class="">
+          <p>{{ t('registerSub') }}</p>
+          <router-link to="/auth/login">{{ t('signIn') }}</router-link>
+        </div>
         <div v-else />
         <div class="flex items-center space-x-4">
           <Button variant="brand25" type="submit">

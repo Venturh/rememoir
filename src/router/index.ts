@@ -138,6 +138,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'general',
       },
       {
+        path: 'account',
+        component: () => import('../pages/settings/account.vue'),
+        name: 'account',
+      },
+      {
         path: 'payment',
         component: () => import('../pages/settings/payment.vue'),
         name: 'payment',

@@ -1,5 +1,5 @@
 <template>
-  <AuthLayout>
+  <AuthLayout :notification="notification">
     <div class="flex flex-col space-y-4">
       <div class="space-y-2">
         <h1>{{ t('login') }}.</h1>
@@ -8,9 +8,6 @@
       <AuthForm type="signIn" :validation-schema="schema" @submit="login">
         <FormInput name="email" type="email" label="email" />
         <FormInput name="password" type="password" label="password" />
-        <template #error>
-          <Error v-if="infos.error" :message="infos.error" />
-        </template>
       </AuthForm>
     </div>
   </AuthLayout>
@@ -20,16 +17,19 @@
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { object, string } from 'yup'
 
 import { setAccessToken } from '@/utils/auth'
 import useUserInfo from '@/hooks/userInfo'
 import { useLoginMutation } from '@/generated/graphql'
-import { object, string } from 'yup'
+import { useNotification } from '@/hooks'
 
 const { t } = useI18n()
 const { push } = useRouter()
+const { notification, setNotification } = useNotification()
 
 const infos = reactive({ email: '', password: '', error: '' })
+
 const schema = object().shape({
   email: string().email().required(),
   password: string().min(3).required(),
@@ -50,7 +50,7 @@ async function login(values: { email: string; password: string }) {
       push(`/auth/accountVerification/?id=${user?.id}`)
     }
 
-    infos.error = errors.message
+    setNotification({ show: true, text: errors.message, type: 'error' })
   } else {
     setUserInfo({
       email: user!.email,
