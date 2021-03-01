@@ -31,7 +31,6 @@ export function useEntries(db: MyDatabase) {
     categories,
     order = Order.CALENDER_DESC,
   }: Filter) {
-    console.log('useEntries ~ customDate', customDate)
     selector.value = {}
     sort.value = {}
 

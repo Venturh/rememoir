@@ -14,8 +14,6 @@ export class AccountManagement {
     @Arg('password') password: string,
     @Ctx() { em, payload }: MyContext
   ) {
-    console.log('AccountManagement ~ password', password)
-    console.log('AccountManagement ~ email', email)
     const user = await em.findOne(User, { id: payload!.userId })
     if (!user) {
       return {

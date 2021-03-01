@@ -41,7 +41,6 @@ defineProps<{
 
 const { t } = useI18n()
 function submit(data: Object) {
-  console.log('submit ~ data', data)
   emit('submit', data)
 }
 </script>

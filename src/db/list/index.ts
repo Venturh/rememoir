@@ -168,7 +168,6 @@ export async function seedLists(db: MyDatabase) {
       pinned: false,
     }
   })
-  const result = await db.lists.bulkInsert(objs)
-  console.log('seed ~ result', result)
-  return result
+
+  return (result = await db.lists.bulkInsert(objs))
 }

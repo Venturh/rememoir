@@ -95,6 +95,7 @@ function reset() {
 <style lang="postcss" scoped>
 input[type='date'] {
   position: absolute;
+  width: 100%;
   opacity: 0;
   border: 0;
   overflow: hidden;

@@ -68,7 +68,6 @@ function changeLocale({ info }: MenuOptionItem) {
   localStorage.setItem('locale', info!)
   dayjs.locale(info)
   updateDateLocales(info!)
-  console.log('changeLocale ~ dayjs.locale(info)', dayjs.locale())
   locale.value = info!
 }
 </script>

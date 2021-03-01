@@ -69,10 +69,6 @@ export class GraphQLReplicator {
         pull: {
           queryBuilder: entryPullQueryBuilder,
           modifier: (d: EntryInput) => {
-            console.log(
-              'GraphQLReplicator ~ setupGraphQLReplication ~ EntryInput',
-              d
-            )
             return decryptEntry(d)
           },
         },
@@ -140,9 +136,6 @@ export class GraphQLReplicator {
       {
         reconnect: true,
         timeout: 1000 * 60,
-        connectionCallback: () => {
-          console.log('SubscriptionClient.connectionCallback: connected')
-        },
         reconnectionAttempts: 10000,
         inactivityTimeout: 10 * 1000,
 
@@ -165,29 +158,21 @@ export class GraphQLReplicator {
 
     entryRet.subscribe({
       next: async (data) => {
-        console.log('subscription emitted => trigger run()')
-        console.dir(data)
         await entryReplication.run()
         await listReplication.run()
-        console.log('run() done')
       },
       error(error) {
-        console.log('run() got error:')
-        console.dir(error)
+        console.err(error)
       },
     })
 
     listRet.subscribe({
       next: async (data) => {
-        console.log('subscription emitted => trigger run()')
-        console.dir(data)
         await entryReplication.run()
         await listReplication.run()
-        console.log('run() done')
       },
       error(error) {
-        console.log('run() got error:')
-        console.dir(error)
+        console.err(error)
       },
     })
 

@@ -47,7 +47,6 @@ async function login(values: { email: string; password: string }) {
   setLoading(false)
   if (errors) {
     if (errors.message === 'USER_NOT_VERIIFIED') {
-      console.log('login ~ errors', errors)
       setAccessToken('')
       push(`/auth/accountVerification/?id=${user?.id}`)
     } else {

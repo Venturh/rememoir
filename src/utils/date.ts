@@ -17,6 +17,7 @@ export function updateDateLocales(locale: string) {
           nextDay: '[Morgen, ] DD.MM.YYYY',
           lastWeek: 'dddd, DD.MM.YYYY ',
           sameElse: 'dddd, DD.MM.YYYY',
+          nextWeek: 'dddd, DD.MM.YYYY',
         },
         relativeTime: {
           future: '%s',
@@ -40,9 +41,10 @@ export function updateDateLocales(locale: string) {
         calendar: {
           lastDay: '[Yesterday, ] DD.MM.YYYY',
           sameDay: '[Today, ] DD.MM.YYYY',
-          nextDay: '[Morgen, ] DD.MM.YYYY',
+          nextDay: '[Tomorrow, ] DD.MM.YYYY',
           lastWeek: 'dddd, DD.MM.YYYY ',
           sameElse: 'dddd, DD.MM.YYYY',
+          nextWeek: 'dddd, DD.MM.YYYY',
         },
         relativeTime: {
           future: '%s',

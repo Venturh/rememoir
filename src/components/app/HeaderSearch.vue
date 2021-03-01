@@ -10,7 +10,7 @@
           {{ t('searchPlaceholder') }}</span
         >
       </div>
-      <div class="items-center hidden space-x-2 sm:flex">
+      <div class="items-center hidden space-x-2 lg:flex">
         <Button
           v-for="button in buttons"
           :key="button"

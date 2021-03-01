@@ -20,7 +20,6 @@ export const listPullQueryBuilder = (doc) => {
 }
 
 export const listPushQueryBuilder = (list: ListInput) => {
-  console.log('listPushQueryBuilder ~ list', list)
   const variables = {
     list: {
       ...list,

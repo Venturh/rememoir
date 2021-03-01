@@ -44,7 +44,6 @@ const main = async () => {
 
   app.post('/refresh_token', async (req: Request, res: Response) => {
     const token = req.cookies.jid
-    console.log('app.post ~ req.cookies', req.cookies)
     if (!token) {
       return res.send({ ok: false, accessToken: '' })
     }
@@ -76,12 +75,6 @@ const main = async () => {
       req,
       res,
     }),
-    // subscriptions: {
-    //   onConnect: (connectionParams) => {
-    //     console.log('Subscription Connected')
-    //     console.log(connectionParams)
-    //   },
-    // },
   })
 
   apolloServer.applyMiddleware({ app, cors: false })

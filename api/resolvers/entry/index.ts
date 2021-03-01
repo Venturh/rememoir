@@ -47,7 +47,6 @@ class EntryResolver {
     @Arg('entry') entryInput: EntryInput,
     @Ctx() { em, payload }: MyContext
   ): Promise<Entry> {
-    console.log('EntryResolver ~ entryInput', entryInput)
     const user = await em.findOne(User, { id: payload?.userId })
     const entry = await em.findOne(Entry, { id: entryInput.id })
 

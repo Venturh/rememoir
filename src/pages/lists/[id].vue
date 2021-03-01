@@ -24,9 +24,11 @@
             <div
               v-for="(date, index) in Object.keys(entries)"
               :key="index"
-              class="space-y-2"
+              class="space-y-4"
             >
-              <div class="py-1 text-lg font-medium">
+              <div
+                class="p-2 mt-4 text-lg font-semibold border rounded-md shadow-sm dark:shadow-none bg-secondary border-borderPrimary text-brand"
+              >
                 {{ date }}
               </div>
               <div ref="scrollRef" class="space-y-4">

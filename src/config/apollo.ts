@@ -13,13 +13,10 @@ import { getAccessToken, tryAccessToken } from '../utils/auth'
 //https://stackoverflow.com/questions/50965347/how-to-execute-an-async-fetch-request-and-then-retry-last-failed-request/51321068#51321068
 const errorLink = onError(
   ({ graphQLErrors, networkError, operation, forward }) => {
-    console.log(graphQLErrors![0].message)
-
     if (graphQLErrors && graphQLErrors[0].message === 'ERROR_NO_AUTH') {
       return new Observable((observer) => {
         tryAccessToken()
           .then((refreshResponse) => {
-            console.log('.then ~ refreshResponse', refreshResponse)
             operation.setContext(({ headers = {} }) => ({
               headers: {
                 ...headers,

@@ -7916,10 +7916,10 @@ unc-path-regex@^0.1.2:
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
   integrity sha1-5z3T17DXxe2G+6xrCufYxqadUPo=
 
-unfurl.js@^5.2.3:
-  version "5.2.4"
-  resolved "https://registry.yarnpkg.com/unfurl.js/-/unfurl.js-5.2.4.tgz#3b0e6e8679ef5bd1a86e302e50f7e061df13bcff"
-  integrity sha512-lYC4o0VOACSLF3ZylYW/jeYr1gcSM5XstbLmTk7wWLBVV0G6M9b+Uxn9ZXFKLTV21pltZTkowqJsTdy5M3SJ9A==
+unfurl.js@^5.2.5:
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/unfurl.js/-/unfurl.js-5.2.5.tgz#a7381e96532dd36303ca9ddb9930c635a465eff0"
+  integrity sha512-EKyq7KRPq+yYJas0k6O6ozLR/BOlzcV1g+SsAEjwbcdQxTetq9B+zl/8+b0zJehrHPXOwMbyWwGSw6hqJDS0/A==
   dependencies:
     cross-fetch "^3.0.4"
     debug "^3.1.0"

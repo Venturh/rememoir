@@ -57,9 +57,7 @@ export async function removeEntry(
     try {
       await entry.remove()
       await removeEntryFromList(db, id)
-    } catch (err) {
-      console.log('err', err)
-    }
+    } catch (err) {}
   }
 }
 
@@ -87,11 +85,8 @@ export async function update(id: string, edited: Edited, db: MyDatabase) {
         processing: entry.processing,
         updatedAt: Date.now().toString(),
       }
-      console.log('update ~ Edited', Edited)
       await entry.update({ $set: { ...Edited } })
-    } catch (err) {
-      console.error('could not update entry')
-    }
+    } catch (err) {}
   }
 }
 
@@ -114,6 +109,5 @@ export async function seed(db: MyDatabase) {
     }
   })
   const result = await db.entries.bulkInsert(objs)
-  console.log('seed ~ result', result)
   return result
 }

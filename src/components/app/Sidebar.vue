@@ -16,8 +16,10 @@
       class="flex flex-col p-2 mb-4 rounded-lg lg:flex-row lg:items-center lg:space-x-2 bg-primary"
     >
       <div v-if="userInfo" class="hidden w-2/3 space-y-2 lg:block">
-        <div class="">{{ userInfo.username }}</div>
-        <span class="text-sm">{{ userInfo.email }}</span>
+        <p class="truncate">{{ userInfo.username }}</p>
+        <p class="text-sm truncate">
+          {{ userInfo.email }}
+        </p>
       </div>
 
       <div

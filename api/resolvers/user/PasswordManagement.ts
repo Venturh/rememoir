@@ -118,7 +118,6 @@ export class PasswordManagement {
     @Arg('newPassword') newPassword: string,
     @Ctx() { em, payload }: MyContext
   ) {
-    console.log('PasswordManagement ~ payload', payload)
     const user = await em.findOne(User, { id: payload!.userId })
     if (!user) {
       return {

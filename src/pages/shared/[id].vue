@@ -55,7 +55,6 @@ const { currentRoute } = useRouter()
 const { params, query } = currentRoute.value
 const { id } = params
 const { target, code, keys } = query
-console.log('keys', keys)
 const { result, loading } =
   target === 'entry'
     ? useGetSharedEntryQuery({

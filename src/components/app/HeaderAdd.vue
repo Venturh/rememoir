@@ -18,7 +18,7 @@
         <Calendar
           single
           :open="calendar.open"
-          :indicator="calendar.date !== ''"
+          :indicator="calendar.date !== null"
           @change="addCalendar"
         />
       </div>
@@ -116,9 +116,13 @@ const categoriesOpen = ref(false)
 
 const descriptonActive = ref(false)
 const description = ref('')
-const calendar = reactive<{ open: boolean; date: Dayjs; disabled: boolean }>({
+const calendar = reactive<{
+  open: boolean
+  date: Dayjs | null
+  disabled: boolean
+}>({
   open: false,
-  date: dayjs(),
+  date: null,
   disabled: false,
 })
 const list = ref({ open: false, id: '', text: '' })
@@ -167,7 +171,6 @@ function toggleCalendar() {
 }
 
 function addCalendar(date: Dayjs) {
-  console.log('addCalendar ~ date', date)
   calendar.open = false
   const split = input.value.split(' ')
   const index = split.findIndex((s) => s.includes('~'))
@@ -188,12 +191,13 @@ function handleEnter(event: Event) {
 }
 
 function submit() {
-  input.value = input.value
-    .replace(` ~${calendar.date.format('DD.MM.YY')}`, '')
-    .replace(list.value.text, '')
-    .replace('@', '')
-  console.log('submit ~ input.value', input.value)
-
+  input.value = input.value.replace(list.value.text, '').replace('@', '')
+  if (calendar.date)
+    input.value = input.value.replace(
+      ` ~${calendar.date!.format('DD.MM.YY')}`,
+      ''
+    )
+  else calendar.date = dayjs()
   emit('action', {
     data: input.value,
     description: description.value,

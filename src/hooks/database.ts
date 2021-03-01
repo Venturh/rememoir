@@ -28,7 +28,6 @@ export function useAddDb({ db }: { db: MyDatabase }) {
     let categories = split.filter((s) => s.includes('#'))
     let url = ''
     const calendarDate = date.valueOf().toString()
-    console.log('useAddDb ~ calendarDate', calendarDate)
     if (categories) {
       categories = categories.map((s) => {
         split = split.filter((w) => w !== s)
