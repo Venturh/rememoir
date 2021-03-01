@@ -1,7 +1,7 @@
 <template>
   <LandingLayout>
-    <div class="w-full mx-auto my-auto h-1/2 lg:max-w-sm">
-      <div class="flex flex-col space-y-4">
+    <div class="h-full pt-24 m-auto lg:max-w-sm">
+      <div class="space-y-4">
         <div class="space-y-2">
           <h1 class="text-5xl font-semibold">{{ t(`${title}`) }}.</h1>
           <h2 class="text-2xl text-secondary">{{ t(`${subtitle}`) }}</h2>

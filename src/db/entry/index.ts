@@ -100,7 +100,7 @@ export async function seed(db: MyDatabase) {
   const objs: EntryInput[] = array.map((i) => {
     return {
       title: 'a ' + i,
-      calendarDate: dayjs(dayjs()).format('DD.MM.YY'),
+      calendarDate: dayjs().valueOf().toString(),
       categories: ['Youtube'],
       hashedKey: 'yep',
       id: new ObjectID().str,

@@ -82,11 +82,25 @@ export const calendarTheme = {
 
 export const time = [
   { icon: null, text: 'all_time', info: 'DEFAULT', translate: true },
-  { icon: null, text: 'Today', info: dayjs() },
-  { icon: null, text: 'Yesterday', info: dayjs().subtract(1, 'day') },
-  { icon: null, text: 'This past week', info: dayjs().subtract(1, 'week') },
-  { icon: null, text: 'This past month', info: dayjs().subtract(1, 'month') },
-  { icon: null, text: 'This past year', info: dayjs().subtract(1, 'year') },
+  { icon: null, text: 'today', info: dayjs(), translate: true },
+  {
+    icon: null,
+    text: 'pastWeek',
+    info: dayjs().subtract(1, 'week'),
+    translate: true,
+  },
+  {
+    icon: null,
+    text: 'pastMonth',
+    info: dayjs().subtract(1, 'month'),
+    translate: true,
+  },
+  {
+    icon: null,
+    text: 'pastYear',
+    info: dayjs().subtract(1, 'year'),
+    translate: true,
+  },
 ]
 
 export const order = [
@@ -103,4 +117,5 @@ export const filterInitial: Filter = {
   categories: undefined,
   date: undefined,
   order: undefined,
+  customDate: undefined,
 }

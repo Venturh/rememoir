@@ -12,7 +12,7 @@ export type Filters = {
     | 'categories'
     | 'preview'
     | 'date'
-    | 'dateSecondary'
+    | 'customDate'
     | 'list'
     | 'order'
     | 'reset'
@@ -32,6 +32,7 @@ export type Filter = {
   categories?: string | undefined
   preview?: boolean | undefined
   date?: string | undefined
+  customDate?: string | undefined
   order?: Order
   cursor?: string
 }

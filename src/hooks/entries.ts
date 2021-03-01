@@ -6,6 +6,7 @@ import { MyDatabase } from '../db'
 import { EntryInput } from '../generated/graphql'
 import { Filter, LayoutTarget, Order } from '../types'
 import { RxDocument } from 'rxdb'
+import { calendarDate } from '@/utils/date'
 
 type Subs = { page?: number; subs?: Subscriber<any> }[]
 
@@ -26,18 +27,27 @@ export function useEntries(db: MyDatabase) {
 
   function setEntriesSelector({
     date,
+    customDate,
     categories,
     order = Order.CALENDER_DESC,
   }: Filter) {
+    console.log('useEntries ~ customDate', customDate)
     selector.value = {}
     sort.value = {}
 
-    if (date) {
-      selector.value = {
-        calendarDate: {
-          $eq: dayjs(date).format('DD.MM.YY'),
-        },
-      }
+    if (date || customDate) {
+      if (date)
+        selector.value = {
+          calendarDate: {
+            $eq: dayjs(date).format('DD.MM.YY'),
+          },
+        }
+      else
+        selector.value = {
+          calendarDate: {
+            $gte: customDate,
+          },
+        }
       if (categories)
         selector.value = {
           ...selector.value,
@@ -94,7 +104,7 @@ export function useEntries(db: MyDatabase) {
         const all = Object.values(Object.values(pageEntries.value))
         const allEntries = [].concat.apply([], all)
         entries.value = groupBy(allEntries, (result: EntryInput) => {
-          return dayjs(parseInt(result.calendarDate)).calendar()
+          return calendarDate(result.calendarDate)
         })
         entriesAmount.value = (
           await db.entries

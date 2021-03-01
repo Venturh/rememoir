@@ -21,7 +21,9 @@
       :items="time"
       :border="true"
       :optional-item="
-        date !== '' ? { text: 'Custom', info: 'DEFAULT' } : undefined
+        date !== ''
+          ? { text: 'Custom', info: 'DEFAULT', translate: true }
+          : undefined
       "
       :icon="RiCalendarLine"
       @selected="onSecondaryChange"
@@ -39,9 +41,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineProps, defineEmit } from 'vue'
+import { ref, defineProps, defineEmit } from 'vue'
 import { useI18n } from 'vue-i18n'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { RiCalendarLine } from 'vue-remix-icons'
 import { calendarTheme, time } from '@/config/data'
 
@@ -65,10 +67,22 @@ function onChange(e: Event) {
   if (props.single) emit('change', dayjs(value))
   else emit('change', { type: 'date', item: dayjs(value) })
 }
-function onSecondaryChange({ item, type }: { item: any; type: string }) {
+function onSecondaryChange({
+  item,
+  type,
+}: {
+  item: Dayjs | string
+  type: string
+}) {
   show.value = false
   date.value = ''
-  emit('change', { type, item })
+  if (item === 'DEFAULT')
+    emit('change', { type: 'customDate', item: item as string })
+  else
+    emit('change', {
+      type: 'customDate',
+      item: (item as Dayjs).valueOf().toString(),
+    })
 }
 
 function reset() {

@@ -13,3 +13,15 @@
     <MobileNavigation class="sm:hidden" />
   </Root>
 </template>
+
+<script setup lang="ts">
+import dayjs from 'dayjs'
+import { updateDateLocales } from '@/utils/date'
+
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n()
+
+updateDateLocales(locale.value)
+dayjs.locale(locale.value)
+</script>

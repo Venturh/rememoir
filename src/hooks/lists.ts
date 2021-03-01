@@ -125,12 +125,18 @@ export function useAvaibleLists(db: MyDatabase, entryId?: string) {
   const lists = ref<ListInput[]>([])
   const loading = ref()
 
-  onMounted(async () => {
-    lists.value = await db.lists
+  function getLists() {
+    db.lists
       .find()
       .sort({ updatedAt: 'desc' })
 
-      .exec()
+      .$.subscribe((result) => {
+        lists.value = result
+      })
+  }
+
+  onMounted(async () => {
+    getLists()
   })
 
   const avaibleLists = computed(() => {
@@ -144,8 +150,7 @@ export function useAvaibleLists(db: MyDatabase, entryId?: string) {
         }
       })
       return avaible
-    } else
-      return [{ text: 'no_lists_avaible', info: 'DEFAULT', translate: true }]
+    } else return [{ text: 'noListsAvaible', info: 'DEFAULT', translate: true }]
   })
 
   return { avaibleLists, lists }

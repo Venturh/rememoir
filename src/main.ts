@@ -10,29 +10,18 @@ import Router from './router'
 import { i18n } from './config/i18n'
 import './assets/index.css'
 
-import { setLocale } from 'yup'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import updateLocale from 'dayjs/plugin/updateLocale'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import calendar from 'dayjs/plugin/calendar'
+import('dayjs/locale/de')
 
-setLocale({
-  mixed: {
-    default: 'field_default',
-    required: { key: 'field_required' },
-    isValid: { key: 'field_valid' },
-  },
-
-  string: {
-    min: ({ min }: { min: string }) => ({
-      key: 'field_too_short',
-      values: min,
-    }),
-    max: ({ max }: { max: string }) => ({
-      key: 'field_too_big',
-      values: { max },
-    }),
-    email: () => ({
-      key: 'field_email',
-    }),
-  },
-})
+dayjs.extend(relativeTime)
+dayjs.extend(customParseFormat)
+dayjs.extend(updateLocale)
+dayjs.extend(relativeTime)
+dayjs.extend(calendar)
 
 createApp(App)
   .provide(DefaultApolloClient, apolloClient)

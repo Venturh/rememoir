@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRefs, defineProps, reactive } from 'vue'
+import { computed, ref, toRefs, defineProps } from 'vue'
 import { RiDeleteBack2Line, RiLayoutColumnLine } from 'vue-remix-icons'
 
 import { object, string } from 'yup'

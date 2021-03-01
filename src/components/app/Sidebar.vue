@@ -44,6 +44,7 @@ import { useLogoutMutation } from '@/generated/graphql'
 import { setAccessToken } from '@/utils/auth'
 import { sidebarItems } from '@/config/data'
 import { getDb } from '@/db/Database'
+import { removeSecretKey } from '@/utils/crypto'
 
 defineProps<{ toggled?: boolean }>()
 
@@ -56,7 +57,8 @@ const { mutate: logout } = useLogoutMutation()
 async function logOut() {
   await db.remove()
   await logout()
-  setAccessToken('')
+  removeSecretKey()
   push('/')
+  setAccessToken('')
 }
 </script>

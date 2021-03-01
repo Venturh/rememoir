@@ -16,6 +16,9 @@ export function generateSecretKey() {
 export function setSecretKey(key: string) {
   localStorage.setItem('secretKey', key)
 }
+export function removeSecretKey() {
+  localStorage.removeItem('secretKey')
+}
 
 export function getSectretKey() {
   const key = localStorage.getItem('secretKey')

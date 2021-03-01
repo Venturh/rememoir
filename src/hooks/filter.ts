@@ -19,6 +19,10 @@ export function useFilter() {
       case 'date':
         filters.date = item === 'DEFAULT' ? undefined : (item as string)
         break
+      case 'customDate':
+        console.log('item', item)
+        filters.customDate = item === 'DEFAULT' ? undefined : (item as string)
+        break
       case 'order':
         filters.order = item === 'DEFAULT' ? undefined : (item as Order)
         break

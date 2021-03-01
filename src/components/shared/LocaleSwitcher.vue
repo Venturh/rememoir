@@ -41,7 +41,9 @@ import { ref, computed, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiEarthLine } from 'vue-remix-icons'
 import dayjs from 'dayjs'
+
 import type { MenuOptionItem } from '@/types'
+import { updateDateLocales } from '@/utils/date'
 
 defineProps<{ menu?: boolean }>()
 
@@ -65,6 +67,8 @@ const selected = computed(() => {
 function changeLocale({ info }: MenuOptionItem) {
   localStorage.setItem('locale', info!)
   dayjs.locale(info)
+  updateDateLocales(info!)
+  console.log('changeLocale ~ dayjs.locale(info)', dayjs.locale())
   locale.value = info!
 }
 </script>

@@ -157,7 +157,7 @@ export async function seedLists(db: MyDatabase) {
     return {
       title: 'List ' + i,
       description: 'das ist die beschreibung von ' + i,
-      calendarDate: dayjs(dayjs()).format('DD.MM.YY'),
+      calendarDate: dayjs().valueOf().toString(),
       categories: ['Youtube'],
       hashedKey: 'yep',
       entries: [],

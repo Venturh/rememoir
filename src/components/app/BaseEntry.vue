@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import { useTimeFromDate } from '@/hooks/date'
+import { timeFromDate } from '@/utils/date'
 import type { Entry } from '@/generated/graphql'
 
 const props = defineProps<{
@@ -33,5 +33,5 @@ const props = defineProps<{
   public: boolean
   isListEntry: boolean
 }>()
-const timeFrom = useTimeFromDate(props.entry.updatedAt)
+const timeFrom = timeFromDate(props.entry.updatedAt)
 </script>
