@@ -39,13 +39,14 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { Dayjs } from 'dayjs'
 import { RiCloseLine, RiAddLine } from 'vue-remix-icons'
 
 import { useAddDb } from '@/hooks'
 import { getDb } from '@/db/Database'
 
 import type { HeaderInputType } from '@/types'
-import { useI18n } from 'vue-i18n'
 
 const db = getDb()
 
@@ -78,7 +79,7 @@ async function handleInputAction({
 }: {
   data: string
   description: string
-  date: string
+  date: Dayjs
   listId: string
 }) {
   await execute({
@@ -88,8 +89,6 @@ async function handleInputAction({
     date,
     listId,
   })
-  console.log('yep')
-
   inputType.value = 'search'
 }
 

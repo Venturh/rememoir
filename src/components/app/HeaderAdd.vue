@@ -81,13 +81,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, defineProps, defineEmit } from 'vue'
+import {
+  computed,
+  onMounted,
+  ref,
+  reactive,
+  watch,
+  defineProps,
+  defineEmit,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiLayoutColumnLine, RiListCheck } from 'vue-remix-icons'
 import { useAvaibleLists } from '@/hooks'
 import { categories } from '@/config/data'
 import { getDb } from '@/db/Database'
 import type { HeaderInputType, MenuOptionItem } from '@/types'
+import dayjs, { Dayjs } from 'dayjs'
 
 const props = defineProps<{
   inputType: HeaderInputType
@@ -107,7 +116,11 @@ const categoriesOpen = ref(false)
 
 const descriptonActive = ref(false)
 const description = ref('')
-const calendar = ref({ open: false, date: '', disabled: false })
+const calendar = reactive<{ open: boolean; date: Dayjs; disabled: boolean }>({
+  open: false,
+  date: dayjs(),
+  disabled: false,
+})
 const list = ref({ open: false, id: '', text: '' })
 
 const db = getDb()
@@ -150,19 +163,20 @@ function cancelDescription() {
 
 function toggleCalendar() {
   if (input.value.includes('~')) return
-  calendar.value.open = !calendar.value.open
+  calendar.open = !calendar.open
 }
 
-function addCalendar(date: string) {
-  calendar.value.open = false
+function addCalendar(date: Dayjs) {
+  console.log('addCalendar ~ date', date)
+  calendar.open = false
   const split = input.value.split(' ')
   const index = split.findIndex((s) => s.includes('~'))
   if (index !== -1) {
     split.splice(index, 1)
     input.value = split.join(' ').replace('~', '')
   }
-  input.value += ` ${date}`
-  calendar.value.date = date
+  input.value += ` ~${date.format('DD.MM.YY')}`
+  calendar.date = date
 }
 
 function handleEnter(event: Event) {
@@ -175,14 +189,15 @@ function handleEnter(event: Event) {
 
 function submit() {
   input.value = input.value
-    .replace(calendar.value.date, '')
+    .replace(` ~${calendar.date.format('DD.MM.YY')}`, '')
     .replace(list.value.text, '')
     .replace('@', '')
+  console.log('submit ~ input.value', input.value)
 
   emit('action', {
     data: input.value,
     description: description.value,
-    date: calendar.value.date,
+    date: calendar.date,
     listId: list.value.id,
   })
   input.value = ''
@@ -213,13 +228,13 @@ watch(
     }
     if (value.slice(-1) === '~') {
       inputRef.value?.$el.blur()
-      calendar.value.open = true
-    } else if (calendar.value.open && value.slice(-1) !== '~') {
-      calendar.value.open = false
+      calendar.open = true
+    } else if (calendar.open && value.slice(-1) !== '~') {
+      calendar.open = false
     }
-    if (calendar.value.date !== '' && !input.value.includes('~')) {
-      calendar.value.date = ''
-    }
+    // if (!input.value.includes('~')) {
+    //   calendar.date = ''
+    // }
   }
 )
 </script>

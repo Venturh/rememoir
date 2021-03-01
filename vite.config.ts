@@ -16,7 +16,14 @@ export default defineConfig({
         return path.includes('index') ? 'sync' : 'async'
       },
       extendRoute(route) {
-        const authRoutes = ['home', 'pinned', 'archive', 'lists', 'settings']
+        const authRoutes = [
+          'home',
+          'pinned',
+          'archive',
+          'lists',
+          'settings',
+          'test',
+        ]
         if (authRoutes.includes(route.name.split('-')[0])) {
           return {
             ...route,

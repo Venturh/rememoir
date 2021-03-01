@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RiSearch2Line, RiAddCircleLine } from 'vue-remix-icons'
+import { RiSearch2Line } from 'vue-remix-icons'
 
 defineProps<{ target: string; search?: boolean }>()
 const { t } = useI18n()

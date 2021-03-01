@@ -43,15 +43,18 @@ import useUserInfo from '@/hooks/userInfo'
 import { useLogoutMutation } from '@/generated/graphql'
 import { setAccessToken } from '@/utils/auth'
 import { sidebarItems } from '@/config/data'
+import { getDb } from '@/db/Database'
 
 defineProps<{ toggled?: boolean }>()
 
+const db = getDb()
 const { push } = useRouter()
 const { userInfo } = useUserInfo()
 
 const { mutate: logout } = useLogoutMutation()
 
 async function logOut() {
+  await db.remove()
   await logout()
   setAccessToken('')
   push('/')

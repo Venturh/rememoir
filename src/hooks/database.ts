@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { MyDatabase } from '../db'
 import { addEntry } from '../db/entry'
 import { addList } from '../db/list'
@@ -19,7 +19,7 @@ export function useAddDb({ db }: { db: MyDatabase }) {
     data: string
     target: HeaderInputType
     description: string
-    date: string
+    date: Dayjs
     listId: string
   }) {
     loading.value = true
@@ -27,8 +27,8 @@ export function useAddDb({ db }: { db: MyDatabase }) {
 
     let categories = split.filter((s) => s.includes('#'))
     let url = ''
-    const calendarDate =
-      date === '' ? dayjs().format('DD.MM.YY') : date.replace('~', '')
+    const calendarDate = date.valueOf().toString()
+    console.log('useAddDb ~ calendarDate', calendarDate)
     if (categories) {
       categories = categories.map((s) => {
         split = split.filter((w) => w !== s)

@@ -12,17 +12,20 @@
             <Loading class="w-3/4 h-1/2 bg-primary" type="skeleton" />
           </div>
         </div>
-
         <div v-if="list" class="relative space-y-4">
           <BaseList :list="list" primary />
           <NotFound
-            v-if="!loading && Object.keys(entries).length === 0"
-            :search="filtersCount > 0 && Object.keys(entries).length === 0"
+            v-if="Object.keys(entries).length === 0"
             class="mt-20"
+            :search="filtersCount > 0 && Object.keys(entries).length === 0"
             target="entries"
           />
           <div v-else>
-            <div v-for="date in keys(entries)" :key="date" class="space-y-2">
+            <div
+              v-for="(date, index) in Object.keys(entries)"
+              :key="index"
+              class="space-y-2"
+            >
               <div class="py-1 text-lg font-medium">
                 {{ date }}
               </div>
@@ -49,7 +52,6 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { keys } from 'lodash'
 import {
   useEntries,
   useFilter,

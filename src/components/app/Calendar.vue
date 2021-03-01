@@ -60,10 +60,9 @@ const date = ref('')
 
 function onChange(e: Event) {
   const value = (e.target as HTMLInputElement).value
-  console.log('onChange ~ value', value)
   show.value = false
   date.value = value
-  if (props.single) emit('change', `~${dayjs(value).format('DD.MM.YY')}`)
+  if (props.single) emit('change', dayjs(value))
   else emit('change', { type: 'date', item: dayjs(value) })
 }
 function onSecondaryChange({ item, type }: { item: any; type: string }) {

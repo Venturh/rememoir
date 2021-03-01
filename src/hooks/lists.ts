@@ -98,7 +98,7 @@ export function useLists(db: MyDatabase) {
         const all = Object.values(Object.values(pageLists.value))
         const allLists = [].concat.apply([], all)
         lists.value = groupBy(allLists, (result: ListInput) => {
-          return result.calendarDate
+          return dayjs(parseInt(result.calendarDate)).calendar()
         })
         listsAmount.value = (
           await db.lists

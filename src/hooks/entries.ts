@@ -94,7 +94,7 @@ export function useEntries(db: MyDatabase) {
         const all = Object.values(Object.values(pageEntries.value))
         const allEntries = [].concat.apply([], all)
         entries.value = groupBy(allEntries, (result: EntryInput) => {
-          return result.calendarDate
+          return dayjs(parseInt(result.calendarDate)).calendar()
         })
         entriesAmount.value = (
           await db.entries
