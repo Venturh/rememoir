@@ -11,7 +11,7 @@
 
       <span class="hidden lg:block"> Brandname</span>
     </router-link>
-    <div class="flex items-center lg:space-x-2">
+    <div class="flex items-center space-x-2 lg:space-x-4">
       <Links to="/about"> {{ t('about') }}</Links>
       <Links to="/pricing"> {{ t('pricing') }}</Links>
       <span class="p-2"> | </span>

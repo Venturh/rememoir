@@ -2,7 +2,6 @@ import { ref } from 'vue'
 
 type UserInfo = {
   email: string
-  uid: string
   username: string
 }
 

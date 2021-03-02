@@ -4,7 +4,6 @@ mutation login($email: String!, $password: String!) {
       email
       username
       verified
-      id
     }
     accessToken
     errors {

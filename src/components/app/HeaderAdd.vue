@@ -192,12 +192,14 @@ function handleEnter(event: Event) {
 
 function submit() {
   input.value = input.value.replace(list.value.text, '').replace('@', '')
-  if (calendar.date)
-    input.value = input.value.replace(
-      ` ~${calendar.date!.format('DD.MM.YY')}`,
-      ''
-    )
-  else calendar.date = dayjs()
+  if (calendar.date) {
+    if (!input.value.includes('~')) calendar.date = dayjs()
+    else
+      input.value = input.value.replace(
+        ` ~${calendar.date!.format('DD.MM.YY')}`,
+        ''
+      )
+  } else calendar.date = dayjs()
   emit('action', {
     data: input.value,
     description: description.value,

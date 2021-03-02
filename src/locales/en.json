@@ -24,6 +24,8 @@
   "resetPasswordButton": "Send reset link",
   "resetPasswordSub": "Reset Password",
   "resetPasswordSubheader": "Enter your mail to reset",
+  "newPasswordSub": "New Password",
+  "newPasswordSubheader": "Set a new Password",
   "continue": "Continue",
   "verify": "Verify",
   "code": "Code",
@@ -109,6 +111,8 @@
 
   "PW_CHANGE_SUCCESS": "Passwort wurde aktualisiert",
   "nicetomeet": "Nice to meet you",
+  "RESET_PASSWORD_COMPLETE": "Password reset successfull, redirecting.",
+  "RESET_PASSWORD_STARTED": "Check your emails for the password reset link.",
 
   "INFO_INVALID": "Incorrect email or password",
   "EMAIL_EXISTS": "Email is already taken",

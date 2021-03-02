@@ -1,128 +1,114 @@
 <template>
-  <AuthLayout title="resetPasswordSub" subtitle="resetPasswordSubheader">
-    <main v-if="!verified">
-      <AuthForm
-        :error="error"
-        type="resetPasswordButton"
-        @submit="requestResetPassword()"
-      >
-        <FormInput v-model="input" type="email" class="block w-full form-input">
-          Email
-        </FormInput>
-      </AuthForm>
-      <div
-        v-if="success"
-        class="inline-flex items-center w-full p-2 space-x-2 border rounded-lg text-primary border-error"
-      >
-        An reset link was send to your mail
-      </div>
-    </main>
-    <main v-else>
-      <div class="flex flex-col space-y-4">
-        <div class="space-y-2">
-          <h1>New Password.</h1>
-          <h2>set new password</h2>
-        </div>
-        <AuthForm :error="error" type="login" @submit="resetPassword()">
-          <FormInput
-            v-model:value="input"
-            :type="verified ? 'password' : 'email'"
-            class="block w-full form-input"
-          >
-            Password
-          </FormInput>
-        </AuthForm>
-      </div>
-    </main>
+  <Loading v-if="queryToken.loading" />
+  <AuthLayout
+    v-else
+    :title="queryToken.verified ? 'newPasswordSub' : 'resetPasswordSub'"
+    :subtitle="
+      queryToken.verified ? 'newPasswordSubheader' : 'resetPasswordSubheader'
+    "
+    :notification="notification"
+  >
+    <AuthForm
+      v-if="!queryToken.verified"
+      type="resetPasswordButton"
+      :validation-schema="schemaUnverified"
+      :loading="loading"
+      @submit="requestResetPassword"
+    >
+      <FormInput name="email" type="email" label="email" />
+    </AuthForm>
+
+    <AuthForm
+      v-else
+      type="resetPasswordSub"
+      :validation-schema="schema"
+      @submit="resetPassword"
+    >
+      <FormInput name="password" type="password" label="password" />
+    </AuthForm>
   </AuthLayout>
 </template>
 
-<script lang="ts">
-import { defineComponent, onBeforeMount, ref } from 'vue'
+<script setup lang="ts">
+import { onBeforeMount, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { object, string } from 'yup'
+
 import {
   useRequestResetPasswordMutation,
   useResetPasswordMutation,
   useVerifyPasswordResetMutation,
 } from '@/generated/graphql'
+import { useLoading, useNotification } from '@/hooks'
 
-export default defineComponent({
-  layout: 'auth',
-  middleware: ['notAuthenticated'],
+const { push, currentRoute } = useRouter()
+const { query } = currentRoute.value
+const { notification, setNotification } = useNotification()
+const { loading, setLoading } = useLoading()
 
-  setup() {
-    const { t } = useI18n()
-    const { push, currentRoute } = useRouter()
-    const { query } = currentRoute.value
+const queryToken = reactive({ token: '', loading: false, verified: false })
 
-    const token = ref()
-    const verified = ref(false)
-    const input = ref('')
-    const error = ref('')
-    const success = ref('')
-    const {
-      mutate: sendRequestPasswortReset,
-    } = useRequestResetPasswordMutation(() => ({
-      variables: { email: input.value },
-    }))
+const schemaUnverified = object().shape({
+  email: string().email().required(),
+})
+const schema = object().shape({
+  password: string().min(3).required(),
+})
 
-    const { mutate: sendVerifyToken } = useVerifyPasswordResetMutation(() => ({
-      variables: { token: token.value },
-    }))
+const { mutate: sendRequestPasswortReset } = useRequestResetPasswordMutation({})
 
-    const { mutate: sendResetPassword } = useResetPasswordMutation(() => ({
-      variables: { token: token.value, password: input.value },
-    }))
+const { mutate: sendVerifyToken } = useVerifyPasswordResetMutation(() => ({}))
 
-    async function verifyToken() {
-      const { data } = await sendVerifyToken()
-      const { errors } = data!.verifyPasswordReset
-      if (errors) {
-        error.value = errors.message
-      } else {
-        verified.value = true
-      }
-    }
+const { mutate: sendResetPassword } = useResetPasswordMutation(() => ({}))
 
-    async function requestResetPassword() {
-      const { data } = await sendRequestPasswortReset()
-      const { errors, message } = data!.requestResetPassword
-      if (errors) {
-        error.value = errors.message
-      } else {
-        success.value = message!
-      }
-    }
+async function verifyToken(token: string) {
+  queryToken.loading = true
+  const { data } = await sendVerifyToken({ token })
+  const { errors } = data!.verifyPasswordReset
+  if (errors) {
+    setNotification({ show: true, text: errors.message, type: 'error' })
+  } else {
+    queryToken.verified = true
+    queryToken.loading = false
+  }
+}
 
-    async function resetPassword() {
-      const { data } = await sendResetPassword()
-      const { errors } = data!.resetPasswort
-      if (errors) {
-        error.value = errors.message
-      } else {
-        push('/entries')
-      }
-    }
+async function requestResetPassword({ email }: { email: string }) {
+  setLoading(true)
+  const { data } = await sendRequestPasswortReset({ email })
+  const { errors, message } = data!.requestResetPassword
+  if (errors) {
+    setNotification({ show: true, text: errors.message, type: 'error' })
+  } else {
+    setNotification({ show: true, text: message!, type: 'success' })
+  }
+  setLoading(false)
+}
 
-    onBeforeMount(async () => {
-      const { querytoken } = query
+async function resetPassword({ password }: { password: string }) {
+  setLoading(true)
+  const { data } = await sendResetPassword({
+    password,
+    token: queryToken.token,
+  })
+  const { errors, message } = data!.resetPasswort
+  if (errors) {
+    setNotification({ show: true, text: errors.message, type: 'error' })
+  } else {
+    setNotification({ show: true, text: message!, type: 'success' })
+    setTimeout(() => {
+      push('/auth/login')
+    }, 1500)
+  }
+  setLoading(false)
+}
 
-      if (querytoken) {
-        token.value = querytoken
-        await verifyToken()
-      }
-    })
-
-    return {
-      t,
-      verified,
-      success,
-      input,
-      error,
-      requestResetPassword,
-      resetPassword,
-    }
-  },
+onBeforeMount(async () => {
+  const { token } = query
+  if (token) {
+    queryToken.token = token as string
+    await verifyToken(token as string)
+  }
 })
 </script>

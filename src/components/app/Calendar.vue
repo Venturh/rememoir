@@ -2,7 +2,7 @@
   <div class="relative flex justify-between w-full space-x-2">
     <div
       v-if="single && indicator"
-      class="absolute w-2 h-2 rounded-full right-2.5 top-0.5 bg-brand"
+      class="absolute w-2 h-2 rounded-full right-1.5 top-1 bg-brand"
     />
 
     <input :value="date" type="date" @change="onChange($event)" />

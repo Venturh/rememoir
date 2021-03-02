@@ -23,7 +23,7 @@ export const sendPasswordReset = async (email: string, link: string) => {
   await emailService.sendMail({
     from: process.env.EMAIL_PROVIDER_USERNAME,
     to: email,
-    subject: 'Verify Email',
+    subject: 'Reset Password',
     html: `<div><a href="${link}">Reset Password</a></div>`,
   })
 }

@@ -13,23 +13,21 @@
       <VerticalNavigation :items="sidebarItems" />
     </div>
     <div
-      class="flex flex-col p-2 mb-4 rounded-lg lg:flex-row lg:items-center lg:space-x-2 bg-primary"
+      class="flex flex-col p-2 mb-4 rounded-lg lg:flex-row lg:items-center lg:justify-between lg:space-x-2 bg-primary"
     >
-      <div v-if="userInfo" class="hidden w-2/3 space-y-2 lg:block">
+      <div v-if="userInfo" class="hidden w-11/12 space-y-2 lg:block">
         <p class="truncate">{{ userInfo.username }}</p>
         <p class="text-sm truncate">
           {{ userInfo.email }}
         </p>
       </div>
 
-      <div
-        class="flex flex-col space-y-2 lg:space-y-0 lg:space-x-2 lg:flex-row"
-      >
-        <IconOnlyButton @click="logOut">
-          <Icon :icon="RiLogoutBoxLine" />
-        </IconOnlyButton>
+      <div class="flex flex-col space-y-2">
         <IconOnlyButton to="/settings/general">
           <Icon :icon="RiSettings5Line" />
+        </IconOnlyButton>
+        <IconOnlyButton @click="logOut">
+          <Icon :icon="RiLogoutBoxLine" />
         </IconOnlyButton>
       </div>
     </div>

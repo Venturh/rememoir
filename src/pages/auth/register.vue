@@ -3,6 +3,7 @@
     title="signUp"
     subtitle="registerSubheader"
     :notification="notification"
+    type="signUp"
   >
     <AuthForm
       type="signUp"

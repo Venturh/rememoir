@@ -24,6 +24,8 @@
   "resetPasswordButton": "Sende Reset Link",
   "resetPasswordSub": "Passwort zurücksetzen",
   "resetPasswordSubheader": "Gib deine Email an",
+  "newPasswordSub": "Neues Passwort",
+  "newPasswordSubheader": "Setze ein neues Passwort",
   "continue": "Weiter",
   "verify": "Überprüfen",
   "code": "Code",
@@ -107,12 +109,15 @@
 
   "nicetomeet": "Schön dich Kennenzulernen",
   "PW_CHANGE_SUCCESS": "Passwort wurde aktualisiert",
+  "RESET_PASSWORD_COMPLETE": "Das Passwort wurde zurückgesetzt, du wirst weitergeletet.",
+  "RESET_PASSWORD_STARTED": "Es wurde ein Link zum Zurücksetzen deines Passworts an deine Mail geschickt.",
 
   "INFO_INVALID": "Falsche Email oder falsches Passwort",
   "PASSWORD_INVALID": "Das Passwort ist nicht korrekt",
   "EMAIL_EXISTS": "Email schon vergeben",
   "ACCOUNT_NOT_FOUND": "Account nicht vorhanden",
   "VERIFICATION_INVALID": "Fehlerhafter Code",
+
   "previewError": "Die Vorschau konnte nicht geladen werden",
   "field_required": "Das Feld wird benötigt",
   "field_email": "Bitte eine gültige Mail angeben",

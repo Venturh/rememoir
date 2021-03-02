@@ -393,7 +393,7 @@ export type LoginMutation = (
     & Pick<LoginResponse, 'accessToken'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'email' | 'username' | 'verified' | 'id'>
+      & Pick<User, 'email' | 'username' | 'verified'>
     )>, errors?: Maybe<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -767,7 +767,6 @@ export const LoginDocument = gql`
       email
       username
       verified
-      id
     }
     accessToken
     errors {

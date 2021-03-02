@@ -1,5 +1,10 @@
 <template>
-  <AuthLayout title="login" subtitle="loginSub" :notification="notification">
+  <AuthLayout
+    title="login"
+    subtitle="loginSubheader"
+    :notification="notification"
+    type="login"
+  >
     <AuthForm
       type="signIn"
       :validation-schema="schema"
