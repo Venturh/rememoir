@@ -35,6 +35,19 @@ function forward() {
 }
 
 function download() {
-  // TODO: Download key as file
+  var element = document.createElement('a')
+  const text = `${t('yourKey')}: ${secretKey}`
+  element.setAttribute(
+    'href',
+    'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
+  )
+  element.setAttribute('download', 'projectm_secretkey')
+
+  element.style.display = 'none'
+  document.body.appendChild(element)
+
+  element.click()
+
+  document.body.removeChild(element)
 }
 </script>
