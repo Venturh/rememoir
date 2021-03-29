@@ -24,7 +24,7 @@ const main = async () => {
   const orm = await MikroORM.init<MongoDriver>({
     entities: [BaseEntity, User, Entry, List],
     dbName: 'projectm',
-    clientUrl: 'mongodb://mongo:27017',
+    clientUrl: process.env.DATABASE,
     type: 'mongo',
     debug: false,
     ensureIndexes: true,
@@ -36,7 +36,7 @@ const main = async () => {
   const app = express()
   app.use(
     cors({
-      origin: 'http://projectm.localhost',
+      origin: process.env.VITE_CLIENT_URL,
       credentials: true,
     })
   )
