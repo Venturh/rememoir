@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "docker-compose up",
-    "start": "docker-compose up",
+    "start": "vite preview && ts-node-dev --transpile-only --respawn  -r dotenv/config ./api/index.ts  ",
     "web:dev": "vite ",
     "web:gen": "graphql-codegen -r dotenv/config --config config.yml",
     "web:build:nocheck": "vite build",
