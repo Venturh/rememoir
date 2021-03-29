@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "docker-compose up",
     "build": "vite build",
-    "start": "vite preview --port ${PORT-3000} && ts-node-dev --poll --respawn --transpile-only --respawn  -r dotenv/config api/index.ts",
+    "start": "ts-node-dev --poll --respawn --transpile-only --respawn  -r dotenv/config api/index.ts",
     "web:dev": "vite ",
     "web:gen": "graphql-codegen -r dotenv/config --config config.yml",
     "web:build:nocheck": "vite build",
