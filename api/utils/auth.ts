@@ -47,7 +47,7 @@ export const isAuth: MiddlewareFn<MyContext> = ({ context }, next) => {
   if (!authorization) throw new Error('ERROR_NO_AUTH')
 
   try {
-    const token = authorization?.split(' ')[1]
+    const token = authorization.split(' ')[1]
     const verify = verifyToken(token)
 
     context.payload = verify
