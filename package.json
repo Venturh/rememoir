@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "docker-compose up",
+    "start": "docker-compose up",
     "web:dev": "vite ",
     "web:gen": "graphql-codegen -r dotenv/config --config config.yml",
     "web:build:nocheck": "vite build",
