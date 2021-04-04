@@ -4,6 +4,8 @@ import http from 'http'
 import express, { Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import path from 'path'
+import fs from 'fs'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import { MikroORM } from '@mikro-orm/core'
@@ -39,6 +41,17 @@ const main = async () => {
     })
   )
   app.use(cookieParser())
+
+  // static resources path in production
+  app.use(express.static(path.resolve(__dirname, '../dist')))
+
+  app.get('*', function (req, res) {
+    var html = fs.readFileSync(
+      path.resolve(__dirname, '../dist/index.html'),
+      'utf-8'
+    )
+    res.send(html)
+  })
 
   app.post('/refresh_token', async (req: Request, res: Response) => {
     const token = req.cookies.jid
