@@ -23,7 +23,7 @@ const main = async () => {
   const orm = await MikroORM.init<MongoDriver>({
     entities: [BaseEntity, User, Entry, List],
     dbName: 'projectm',
-    clientUrl: process.env.DB_URL,
+    clientUrl: `mongodb://${process.env.DB_URL}`,
     type: 'mongo',
     debug: false,
     ensureIndexes: true,
