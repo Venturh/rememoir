@@ -75,7 +75,7 @@ export default class Entry extends BaseEntity {
   categories!: string[]
 
   @Field(() => User)
-  @ManyToOne()
+  @ManyToOne(() => User)
   user: User
 
   constructor(entryInput: EntryInput, user: User) {

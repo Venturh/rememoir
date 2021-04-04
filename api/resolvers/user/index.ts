@@ -28,7 +28,7 @@ class UserResolver {
     await em.flush()
     return true
   }
-
+  w
   @Query(() => User)
   @UseMiddleware(isAuth)
   async me(@Ctx() { payload, em }: MyContext) {

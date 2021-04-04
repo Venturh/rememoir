@@ -31,7 +31,7 @@ export default class List extends BaseEntity {
   categories!: [string]
 
   @Field(() => User)
-  @ManyToOne()
+  @ManyToOne(() => User)
   user: User
 
   @Field(() => [String])

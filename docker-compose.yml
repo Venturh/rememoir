@@ -18,7 +18,7 @@ services:
       - '1337:1337'
     volumes:
       - ./:/srv/api:rw
-    command: yarn api:docker
+    command: yarn api:dev
     working_dir: /srv/api
     env_file:
       - ./.env

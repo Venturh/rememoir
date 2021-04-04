@@ -4,12 +4,13 @@ import http from 'http'
 import express, { Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import path from 'path'
+import fs from 'fs'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import { MikroORM } from '@mikro-orm/core'
 import { verify } from 'jsonwebtoken'
 import { MongoDriver } from '@mikro-orm/mongodb'
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 
 import { BaseEntity, Entry, User, List } from './entities'
 import { MyContext } from './types'
@@ -24,25 +25,49 @@ const main = async () => {
   const orm = await MikroORM.init<MongoDriver>({
     entities: [BaseEntity, User, Entry, List],
     dbName: 'projectm',
-    clientUrl: 'mongodb://mongo:27017',
+    clientUrl: `mongodb://${process.env.DB_URL}`,
     type: 'mongo',
     debug: false,
     ensureIndexes: true,
-    metadataProvider: TsMorphMetadataProvider,
   })
 
   await orm.em.getDriver().createCollections()
 
   const app = express()
-  app.use(
-    cors({
-      origin: 'http://projectm.localhost',
-      credentials: true,
-    })
-  )
   app.use(cookieParser())
 
-  app.post('/refresh_token', async (req: Request, res: Response) => {
+  if (process.env.ENV === 'development') {
+    app.use(
+      cors({
+        origin: process.env.VITE_CLIENT_URL,
+        credentials: true,
+      })
+    )
+  }
+
+  // static resources path in production
+  if (process.env.ENV == 'production') {
+    app.use(express.static(path.resolve(__dirname)))
+
+    app.get('*', function (req, res, next) {
+      if (
+        req.originalUrl.includes('api') ||
+        req.originalUrl.includes('graphql')
+      )
+        return next()
+      var html = fs.readFileSync(
+        path.resolve(__dirname, './index.html'),
+        'utf-8'
+      )
+      res.send(html)
+    })
+  }
+
+  app.get('/api/test', async (req: Request, res: Response) => {
+    return res.send('yep')
+  })
+
+  app.post('/api/refresh_token', async (req: Request, res: Response) => {
     const token = req.cookies.jid
     if (!token) {
       return res.send({ ok: false, accessToken: '' })
@@ -68,7 +93,11 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [`${__dirname}/resolvers/**/*.ts`],
+      resolvers: [
+        `${__dirname}/resolvers/**/*.${
+          process.env.ENV === 'production' ? 'js' : 'ts'
+        }`,
+      ],
     }),
     context: ({ req, res }): MyContext => ({
       em: orm.em,
@@ -77,8 +106,7 @@ const main = async () => {
     }),
   })
 
-  apolloServer.applyMiddleware({ app, cors: false })
-
+  apolloServer.applyMiddleware({ app, cors: false, path: '/api/graphql' })
   const httpServer = http.createServer(app)
   apolloServer.installSubscriptionHandlers(httpServer)
 
