@@ -5,11 +5,13 @@
     "dev": "docker-compose up",
     "web:dev": "vite ",
     "web:gen": "graphql-codegen -r dotenv/config --config config.yml",
-    "web:build:nocheck": "vite build",
-    "web:build": "vuedx-typecheck . && vite build",
-    "web:serve": "vite preview",
     "api:dev": "ts-node-dev --transpile-only --respawn  -r dotenv/config ./api/index.ts",
     "api:docker": "ts-node-dev --poll --respawn --transpile-only --respawn  -r dotenv/config api/index.ts",
+    "web:build": "vite build",
+    "web:build:check": "vuedx-typecheck . && vite build",
+    "web:start": "vite preview",
+    "api:build": "tsc --project ./",
+    "api:start": "node  dist/index.js",
     "postinstall": "node vue-apollo-patch.js"
   },
   "dependencies": {

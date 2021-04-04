@@ -9,7 +9,6 @@ import { buildSchema } from 'type-graphql'
 import { MikroORM } from '@mikro-orm/core'
 import { verify } from 'jsonwebtoken'
 import { MongoDriver } from '@mikro-orm/mongodb'
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
 
 import { BaseEntity, Entry, User, List } from './entities'
 import { MyContext } from './types'
@@ -24,11 +23,10 @@ const main = async () => {
   const orm = await MikroORM.init<MongoDriver>({
     entities: [BaseEntity, User, Entry, List],
     dbName: 'projectm',
-    clientUrl: 'mongodb://mongo:27017',
+    clientUrl: process.env.DB_URL,
     type: 'mongo',
     debug: false,
     ensureIndexes: true,
-    metadataProvider: TsMorphMetadataProvider,
   })
 
   await orm.em.getDriver().createCollections()
@@ -36,7 +34,7 @@ const main = async () => {
   const app = express()
   app.use(
     cors({
-      origin: 'http://projectm.localhost',
+      origin: true,
       credentials: true,
     })
   )
