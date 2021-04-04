@@ -43,7 +43,7 @@ const errorLink = onError(
 )
 
 const httpLink = createHttpLink({
-  uri: 'http://api.projectm.localhost/graphql',
+  uri: import.meta.env.VITE_API_GRAPHQL,
   headers: `bearer ${getAccessToken}`,
   credentials: 'include',
 })
