@@ -45,7 +45,8 @@ const main = async () => {
   // static resources path in production
   app.use(express.static(path.resolve(__dirname, '../dist')))
 
-  app.get('*', function (req, res) {
+  app.get('*', function (req, res, next) {
+    if (req.originalUrl.includes('api')) return next()
     var html = fs.readFileSync(
       path.resolve(__dirname, '../dist/index.html'),
       'utf-8'
@@ -53,7 +54,7 @@ const main = async () => {
     res.send(html)
   })
 
-  app.post('/refresh_token', async (req: Request, res: Response) => {
+  app.post('/api/refresh_token', async (req: Request, res: Response) => {
     const token = req.cookies.jid
     if (!token) {
       return res.send({ ok: false, accessToken: '' })
@@ -88,7 +89,7 @@ const main = async () => {
     }),
   })
 
-  apolloServer.applyMiddleware({ app, cors: false })
+  apolloServer.applyMiddleware({ app, cors: false, path: '/api/graphql' })
 
   const httpServer = http.createServer(app)
   apolloServer.installSubscriptionHandlers(httpServer)
