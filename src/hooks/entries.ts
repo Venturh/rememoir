@@ -6,7 +6,7 @@ import { MyDatabase } from '../db'
 import { EntryInput } from '../generated/graphql'
 import { Filter, LayoutTarget, Order } from '../types'
 import { RxDocument } from 'rxdb'
-import { calendarDate } from '@/utils/date'
+import { calendarDate } from '../utils/date'
 
 type Subs = { page?: number; subs?: Subscriber<any> }[]
 

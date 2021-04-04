@@ -42,4 +42,8 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
+  optimizeDeps: {
+    include: ['vue', 'vue-router'],
+    exclude: ['vue-demi'],
+  },
 })

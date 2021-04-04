@@ -4,7 +4,6 @@
     <div class="relative flex items-center w-full sm:w-1/2">
       <button
         v-for="(item, index) in items"
-        ref="linkRef"
         :key="item"
         class="inline-flex items-center py-2 mr-4 space-x-1 text-sm font-medium border-b-2 focus:outline-none text-primary group"
         :class="

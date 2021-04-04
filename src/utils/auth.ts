@@ -12,7 +12,7 @@ export function getAccessToken() {
 
 export async function requestAccessToken() {
   const response = await fetch(
-    `http://${import.meta.env.VITE_API as string}/refresh_token`,
+    `${import.meta.env.VITE_API as string}/refresh_token`,
     {
       method: 'POST',
       credentials: 'include',

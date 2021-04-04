@@ -34,24 +34,37 @@ const main = async () => {
   await orm.em.getDriver().createCollections()
 
   const app = express()
-  app.use(
-    cors({
-      origin: true,
-      credentials: true,
-    })
-  )
   app.use(cookieParser())
 
-  // static resources path in production
-  app.use(express.static(path.resolve(__dirname, '../dist')))
-
-  app.get('*', function (req, res, next) {
-    if (req.originalUrl.includes('api')) return next()
-    var html = fs.readFileSync(
-      path.resolve(__dirname, '../dist/index.html'),
-      'utf-8'
+  if (process.env.ENV === 'development') {
+    app.use(
+      cors({
+        origin: process.env.VITE_CLIENT_URL,
+        credentials: true,
+      })
     )
-    res.send(html)
+  }
+
+  // static resources path in production
+  if (process.env.ENV == 'production') {
+    app.use(express.static(path.resolve(__dirname)))
+
+    app.get('*', function (req, res, next) {
+      if (
+        req.originalUrl.includes('api') ||
+        req.originalUrl.includes('graphql')
+      )
+        return next()
+      var html = fs.readFileSync(
+        path.resolve(__dirname, './index.html'),
+        'utf-8'
+      )
+      res.send(html)
+    })
+  }
+
+  app.get('/api/test', async (req: Request, res: Response) => {
+    return res.send('yep')
   })
 
   app.post('/api/refresh_token', async (req: Request, res: Response) => {
@@ -80,7 +93,11 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [`${__dirname}/resolvers/**/*.js`],
+      resolvers: [
+        `${__dirname}/resolvers/**/*.${
+          process.env.ENV === 'production' ? 'js' : 'ts'
+        }`,
+      ],
     }),
     context: ({ req, res }): MyContext => ({
       em: orm.em,
@@ -90,7 +107,6 @@ const main = async () => {
   })
 
   apolloServer.applyMiddleware({ app, cors: false, path: '/api/graphql' })
-
   const httpServer = http.createServer(app)
   apolloServer.installSubscriptionHandlers(httpServer)
 

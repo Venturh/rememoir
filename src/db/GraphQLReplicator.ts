@@ -132,7 +132,7 @@ export class GraphQLReplicator {
 
   setupGraphQLSubscription({ entryReplication, listReplication }) {
     const wsClient = new SubscriptionClient(
-      `ws://${import.meta.env.VITE_API as string}/graphql`,
+      `ws://${import.meta.env.VITE_API_WS as string}/graphql`,
       {
         reconnect: true,
         timeout: 1000 * 60,
