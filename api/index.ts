@@ -3,6 +3,7 @@ import 'reflect-metadata'
 import http from 'http'
 import express, { Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
+import compression from 'compression'
 import cors from 'cors'
 import path from 'path'
 import fs from 'fs'
@@ -43,29 +44,19 @@ const main = async () => {
         credentials: true,
       })
     )
-  }
-
-  // static resources path in production
-  if (process.env.ENV == 'production') {
+    // static resources path in production
+  } else {
+    app.use(compression())
     app.use(express.static(path.resolve(__dirname)))
-
     app.get('*', function (req, res, next) {
       if (
         req.originalUrl.includes('api') ||
         req.originalUrl.includes('graphql')
       )
         return next()
-      var html = fs.readFileSync(
-        path.resolve(__dirname, './index.html'),
-        'utf-8'
-      )
-      res.send(html)
+      res.sendFile(__dirname + './index.html')
     })
   }
-
-  app.get('/api/test', async (req: Request, res: Response) => {
-    return res.send('yep')
-  })
 
   app.post('/api/refresh_token', async (req: Request, res: Response) => {
     const token = req.cookies.jid
@@ -111,7 +102,7 @@ const main = async () => {
   apolloServer.installSubscriptionHandlers(httpServer)
 
   httpServer.listen(process.env.PORT, () => {
-    console.log('express server started at ', process.env.PORT)
+    console.log('express server started at ', process.env.PORT, process.env.ENV)
   })
 }
 

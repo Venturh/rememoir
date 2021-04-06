@@ -7,6 +7,11 @@ import vueI18n from '@intlify/vite-plugin-vue-i18n'
 import ViteComponents from 'vite-plugin-components'
 
 export default defineConfig({
+  build: {
+    brotliSize: false,
+    chunkSizeWarningLimit: 1200,
+    manifest: true,
+  },
   plugins: [
     vue(),
     ViteComponents(),

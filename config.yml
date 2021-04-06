@@ -1,4 +1,4 @@
-schema: 'http://api.projectm.localhost/graphql'
+schema: 'http://localhost:1337/api/graphql'
 documents: ./src/graphql/**/*.gql
 generates:
   ./src/generated/graphql.ts:

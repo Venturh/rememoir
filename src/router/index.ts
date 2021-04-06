@@ -33,6 +33,7 @@ router.beforeEach(async (to, _, next) => {
     to.name!.toString().includes('auth-login') ||
     to.name!.toString().includes('auth-register')
   ) {
+    console.log('h', hasToken, getSectretKey())
     if (hasToken && getSectretKey()) next('home')
     else next()
   } else if (to.name!.toString().includes('profile-setkey')) {

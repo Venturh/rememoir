@@ -26,6 +26,7 @@ export async function requestAccessToken() {
 
 export async function tryAccessToken(invalid?: boolean) {
   if (accessToken === '' || invalid === true) await requestAccessToken()
+  console.log('accessToken', accessToken)
   return accessToken
 }
 

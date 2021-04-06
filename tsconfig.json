@@ -1,26 +1,9 @@
 {
-  "ts-node": {
-    // these options are overrides used only by ts-node
-    // same as our --compilerOptions flag and our TS_NODE_COMPILER_OPTIONS environment variable
-    "compilerOptions": {
-      "module": "commonjs",
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true
-    }
-  },
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2017",
-    "moduleResolution": "node",
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "rootDir": ".",
+    "outDir": "./dist/",
+    "composite": true
   },
-  "include": ["api/**/*.ts", "api/**/*.d.ts"],
-  "exclude": ["./node_modules/*"]
+  "exclude": ["./dist", "./node_modules/*"],
+  "references": [{ "path": "./api" }, { "path": "./src" }]
 }

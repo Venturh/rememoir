@@ -43,7 +43,7 @@ const errorLink = onError(
 )
 
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_API_GRAPHQL,
+  uri: import.meta.env.VITE_API_GRAPHQL as string,
   headers: `bearer ${getAccessToken}`,
   credentials: 'include',
 })

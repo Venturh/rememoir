@@ -1,9 +1,5 @@
 <template>
-  <LandingLayout/>
+  <LandingLayout />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({})
-</script>
+<script setup lang="ts"></script>

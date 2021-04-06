@@ -24,8 +24,12 @@ import { object, string } from 'yup'
 
 import { setAccessToken } from '@/utils/auth'
 import useUserInfo from '@/hooks/userInfo'
-import { useLoginMutation } from '@/generated/graphql'
+import {
+  useLoginMutation,
+  useVerifySecretKeyMutation,
+} from '@/generated/graphql'
 import { useLoading, useNotification } from '@/hooks'
+import { hash, getSectretKey } from '@/utils/crypto'
 
 const { push } = useRouter()
 const { notification, setNotification } = useNotification()
@@ -41,6 +45,12 @@ const schema = object().shape({
 const { setUserInfo } = useUserInfo()
 const { mutate: sendLogin } = useLoginMutation(() => ({
   variables: { email: infos.email, password: infos.password },
+}))
+
+const { mutate: verifySecretKey } = useVerifySecretKeyMutation(() => ({
+  variables: {
+    key: hash(getSectretKey() ?? ''),
+  },
 }))
 
 async function login(values: { email: string; password: string }) {
@@ -60,11 +70,14 @@ async function login(values: { email: string; password: string }) {
   } else {
     setUserInfo({
       email: user!.email,
-      uid: user!.id,
       username: user!.username,
     })
     setAccessToken(accessToken!)
-    push('/home')
+
+    const { data } = await verifySecretKey()
+    const { errors } = data!.verifySecretKey
+    if (!errors) push('/home')
+    else push('/auth/setkey')
   }
 }
 </script>
