@@ -109,6 +109,14 @@
   "settings:deleteAccountDescription": "Once you delete your account, there is no going back. Please be certain.",
   "deletedesc": "Delete.",
 
+  "whatsnew": "Whats new",
+  "whatsnew1": "We just launched",
+  "l_hero1": "Your place to",
+  "l_hero2": "securly ",
+  "l_hero3": "store ",
+  "l_hero4": "anything anywhere.",
+  "l_hero_sub": "Save videos, notes, links and images with no restrictions.",
+
   "PW_CHANGE_SUCCESS": "Passwort wurde aktualisiert",
   "nicetomeet": "Nice to meet you",
   "RESET_PASSWORD_COMPLETE": "Password reset successfull, redirecting.",

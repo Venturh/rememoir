@@ -25,7 +25,7 @@ services:
     depends_on:
       - mongo
     labels:
-      - 'traefik.http.routers.backend.rule=Host(`api.projectm.localhost`)'
+      - 'traefik.http.routers.backend.rule=Host(`api.rememoir.localhost`)'
 
   web:
     container_name: 'projectm-web'
@@ -41,7 +41,7 @@ services:
     depends_on:
       - api
     labels:
-      - 'traefik.http.routers.frontend.rule=Host(`projectm.localhost`)'
+      - 'traefik.http.routers.frontend.rule=Host(`rememoir.localhost`)'
 
   mongo:
     container_name: 'projectm-mongo'

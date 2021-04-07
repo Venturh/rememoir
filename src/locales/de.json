@@ -107,6 +107,14 @@
   "settings:deleteAccount": "Account löschen",
   "settings:deleteAccountDescription": "Wenn der Account gelöscht wurde, ist es nicht möglich ihn wiederherzustellen.",
 
+  "whatsnew": "Neu",
+  "whatsnew1": "Wir sind live!",
+  "l_hero1": "Dein Ort um ",
+  "l_hero2": "alles, überall sicher ",
+  "l_hero3": "zu speichern, egal wo du bist.",
+  "l_hero4": "",
+  "l_hero_sub": "Speichere Notizen, Links und Bilder und habe gesammelten Zugriff.",
+
   "nicetomeet": "Schön dich Kennenzulernen",
   "PW_CHANGE_SUCCESS": "Passwort wurde aktualisiert",
   "RESET_PASSWORD_COMPLETE": "Das Passwort wurde zurückgesetzt, du wirst weitergeletet.",

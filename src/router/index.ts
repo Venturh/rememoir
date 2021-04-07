@@ -29,17 +29,16 @@ router.beforeEach(async (to, _, next) => {
         next()
       }
     }
-  } else if (
-    to.name!.toString().includes('auth-login') ||
-    to.name!.toString().includes('auth-register')
-  ) {
-    console.log('h', hasToken, getSectretKey())
-    if (hasToken && getSectretKey()) next('home')
-    else next()
-  } else if (to.name!.toString().includes('profile-setkey')) {
-    hasToken = await tryAccessToken()
-    if (!hasToken) next({ name: '' })
-    else next()
+    // } else if (
+    //   to.name!.toString().includes('auth-login') ||
+    //   to.name!.toString().includes('auth-register')
+    // ) {
+    //   if (hasToken && getSectretKey()) next('home')
+    //   else next()
+    // } else if (to.name!.toString().includes('profile-setkey')) {
+    //   hasToken = await tryAccessToken()
+    //   if (!hasToken) next({ name: '' })
+    //   else next()
   } else {
     next()
   }

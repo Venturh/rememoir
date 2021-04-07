@@ -1,7 +1,10 @@
 import * as nodemailer from 'nodemailer'
 
 const emailService = nodemailer.createTransport({
-  host: 'smtp.ethereal.email',
+  host:
+    process.env.ENV === 'development'
+      ? 'smtp.ethereal.email'
+      : 'smtp-mail.outlook.com',
   port: 587,
   secure: false,
   auth: {

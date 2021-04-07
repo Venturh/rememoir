@@ -54,7 +54,11 @@ const main = async () => {
         req.originalUrl.includes('graphql')
       )
         return next()
-      res.sendFile(__dirname + './index.html')
+      const html = fs.readFileSync(
+        path.resolve(__dirname, './index.html'),
+        'utf-8'
+      )
+      res.send(html)
     })
   }
 

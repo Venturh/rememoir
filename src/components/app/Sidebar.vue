@@ -3,13 +3,10 @@
     class="flex-col justify-between hidden w-16 h-screen sm:flex sm:fixed lg:w-48"
   >
     <div class="space-y-12">
-      <div class="flex items-center justify-center flex-shrink-0 h-12 lg:h-16">
-        <img
-          class="w-auto h-12 lg:h-16"
-          src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-          alt="logo"
-        />
-      </div>
+      <router-link to="/" class="flex flex-shrink-0 h-12 px-4">
+        <Logo class="w-auto h-12 lg:h-14" />
+      </router-link>
+
       <VerticalNavigation :items="sidebarItems" />
     </div>
     <div

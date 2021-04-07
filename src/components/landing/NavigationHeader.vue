@@ -14,13 +14,7 @@
             <Icon :icon="open ? RiCloseLine : RiMenuLine" />
           </button>
         </div>
-        <router-link to="/">
-          <img
-            class="hidden w-auto h-8 lg:block"
-            src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-            alt="Workflow"
-          />
-        </router-link>
+        <Logo class="hidden w-auto h-12 lg:block" small />
 
         <div
           class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
