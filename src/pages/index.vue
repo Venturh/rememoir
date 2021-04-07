@@ -53,7 +53,7 @@
           padding
           class="px-6 py-3 mt-6"
           variant="1"
-          @click="push('/auth/register')"
+          @click="push('/home')"
         >
           {{ t('continue') }}</Button
         >
@@ -65,6 +65,7 @@
           class="rounded-md shadow-xl ring-1 ring-black dark:ring-white ring-opacity-5 lg:h-full lg:max-w-2xl"
           src="/images/landing_2.png"
           alt="landing"
+          loading="lazy"
         />
       </div>
     </div>
