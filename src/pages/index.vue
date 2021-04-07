@@ -5,7 +5,7 @@
     >
       <div>
         <div class="space-y-2">
-          <Logo class="w-auto h-12 mb-12 lg:h-16" />
+          <Logo class="hidden w-auto h-12 mb-12 lg:block lg:h-16" />
           <div class="flex items-center space-x-2">
             <Label class="tracking-wide uppercase" variant="brand25">
               {{ t('whatsnew') }}
@@ -62,7 +62,7 @@
         class="py-12 sm:relative sm:mt-12 sm:py-16 lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2"
       >
         <img
-          class="rounded-md shadow-xl ring-1 ring-black dark:ring-white ring-opacity-5 lg:h-full lg:max-w-2xl"
+          class="rounded-md shadow-xl ring-1 ring-black dark:ring-white ring-opacity-5 lg:h-4/5 lg:max-w-2xl"
           src="/images/landing_2.png"
           alt="landing"
           loading="lazy"
